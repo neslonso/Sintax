@@ -1,4 +1,5 @@
 <?="\n<!-- ".get_class()." -->\n"?>
+<h1><?=$ulDbMsg?></h1>
 <form action="<?=BASE_URL.FILE_APP?>" method="post" enctype="multipart/form-data"
  	style="background-color: #FFF;" class="sobreAnterior">
 	<input name="MODULE" id="MODULE" type="hidden" value="actions"/>
@@ -9,7 +10,7 @@
 
 	<fieldset>
 		<legend>Creación de App Skel</legend>
-		<label for="fileApp">Punto de entrada:</label> <strong><?=SKEL_ROOT_DIR?></strong><input type="text" name="fileApp" id="fileApp" value="index.php" /> (Fichero mediante le que se accede a la app, debe ser un fichero php que no exista)<br />
+		<label for="fileApp">Punto de entrada:</label> <strong><?=SKEL_ROOT_DIR?></strong><input type="text" name="fileApp" id="fileApp" value="index.php" /> (Fichero mediante el que se accede a la app, debe ser un fichero php que no exista)<br />
 		<label for="rutaApp">Ruta:</label> <strong><?=SKEL_ROOT_DIR?></strong><input type="text" name="rutaApp" id="rutaApp" value="" /> (Ruta donde crear el skeleto de app. Debe ser un directorio que no exista)<br />
 		<input type="submit" />
 	</fieldset>
@@ -66,42 +67,31 @@ foreach (unserialize(APPS) as $entryPoint => $arrAppConstants) {
 			<option value="Blank">Blank</option>
 <?
 $disabled='';
-if (!$hayDB) {
-	$disabled='disabled="disabled"';
-}?>
+if (!$this->hayDB) {$disabled='disabled="disabled"';}
+?>
 			<option <?=$disabled?> value="CRUD">CRUD</option>
 			<option <?=$disabled?> value="DBdataTable">DBdataTable</option>
 		</select> (Tipo de Page a crear: Blank => Ficheros en blanco, CRUD => Formulario de campos validados, DBdataTable => Listado datatables server side)
 
 		<div style="display:none;" id="divClass">
 			<label for="class">Tabla (Class):</label>
-			<select name="class" id="class" onchange="
-				var children = document.getElementById('divTables').childNodes;
+			<?=self::selectTables('class','','onchange="
+				var children = document.getElementById(\'divTables\').childNodes;
 				for (var i = 0; i < children.length; i++) {
-					if (children[i].style) {
-						children[i].style.display='none';
-					}
+					if (children[i].style) {children[i].style.display=\'none\';}
 				};
-				var divTable=document.getElementById('div'+this.value);
+				var divTable=document.getElementById(\'div_\'+this.value);
 				if (divTable) {
-					divTable.style.display='block';
+					divTable.style.display=\'block\';
 				}
-			">
-				<option value="">Seleecionar tabla</option>
-<?
-foreach ($arrStdObjTableInfo as $stdObjTableInfo) {
-?>
-				<option value="<?=$stdObjTableInfo->tableName?>"><?=$stdObjTableInfo->tableName?></option>
-<?
-}
-?>
-			</select> (Tabla de la BD en la que se basa la Page, tambien se creará en 'RUTA_APP/server/clases/Logic/' la clase de lógica (Clase Logic o Clase ORM) asociada <strong>si no existe</strong>)
+			"')?> (Tabla de la BD en la que basar la Clase)
 		</div>
 		<div id="divTables">
 <?
+foreach ($this->arrDbsInfo as $nombreConn => $arrStdObjTableInfo) {
 	foreach ($arrStdObjTableInfo as $stdObjTableInfo) {
 ?>
-			<div id="div<?=$stdObjTableInfo->tableName?>" style="display:none">
+			<div id="div_<?=$nombreConn.self::DB_NAME_TABLE_NAME_SEPARATOR.$stdObjTableInfo->tableName?>" style="display:none">
 				<h3>Tabla: <?=$stdObjTableInfo->tableName?></h3>
 				<div id="divFields<?=$stdObjTableInfo->tableName?>">
 					<span title="<?=$stdObjTableInfo->arrCreateInfo['Create Table']?>">SQL Create Table (tooltip)</span>
@@ -188,9 +178,26 @@ foreach ($arrStdObjTableInfo as $stdObjTableInfo) {
 			</div>
 <?
 	}
+}
 ?>
 		</div>
 		<input type="submit" />
 	</fieldset>
 </form>
+<form action="<?=BASE_URL.FILE_APP?>" method="post" enctype="multipart/form-data"
+ 	style="background-color: #FFF;" class="sobreAnterior">
+	<input name="MODULE" id="MODULE" type="hidden" value="actions"/>
+	<input name="acClase" id="acClase" type="hidden" value="Creacion"/>
+	<input name="acMetodo" id="acMetodo" type="hidden" value="acCrearClase"/>
+	<input name="acTipo" id="acTipo" type="hidden" value="stdAssoc"/>
+	<input name="acReturnURI" id="acReturnURI" type="hidden" value="<?=$_SERVER['REQUEST_URI']?>"/>
+	<fieldset>
+		<legend>Creación de Clase Logic</legend>
+		<label for="rutaLogic">Ruta Logic:</label> <strong><?=SKEL_ROOT_DIR?></strong><input type="text" name="rutaLogic" id="rutaLogic" value="<?=str_replace(SKEL_ROOT_DIR, '', RUTA_APP)?>server/clases/Logic/" /> (Ruta donde crear la clase de lógica)<br />
+			<label for="class">Tabla (Class):</label>
+			<?=self::selectTables('class')?>
+			<br />
+		<input type="submit" />
+	</fieldset>
+
 <?="\n<!-- /".get_class()." -->\n"?>

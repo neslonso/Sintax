@@ -31,7 +31,7 @@ Primero Require y luego Install.
 	<input type="radio" name="cCmd" value="search" <?=$cCmd['search']?> /> search
 	<input type="radio" name="cCmd" value="show" <?=$cCmd['show']?> /> show
 	<br />
-	Paquete: <input type="text" name="pkgs" id="pkgs" value="<?=$pkgs?>">
+	Paquete: <input type="text" name="composerPkgs" id="composerPkgs" value="<?=$pkgs?>" style="width:50%;">
 	<input type="button" value="Buscar en packagist"
 		onclick="window.open('https://packagist.org/search/?q='+document.getElementById('pkgs').value,'_blank');" /><br />
 	(vendor/package1:version vendor/package2:version ...) (phpunit/phpunit:4.3.* mysql/autobackup:dev-master)

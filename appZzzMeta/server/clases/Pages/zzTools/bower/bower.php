@@ -69,7 +69,7 @@ class bower extends Error implements IPage {
 		//echo "Args: <pre>".print_r ($args,true)."</pre>";
 		//echo "Request: <pre>".print_r ($_REQUEST,true)."</pre>";
 
-		$pkgs=$args['pkgs'];
+		$pkgs=$args['bowerPkgs'];
 		$cCmd=$args['cCmd'];
 
 		$opts='-n -d="'.SKEL_ROOT_DIR.'"';
@@ -123,7 +123,7 @@ class bower extends Error implements IPage {
 		$this->generateAssetsFiles($arrLibsApps,BOWER_PATH,'bowerComponents.php','appBowerComponents.php');
 	}
 
-	public function getInstalledLibs($libDirectoryPath) {
+	public static function getInstalledLibs($libDirectoryPath) {
 		$arrInstalledLibs=array();
 		$arrBowerJsonFiles=\Filesystem::folderSearch($libDirectoryPath, '/.*bower.json/');
 		foreach ($arrBowerJsonFiles as $bowerJsonFilePath) {
@@ -186,7 +186,7 @@ class bower extends Error implements IPage {
 		return $arrInstalledLibs;
 	}
 
-	public function generateAssetsFiles ($arrLibsApps,$libDirectoryPath,$globalIncludeFilename,$localIncludeFilename) {
+	public static function generateAssetsFiles ($arrLibsApps,$libDirectoryPath,$globalIncludeFilename,$localIncludeFilename) {
 		echo "<h2>Generando ".$globalIncludeFilename." / ".$localIncludeFilename."</h2>";
 		//Quitamos todo lo que esté en global de las apps
 		foreach ($arrLibsApps as $libName => $arrLibData) {
@@ -219,7 +219,7 @@ class bower extends Error implements IPage {
 		}
 	}
 
-	private function includeAppLibs($arrAppData,$arrInstalledLibs,$arrLibsApps,$globalIncludeFilename,$localIncludeFilename) {
+	private static function includeAppLibs($arrAppData,$arrInstalledLibs,$arrLibsApps,$globalIncludeFilename,$localIncludeFilename) {
 		if (is_null($arrAppData)) {
 			$scopeName="GLOBAL";
 			$componentsFilePath=SKEL_ROOT_DIR.'includes/cliente/'.$globalIncludeFilename;
@@ -293,7 +293,7 @@ class bower extends Error implements IPage {
 		file_put_contents($componentsFilePath,$componentsContent);
 	}
 
-	public function getArrLibsApps($libDirectoryPath,$globalIncludeFilename,$localIncludeFilename) {
+	public static function getArrLibsApps($libDirectoryPath,$globalIncludeFilename,$localIncludeFilename) {
 		$arrLibsApps=array();
 		$arrApps=unserialize(APPS);
 		$arrApps['GLOBAL']=array('RUTA_APP' => SKEL_ROOT_DIR);

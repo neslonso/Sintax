@@ -17,7 +17,9 @@
 	<input type="radio" name="cCmd" value="list" <?=$cCmd['list']?> /> list
 	<br />
 
-	Paquete: <input type="text" name="pkgs" id="pkgs" value="<?=$pkgs?>">
+	Paquete: <input type="text" name="bowerPkgs" id="bowerPkgs" value="<?=$pkgs?>" style="width:50%;">
+	<input type="button" value="Buscar en bower.io"
+		onclick="window.open('http://bower.io/search/?q='+document.getElementById('pkgs').value,'_blank');" /><br />
 	<br />
 	nombre#version, e.j bootstrap#2.3.2
 	<br />

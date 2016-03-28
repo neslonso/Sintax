@@ -7,6 +7,7 @@
 			<description>
 				Herramienta para mostrar y actualizar información sacada de un fichero de versiones XML y características
 			</description>
+			<link>https://trello.com/c/DAF6nEIi</link>
 		</feature>
 		<feature done="false" revised="false">
 			<name>Install Tool</name>

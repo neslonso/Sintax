@@ -16,9 +16,9 @@ class Fecha {
 		switch ($tipo) {
 			case "mysql":
 			case "mySQL":
-			case "MySQL": $this->dateUnix=$this->fromMysql($date);break;
-			case "FechaES": $this->dateUnix=$this->fromFechaES($date);break;
-			case "FechaEN": $this->dateUnix=$this->fromFechaEN($date);break;
+			case "MySQL": $this->dateUnix=$this->fromMysql($date)->GETdate();break;
+			case "FechaES": $this->dateUnix=$this->fromFechaES($date)->GETdate();break;
+			case "FechaEN": $this->dateUnix=$this->fromFechaEN($date)->GETdate();break;
 			default: $this->dateUnix=$date;break;
 		}
 	}

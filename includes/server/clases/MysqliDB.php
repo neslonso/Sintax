@@ -1,69 +1,6 @@
 <?
 class DBException extends Exception {}
 
-class cDb extends MysqliDB {
-	/**
-	 * host de MySQL
-	 * @var string
-	 */
-	private static $host='localhost';
-	/**
-	 * Usuario de acceso a MySQL
-	 * @var string
-	 */
-	private static $user='root';
-	/**
-	 * Contraseña del usuario de acceso a MySQL
-	 * @var string
-	 */
-	private static $pass='';
-	/**
-	 * Nombre del esquema de MySQL
-	 * @var string
-	 */
-	private static $db='';
-	/**
-	 * NULL o instancia de la propia clase, ya conectada a la BD
-	 * @var NULL o instancia de self
-	 */
-	private static $singleton=NULL;
-	/**
-	 * Realiza conexión a la base de datos
-	 * @param string $host host de MySQL
-	 * @param string $user usuario de acceso a MySQL
-	 * @param string $pass contraseña del usuario de acceso a MySQL
-	 * @param string $db nombbre de esquema de MySQL
-	 * @return object: instancia de self
-	 */
-	public static function conf($host, $user, $pass, $db) {
-		self::$host=$host;
-		self::$user=$user;
-		self::$pass=$pass;
-		self::$db=$db;
-		if(self::$singleton instanceof self) {self::$singleton->close();}
-		self::$singleton=NULL;
-		return self::getInstance();
-	}
-
-	/**
-	 * devuelve una referencia a la instancia conectada
-	 * @return object: instancia de self
-	 */
-	public static function getInstance() {
-		if(!self::$singleton instanceof self) {
-			//self::$singleton = new self(self::_DB_HOST_, self::_DB_USER_, self::_DB_PASSWD_, self::_DB_NAME_);
-			self::$singleton = new self(self::$host, self::$user, self::$pass, self::$db);
-		}
-		return self::$singleton;
-	}
-	/**
-	 * alias de getInstance
-	 */
-	public static function gI() {
-		return self::getInstance();
-	}
-}
-
 class MysqliDB extends mysqli {
 	/**
 	 * Constructor: Conecta a MySQL y establece el charset a utf8
@@ -99,7 +36,12 @@ class MysqliDB extends mysqli {
 	 * @throws DBException si no se puede cerrar la conexion
 	 */
 	public function __destruct() {
-		if (parent::ping()) {
+		try {
+			$pingResult=parent::ping();
+		} catch (\Exception $e) {
+			$pingResult=false;
+		}
+		if ($pingResult) {
 			if (!parent::close()) {
 				throw new DBException(mysqli_connect_error(), mysqli_connect_errno());
 			}
@@ -145,6 +87,10 @@ class MysqliDB extends mysqli {
 		return $this->get_data($query,"obj");
 	}
 	/**
+	 * alias de get_obj (obsoleto)
+	 */
+	public function get_row($query) {return $this->get_obj($query);}
+	/**
 	 * Recupera un array de campos
 	 * @param  string $query Consulta SQL a ejecutar
 	 * @return array Primer campo de cada registro del resultado de la consulta
@@ -161,7 +107,7 @@ class MysqliDB extends mysqli {
 		return $this->get_data($query,"arrRows");
 	}
 	/**
-	 * alias de get_arrArrs
+	 * alias de get_arrArrs (obsoleto)
 	 */
 	public function get_results($query) {return $this->get_arrArrs($query);}
 	/**
@@ -303,5 +249,68 @@ class MysqliDB extends mysqli {
 		return $result;
 	}
 
+}
+
+class cDb extends MysqliDB {
+	/**
+	 * host de MySQL
+	 * @var string
+	 */
+	private static $host='localhost';
+	/**
+	 * Usuario de acceso a MySQL
+	 * @var string
+	 */
+	private static $user='root';
+	/**
+	 * Contraseña del usuario de acceso a MySQL
+	 * @var string
+	 */
+	private static $pass='';
+	/**
+	 * Nombre del esquema de MySQL
+	 * @var string
+	 */
+	private static $db='';
+	/**
+	 * NULL o instancia de la propia clase, ya conectada a la BD
+	 * @var NULL o instancia de self
+	 */
+	private static $singleton=NULL;
+	/**
+	 * Realiza conexión a la base de datos
+	 * @param string $host host de MySQL
+	 * @param string $user usuario de acceso a MySQL
+	 * @param string $pass contraseña del usuario de acceso a MySQL
+	 * @param string $db nombbre de esquema de MySQL
+	 * @return object: instancia de self
+	 */
+	public static function conf($host, $user, $pass, $db) {
+		self::$host=$host;
+		self::$user=$user;
+		self::$pass=$pass;
+		self::$db=$db;
+		if(self::$singleton instanceof self) {self::$singleton->close();}
+		self::$singleton=NULL;
+		return self::getInstance();
+	}
+
+	/**
+	 * devuelve una referencia a la instancia conectada
+	 * @return object: instancia de self
+	 */
+	public static function getInstance() {
+		if(!self::$singleton instanceof self) {
+			//self::$singleton = new self(self::_DB_HOST_, self::_DB_USER_, self::_DB_PASSWD_, self::_DB_NAME_);
+			self::$singleton = new self(self::$host, self::$user, self::$pass, self::$db);
+		}
+		return self::$singleton;
+	}
+	/**
+	 * alias de getInstance
+	 */
+	public static function gI() {
+		return self::getInstance();
+	}
 }
 ?>

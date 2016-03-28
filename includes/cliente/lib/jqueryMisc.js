@@ -60,6 +60,8 @@ jQuery.fn.exists = function(){return jQuery(this).length>0;};
 
 //jQuery plugin overlay.
 /* History
+/* v 1.1 (20151021)
+/* recibe como parametro el elto al que aplicar el overlay
 /* v 1.0 (20120705)
 /* Version inicial, pone un overlay sobre todo el body con una imagen centrada horizontal y verticalmente
 */
@@ -67,14 +69,14 @@ jQuery.fn.exists = function(){return jQuery(this).length>0;};
 	var methods = {
 		init: function(settings) {
 			var self=this;//Al estar en $.overlay, this es una funcion
-			var $body=$(document.body);
 
 			self.opt = $.extend(true, {}, $.overlay.defaults, settings);
+			var $db=$(self.opt.selectorAppendTo);
 
-			var $overlay=$('<div/>').addClass('ui-widget-overlay').css({position:'fixed'});
+			var $overlay=$('<div/>').addClass('ui-widget-overlay').css({'z-index':'9999998'});
 			var $divTable=$('<div/>').css({
 				position:'fixed','text-align':'center',display:'table',
-				top:0,left:0,width:'100%',height:'100%'});
+				top:0,left:0,width:'100%',height:'100%','z-index':'9999999'});
 			var $divCell=$('<div/>').css ({
 				height:'100%;',display:'table-cell','vertical-align':'middle'}).appendTo($divTable);
 			var $img=$('<img>')
@@ -86,20 +88,21 @@ jQuery.fn.exists = function(){return jQuery(this).length>0;};
 				.addClass(self.opt.imgClass)
 				.appendTo($divCell);
 
-			$overlay.appendTo($body);
-			$divTable.appendTo($body);
-			$body.data('overlay', {
+			$divTable.appendTo($overlay);
+			$overlay.appendTo($db);
+			$db.data('overlay', {
 				settings:self.opt,
 				$overlay:$overlay,
 				$divTable:$divTable
 			});
 		},
 		destroy:function() {
-			var $body=$(document.body);
-			if ($body.data('overlay')) {
-				$body.data('overlay').$overlay.remove();
-				$body.data('overlay').$divTable.remove();
-				$body.removeData('overlay');
+			var self=this;//Al estar en $.overlay, this es una funcion
+			var $db=$(self.opt.selectorAppendTo);
+			if ($db.data('overlay')) {
+				$db.data('overlay').$overlay.remove();
+				$db.data('overlay').$divTable.remove();
+				$db.removeData('overlay');
 			}
 		}
 	};
@@ -118,7 +121,8 @@ jQuery.fn.exists = function(){return jQuery(this).length>0;};
 		imgSrc:'./binaries/imgs/lib/ajax-loader.gif',
 		imgAlt:'Cargando...',
 		imgCss:{},
-		imgClass:''
+		imgClass:'',
+		selectorAppendTo:'body'
 	};
 })(jQuery);
 //

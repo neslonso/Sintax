@@ -40,7 +40,10 @@ define ('IPS_DEV', serialize(array_merge(
 		//'88.14.233.166',//León Carbajal 20150625
 		//'83.53.147.109',//León Carbajal 20150815
 		//'88.14.237.3',//León Carbajal 20150818
-		'88.21.228.165',//León Carbajal 20150915
+		//'88.21.228.165',//León Carbajal 20150915
+		//'88.20.87.0',//León Carbajal 20160202
+		//'83.43.177.42',//León Carbajal 20160204
+		'88.14.241.127',//León Carbajal 20160319
 	),
 	array(
 		'193.146.109.133',//Unileon
@@ -51,7 +54,8 @@ define ('IPS_DEV', serialize(array_merge(
 	array(
 		//'47.62.0.55',//Diego Madrid
 		//'47.62.0.219',//Diego Madrid 20150216
-		'47.62.161.180',//Diego Madrid 20150831
+		//'47.62.161.180',//Diego Madrid 20150831
+		'47.62.1.138',//Diego Madrid 20160202
 	),
 	array()
 )));
@@ -82,6 +86,40 @@ define ('APPS', serialize(array(
 	),
 )));
 
+//Listamos todas las conexiones a BD
+define ('DBS', serialize(array(
+	'excavacionesmancenido_com_portfolio_osnola_es' => array(
+		'_DB_HOST_' => 'localhost',
+		'_DB_USER_' => 'osnolaDbMaster',
+		'_DB_PASSWD_' => '45$%rtRT',
+		'_DB_NAME_' => 'excavacionesmancenido_com_portfolio_osnola_es',
+	),
+	'mtr' => array(
+		'_DB_HOST_' => 'localhost',
+		'_DB_USER_' => 'osnolaDbMaster',
+		'_DB_PASSWD_' => '45$%rtRT',
+		'_DB_NAME_' => 'mtr',
+	),
+	'uidi' => array(
+		'_DB_HOST_' => 'localhost',
+		'_DB_USER_' => 'osnolaDbMaster',
+		'_DB_PASSWD_' => '45$%rtRT',
+		'_DB_NAME_' => 'uidi',
+	),
+	'buaxal' => array(
+		'_DB_HOST_' => 'localhost',
+		'_DB_USER_' => 'osnolaDbMaster',
+		'_DB_PASSWD_' => '45$%rtRT',
+		'_DB_NAME_' => 'bauxal',
+	),
+	'if' => array(
+		'_DB_HOST_' => 'localhost',
+		'_DB_USER_' => 'osnolaDbMaster',
+		'_DB_PASSWD_' => '45$%rtRT',
+		'_DB_NAME_' => 'if',
+	),
+)));
+
 //requerimos las bibliotecas de servidor "estaticas" y el autoloader de composer
 require_once SKEL_ROOT_DIR."includes/server/serverLibs.php";
 
@@ -90,6 +128,13 @@ require_once SKEL_ROOT_DIR."includes/server/serverLibs.php";
 		header('Content-Type: text/html; charset=utf-8');
 		echo '<style type="text/css">pre {border:inset black 3px; background-color:#c0c0c0; font-family:monospace; max-height:300px; overflow:auto;}</style>';
 		echo "<h1>Detectada primera ejecución</h1>";
+		echo "
+		<h3>Prerequisitos:
+		<ul>
+		<li>PHP como FastCGI</li>
+		<li>Instalar Git (yum install git)</li>
+		</ul>
+		</h3>";
 		putenv('COMPOSER_HOME=' . SKEL_ROOT_DIR);
 		$descriptorspec = array(
 			//0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
@@ -119,7 +164,8 @@ require_once SKEL_ROOT_DIR."includes/server/serverLibs.php";
 			<hr />
 				Continuar:
 				<ul>
-					<li><a href="'.BASE_URL.'sintax/">Página princiapl de S!nt@x</a></li>
+					<li>Editar .htaccess en '.BASE_URL.' y en '.BASE_URL.'sintax/</li>
+					<li><a href="'.BASE_URL.'sintax/">Página principal de S!nt@x</a></li>
 					<li><a href="'.BASE_URL.'sintax/creacion/">Herramienta de creación</a></li>
 					<li>Bibliotecas de cliente: <a href="'.BASE_URL.'sintax/composer/">Composer</a> o <a href="'.BASE_URL.'sintax/bower/">Bowerphp</a></li>
 				</ul>

@@ -89,26 +89,26 @@ class composer extends Error implements IPage {
 	}
 
 	public function acExec ($args) {
-		$pkgs=$args['pkgs'];
+		$pkgs=$args['composerPkgs'];
 		$cCmd=$args['cCmd'];
 		$dryRun=($args['dryRun']==1)?' --dry-run ':'';
 		$verbose=($args['verbose']==1)?' --verbose ':'';
-		$opts=' --no-interaction -d "'.SKEL_ROOT_DIR.'" ';
+		$opts=' --no-interaction -d "'.SKEL_ROOT_DIR.'" '.$verbose;
 		switch ($cCmd) {
-			case "install":$opts.='--optimize-autoloader '.$dryRun.$verbose;break;
+			case "install":$opts.='--optimize-autoloader '.$dryRun;break;
 			case "update":$opts.='--with-dependencies '.$dryRun;break;
 			break;
 			case "require":
 			case "remove":
 				$opts.='--update-with-dependencies ';break;
 			case "search":
-			case "show":
 				if ($pkgs=='') {
-					throw new ActionException('Debe introducir el paquete.', 1);
+					throw new \ActionException('Debe introducir el paquete.', 1);
 				}
-			break;
+				break;
+			case "show":break;
 			default:
-				throw new ActionException('Comando "'.htmlspecialchars($cCmd).'" no válido o no implementado', 1);
+				throw new \ActionException('Comando "'.htmlspecialchars($cCmd).'" no válido o no implementado', 1);
 			break;
 		}
 		putenv('COMPOSER_HOME=' . SKEL_ROOT_DIR);
