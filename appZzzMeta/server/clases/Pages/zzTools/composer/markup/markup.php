@@ -56,7 +56,7 @@ Primero Require y luego Install.
 
 	APPs:<br />
 <?
-$arrLibsApps=\Sintax\Pages\bower::getArrLibsApps(COMPOSER_ASSET_PLUGIN_PATH,'composerAssetPluginComponents.php','appComposerAssetPluginComponents.php');
+$arrLibsApps=self::getArrLibsApps(COMPOSER_ASSET_PLUGIN_PATH,'composerAssetPluginComponents.php','appComposerAssetPluginComponents.php');
 $arrApps=unserialize(APPS);
 $arrApps['GLOBAL']=array('NOMBRE_APP' => 'composerAssetPluginComponents.php');
 //echo "<pre>".print_r ($arrLibsApps,true)."</pre>";
