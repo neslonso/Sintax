@@ -16,10 +16,11 @@ foreach ($dDocRoadmap->getElementsByTagName('version') as $dNodeVersion) {
 <?
 	foreach ($dNodeVersion->getElementsByTagName('feature') as $dNodeFeature) {
 		$sXmlEltoFeature=simplexml_import_dom($dNodeFeature);
+		$link=($sXmlEltoFeature->link!='')?$sXmlEltoFeature->link:'javascript:void(0);';
 ?>
 			<div class="feature">
 				<div class="name" title="">
-					<?=$sXmlEltoFeature->name?>
+					<a href="<?=$link?>" target="_blank"><?=$sXmlEltoFeature->name?></a>
 				</div>
 				<div class="description">
 					<?=trim($sXmlEltoFeature->description)?>

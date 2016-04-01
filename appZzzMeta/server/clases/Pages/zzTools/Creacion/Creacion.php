@@ -5,6 +5,8 @@ use Sintax\Core\User;
 use Sintax\Core\ReturnInfo;
 
 class Creacion extends Error implements IPage {
+	const DB_NAME_TABLE_NAME_SEPARATOR='#_#';
+
 	public function __construct(User $objUsr) {
 		parent::__construct($objUsr);
 	}
@@ -17,7 +19,7 @@ class Creacion extends Error implements IPage {
 		switch ($metodo) {
 			case "acCrearAppSkel": $result=true;break;
 			case "acCrearPagina": $result=true;break;
-			case "CrearClases": $result=true;break;
+			case "acCrearClase": $result=true;break;
 			default: $result=false;
 		}
 		return $result;
@@ -48,25 +50,46 @@ class Creacion extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
 	public function markup() {
-		$hayDB=true;
-		try {
-			\cDb::conf(_DB_HOST_,_DB_USER_,_DB_PASSWD_,_DB_NAME_);
-		} catch (\Exception $e) {
-			$hayDB=false;
-		}
-		$arrStdObjTableInfo=array();
-		if ($hayDB) {
-			$mysqli=\cDb::getInstance();
-			if ($result = $mysqli->query("show full tables where Table_Type = 'BASE TABLE'")) {
-				while ($table = $result->fetch_array()) {
-					$stdObjTableInfo=$this->getTableInfo($table[0]);
-					array_push($arrStdObjTableInfo,$stdObjTableInfo);
-					unset($stdObjTableInfo);
+		$this->hayDB=false;
+		$arrDbs=unserialize(DBS);
+		$this->arrDbsInfo=array();
+		$arrDbErr=array();
+		foreach ($arrDbs as $nombreConn => $arrData) {
+			$_DB_HOST_=$arrData['_DB_HOST_'];
+			$_DB_USER_=$arrData['_DB_USER_'];
+			$_DB_PASSWD_=$arrData['_DB_PASSWD_'];
+			$_DB_NAME_=$arrData['_DB_NAME_'];
+			try {
+				\cDb::conf($_DB_HOST_,$_DB_USER_,$_DB_PASSWD_,$_DB_NAME_);
+				$arrStdObjTableInfo=array();
+
+				$mysqli=\cDb::getInstance();
+				if ($result = $mysqli->query("show full tables where Table_Type = 'BASE TABLE'")) {
+					while ($table = $result->fetch_array()) {
+						$stdObjTableInfo=$this->getTableInfo($table[0]);
+						array_push($arrStdObjTableInfo,$stdObjTableInfo);
+						unset($stdObjTableInfo);
+					}
+				} else {
+					throw new DBException(mysqli_connect_error(), mysqli_connect_errno());
 				}
-			} else {
-				echo $mysqli->error;
+
+				$this->arrDbsInfo[$nombreConn]=$arrStdObjTableInfo;
+				$this->hayDB=true;
+			} catch (\Exception $e) {
+				$dbMsg='No se pudo conectar a "'.$_DB_HOST_.'" como "'.$_DB_USER_.'" en DB "'.$_DB_NAME_.'"';
+				array_push($arrDbErr, $dbMsg);
+				$GLOBALS['firephp']->info("No se pudo conectar a DB: ".$nombreConn);
+				$GLOBALS['firephp']->info($e);
 			}
 		}
+		$ulDbMsg='<ul>';
+		foreach ($arrDbErr as $dbMsg) {
+			$ulDbMsg.='<li>'.$dbMsg.'</li>';
+		}
+		$ulDbMsg='</ul>';
+		//$GLOBALS['firephp']->info($this->arrDbsInfo);
+
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
 	}
 
@@ -106,6 +129,7 @@ class Creacion extends Error implements IPage {
 		} catch (Exception $e) {
 			throw new \Exception('Error durante copia de appSkel a "'.$path.'"', 1,$e);
 		}
+		$appKey=\Filesystem::find_relative_path(SKEL_ROOT_DIR,$file);
 		ReturnInfo::add("
 		<ul>
 			<li>SKEL_ROOT_DIR: ".SKEL_ROOT_DIR."</li>
@@ -114,7 +138,8 @@ class Creacion extends Error implements IPage {
 			<li>.htaccess: ".$htaccessDest."</li>
 			<li>Definición de APP:
 <pre>
-'".basename($file)."' => array(
+'".$appKey."' => array(
+	'KEY_APP' => '".$appKey."',
 	'FILE_APP' => '".basename($file)."',
 	'RUTA_APP' => SKEL_ROOT_DIR.'".str_replace(SKEL_ROOT_DIR,'',$path)."/',
 	'NOMBRE_APP' => 'Sitio web',
@@ -148,7 +173,9 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 		$extends=$_POST['extends'];
 		$markupFunc=$_POST['markupFunc'];
 		$markupFile=$_POST['markupFile'];
-		$class=$_POST['class'];
+		list($db,$class)=split(self::DB_NAME_TABLE_NAME_SEPARATOR,$_POST['class']);
+		$arrDbs=unserialize(DBS);
+		\cDb::conf($arrDbs[$db]['_DB_HOST_'],$arrDbs[$db]['_DB_USER_'],$arrDbs[$db]['_DB_PASSWD_'],$arrDbs[$db]['_DB_NAME_']);
 		$arrExcluidos=array();
 		$arrValidators=array();
 		$pageType="";
@@ -352,15 +379,12 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 		chmod ($file,0777);
 	}
 
-	public function CrearClases() {
-		unset ($_REQUEST["APP"]);
-		unset ($_REQUEST["acClase"]);
-		unset ($_REQUEST["acMetodo"]);
-		unset ($_REQUEST["acTipo"]);
-		unset ($_REQUEST["acReturnURI"]);
-		foreach ($_REQUEST as $tableName => $uno) {
-			$this->CrearClase($tableName);
-		}
+	public function acCrearClase() {
+		list($db,$class)=split(self::DB_NAME_TABLE_NAME_SEPARATOR,$_REQUEST['class']);
+		$arrDbs=unserialize(DBS);
+		\cDb::conf($arrDbs[$db]['_DB_HOST_'],$arrDbs[$db]['_DB_USER_'],$arrDbs[$db]['_DB_PASSWD_'],$arrDbs[$db]['_DB_NAME_']);
+		$rutaLogic=SKEL_ROOT_DIR.$_POST['rutaLogic'];
+		$this->CrearClase($class,$rutaLogic);
 	}
 
 /* CRUD creation functions ****************************************************/
@@ -1224,6 +1248,31 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 				$stdObjTableInfo->rslColumns->data_seek(0);
 
 				return $stdObjTableInfo;
+	}
+
+	private static function selectDbs ($nameId,$selected='') {
+		$html='<select name="" id="">';
+		$arrDbs=unserialize(DBS);
+		foreach ($arrDbs as $nombreConn => $arrData) {
+			$html.='<option value="'.$nombreConn.'">'.$nombreConn.'</option>';
+		}
+		$html.='</select>';
+		return $html;
+	}
+
+	private function selectTables ($nameId,$selected='',$attrs='') {
+		$arrDbsInfo=$this->arrDbsInfo;
+		$result='<select name="'.$nameId.'" id="'.$nameId.'" '.$attrs.'>';
+		$result.='<option value="">Seleecionar tabla</option>';
+		foreach ($arrDbsInfo as $nombreConn => $arrStdObjTableInfo) {
+			$result.='<optgroup label="'.$nombreConn.'">';
+			foreach ($arrStdObjTableInfo as $stdObjTableInfo) {
+				$result.='<option value="'.$nombreConn.'#_#'.$stdObjTableInfo->tableName.'">'.$stdObjTableInfo->tableName.'</option>';
+			}
+			$result.='</optgroup>';
+		}
+		$result.='</select>';
+		return $result;
 	}
 }
 ?>

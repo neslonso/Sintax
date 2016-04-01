@@ -40,7 +40,10 @@ define ('IPS_DEV', serialize(array_merge(
 		//'88.14.233.166',//León Carbajal 20150625
 		//'83.53.147.109',//León Carbajal 20150815
 		//'88.14.237.3',//León Carbajal 20150818
-		'88.21.228.165',//León Carbajal 20150915
+		//'88.21.228.165',//León Carbajal 20150915
+		//'88.20.87.0',//León Carbajal 20160202
+		//'83.43.177.42',//León Carbajal 20160204
+		'88.14.241.127',//León Carbajal 20160319
 	),
 	array(
 		'193.146.109.133',//Unileon
@@ -51,7 +54,8 @@ define ('IPS_DEV', serialize(array_merge(
 	array(
 		//'47.62.0.55',//Diego Madrid
 		//'47.62.0.219',//Diego Madrid 20150216
-		'47.62.161.180',//Diego Madrid 20150831
+		//'47.62.161.180',//Diego Madrid 20150831
+		'47.62.1.138',//Diego Madrid 20160202
 	),
 	array()
 )));
@@ -82,48 +86,126 @@ define ('APPS', serialize(array(
 	),
 )));
 
+//Listamos todas las conexiones a BD
+define ('DBS', serialize(array(
+	'excavacionesmancenido_com_portfolio_osnola_es' => array(
+		'_DB_HOST_' => 'localhost',
+		'_DB_USER_' => 'osnolaDbMaster',
+		'_DB_PASSWD_' => '45$%rtRT',
+		'_DB_NAME_' => 'excavacionesmancenido_com_portfolio_osnola_es',
+	),
+	'mtr' => array(
+		'_DB_HOST_' => 'localhost',
+		'_DB_USER_' => 'osnolaDbMaster',
+		'_DB_PASSWD_' => '45$%rtRT',
+		'_DB_NAME_' => 'mtr',
+	),
+	'uidi' => array(
+		'_DB_HOST_' => 'localhost',
+		'_DB_USER_' => 'osnolaDbMaster',
+		'_DB_PASSWD_' => '45$%rtRT',
+		'_DB_NAME_' => 'uidi',
+	),
+	'buaxal' => array(
+		'_DB_HOST_' => 'localhost',
+		'_DB_USER_' => 'osnolaDbMaster',
+		'_DB_PASSWD_' => '45$%rtRT',
+		'_DB_NAME_' => 'bauxal',
+	),
+	'if' => array(
+		'_DB_HOST_' => 'localhost',
+		'_DB_USER_' => 'osnolaDbMaster',
+		'_DB_PASSWD_' => '45$%rtRT',
+		'_DB_NAME_' => 'if',
+	),
+)));
+
 //requerimos las bibliotecas de servidor "estaticas" y el autoloader de composer
 require_once SKEL_ROOT_DIR."includes/server/serverLibs.php";
 
 /* Instalamos componentes de composer *****************************************/
 	if (!class_exists('\\FirePHP')) {
+		switch (PHP_SAPI) {
+			case 'cgi-fcgi':
+			case 'fpm-fcgi':
+				$sapiOk=true;
+				break;
+			default:
+				$sapiOk=false;
+				break;
+		}
+		$gitOk=(`which git`)?true:false;
+
 		header('Content-Type: text/html; charset=utf-8');
 		echo '<style type="text/css">pre {border:inset black 3px; background-color:#c0c0c0; font-family:monospace; max-height:300px; overflow:auto;}</style>';
-		echo "<h1>Detectada primera ejecución</h1>";
-		putenv('COMPOSER_HOME=' . SKEL_ROOT_DIR);
-		$descriptorspec = array(
-			//0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
-			1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
-			2 => array("pipe", "w"),  // stderr is a pipe that the child will write to
-		);
-		$cmd='php '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar install --optimize-autoloader --no-interaction -d "'.SKEL_ROOT_DIR.'" --profile';
-		echo "<h2>Ejecutando: ".$cmd."</h2>";
-		ob_flush();
-		$process = proc_open($cmd, $descriptorspec, $pipes);
-		$stdout = stream_get_contents($pipes[1]);
-		fclose($pipes[1]);
-		$stderr = stream_get_contents($pipes[2]);
-		fclose($pipes[2]);
-
-		echo '<h3>STDOUT</h3>';
-		echo '<pre>'.$stdout.'</pre>';
-		echo '<h3>STDERR</h3>';
-		echo '<pre>'.$stderr.'</pre>';
-
-		if (file_exists(SKEL_ROOT_DIR.'cache')) {
-			echo '<h4>Composer ha creado el directorio "'.SKEL_ROOT_DIR.'cache", eliminado directorio</h4>';
-			\Filesystem::delTree(SKEL_ROOT_DIR.'cache');
-		}
-
+		echo '<h1>Detectada primera ejecución</h1>';
 		echo '
-			<hr />
-				Continuar:
-				<ul>
-					<li><a href="'.BASE_URL.'sintax/">Página princiapl de S!nt@x</a></li>
-					<li><a href="'.BASE_URL.'sintax/creacion/">Herramienta de creación</a></li>
-					<li>Bibliotecas de cliente: <a href="'.BASE_URL.'sintax/composer/">Composer</a> o <a href="'.BASE_URL.'sintax/bower/">Bowerphp</a></li>
-				</ul>
-		';
+		<h3>Prerequisitos:
+			<ul>
+				<li>PHP como FastCGI...'.( ($sapiOk)?'OK':'NOOK' ).'</li>
+				<li>Instalar Git (yum install git)...'.( ($gitOk)?'OK':'NOOK' ).'</li>
+			</ul>
+		</h3>';
+
+		if ($gitOk) {
+			putenv('COMPOSER_HOME=' . SKEL_ROOT_DIR);
+			$descriptorspec = array(
+				//0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
+				1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
+				2 => array("pipe", "w"),  // stderr is a pipe that the child will write to
+			);
+			$cmd='php '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar install --optimize-autoloader --no-interaction -d "'.SKEL_ROOT_DIR.'" --profile';
+			echo "<h2>Ejecutando: ".$cmd."</h2>";
+			ob_flush();
+
+			$process = proc_open($cmd, $descriptorspec, $pipes);
+			$stdout = stream_get_contents($pipes[1]);
+			fclose($pipes[1]);
+			$stderr = stream_get_contents($pipes[2]);
+			fclose($pipes[2]);
+			echo '<h3>STDOUT</h3>';
+			echo '<pre>'.$stdout.'</pre>';
+			echo '<h3>STDERR</h3>';
+			echo '<pre>'.$stderr.'</pre>';
+
+			if (file_exists(SKEL_ROOT_DIR.'cache')) {
+				echo '<h4>Composer ha creado el directorio "'.SKEL_ROOT_DIR.'cache", eliminado directorio</h4>';
+				\Filesystem::delTree(SKEL_ROOT_DIR.'cache');
+			}
+
+			/*echo
+				'DOCUMENT_ROOT: '.$_SERVER['DOCUMENT_ROOT'].'<br />'.
+				'SCRIPT_FILENAME: '.$_SERVER['SCRIPT_FILENAME'].'<br />'.
+				'SKEL_ROOT_DIR: '.SKEL_ROOT_DIR.'<br />'.
+				'BASE_DIR: '.BASE_DIR.'<br />'.
+				'BASE_URL: '.BASE_URL.'<br />';*/
+
+			echo '
+				<hr />
+					Continuar:
+					<ul>
+						<li>Editar .htaccess de las apps definidas:
+							<ul>';
+			$arrApps=unserialize(APPS);
+			foreach ($arrApps as $appkey => $appData) {
+				echo '
+								<li>
+								'.$appData['NOMBRE_APP'].': '.dirname(SKEL_ROOT_DIR.$appkey).'/.htaccess ->
+								</li>';
+			}
+			echo '
+							</ul>
+						</li>
+						<li><a href="'.BASE_URL.'sintax/">Página principal de S!nt@x</a></li>
+						<li><a href="'.BASE_URL.'sintax/creacion/">Herramienta de creación</a></li>
+						<li>Bibliotecas de cliente: <a href="'.BASE_URL.'sintax/composer/">Composer</a></li>
+					</ul>
+			';
+		} else {
+			echo '
+				<h4>GIT no encontrado...proceso abortado</h4>
+			';
+		}
 		die();
 	}
 /******************************************************************************/
