@@ -190,7 +190,7 @@ require_once SKEL_ROOT_DIR."includes/server/serverLibs.php";
 			foreach ($arrApps as $appkey => $appData) {
 				echo '
 								<li>
-								'.$appkey.'
+								'.$appData['NOMBRE_APP'].': '.dirname(SKEL_ROOT_DIR.$appkey).'/.htaccess ->
 								</li>';
 			}
 			echo '
