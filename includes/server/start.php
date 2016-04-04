@@ -100,12 +100,6 @@ define ('DBS', serialize(array(
 		'_DB_PASSWD_' => '45$%rtRT',
 		'_DB_NAME_' => 'mtr',
 	),
-	'uidi' => array(
-		'_DB_HOST_' => 'localhost',
-		'_DB_USER_' => 'osnolaDbMaster',
-		'_DB_PASSWD_' => '45$%rtRT',
-		'_DB_NAME_' => 'uidi',
-	),
 	'buaxal' => array(
 		'_DB_HOST_' => 'localhost',
 		'_DB_USER_' => 'osnolaDbMaster',
