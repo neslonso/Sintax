@@ -66,7 +66,7 @@ class Creacion extends Error implements IPage {
 				$mysqli=\cDb::getInstance();
 				if ($result = $mysqli->query("show full tables where Table_Type = 'BASE TABLE'")) {
 					while ($table = $result->fetch_array()) {
-						$stdObjTableInfo=$this->getTableInfo($table[0]);
+						$stdObjTableInfo=$this->getTableInfo($_DB_NAME_,$table[0]);
 						array_push($arrStdObjTableInfo,$stdObjTableInfo);
 						unset($stdObjTableInfo);
 					}
@@ -190,7 +190,7 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 		}
 
 		if ($class!="") {
-			$this->CrearClase($class,$rutaLogic);
+			$this->CrearClase($arrDbs[$db]['_DB_NAME_'],$class,$rutaLogic);
 		}
 
 		if ($page=='') {
@@ -212,7 +212,7 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 		fwrite ($fp,'<?if (false) {?><style><?}?>'.$sl);
 		fwrite ($fp,'<?="\n/*".get_class()."*/\n"?>'.$sl);
 		if ($class!="") {
-			$stdObjTableInfo=$this->getTableInfo($class,$arrExcluidos);
+			$stdObjTableInfo=$this->getTableInfo($arrDbs[$db]['_DB_NAME_'],$class,$arrExcluidos);
 			if (BOOTSTRAP!=false) {
 				switch ($pageType) {
 					case 'CRUD':
@@ -956,9 +956,9 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 	}
 /* FIN DBdataTable creation functions *****************************************/
 
-	private function CrearClase($class,$ruta) {
+	private function CrearClase($db,$class,$ruta) {
 		//$ruta=RUTA_APP."server/clases/Logic/";
-		$stdObjTableInfo=$this->getTableInfo($class);
+		$stdObjTableInfo=$this->getTableInfo($db,$class);
 		if (!file_exists($ruta.ucfirst($stdObjTableInfo->tableName).".php")) {
 			$objCreadora=new \Creadora (
 				$ruta,
@@ -983,7 +983,7 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 		}
 	}
 
-	private function getTableInfo($DBtable,$arrExcluidos=array()) {
+	private function getTableInfo($DBname,$DBtable,$arrExcluidos=array()) {
 				$arrTypes2Tags=array(
 					"varchar" => array (
 						"property" =>"type",
@@ -1080,12 +1080,12 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 					WHERE
 					TABLE_NAME = '".$stdObjTableInfo->tableName."' AND
 					REFERENCED_TABLE_NAME IS NOT NULL
-					AND TABLE_SCHEMA = '"._DB_NAME_."';
+					AND TABLE_SCHEMA = '".$DBname."';
 				");
 				$stdObjTableInfo->rslFksTo = $mysqli->query("
 					SELECT * FROM information_schema.KEY_COLUMN_USAGE
 					WHERE REFERENCED_TABLE_NAME = '".$stdObjTableInfo->tableName."'
-					AND TABLE_SCHEMA = '"._DB_NAME_."';
+					AND TABLE_SCHEMA = '".$DBname."';
 				");
 
 				$stdObjTableInfo->arrCreateInfo = $rslCreate->fetch_array(MYSQLI_ASSOC);
@@ -1127,7 +1127,7 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 						TABLE_NAME = '".$fkInfo['TABLE_NAME']."' AND
 						(REFERENCED_TABLE_NAME IS NULL OR
 						REFERENCED_TABLE_NAME <> '".$stdObjTableInfo->tableName."') AND
-						TABLE_SCHEMA = '"._DB_NAME_."';
+						TABLE_SCHEMA = '".$DBname."';
 					");
 					$arrPkColumns=array();
 					$arrFkColumns=array();
