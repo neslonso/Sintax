@@ -3,11 +3,9 @@ namespace Sintax\Pages;
 use Sintax\Core\IPage;
 use Sintax\Core\User;
 use Sintax\Core\ReturnInfo;
-class lsPedsBridge extends Error implements IPage {
+class pedBridge extends Error implements IPage {
 	public function __construct(User $objUsr) {
 		parent::__construct($objUsr);
-		$arrDbs=unserialize(DBS);
-		\cDb::conf($arrDbs['celorriov3']['_DB_HOST_'],$arrDbs['celorriov3']['_DB_USER_'],$arrDbs['celorriov3']['_DB_PASSWD_'],$arrDbs['celorriov3']['_DB_NAME_']);
 	}
 	public function pageValida () {
 		return $this->objUsr->pagePermitida($this);
@@ -34,19 +32,10 @@ class lsPedsBridge extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
 	public function markup() {
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=storeUserPeds';
+		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=pedDetalle';
 		$result=file_get_contents($urlAPI);
-		$pedidos=json_decode($result);
-		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
+		$arrPedido=json_decode($result);
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
 	}
-	public function acDataTables() {
-		return dataTablesGenericServerSide($this->objUsr);
-	}
-	/*
-	public function ls() {
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=allPeds';
-		$pedidos=file_get_contents($urlAPI);
-		return json_decode($pedidos);
-	}*/
 }
 ?>
