@@ -173,9 +173,13 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 		$extends=$_POST['extends'];
 		$markupFunc=$_POST['markupFunc'];
 		$markupFile=$_POST['markupFile'];
-		list($db,$class)=split(self::DB_NAME_TABLE_NAME_SEPARATOR,$_POST['class']);
-		$arrDbs=unserialize(DBS);
-		\cDb::conf($arrDbs[$db]['_DB_HOST_'],$arrDbs[$db]['_DB_USER_'],$arrDbs[$db]['_DB_PASSWD_'],$arrDbs[$db]['_DB_NAME_']);
+		if (strstr($_POST['class'], self::DB_NAME_TABLE_NAME_SEPARATOR)) {
+			list($db,$class)=split(self::DB_NAME_TABLE_NAME_SEPARATOR,$_POST['class']);
+			$arrDbs=unserialize(DBS);
+			\cDb::conf($arrDbs[$db]['_DB_HOST_'],$arrDbs[$db]['_DB_USER_'],$arrDbs[$db]['_DB_PASSWD_'],$arrDbs[$db]['_DB_NAME_']);
+		} else {
+			$db=$class='';
+		}
 		$arrExcluidos=array();
 		$arrValidators=array();
 		$pageType="";
@@ -384,7 +388,7 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 		$arrDbs=unserialize(DBS);
 		\cDb::conf($arrDbs[$db]['_DB_HOST_'],$arrDbs[$db]['_DB_USER_'],$arrDbs[$db]['_DB_PASSWD_'],$arrDbs[$db]['_DB_NAME_']);
 		$rutaLogic=SKEL_ROOT_DIR.$_POST['rutaLogic'];
-		$this->CrearClase($class,$rutaLogic);
+		$this->CrearClase($db,$class,$rutaLogic);
 	}
 
 /* CRUD creation functions ****************************************************/
