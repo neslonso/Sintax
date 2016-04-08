@@ -6,6 +6,8 @@ use Sintax\Core\ReturnInfo;
 class lsPedsBridge extends Error implements IPage {
 	public function __construct(User $objUsr) {
 		parent::__construct($objUsr);
+		$arrDbs=unserialize(DBS);
+		\cDb::conf($arrDbs['celorriov3']['_DB_HOST_'],$arrDbs['celorriov3']['_DB_USER_'],$arrDbs['celorriov3']['_DB_PASSWD_'],$arrDbs['celorriov3']['_DB_NAME_']);
 	}
 	public function pageValida () {
 		return $this->objUsr->pagePermitida($this);
@@ -31,7 +33,7 @@ class lsPedsBridge extends Error implements IPage {
 		parent::css();
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
-	public function cuerpo() {
+	public function markup() {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
 	}
 	public function acDataTables() {

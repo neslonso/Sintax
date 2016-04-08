@@ -6,7 +6,7 @@
 	<input name="acTipo" id="acTipo" type="hidden" value="stdAssoc"/>
 	<input name="acReturnURI" id="acReturnURI" type="hidden" value="<?=$_SERVER["REQUEST_URI"]?>"/>
 	<fieldset>
-		<legend>Listado de Multi_pedido</legend>
+		<legend class="titulo">Listado de Pedidos</legend>
 		<table id="multi_pedidoTable" class="stdDataTable"></table>
 	</fieldset>
 </form>

@@ -89,7 +89,7 @@ define ('APPS', serialize(array(
 
 //Listamos todas las conexiones a BD
 define ('DBS', serialize(array(
-	'venta' => array(
+	'celorriov3' => array(
 		'_DB_HOST_' => 'localhost',
 		'_DB_USER_' => 'celorriov3',
 		'_DB_PASSWD_' => 'v3celorrio',
