@@ -1,7 +1,5 @@
 <?="\n<!-- ".get_class()." -->\n"?>
 
-<?="<pre>".print_r($arrPedido,true)."</pre>"?>
-
 <div class="panel panel-default">
 	<div class="panel-heading">
 		Pedido #<?=sprintf('%06u',$arrPedido->pedido->numero)?> (<?=$arrPedido->pedido->fecha?>)
