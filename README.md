@@ -1,7 +1,7 @@
-Sintax
+Fed16
 ======
 Legenda
 [+] Nueva funcionalidad
 [-] Bug resuelto
 [x] Organización de código
-[*] functionality improved
+[*] Funcionalidad mejorada

@@ -28,10 +28,19 @@ try {
 	$arrFilesModTime[__FILE__]=filemtime(__FILE__);//Fecha de modificacion de este fichero
 	$arrFilesModTime[SKEL_ROOT_DIR."includes/server/start.php"]=filemtime(SKEL_ROOT_DIR."includes/server/start.php");
 	ob_start();
+		$firephp->group("Incluyendo Libs de ARR_CLIENT_LIBS", array('Collapsed' => true, 'Color' => '#FF6600'));
 		foreach ($ARR_CLIENT_LIBS as $libPath) {
-			$arrFilesModTime[$libPath]=filemtime($libPath);
-			require $libPath;
+			try {
+				$firephp->info($libPath,"Incluyendo");
+				include $libPath;
+				$arrFilesModTime[$libPath]=filemtime($libPath);
+			} catch (Exception $e) {
+				$infoExc="Excepcion de tipo: ".get_class($e).". Mensaje: ".$e->getMessage()." en fichero ".$e->getFile()." en linea ".$e->getLine();
+				$firephp->warn($infoExc);
+				$firephp->warn($e->getTraceAsString(),"traceAsString");
+			}
 		}
+		$firephp->groupEnd();
 	$jsScriptTags=ob_get_clean();
 	$jsMinFile=CACHE_DIR."jsMin.".md5(serialize($arrFilesModTime)).".js";
 
@@ -150,7 +159,6 @@ echo $jsLocalMin;
 	$firephp->group($msg, array('Collapsed' => false, 'Color' => '#FF6600'));
 	$firephp->info($infoExc);
 	$firephp->info($e->getTraceAsString(),"traceAsString");
-	$firephp->info($e->getTrace(),"trace");
 	$firephp->groupEnd();
 	ob_clean();
 	//echo '<h1>'.date("YmdHis").': '.$msg.'</h1>';
