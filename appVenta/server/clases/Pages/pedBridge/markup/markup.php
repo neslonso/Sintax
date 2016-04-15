@@ -1,54 +1,55 @@
 <?="\n<!-- ".get_class()." -->\n"?>
-
-<div class="panel panel-default">
-	<div class="panel-heading">
-		Pedido #<?=sprintf('%06u',$arrPedido->pedido->numero)?> (<?=$arrPedido->pedido->fecha?>)
-	</div>
-	<div class="panel-body">
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Ref.</th>
-					<th>Concepto</th>
-					<th>Precio</th>
-					<th>Cantidad</th>
-					<th>Descuento</td>
-					<th>Total</th>
-				</tr>
-			</thead>
-			<tbody>
+<div class="container-fluid">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			Pedido #<?=sprintf('%06u',$arrPedido->pedido->numero)?> (<?=$arrPedido->pedido->fecha?>)
+		</div>
+		<div class="panel-body">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Ref.</th>
+						<th>Concepto</th>
+						<th>Precio</th>
+						<th>Cantidad</th>
+						<th>Descuento</td>
+						<th>Total</th>
+					</tr>
+				</thead>
+				<tbody>
 <?
 			foreach ($arrPedido->lineas as $linea) {
 ?>
-				<tr>
-					<td><?=$linea->referencia;?></td>
-					<td><?=$linea->concepto;?></td>
-					<td><?=$linea->pvp;?> €</td>
-					<td><?=$linea->cantidad?></td>
-					<td><?=$linea->descuentoPercent;?>% (<?=$linea->descuento;?> €)</td>
-					<td><?=$linea->total?> €</td>
-				</tr>
+					<tr>
+						<td><?=$linea->referencia;?></td>
+						<td><?=$linea->concepto;?></td>
+						<td><?=$linea->pvp;?> €</td>
+						<td><?=$linea->cantidad?></td>
+						<td><?=$linea->descuentoPercent;?>% (<?=$linea->descuento;?> €)</td>
+						<td><?=$linea->total?> €</td>
+					</tr>
 <?
 			}
 ?>
-			</tbody>
-		</table>
-	</div>
-	<div class="panel-footer text-right">
-		<div>Total: <?=$arrPedido->pedido->totalLineas?> €</div>
-		<div>Descuento (<?=$arrPedido->pedido->descuentoPercent?> %): <?=$arrPedido->pedido->descuento?> €</div>
+				</tbody>
+			</table>
+		</div>
+		<div class="panel-footer text-right">
+			<div>Total: <?=$arrPedido->pedido->totalLineas?> €</div>
+			<div>Descuento (<?=$arrPedido->pedido->descuentoPercent?> %): <?=$arrPedido->pedido->descuento?> €</div>
 <?
 	if ($arrPedido->pedido->credito>0) {
 ?>
-		<div>Credito: <?=$arrPedido->pedido->credito?> €</div>
+			<div>Credito: <?=$arrPedido->pedido->credito?> €</div>
 <?
 	}
 ?>
-		<div>Gastos de envío: <?=$arrPedido->pedido->portes?> €</div>
-		<div>Total Pedido: <?=$arrPedido->pedido->total?> €</div>
+			<div>Gastos de envío: <?=$arrPedido->pedido->portes?> €</div>
+			<div>Total Pedido: <?=$arrPedido->pedido->total?> €</div>
+		</div>
 	</div>
 </div>
-<div class="container">
+<div class="container-fluid">
 	<div class="row">
 		<div class="col-md-6">
 			<div class="panel panel-default">

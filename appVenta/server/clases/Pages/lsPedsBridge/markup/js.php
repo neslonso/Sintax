@@ -33,11 +33,10 @@ $(document).ready(function() {
 		'language': dtLanguage,
 		"bStateSave": true
 	});
-	/*
-	$('tbody tr',$dt).live('click',
-		function () {
-			window.location='./<?=FILE_APP?>/pedBridge/?id='+$(this).data('id');
-		}
-	);*/
 
+	$(document).on("click", "#multi_pedidoTable tr",
+		function () {
+			window.location='<?=BASE_URL?>index.php?page=pedBridge&id='+$(this).data('id')+'&hash='+$('#hash').val();
+		}
+	);
 });
