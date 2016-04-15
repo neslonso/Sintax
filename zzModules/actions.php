@@ -245,7 +245,6 @@ try {
 } catch (Exception $e) {
 	$infoExc="Excepcion de tipo: ".get_class($e).". Mensaje: ".$e->getMessage()." en fichero ".$e->getFile()." en linea ".$e->getLine();
 	$firephp->info($infoExc);
-	$firephp->info($e->getTrace(),"trace");
 	$firephp->info($e->getTraceAsString(),"traceAsString");
 	error_log ($infoExc);
 	error_log ("TRACE: ".$e->getTraceAsString());

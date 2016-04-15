@@ -1,6 +1,6 @@
 <?="\n<!-- ".get_class()." -->\n"?>
 <script type="text/javascript">
-$(document).ready(function() {
+document.addEventListener("DOMContentLoaded", function(event) {
 <?
 	/* BLOQUE PARA MOSTRAR returnInfo SI EXISTE ***************************/
 	$sri=\Sintax\Core\ReturnInfo::ensureArray();
