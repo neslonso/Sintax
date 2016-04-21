@@ -25,7 +25,7 @@
 <?
 			foreach ($pedidos as $objPed) {
 ?>
-						<tr data-id="<?=$objPed->id?>">
+						<tr data-id="<?=$objPed->id?>" style="cursor:pointer;">
 							<td>
 								<?=$objPed->keyPedido?>
 							</td>
@@ -36,7 +36,7 @@
 								<?=$objPed->nombreEstado?>
 							</td>
 							<td>
-								<?=$objPed->total?>
+								<?=$objPed->total?> €
 							</td>
 						</tr>
 <?

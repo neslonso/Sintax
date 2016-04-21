@@ -4,11 +4,11 @@ $(document).ready(function() {
 
 	dtLanguage={
 		"sProcessing":   "Procesando...",
-		"sLengthMenu": "Mostrar MENU elementos por página",
+		"sLengthMenu": "Mostrar _MENU_ elementos por página",
 		"sZeroRecords": "No se encontraron resultados",
-		"sInfo": "Mostrando del START al END de TOTAL elementos",
+		"sInfo": "Mostrando del _START_ al _END_ de _TOTAL_ elementos",
 		"sInfoEmpty": "Sin resuldados",
-		"sInfoFiltered": "(buscando entre MAX elementos en total)",
+		"sInfoFiltered": "(buscando entre _MAX_ elementos en total)",
 		"sInfoPostFix":  "",//This information will be appended to the sInfo (sInfo, sInfoEmpty and sInfoFiltered in whatever combination they are being used) at all times.
 		"sSearch":       "Buscar:",
 		"sUrl":          "",
@@ -34,7 +34,7 @@ $(document).ready(function() {
 		"bStateSave": true
 	});
 
-	$(document).on("click", "#multi_pedidoTable tr",
+	$(document).on("click", "#multi_pedidoTable tbody tr",
 		function () {
 			window.location='<?=BASE_URL?>index.php?page=pedBridge&id='+$(this).data('id')+'&hash='+$('#hash').val();
 		}

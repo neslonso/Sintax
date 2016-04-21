@@ -3,7 +3,7 @@ namespace Sintax\Pages;
 use Sintax\Core\IPage;
 use Sintax\Core\User;
 use Sintax\Core\ReturnInfo;
-class pedBridge extends Error implements IPage {
+class pedBridge extends Bridge implements IPage {
 	public function __construct(User $objUsr) {
 		parent::__construct($objUsr);
 	}
