@@ -3,7 +3,7 @@ namespace Sintax\Pages;
 use Sintax\Core\IPage;
 use Sintax\Core\User;
 use Sintax\Core\ReturnInfo;
-class pedBridge extends Error implements IPage {
+class pedBridge extends Bridge implements IPage {
 	public function __construct(User $objUsr) {
 		parent::__construct($objUsr);
 	}
@@ -32,7 +32,9 @@ class pedBridge extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
 	public function markup() {
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=pedDetalle';
+		$idPedido=$_REQUEST['id'];
+		$hash=$_REQUEST['hash'];
+		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=pedDetalle&id='.$idPedido.'&hash='.$hash;
 		$result=file_get_contents($urlAPI);
 		$arrPedido=json_decode($result);
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");

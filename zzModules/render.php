@@ -59,7 +59,6 @@ try {
 	//error_log ("TRACE: ".$e->getTraceAsString());
 	$firephp->info($infoExc);
 	$firephp->info($e->getTraceAsString(),"traceAsString");
-	$firephp->info($e->getTrace(),"trace");
 
 	try {
 		$Page=new \Sintax\Pages\Error($objUsr);
