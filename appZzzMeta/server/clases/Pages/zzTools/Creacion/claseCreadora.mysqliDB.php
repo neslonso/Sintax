@@ -6,6 +6,9 @@ ClaseCreadora 2.0
 20110110 - 20141009
 
 /* History
+/* v 2.1 (20160503)
+	* Actualizado constructor y funcion db() para que la clase reciba la conexion a DB como parámetro.
+
 /* v 2.0 (20141009)
 	* Remodelada para su integración en S!nt@x
 	* Estrcuturada en varias metodos
@@ -108,14 +111,22 @@ class Creadora {
 		foreach ($arrAtributos as $nombreAtributo => $sqlData) {
 			$resultCode.=$sg."private $".$nombreAtributo.";".$sl;
 		}
+		$resultCode.=$sl;
+		$resultCode.=$sg."private \$db;".$sl;
 		return $resultCode;
 	}
 	private function constructor() {
 		$sl=$this->sl;
 		$sg=$this->sg;
 		$resultCode='';
-		$resultCode.=$sg."public function __construct (\$id=\"\") {".$sl;
-		$resultCode.=$sg.$sg."if (\$id!=\"\") {".$sl;
+		$resultCode.=$sg.'/**';
+		$resultCode.=$sg.' * [constructor de la clase]';
+		$resultCode.=$sg.' * @param mysqli db clase de acceso a datos';
+		$resultCode.=$sg.' * @param string id identificador del registro asociado a la instancia a construir';
+		$resultCode.=$sg.' */';
+		$resultCode.=$sg."public function __construct (mysqli \$db=NULL, \$id=NULL) {".$sl;
+		$resultCode.=$sg.$sg."if (!is_empty(\$id) && !is_empty(\$db)) {".$sl;
+		$resultCode.=$sg.$sg.$sg."\$this->db=\$db;".$sl;
 		$resultCode.=$sg.$sg.$sg."\$this->cargarId (\$id);".$sl;
 		$resultCode.=$sg.$sg."}".$sl;
 		$resultCode.=$sg."}".$sl;
@@ -127,7 +138,8 @@ class Creadora {
 		$sg=$this->sg;
 		$resultCode='';
 		$resultCode.=$sg.'private static function db() {'.$sl;
-		$resultCode.=$sg.'	return cDb::gI();'.$sl;
+		//$resultCode.=$sg.'	return cDb::gI();'.$sl;
+		$resultCode.=$sg.'	return $this->db;'.$sl;
 		$resultCode.=$sg.'}'.$sl;
 		$resultCode.=$sl;
 		return $resultCode;
@@ -138,8 +150,8 @@ class Creadora {
 		$resultCode='';
 		$resultCode.=$sg."public function cargarId (\$id) {".$sl;
 		$resultCode.=$sg.$sg."\$result=false;".$sl;
-		$resultCode.=$sg.$sg."\$sql=\"SELECT * FROM ".$nombreTabla." WHERE id='\".self::db()->real_escape_string(\$id).\"'\";".$sl;
-		$resultCode.=$sg.$sg."\$data=self::db()->get_obj(\$sql);".$sl;
+		$resultCode.=$sg.$sg."\$sql=\"SELECT * FROM ".$nombreTabla." WHERE id='\".\$this->db()->real_escape_string(\$id).\"'\";".$sl;
+		$resultCode.=$sg.$sg."\$data=\$this->db()->get_obj(\$sql);".$sl;
 		$resultCode.=$sg.$sg."if (\$data) {".$sl;
 		foreach ($arrAtributos as $nombreAtributo => $sqlData) {
 			//$resultCode.=$sg.$sg.$sg."\$this->".$nombreAtributo."=htmlentities(\$data->".$nombreAtributo.",ENT_QUOTES,\"UTF-8\");".$sl;
@@ -158,7 +170,7 @@ class Creadora {
 		$resultCode.=$sg."public function grabar () {".$sl;
 		$resultCode.=$sg.$sg."\$result=false;".$sl;
 		foreach ($arrAtributos as $nombreAtributo => $sqlData) {
-			$resultCode.=$sg.$sg."\$sqlValue_".$nombreAtributo."=(is_null(\$this->".$nombreAtributo."))?\"NULL\":\"'\".self::db()->real_escape_string(\$this->".$nombreAtributo.").\"'\";".$sl;
+			$resultCode.=$sg.$sg."\$sqlValue_".$nombreAtributo."=(is_null(\$this->".$nombreAtributo."))?\"NULL\":\"'\".\$this->db()->real_escape_string(\$this->".$nombreAtributo.").\"'\";".$sl;
 		}
 		$resultCode.=$sg.$sg."if (\$this->id!=\"\") { //UPDATE".$sl;
 
@@ -176,7 +188,7 @@ class Creadora {
 		$resultCode.=$sg.$sg."} else { //INSERT".$sl;
 
 		$arrKeys=array_keys($arrAtributos);
-		$resultCode.=$sg.$sg.$sg."\$this->id=\$sqlValue_id=self::db()->nextId (\"".$nombreTabla."\",\"".$arrKeys[0]."\");".$sl;
+		$resultCode.=$sg.$sg.$sg."\$this->id=\$sqlValue_id=\$this->db()->nextId (\"".$nombreTabla."\",\"".$arrKeys[0]."\");".$sl;
 		$resultCode.=$sg.$sg.$sg."\$this->insert=\$sqlValue_insert=\$this->update=\$sqlValue_update=date(\"YmdHis\");".$sl;
 		$resultCode.=$sg.$sg.$sg."\$sql=\"INSERT INTO ".$nombreTabla." ( \".".$sl;
 		$code="";
@@ -193,7 +205,7 @@ class Creadora {
 		$resultCode.=$code.")\";".$sl;
 		$resultCode.=$sg.$sg."}".$sl;
 
-		$resultCode.=$sg.$sg."\$result=self::db()->query (\$sql);".$sl;
+		$resultCode.=$sg.$sg."\$result=\$this->db()->query (\$sql);".$sl;
 
 		$resultCode.=$sg.$sg."return \$result;".$sl;
 		$resultCode.=$sg."}".$sl;
@@ -206,8 +218,8 @@ class Creadora {
 		$resultCode.=$sg.'public function borrar() {'.$sl;
 		$resultCode.=$sg.$sg.'$result=false;'.$sl;
 		$resultCode.=$sg.$sg.'if ($this->noReferenciado()) {'.$sl;
-		$resultCode.=$sg.$sg.$sg.'$sql="DELETE FROM '.$nombreTabla.' WHERE id=\'".self::db()->real_escape_string($this->id)."\'";'.$sl;
-		$resultCode.=$sg.$sg.$sg.'self::db()->query($sql);'.$sl;
+		$resultCode.=$sg.$sg.$sg.'$sql="DELETE FROM '.$nombreTabla.' WHERE id=\'".\$this->db()->real_escape_string($this->id)."\'";'.$sl;
+		$resultCode.=$sg.$sg.$sg.'\$this->db()->query($sql);'.$sl;
 		$resultCode.=$sg.$sg.$sg.'$result=true;'.$sl;
 		$resultCode.=$sg.$sg.'}'.$sl;
 		$resultCode.=$sg.$sg.'return $result;'.$sl;
@@ -307,8 +319,8 @@ class Creadora {
 		$sg=$this->sg;
 		$resultCode='';
 		$resultCode.=$sg.'public static function existeId($id) {'.$sl;
-		$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$nombreTabla.' WHERE id=\'".self::db()->real_escape_string($id)."\'";'.$sl;
-		$resultCode.=$sg.$sg.'$data=self::db()->get_obj($sql);'.$sl;
+		$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$nombreTabla.' WHERE id=\'".\$this->db()->real_escape_string($id)."\'";'.$sl;
+		$resultCode.=$sg.$sg.'$data=\$this->db()->get_obj($sql);'.$sl;
 		$resultCode.=$sg.$sg.'if ($data) {$result=true;} else {$result=false;}'.$sl;
 		$resultCode.=$sg.$sg.'return $result;'.$sl;
 		$resultCode.=$sg."}".$sl;
@@ -324,7 +336,7 @@ class Creadora {
 		$resultCode.=$sg.$sg.'$sqlLimit=($limit!="")?" LIMIT ".$limit:"";'.$sl;
 		$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$nombreTabla.'".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
 		$resultCode.=$sg.$sg.'$arr=array();'.$sl;
-		$resultCode.=$sg.$sg.'$rsl=self::db()->query($sql);'.$sl;
+		$resultCode.=$sg.$sg.'$rsl=\$this->db()->query($sql);'.$sl;
 		$resultCode.=$sg.$sg.'while ($data=$rsl->fetch_object()) {'.$sl;
 		$resultCode.=$sg.$sg.$sg.'switch ($tipo) {'.$sl;
 		$resultCode.=$sg.$sg.$sg.$sg.'case "arrIds": array_push($arr,$data->id);break;'.$sl;
@@ -356,13 +368,13 @@ class Creadora {
 		$resultCode.=$sg.'	$sqlView="CREATE OR REPLACE VIEW `'.$nombreVista.'` AS'.$sl;
 		$resultCode.=$sg.'		SELECT * FROM '.$nombreTabla.';'.$sl;
 		$resultCode.=$sg.'	";'.$sl;
-		$resultCode.=$sg.'	self::db()->query($sqlView);'.$sl;
+		$resultCode.=$sg.'	\$this->db()->query($sqlView);'.$sl;
 		$resultCode.=$sg.'	$sqlWhere=($where!="")?" WHERE ".$where:"";'.$sl;
 		$resultCode.=$sg.'	$sqlOrder=($order!="")?" ORDER BY ".$order:"";'.$sl;
 		$resultCode.=$sg.'	$sqlLimit=($limit!="")?" LIMIT ".$limit:"";'.$sl;
 		$resultCode.=$sg.'	$sql="SELECT * FROM '.$nombreVista.'".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
 		$resultCode.=$sg.'	$arr=array();'.$sl;
-		$resultCode.=$sg.'	$rsl=self::db()->query($sql);'.$sl;
+		$resultCode.=$sg.'	$rsl=\$this->db()->query($sql);'.$sl;
 		$resultCode.=$sg.'	while ($data=$rsl->fetch_object()) {'.$sl;
 		$resultCode.=$sg.'		$objSeg=new self($data->id);'.$sl;
 		$resultCode.=$sg.'		$obj=new \stdClass();'.$sl;
@@ -385,8 +397,8 @@ class Creadora {
 			foreach ($arrFksTo as $objFkInfo) {
 				$fTable=$objFkInfo->TABLE_NAME;
 				$fField=$objFkInfo->COLUMN_NAME;
-				$resultCode.=$sg.$sg.'$sql="SELECT '.$fField.' FROM '.$fTable.' WHERE '.$fField.'=\'".self::db()->real_escape_string($this->id)."\'";'.$sl;
-				$resultCode.=$sg.$sg.'$noReferenciadoEn'.ucfirst($fTable).'=(self::db()->get_num_rows($sql)==0)?true:false;'.$sl;
+				$resultCode.=$sg.$sg.'$sql="SELECT '.$fField.' FROM '.$fTable.' WHERE '.$fField.'=\'".\$this->db()->real_escape_string($this->id)."\'";'.$sl;
+				$resultCode.=$sg.$sg.'$noReferenciadoEn'.ucfirst($fTable).'=(\$this->db()->get_num_rows($sql)==0)?true:false;'.$sl;
 			}
 			$strConds='';
 			foreach ($arrFksTo as $objFkInfo) {
@@ -472,7 +484,7 @@ class Creadora {
 				$functionName.='By'.ucfirst($fField);
 			}
 			$resultCode.=$sg.'public function arr'.ucfirst($functionName).'($where="",$order="",$limit="",$tipo="arrStdObjs") {'.$sl;
-			$resultCode.=$sg.$sg.'$sqlWhere=($where!="")?" WHERE '.$fField.'=\'".self::db()->real_escape_String($this->id)."\' AND ".$where:" WHERE '.$fField.'=\'".self::db()->real_escape_string($this->id)."\'";'.$sl;
+			$resultCode.=$sg.$sg.'$sqlWhere=($where!="")?" WHERE '.$fField.'=\'".\$this->db()->real_escape_String($this->id)."\' AND ".$where:" WHERE '.$fField.'=\'".\$this->db()->real_escape_string($this->id)."\'";'.$sl;
 			$resultCode.=$sg.$sg.'$sqlOrder=($order!="")?" ORDER BY ".$order:"";'.$sl;
 			$resultCode.=$sg.$sg.'$sqlLimit=($limit!="")?" LIMIT ".$limit:"";'.$sl;
 			if (!$objFkInfo->manyToMany) {
@@ -481,7 +493,7 @@ class Creadora {
 				$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$fTable.' INNER JOIN '.$ffTable.' ON '.$fTable.'.'.$ffField.'='.$ffTable.'.id".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
 			}
 			$resultCode.=$sg.$sg.'$arr=array();'.$sl;
-			$resultCode.=$sg.$sg.'$rsl=self::db()->query($sql);'.$sl;
+			$resultCode.=$sg.$sg.'$rsl=\$this->db()->query($sql);'.$sl;
 			$resultCode.=$sg.$sg.'while ($data=$rsl->fetch_object()) {'.$sl;
 			$resultCode.=$sg.$sg.$sg.'switch ($tipo) {'.$sl;
 			$resultCode.=$sg.$sg.$sg.$sg.'case "arrIds": array_push($arr,$data->id);break;'.$sl;
