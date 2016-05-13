@@ -9,7 +9,9 @@ date_default_timezone_set('Europe/Madrid');
 //setlocale(LC_ALL,'es_ES');
 
 /**/
-define ('SKEL_VERSION','1.0.0');
+define('PHP_MIN_VERSION','5.3.0');
+
+define('SKEL_VERSION','1.0.0');
 define('PROTOCOL',((isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS']))?'https':'http'));
 define('BASE_DOMAIN',(substr($_SERVER['HTTP_HOST'],0,4)=="www.")?substr($_SERVER['HTTP_HOST'],4):$_SERVER['HTTP_HOST']);
 define('BASE_DIR',
@@ -125,7 +127,10 @@ define ('DBS', serialize(array(
 
 //requerimos las bibliotecas de servidor "estaticas" y el autoloader de composer
 require_once SKEL_ROOT_DIR."includes/server/serverLibs.php";
-
+/* Comprobamos versión suficiente de PHP **************************************/
+if (version_compare(PHP_VERSION, PHP_MIN_VERSION, '<')) {
+	die ('Sintax '.SKEL_VERSION.' requiere al menos PHP '.PHP_MIN_VERSION.'. Detectado PHP ' . PHP_VERSION . ". Proceso abortado.");
+}
 /* Instalamos componentes de composer *****************************************/
 	if (!class_exists('\\FirePHP')) {
 		switch (PHP_SAPI) {

@@ -1,9 +1,4 @@
 //Biblioteca de pequeños plugins y funciones globales
-function muestraMsgModal(title, msg) {
-	//muestraMsgModalJqueryUI(title, msg);
-	muestraMsgModalBootstrap3(title, msg);
-}
-
 //jQuery Plugin Unique ID
 (function( $ ){
 	var contador=0;

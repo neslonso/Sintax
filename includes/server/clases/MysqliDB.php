@@ -1,16 +1,41 @@
 <?
-class DBException extends Exception {}
+class MysqliDB_Exception extends \Exception {}
+class DBException extends \MysqliDB_Exception {}//Obsdoleta, eliminar todos sus lanzamientos en Sintax y dejarla de usar en las apps
 
-class MysqliDB extends mysqli {
+class MysqliDB extends \mysqli {
+	/**
+	 * host de MySQL
+	 * @var string
+	 */
+	protected $host='localhost';
+	/**
+	 * Usuario de acceso a MySQL
+	 * @var string
+	 */
+	protected $user='root';
+	/**
+	 * Contraseña del usuario de acceso a MySQL
+	 * @var string
+	 */
+	protected $pass='';
+	/**
+	 * Nombre del esquema de MySQL
+	 * @var string
+	 */
+	protected $db='';
 	/**
 	 * Constructor: Conecta a MySQL y establece el charset a utf8
 	 * @param string $host host de MySQL
 	 * @param string $user usuario de acceso a MySQL
 	 * @param string $pass contraseña del usuario de acceso a MySQL
 	 * @param string $db nombbre de esquema de MySQL
-	 * @throws DBException si no puede conectar o establecer el charset a utf8
+	 * @throws MysqliDB_Exception si no puede conectar o establecer el charset a utf8
 	 */
 	public function __construct($host, $user, $pass, $db) {
+		$this->host=$host;
+		$this->user=$user;
+		$this->pass=$pass;
+		$this->db=$db;
 		parent::init();
 		/*
 		if (!parent::options(MYSQLI_INIT_COMMAND, 'SET AUTOCOMMIT = 0')) {
@@ -24,16 +49,16 @@ class MysqliDB extends mysqli {
 		if (!parent::real_connect($host, $user, $pass, $db)) {
 			//throw new exception($this->connect_error, $this->connect_errno);
 			//$connect_error falla hasta PHP 5.3.0, asi que usamos la siguiente
-			throw new DBException(mysqli_connect_error(), mysqli_connect_errno());
+			throw new MysqliDB_Exception(mysqli_connect_error(), mysqli_connect_errno());
 		}
 		/* change character set to utf8 */
 		if (!parent::set_charset("utf8")) {
-			throw new DBException(mysqli_connect_error(), mysqli_connect_errno());
+			throw new MysqliDB_Exception(mysqli_connect_error(), mysqli_connect_errno());
 		}
 	}
 	/**
 	 * Destructor: cierra la conexión a MySQL si está abierta
-	 * @throws DBException si no se puede cerrar la conexion
+	 * @throws MysqliDB_Exception si no se puede cerrar la conexion
 	 */
 	public function __destruct() {
 		try {
@@ -43,10 +68,16 @@ class MysqliDB extends mysqli {
 		}
 		if ($pingResult) {
 			if (!parent::close()) {
-				throw new DBException(mysqli_connect_error(), mysqli_connect_errno());
+				throw new MysqliDB_Exception(mysqli_connect_error(), mysqli_connect_errno());
 			}
 		}
 	}
+
+	public function GEThost() {return $this->host;}
+	public function GETuser() {return $this->user;}
+	public function GETpass() {return $this->pass;}
+	public function GETdb() {return $this->db;}
+
 	/**
 	 * Ejecuta una consulta
 	 * @param  string $query Consulta SQL a ejecutar
@@ -66,7 +97,7 @@ class MysqliDB extends mysqli {
 		*/
 		if($this->errno!=0) {
 			$sql=(strlen($query)<512)?$query:substr($query,0,512)."[RESTO DE LA CONSULTA ELIMINADA]";
-			throw new DBException("SQL: ".$sql.". ".$this->error, $this->errno);
+			throw new MysqliDB_Exception("SQL: ".$sql.". ".$this->error, $this->errno);
 		}
 		return $result;
 	}
@@ -251,27 +282,7 @@ class MysqliDB extends mysqli {
 
 }
 
-class cDb extends MysqliDB {
-	/**
-	 * host de MySQL
-	 * @var string
-	 */
-	private static $host='localhost';
-	/**
-	 * Usuario de acceso a MySQL
-	 * @var string
-	 */
-	private static $user='root';
-	/**
-	 * Contraseña del usuario de acceso a MySQL
-	 * @var string
-	 */
-	private static $pass='';
-	/**
-	 * Nombre del esquema de MySQL
-	 * @var string
-	 */
-	private static $db='';
+final class cDb extends MysqliDB {
 	/**
 	 * NULL o instancia de la propia clase, ya conectada a la BD
 	 * @var NULL o instancia de self
@@ -286,12 +297,24 @@ class cDb extends MysqliDB {
 	 * @return object: instancia de self
 	 */
 	public static function conf($host, $user, $pass, $db) {
-		self::$host=$host;
-		self::$user=$user;
-		self::$pass=$pass;
-		self::$db=$db;
 		if(self::$singleton instanceof self) {self::$singleton->close();}
 		self::$singleton=NULL;
+		return self::getInstance($host, $user, $pass, $db);
+	}
+
+	/**
+	 * Realiza conexión a la base de datos mediante una key del array DBS
+	 * @param string $arrKey Clave del array DBS que contiene los datos de conexión
+	 * @return object: instancia de self
+	 * @throws MysqliDB_Exception En caso de que la constante DBS no esté definida, o no contenga un array, ono exista clave arrKey o la clave arrKey no contenga a su vez otro array
+	 */
+	public static function confByKey($arrKey) {
+		if (!defined('DBS')) {throw new MysqliDB_Exception("DBS no definida", 1);}
+		$arrDbs=unserialize(DBS);
+		if (!is_array($arrDbs)) {throw new MysqliDB_Exception("DBS no contiene un array", 1);}
+		if (!isset($arrDbs[$arrKey])) {throw new MysqliDB_Exception("key [".$arrKey."] no isset", 1);}
+		if (!is_array($arrDbs[$arrKey])) {throw new MysqliDB_Exception("DBS[".$arrKey."] no contiene un array", 1);}
+		self::conf($arrDbs[$arrKey]['_DB_HOST_'],$arrDbs[$arrKey]['_DB_USER_'],$arrDbs[$arrKey]['_DB_PASSWD_'],$arrDbs[$arrKey]['_DB_NAME_']);
 		return self::getInstance();
 	}
 
@@ -299,10 +322,9 @@ class cDb extends MysqliDB {
 	 * devuelve una referencia a la instancia conectada
 	 * @return object: instancia de self
 	 */
-	public static function getInstance() {
+	public static function getInstance($host="localhost", $user="root", $pass="", $db="") {
 		if(!self::$singleton instanceof self) {
-			//self::$singleton = new self(self::_DB_HOST_, self::_DB_USER_, self::_DB_PASSWD_, self::_DB_NAME_);
-			self::$singleton = new self(self::$host, self::$user, self::$pass, self::$db);
+			self::$singleton = new self($host, $user, $pass, $db);
 		}
 		return self::$singleton;
 	}
