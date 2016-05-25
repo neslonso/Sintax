@@ -280,6 +280,81 @@ class MysqliDB extends \mysqli {
 		return $result;
 	}
 
+	/* insertArray ************************************************
+	**************************************************************/
+	/**
+	 * Inserta el array pasado como parametro en la tabla pasada
+	 * como parametro. Si la tabla no existe se crea, con todos los
+	 * campos VARCHAR(255) NULL. Si el array contiene alguna clave
+	 * para la que no exista campo, se realiza el ALTER correspondiente.
+	 * @param  array $arr Array asociativo con los nombres y valores de los campos a insertar
+	 * @param  string $nombreTabla Nombre de la tabla en la que insertar el aaray
+	 */
+	public function insertArray($arr,$nombreTabla) {
+		$sqlShowTables='show tables LIKE "'.$nombreTabla.'"';
+		$tableExists=($this->get_num_rows($sqlShowTables))?TRUE:FALSE;
+		if (!$tableExists) {
+			$sqlCreateTable='CREATE TABLE IF NOT EXISTS `'.$nombreTabla.'` (
+				`id` INT NOT NULL,
+				`insert` TIMESTAMP NULL DEFAULT NULL,
+				`update` TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,'.PHP_EOL;
+			foreach ($arr as $name => $value) {
+				$sqlCreateTable.='`'.$name.'` VARCHAR(255) NULL,'.PHP_EOL;
+			}
+			$sqlCreateTable.='`extraData` VARCHAR(255) NULL COMMENT "Datos nuevos que no llegaban cuando se creo la tabla o datos a mayores para depuracion",';
+			$sqlCreateTable.='
+				PRIMARY KEY (`id`))
+				ENGINE = InnoDB
+			';
+			$this->query ($sqlCreateTable);
+		}
+
+		$sqlInsertInto='INSERT INTO `'.$nombreTabla.'` (';
+		$sqlInsertInto.='`id`,';
+		$sqlInsertInto.='`insert`,';
+		$sqlInsertInto.='`update`,';
+		$lastCheckedColumn='';
+		foreach ($arr as $name => $value) {
+			$sqlShowColumns='SHOW COLUMNS FROM `'.$nombreTabla.'` LIKE "'.$name.'"';
+			$fieldExists=($this->get_num_rows($sqlShowColumns))?TRUE:FALSE;
+			if (!$fieldExists) {
+				//lo creamos
+				$firstAfter=($lastCheckedColumn!='')?'AFTER `'.$lastCheckedColumn.'`':'FIRST';
+				$sqlAlterTable='ALTER TABLE `'.$nombreTabla.'` ADD COLUMN `'.$name.'` VARCHAR(255) NULL '.$firstAfter;
+				'`'.$name.'` VARCHAR(255) NULL,'.PHP_EOL;
+				$this->query ($sqlAlterTable);
+				$sqlShowColumns='SHOW COLUMNS FROM `'.$nombreTabla.'` LIKE "'.$name.'"';
+				$fieldExists=($this->get_num_rows($sqlShowColumns))?TRUE:FALSE;
+			}
+			if ($fieldExists) {
+				$sqlInsertInto.='`'.$name.'`,';
+			}
+			$lastCheckedColumn=$name;
+		}
+
+		$sqlInsertInto.='`extraData`) VALUES (';
+
+		$sqlInsertInto.=''.$this->nextId($nombreTabla,'id').',';
+		$sqlInsertInto.='"'.date("YmdHis").'",';
+		$sqlInsertInto.='NULL,';
+		$extraData='{';
+		$extraData.='"getRemoteIPAddress()":"'.getRemoteIPAddress().'",';
+		foreach ($arr as $name => $value) {
+			$sqlShowColumns='SHOW COLUMNS FROM `'.$nombreTabla.'` LIKE "'.$name.'"';
+			$fieldExists=($this->get_num_rows($sqlShowColumns))?TRUE:FALSE;
+			if ($fieldExists) {
+				$sqlInsertInto.='"'.$value.'",';
+			} else {
+				$extraData.='"'.$name.'":"'.$value.'",';
+			}
+		}
+
+		$extraData=substr($extraData,0,-1).'}';
+		$sqlInsertInto=substr($sqlInsertInto,0,-1).',';
+		$sqlInsertInto.='\''.$extraData.'\')';
+		$this->query($sqlInsertInto);
+	}
+
 }
 
 final class cDb extends MysqliDB {

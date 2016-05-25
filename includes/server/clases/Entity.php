@@ -166,7 +166,7 @@ abstract class Entity implements IEntity {
 ?>
 <?
 /******************************************************************************/
-/* Ejemplo de clase que herada de Entity **************************************/
+/* Ejemplo de clase que hereda de Entity **************************************/
 /******************************************************************************/
 class EntidadConcreta extends Entity implements IEntity {
 	protected static $table="tipoUsuario";
