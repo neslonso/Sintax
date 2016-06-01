@@ -32,9 +32,11 @@ class pedBridge extends Bridge implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
 	public function markup() {
+		$popup=(isset($_REQUEST['popup'])?true:false);
 		$idPedido=$_REQUEST['id'];
+		$idEnOrigen=(isset($_REQUEST['idEnOrigen'])?"&idEnOrigen=1":"");
 		$hash=$_REQUEST['hash'];
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=pedDetalle&id='.$idPedido.'&hash='.$hash;
+		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=pedDetalle&id='.$idPedido.'&hash='.$hash.$idEnOrigen;
 		$result=file_get_contents($urlAPI);
 		$arrPedido=json_decode($result);
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");

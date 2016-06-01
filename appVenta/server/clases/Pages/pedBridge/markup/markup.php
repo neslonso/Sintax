@@ -54,13 +54,18 @@
 		<div class="col-md-6">
 <?
 		if ($arrPedido->pedido->sacarPanelRePagar==1) {
+			$txtPopup="";
+			if($popup){
+				//marcamos el contenido para también sacarlo en popup
+				$txtPopup="id='txtPopup'";
+			}
 ?>
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					Continuación del pedido
 				</div>
 				<div class="panel-body">
-					<div><?=$arrPedido->pedido->infoContinuacionPedido?></div>
+					<div <?=$txtPopup?>><?=$arrPedido->pedido->infoContinuacionPedido?></div>
 				</div>
 			</div>
 <?
