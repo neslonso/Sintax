@@ -1,8 +1,9 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
+	"use strict";
 
-	dtLanguage={
+	var dtLanguage={
 		"sProcessing":   "Procesando...",
 		"sLengthMenu": "Mostrar _MENU_ elementos por página",
 		"sZeroRecords": "No se encontraron resultados",
@@ -21,7 +22,7 @@ $(document).ready(function() {
 	};
 
 
-	$dt=$('#multi_pedidoTable').DataTable({
+	var $dt=$('#multi_pedidoTable').DataTable({
 		'aoColumns': [
 			{"sWidth":"7%"},
 			{"sWidth":"5%"},
