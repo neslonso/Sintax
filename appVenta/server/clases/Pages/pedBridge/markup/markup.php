@@ -52,6 +52,25 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-6">
+<?
+		if ($arrPedido->pedido->sacarPanelRePagar==1) {
+			$txtPopup="";
+			if($popup){
+				//marcamos el contenido para también sacarlo en popup
+				$txtPopup="id='txtPopup'";
+			}
+?>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Continuación del pedido
+				</div>
+				<div class="panel-body">
+					<div <?=$txtPopup?>><?=$arrPedido->pedido->infoContinuacionPedido?></div>
+				</div>
+			</div>
+<?
+		}
+?>
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					Mensajes del pedido
@@ -103,21 +122,6 @@
 					<div><?=$arrPedido->pedido->estado?></div>
 				</div>
 			</div>
-<?
-		if ($arrPedido->pedido->sacarPanelRePagar==1) {
-?>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					Pago del pedido
-				</div>
-				<div class="panel-body">
-					<div><a target="_parent" href="<?=$arrPedido->pedido->urlRePagar?>"><?=$arrPedido->pedido->textoBtnRePagar?></a></div>
-				</div>
-			</div>
-<?
-		}
-?>
-
 		</div>
 	</div>
 </div>
