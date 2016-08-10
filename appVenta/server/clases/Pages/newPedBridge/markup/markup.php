@@ -47,10 +47,24 @@
 			<div class="step-pane active sample-pane alert" data-step="1">
 				<div class="row">
 					<div class="col-md-6">
-						<?=$this->modoPagoSelectionControl($arrModosPago)?>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">Modo de pago</h3>
+							</div>
+							<div class="panel-body">
+								<?=$this->modoPagoSelectionControl($arrModosPago)?>
+							</div>
+						</div>
 					</div>
 					<div class="col-md-6">
-						<?=$this->direccionEntregaSelectionControl($datosCli)?>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">Dirección de entrega</h3>
+							</div>
+							<div class="panel-body">
+								<?=$this->direccionEntregaSelectionControl($datosCli)?>
+							</div>
+						</div>
 					</div>
 				</div>
 				<!--<pre><?var_dump($newPedBridgeData)?></pre>-->
@@ -176,54 +190,110 @@ if ( $this->totalLineas($newPedBridgeData->lineas) > $storeData->IMPORTE_MINIMO_
 							</thead>
 							<tbody>
 <?
-			foreach ($newPedBridgeData->lineas as $stdObjLinea) {
-				$dtoTooltip='';
-				$totalTipoDtoLinea=$this->totalDtoTipo($stdObjLinea);
-				$totalImporteDtoLinea=$this->totalDtoImporte($stdObjLinea);
-				foreach ($stdObjLinea->dtos as $stdObjDto) {
-					$dtoTooltip.='<li>'.$stdObjDto->concepto.'</li>';
-				}
-				$dtoDesc='';
-				if ($totalTipoDtoLinea>0) {
-					$dtoDesc.=$totalTipoDtoLinea.'%';
-				}
-				if ($totalTipoDtoLinea>0 && $totalImporteDtoLinea>0) {
-						$dtoDesc.=' + ';
-				}
-				if ($totalImporteDtoLinea>0) {
-					$dtoDesc.=$totalImporteDtoLinea.'€';
-				}
-				if ($dtoDesc=='') {$dtoDesc='--';}
+$totalRebotes=0;
+$totalRebotesDesc='<table>';
+foreach ($newPedBridgeData->lineas as $stdObjLinea) {
+	$dtoTooltip='';
+	$totalTipoDtoLinea=$this->totalDtoTipo($stdObjLinea);
+	$totalImporteDtoLinea=$this->totalDtoImporte($stdObjLinea);
+	foreach ($stdObjLinea->dtos as $stdObjDto) {
+		$dtoTooltip.='<li>'.$stdObjDto->concepto.'</li>';
+	}
+	$dtoDesc='';
+	if ($totalTipoDtoLinea>0) {
+		$dtoDesc.=$totalTipoDtoLinea.'%';
+	}
+	if ($totalTipoDtoLinea>0 && $totalImporteDtoLinea>0) {
+			$dtoDesc.=' + ';
+	}
+	if ($totalImporteDtoLinea>0) {
+		$dtoDesc.=$totalImporteDtoLinea.'€';
+	}
+	if ($dtoDesc=='') {$dtoDesc='--';}
+
+	if ($stdObjLinea->tipoDevolucionCredito>0) {
+		$totalRebote=round(($stdObjLinea->tipoDevolucionCredito/100)*$this->totalLinea($stdObjLinea),2);
+		$totalRebotes+=$totalRebote;
+		$totalRebotesDesc.='<tr><td>'.$stdObjLinea->concepto.'</td><td>'.$this->totalLinea($stdObjLinea).'€ x'.$stdObjLinea->tipoDevolucionCredito.'%</td><td>=</td><td>'.$totalRebote.'€</td></tr>';
+	}
 ?>
 								<tr class="trLinea"
 									data-obj-linea='<?=json_encode($stdObjLinea)?>'
 								>
 									<td><?=$stdObjLinea->referencia;?></td>
 									<td><?=$stdObjLinea->concepto;?></td>
-									<td>(<?=$stdObjLinea->pai?>€*<?=$stdObjLinea->tipoIva?>%) <?=$this->pvp($stdObjLinea)?>€</td>
+									<td><span data-toggle="tooltip" data-placement="left" data-html="true" title="<?=$stdObjLinea->pai?>€ + <?=$stdObjLinea->tipoIva?>% IVA"><?=$this->pvp($stdObjLinea)?>€</span></td>
 									<td><?=$stdObjLinea->cantidad?></td>
 									<td><span data-toggle="tooltip" data-placement="left" data-html="true" title="<?=$dtoTooltip?>"><?=$dtoDesc?></span></td>
-									<td class="totalLinea" data-totalLinea="<?=$this->total($stdObjLinea)?>"><?=$this->total($stdObjLinea)?>€</td>
+									<td class="totalLinea" data-totalLinea="<?=$this->totalLinea($stdObjLinea)?>"><?=$this->totalLinea($stdObjLinea)?>€</td>
 								</tr>
 <?
-			}
+}
+$totalRebotesDesc.='</table>';
 ?>
 							</tbody>
 						</table>
 					</div>
 					<div class="panel-footer text-right">
-						<div>Total: <span id="spTotalLineas" class="spCalculado" data-total-lineas="<?=$this->totalLineas($newPedBridgeData->lineas)?>"><?=$this->totalLineas($newPedBridgeData->lineas)?></span> €</div>
+						<div>Total productos: <span id="spTotalLineas" class="spCalculado" data-total-lineas="<?=$this->totalLineas($newPedBridgeData->lineas)?>"><?=$this->totalLineas($newPedBridgeData->lineas)?></span> €</div>
+						<div>
+							<span id="tipDtosImporte">
+								Descuentos por importe: <span id="spDescuentoImporte" class="spCalculado"></span> €
+							</span>
+						</div>
 						<div>
 							<span id="tipDtosTipo">
 								Descuentos porcentuales (<span id="spDtoTipo" class="spCalculado"></span>%): <span id="spDtoMonto" class="spCalculado"></span> €
 							</span>
 						</div>
-						<div>
-							<span id="tipDtosImporte">
-								Descuentos por importe: <span id="spDescuentoImporte" class="spCalculado"></span> €</div>
-							</span>
 						<div>Gastos de envío: <span id="spPortes" class="spCalculado" data-portes="<?=$newPedBridgeData->portes?>"><?=$newPedBridgeData->portes?></span> €</div>
 						<div>Total Pedido: <span id="spTotal" class="spCalculado"></span> €</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Promociones</h3>
+					</div>
+					<div class="panel-body">
+
+<?
+if ($storeData->TIPO_DEVOLUCION_IMPORTE_PEDIDO_EN_CREDITO>0) {
+?>
+
+								<h4>
+									Te queremos de vuelta<br />
+									<small>
+										Al pagar este pedido recibirá un <?=$storeData->TIPO_DEVOLUCION_IMPORTE_PEDIDO_EN_CREDITO?>% de su importe
+										(<span id="spFidelizacionCredit" class="spCalculado" data-tipo-devolucion-importe-pedido-en-credito="<?=$storeData->TIPO_DEVOLUCION_IMPORTE_PEDIDO_EN_CREDITO?>"></span>)
+										como crédito para sus próximos pedidos!
+									</small>
+								</h4>
+								<hr />
+
+<?
+}
+?>
+<?
+if ($totalRebotes>0) {
+?>
+
+								<h4>
+									Productos rebote<br />
+									<small class="tooltip-wide">
+										Su pedido incluye productos rebote por un total de
+										<span class="spTotalRebotes" data-toggle="tooltip" data-placement="top" data-html="true" title="<?=$totalRebotesDesc?>">
+											<?=$totalRebotes?>€
+										</span>
+										que recibirá como crédito para sus próximos pedidos!
+									</small>
+								</h4>
+
+<?
+}
+?>
+
+					</div>
+					<div class="panel-footer">
 					</div>
 				</div>
 			</div>

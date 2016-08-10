@@ -24,17 +24,22 @@ $(document).ready(function() {
 
 	$('#newPedWizard').on('changed.fu.wizard', function (evt, data) {
 		//evt.preventDefault();
-		console.log (data);
+		//console.log (data);
 		btnNextAdjust(this,data.step);
 
 		var ultimoPaso=$(this).find('.steps li').length;
 		if (data.step==ultimoPaso) {
 			var totalLineas=$('#spTotalLineas').data('totalLineas');
 
+			var dtoImporte=ulDtosTotalImporte().toFixed(2);
+
+			var baseDtosPorcentuales=(totalLineas-dtoImporte).toFixed(2);
+
 			var dtoTipo=ulDtosTotalTipo().toFixed(2);
+
 			$('#spDtoTipo').html(dtoTipo).data('dtoTipo',dtoTipo);
 			var dtoMonto=(Math.round(
-					totalLineas*(ulDtosTotalTipo()/100)
+					baseDtosPorcentuales*(ulDtosTotalTipo()/100)
 				*100)/100).toFixed(2);
 			$('#spDtoMonto').html(dtoMonto).data('dtoMonto',dtoMonto);
 			$('#tipDtosTipo').tooltip({
@@ -43,7 +48,7 @@ $(document).ready(function() {
 				title: ulDtosDescTipo
 			});
 
-			var dtoImporte=ulDtosTotalImporte().toFixed(2);
+
 			$('#spDescuentoImporte').html(dtoImporte).data('dtoImporte',dtoImporte);
 			$('#tipDtosImporte').tooltip({
 				placement: 'left',
@@ -51,19 +56,24 @@ $(document).ready(function() {
 				title: ulDtosDescImporte
 			});
 
-
-
 			var portes=parseFloat($('#spPortes').data('portes'));
 			$('#spPortes').html(portes.toFixed(2));
 
 			console.log('totalLineas: ' + totalLineas);
-			console.log('dtoMonto: ' + dtoMonto);
 			console.log('dtoImporte: ' + dtoImporte);
+			console.log('baseDtosPorcentuales: ' + baseDtosPorcentuales);
+			console.log('dtoMonto: ' + dtoMonto);
 			console.log('portes: ' + portes);
 
 			var total=totalLineas-dtoMonto-dtoImporte+portes;
 			total=(Math.round(total*100)/100).toFixed(2);
 			$('#spTotal').html(total).data('total',total);
+
+			var montoDevolucionImportePedidoEnCredito=(Math.round(
+			total*parseFloat($('#spFidelizacionCredit').data('tipoDevolucionImportePedidoEnCredito'))/100
+			*100)/100).toFixed(2);
+			$('#spFidelizacionCredit').html(montoDevolucionImportePedidoEnCredito+'€').data('montoDevolucionImportePedidoEnCredito',montoDevolucionImportePedidoEnCredito);
+
 		}
 
 	});
@@ -80,11 +90,14 @@ $(document).ready(function() {
 
 		var idUsuario=objSlDirEntrega.id;
 
-		//var objCmbCupon=$('#cuponCombo').combobox('selectedItem');
-		var idCupon=0;
+		var objCmbCupon=$('#cuponCombo').combobox('selectedItem');
+		var idCupon=objCmbCupon.id;
 
 		var portes=parseFloat($('#spPortes').data('portes'));
+
 		//var credito=$('#creditoAplicar').data('creditoAplicar');
+		var credito=$('#ulDtos').find('#dtoCredito').data('importe');
+
 		var idPedidoModoPago=$('input[name="modoPago"]:checked').val();
 		var lineas=[];
 		$('.trLinea').each(function(index, el) {
@@ -92,7 +105,10 @@ $(document).ready(function() {
 		});
 		var dtos=[];
 		$('#ulDtos>li').each (function () {
-			dtos.push($(this).data());
+			//El crédito no se envía a guardar como un descuento, tiene su propio campo en el pedido
+			if (!$(this).hasClass('dtoCredito')) {
+				dtos.push($(this).data());
+			}
 		});
 		var comentarios=$('#comentarios').val();
 		var pedData={
@@ -115,10 +131,13 @@ $(document).ready(function() {
 			'dtos':dtos,
 			'comentarios':comentarios
 		}
-		Post ('action','<?=BASE_DIR.FILE_APP?>',
-			'MODULE','actions','acClase','newPedBridge','acMetodo','acGrabar','acTipo','stdAssoc',
-			'pedData',pedData
-		);
+		console.log(pedData);
+		if (confirm("¿Realizar el POST?")) {
+			Post ('action','<?=BASE_DIR.FILE_APP?>',
+				'MODULE','actions','acClase','newPedBridge','acMetodo','acGrabar','acTipo','stdAssoc',
+				'pedData',pedData
+			);
+		}
 	});
 
 	$('input[type=radio][name=modoPago]').change(function() {
@@ -144,7 +163,10 @@ $(document).ready(function() {
 		var credito=$('#creditoAplicar').data('creditoAplicar');
 		ulDtosDel('dtoCredito');
 		if (credito>0) {
+			muestraMsgModal('Crédito de cliente aplicado.','Se aplicarán '+credito+'€ de crédito de cliente.');
 			ulDtosAdd('dtoCredito','Crédito de cliente','',credito);
+		} else {
+			muestraMsgModal('Crédito de cliente aplicado.','No se aplicará crédito de cliente.');
 		}
 	});
 
@@ -172,7 +194,7 @@ $(document).ready(function() {
 							if (response.restringido) {
 								msgAplicable='<p class="help-block">Aplicable sólo a los productos indicados en el cupón</p>';
 							}
-							ulDtosAdd('dtoCupon','Descuento cupón "'+response.codigo+'"'+msgAplicable,response.tipoDescuento,'');//response.codigo o response.id van a tener que ir en el UL??
+							ulDtosAdd('dtoCupon','Descuento cupón '+response.codigo+''+msgAplicable,response.tipoDescuento,'');//response.codigo o response.id van a tener que ir en el UL??
 						} else {
 							muestraMsgModal('El cupón introducido no es válido.','El cupón '+response.codigo+' ha caducado.');
 						}
@@ -224,7 +246,10 @@ function ulDtosTotalTipo() {
 	var totalDtoTipo=0;
 	var $ulDtos=$('#ulDtos');
 	$ulDtos.find('li').each(function(index, el) {
-		totalDtoTipo+=$(el).data('tipo');
+		var dtoElto=parseFloat($(el).data('tipo'));
+		if (!isNaN(dtoElto)) {
+			totalDtoTipo+=dtoElto;
+		}
 	});
 	return parseFloat(totalDtoTipo);
 }
@@ -246,7 +271,10 @@ function ulDtosTotalImporte() {
 	var totalDtoImporte=0;
 	var $ulDtos=$('#ulDtos');
 	$ulDtos.find('li').each(function(index, el) {
-		totalDtoImporte+=$(el).data('importe');
+		var dtoElto=parseFloat($(el).data('importe'));
+		if (!isNaN(dtoElto)) {
+			totalDtoImporte+=dtoElto;
+		}
 	});
 	return parseFloat(totalDtoImporte);
 }

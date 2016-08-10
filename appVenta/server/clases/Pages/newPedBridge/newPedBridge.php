@@ -65,7 +65,7 @@ class newPedBridge extends Bridge implements IPage {
 	public function acGrabar () {
 		$newPedBridgeData=$_SESSION['newPedBridgeDataOrigData'];
 		echo "request: <pre>".print_r($_REQUEST,true)."</pre>";
-		echo "newPedBridgeData: <pre>".print_r($newPedBridgeData,true)."</pre>";
+		echo "Datos recibidos por fed16 desde store: <pre>".print_r($newPedBridgeData,true)."</pre>";
 
 		//POST a la API de V3 para añadir el pedido a la multi
 		$arrayMulti=$_REQUEST;
@@ -88,13 +88,14 @@ class newPedBridge extends Bridge implements IPage {
 		$result=json_decode($envioMulti);
 		//$GLOBALS['acReturnURI']=$result->returnURI;
 		echo "result: <pre>".print_r($result,true)."</pre>";
+		echo '<a href="'.$result->returnURI.'">'.$result->returnURI.'</a>';
 		die();
 	}
 
 	public function modoPagoSelectionControl($arrModosPago) {
 		$result='
 				<div class="form-group">
-					<label for="radios" class="control-label">Modo de pago:</label>
+					<label for="radios" class="control-label sr-only">Modo de pago:</label>
 					<div class=" required">
 		';
 		$i=0;
@@ -147,7 +148,7 @@ class newPedBridge extends Bridge implements IPage {
 		$arrDirsCli=$datosCli->arrDirecciones;
 		$result='
 				<div class="form-group">
-					<label class="control-label" for="slDirEntrega">Dirección de entrega:</label>
+					<label class="control-label sr-only" for="slDirEntrega">Dirección de entrega:</label>
 					<div class="controls">
 						<div class="btn-group selectlist" data-resize="auto" data-initialize="selectlist" id="slDirEntrega">
 							<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">
@@ -230,7 +231,7 @@ class newPedBridge extends Bridge implements IPage {
 		return $totalImporteDtoLinea;
 	}
 
-	private function total ($stdObjLinea) {
+	private function totalLinea ($stdObjLinea) {
 		return round(
 			$this->pvp($stdObjLinea)*
 				$stdObjLinea->cantidad*
@@ -241,7 +242,7 @@ class newPedBridge extends Bridge implements IPage {
 	private function totalLineas ($arrStdObjLinea) {
 		$total=0;
 		foreach ($arrStdObjLinea as $stdObjLinea) {
-			$total+=$this->total($stdObjLinea);
+			$total+=$this->totalLinea($stdObjLinea);
 		}
 		return $total;
 	}

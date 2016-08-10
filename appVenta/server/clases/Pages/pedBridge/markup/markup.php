@@ -36,14 +36,8 @@
 		</div>
 		<div class="panel-footer text-right">
 			<div>Total: <?=$arrPedido->pedido->totalLineas?> €</div>
-			<div>Descuento (<?=$arrPedido->pedido->descuentoPercent?> %): <?=$arrPedido->pedido->descuento?> €</div>
-<?
-	if ($arrPedido->pedido->credito>0) {
-?>
-			<div>Credito: <?=$arrPedido->pedido->credito?> €</div>
-<?
-	}
-?>
+			<div>Descuentos por importe: <?=$arrPedido->pedido->totalImporteDescuentoPed?> €</div>
+			<div>Descuentos porcentuales (<?=$arrPedido->pedido->descuentoPercent?> %): <?=$arrPedido->pedido->descuento?> €</div>
 			<div>Gastos de envío: <?=$arrPedido->pedido->portes?> €</div>
 			<div>Total Pedido: <?=$arrPedido->pedido->total?> €</div>
 		</div>

@@ -11,6 +11,21 @@
 
 #spDtoMonto, #spDescuentoImporte {color:#f00;}
 
+.tooltip-wide .tooltip .tooltip-inner {max-width:400px;}
+.tooltip-wide .tooltip td {white-space:nowrap; padding:3px;}
+.tooltip-wide .tooltip table td:first-child {
+	max-width: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.tooltip-wide .tooltip table td:last-child {
+	font-weight:bold;
+}
+
+/*
+.tooltip table td:not(:first-child) {white-space:nowrap;}
+*/
+
 /* Input range styles *********************************************************/
 @track-color: #337ab7;
 @thumb-color: #fff;
