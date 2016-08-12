@@ -165,12 +165,12 @@ class newPedBridge extends Bridge implements IPage {
 				data-nombre="'.$datosCli->nombre.'"
 				data-apellidos="'.$datosCli->apellidos.'"
 				data-telefono="'.$datosCli->telefono.'"
+				data-email="'.$datosCli->email.'"
 				data-direccion="'.$stdObjDirCli->direccion.'"
 				data-cp="'.$stdObjDirCli->cp.'"
 				data-poblacion="'.$stdObjDirCli->poblacion.'"
 				data-provincia="'.$stdObjDirCli->provincia.'"
 				data-id-direccion="'.$stdObjDirCli->id.'"><a href="#">'.$denominacion.'</a></li>';
-
 		}
 		$result.='
 							</ul>

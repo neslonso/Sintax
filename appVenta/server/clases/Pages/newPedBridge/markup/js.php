@@ -83,6 +83,7 @@ $(document).ready(function() {
 		var nombre=objSlDirEntrega.nombre;
 		var apellidos=objSlDirEntrega.apellidos;
 		var telefono=objSlDirEntrega.telefono;
+		var email=objSlDirEntrega.email;
 		var direccion=objSlDirEntrega.direccion;
 		var cp=objSlDirEntrega.cp;
 		var poblacion=objSlDirEntrega.poblacion;
@@ -115,6 +116,7 @@ $(document).ready(function() {
 			'nombre':nombre,
 			'apellidos':apellidos,
 			'telefono':telefono,
+			'email':email,
 			'direccion':direccion,
 			'cp':cp,
 			'poblacion':poblacion,
