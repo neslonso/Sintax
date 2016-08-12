@@ -1,5 +1,27 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
+
+function grabarDireccion(id){
+	$('#frmCliDir'+id).submit();
+}
+
+function borrarDireccion(id){
+	//Post ('action','<?=BASE_DIR.FILE_APP?>','MODULE','actions','acClase','datosCliBridge','acMetodo','borrarDireccion','acTipo','stdAssoc','id',id);
+	$.post('<?=BASE_DIR.FILE_APP?>',{
+		'MODULE':'actions',
+		'acClase':'datosCliBridge',
+		'acMetodo':'borrarDireccion',
+		'acTipo':'ajax',
+		'hash':$('#hash').val(),
+		'id':id
+	},
+	function (response) {
+		$('#panelDir'+id).remove();
+		muestraMsgModal('Direcciones de entrega','La dirección se ha eliminado correctamente');
+	},
+	'json');
+}
+
 $(document).ready(function() {
 	"use strict";
 
@@ -46,5 +68,15 @@ $(document).ready(function() {
 		'language': dtLanguage,
 		"bStateSave": true
 	});
+
+
+	$('#btnEnviarCliEditPerfil').on('click', function () {
+		$('#frmCliEditPerfil').submit();
+	});
+
+	$('#btnAddDir').on('click', function () {
+		$('#frmAddDir').submit();
+	});
+
 
 });
