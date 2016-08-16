@@ -50,6 +50,7 @@ class newCliBridge extends Bridge implements IPage {
 		$context  = stream_context_create($options);
 		$responseApi = file_get_contents($url, false, $context);
 		$result=json_decode($responseApi);
+		return "kk";
 	}
 }
 ?>

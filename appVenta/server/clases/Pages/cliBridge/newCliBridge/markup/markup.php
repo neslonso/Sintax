@@ -3,21 +3,29 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			Registro de usuario
-			<input type="hidden" name="hash" id="hash" value="<?=$hash?>" /><br />
+			<input type="hidden" name="hash" id="hash" value="<?=$hash?>" />
 		</div>
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-sm-4">
-					<label for="email" accesskey="">Correo electrónico: </label><br />
-					<input type="text" name="email" id="email" value="" /><br />
+					<div class="form-group">
+						<label for="email" accesskey="">Correo electrónico: </label>
+						<input class="form-control" type="password" name="email" id="email" value="" placeholder="correo@electronico.com" />
+						<p class="help-block">Email de acceso al sitio</p>
+					</div>
 				</div>
 				<div class="col-sm-4">
-					<label for="pass" accesskey="">Contraseña:</label><br />
-					<input type="text" name="pass" id="pass" value="" />
+					<div class="form-group">
+						<label for="pass" accesskey="">Contraseña:</label>
+						<input class="form-control" type="text" name="pass" id="pass" value="" />
+					</div>
 				</div>
 				<div class="col-sm-4">
-					<label for="pass" accesskey="">Repite contraseña:</label><br />
-					<input type="text" name="pass2" id="pass2" value="" />
+					<div class="form-group">
+						<label for="pass" accesskey="">Repite contraseña:</label>
+						<input class="form-control" type="password" name="pass2" id="pass2" value="" />
+						<p class="help-block">Repite nuevamente tu contraseña</p>
+					</div>
 				</div>
 			</div>
 		</div>

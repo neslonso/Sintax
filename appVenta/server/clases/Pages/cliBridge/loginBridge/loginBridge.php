@@ -39,5 +39,36 @@ class loginBridge extends Bridge implements IPage {
 		//echo "<pre>".print_r($arrResult,true)."</pre>";
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
 	}
+	/*
+	public function usrLogin() {
+		$arrSanear=array(
+			'email'=> array('type' => 'text', 'subtype' => 'plain', 'minLenght' =>'5', 'msg'=>'Email no parece una dirección válida'),
+			'pass'=> array('type' => 'text', 'subtype' => 'plain', 'minLenght' =>'1', 'msg'=>'Debe introducir su contraseña'),
+		);
+
+		$arrSaneado=$this->sanitize($arrSanear);
+
+		$GLOBALS['firephp']->info($arrSaneado);
+		$algunoNoValido=false;
+		$msg='';
+		foreach ($arrSaneado as $key => $value) {
+			if (!$value[0]['usable']) {
+				$algunoNoValido=true;
+				$msg.=$arrSaneado[$key][0]['msg'].'<br />';
+			}
+		}
+
+		if ($algunoNoValido) {
+			throw new ActionException($msg);
+		}
+
+		$idCliente=Multi_cliente::login($arrSaneado['email'][0]['newValue'],$arrSaneado['pass'][0]['newValue']);
+		if (Multi_cliente::existeId($idCliente)) {
+			$this->logCliente($idCliente);
+		} else {
+			throw new ActionException('<div style="text-align:center">Nombre de usuario o contraseña incorrecto.</div>');
+		}
+	}
+	*/
 }
 ?>

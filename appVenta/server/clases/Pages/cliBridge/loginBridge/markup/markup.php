@@ -6,17 +6,17 @@
 			Acceso
 		</div>
 		<div class="panel-body">
-			<div>
-				<label for="email" accesskey="">Login/Email: </label><br />
-				<input type="text" name="email" id="email" value="" /><br />
+			<div class="form-group">
+				<label for="email" accesskey="">Email: </label>
+				<input  class="form-control" type="text" name="email" id="email" value="" />
 			</div>
-			<div>
-				<label for="pass" accesskey="">Contraseña:</label><br />
-				<input type="text" name="pass" id="pass" value="" />
+			<div class="form-group">
+				<label for="pass" accesskey="">Clave:</label>
+				<input class="form-control" type="password" name="pass" id="pass" value="" />
 			</div>
 		</div>
 		<div class="panel-footer text-right">
-			<button type="button" class="btn btn-primary">
+			<button type="button" class="btn btn-primary btn-sm">
 				<span class="glyphicon glyphicon-ok"></span> Entrar
 			</button>
 		</div>

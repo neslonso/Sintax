@@ -15,12 +15,17 @@
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-sm-6">
-					<label for="email" accesskey="">Dirección de correo electrónico: </label><br />
-					<input type="text" name="email" id="email" value="<?=$arrCliente->cliente->email?>" /><br />
+					<div class="form-group">
+						<label for="email" accesskey="">Dirección de correo electrónico: </label><br />
+						<input class="form-control" type="text" name="email" id="email" value="<?=$arrCliente->cliente->email?>" /><br />
+					</div>
 				</div>
 				<div class="col-sm-6">
-					<label for="pass" accesskey="">Cambiar contraseña (vacio = no cambiar):</label><br />
-					<input type="text" name="pass" id="pass" value="" />
+					<div class="form-group">
+						<label for="pass" accesskey="">Cambiar contraseña:</label>
+						<input class="form-control" type="password" name="pass" id="pass" value="" />
+						<p class="help-block">Déjelo vacío si no desea cambiar la contraseña</p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -46,44 +51,61 @@
 				<input name="id" id="id" type="hidden" value="<?=$idUser?>"/>
 				<div class="row">
 					<div class="col-sm-3">
-						<label for="nombre" accesskey="">Nombre:</label><br />
-						<input type="text" name="nombre" id="nombre" value="<?=$arrCliente->cliente->nombre?>" />
+						<div class="form-group">
+							<label class="control-label" for="nombre">Nombre:</label>
+							<input class="form-control" type="text" name="nombre" id="nombre" value="<?=$arrCliente->cliente->nombre?>" />
+							<p class="help-block">Introduzca su nombre de pila</p>
+						</div>
 					</div>
 					<div class="col-sm-3">
-						<label for="apellidos" accesskey="">Apellidos:</label><br />
-						<input type="text" name="apellidos" id="apellidos" value="<?=$arrCliente->cliente->apellidos?>" />
+						<div class="form-group">
+							<label for="apellidos" accesskey="">Apellidos:</label>
+							<input class="form-control" type="text" name="apellidos" id="apellidos" value="<?=$arrCliente->cliente->apellidos?>" />
+						</div>
 					</div>
 					<div class="col-sm-3">
-						<label for="movil" accesskey="">Teléfono móvil:</label><br />
-						<input type="text" name="movil" id="movil" value="<?=$arrCliente->cliente->movil?>" />
+						<div class="form-group">
+							<label for="movil" accesskey="">Teléfono móvil:</label>
+							<input class="form-control" type="text" name="movil" id="movil" value="<?=$arrCliente->cliente->movil?>" />
+						</div>
 					</div>
 					<div class="col-sm-3">
-						<br>
-						<input name="publicidad" id="publicidad.Dummy" type="hidden" value="0" />
-						<input name="publicidad" id="publicidad" type="checkbox" data-initialize="checkbox" value="1" <?=($arrCliente->cliente->publicidad==1)?"checked='checked'":"";?>/>
-						<label for="publicidad" accesskey="">Recibir publicidad</label>
+						<div class="form-group">
+							<input name="publicidad" id="publicidad.Dummy" type="hidden" value="0" />
+							<input name="publicidad" id="publicidad" type="checkbox" data-initialize="checkbox" value="1" <?=($arrCliente->cliente->publicidad==1)?"checked='checked'":"";?>/>
+							<label for="publicidad" accesskey="">Recibir publicidad</label>
+							<p class="help-block">Márquelo si desea recibir correos promocionales</p>
+						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-sm-3">
-						<label for="nif" accesskey="">Nif/Cif:</label><br />
-						<input type="text" name="nif" id="nif" value="<?=$arrCliente->cliente->nif?>" />
+						<div class="form-group">
+							<label for="nif" accesskey="">Nif/Cif:</label>
+							<input class="form-control"type="text" name="nif" id="nif" value="<?=$arrCliente->cliente->nif?>" />
+						</div>
 					</div>
 					<div class="col-sm-3">
-						<label for="razonSocial" accesskey="">Empresa:</label><br />
-						<input type="text" name="razonSocial" id="razonSocial" value="<?=$arrCliente->cliente->razonSocial?>" />
+						<div class="form-group">
+							<label for="razonSocial" accesskey="">Empresa:</label>
+							<input class="form-control" type="text" name="razonSocial" id="razonSocial" value="<?=$arrCliente->cliente->razonSocial?>" />
+						</div>
 					</div>
 					<div class="col-sm-3">
-						<br>
-						<input name="factura" id="factura.Dummy" type="hidden" value="0" />
-						<input name="factura" id="factura" type="checkbox" value="1" <?=($arrCliente->cliente->factura==1)?"checked='checked'":"";?>/>
-						<label for="factura" accesskey="">Recibir factura</label>
+						<div class="form-group">
+							<input name="factura" id="factura.Dummy" type="hidden" value="0" />
+							<input name="factura" id="factura" type="checkbox" value="1" <?=($arrCliente->cliente->factura==1)?"checked='checked'":"";?>/>
+							<label for="factura" accesskey="">Recibir factura</label>
+							<p class="help-block">Márquelo si desea recibir la factura</p>
+						</div>
 					</div>
 					<div class="col-sm-3">
-						<br>
-						<input name="avisosSms" id="avisosSms.Dummy" type="hidden" value="0" />
-						<input name="avisosSms" id="avisosSms" type="checkbox" value="1" <?=($arrCliente->cliente->avisosSms==1)?"checked='checked'":"";?>/>
-						<label for="avisosSms" accesskey="">Recibir SMS</label>
+						<div class="form-group">
+							<input name="avisosSms" id="avisosSms.Dummy" type="hidden" value="0" />
+							<input name="avisosSms" id="avisosSms" type="checkbox" value="1" <?=($arrCliente->cliente->avisosSms==1)?"checked='checked'":"";?>/>
+							<label for="avisosSms" accesskey="">Recibir SMS</label>
+							<p class="help-block">Márquelo si desea recibir mensajes SMS</p>
+						</div>
 					</div>
 				</div>
 			</form>
@@ -119,40 +141,56 @@
 						<input name="id" id="id" type="hidden" value="<?=$direccion->id?>"/>
 						<div class="row">
 							<div class="col-sm-6">
-								<label for="nombre" accesskey="">Nombre:</label><br />
-								<input type="text" name="nombre" id="nombre" value="<?=$direccion->nombre?>" />
+								<div class="form-group">
+									<label for="nombre" accesskey="">Nombre:</label>
+									<input class="form-control" type="text" name="nombre" id="nombre" value="<?=$direccion->nombre?>" />
+								</div>
 							</div>
 							<div class="col-sm-6">
-								<label for="destinatario" accesskey="">Destinatario:</label><br />
-								<input type="text" name="destinatario" id="destinatario" value="<?=$direccion->destinatario?>" />
+								<div class="form-group">
+									<label for="destinatario" accesskey="">Destinatario:</label>
+									<input class="form-control" type="text" name="destinatario" id="destinatario" value="<?=$direccion->destinatario?>" />
+								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-sm-4">
-								<label for="direccion" accesskey="">Direccion:</label><br />
-								<input type="text" name="direccion" id="direccion" value="<?=$direccion->direccion?>" />
+								<div class="form-group">
+									<label for="direccion" accesskey="">Direccion:</label>
+									<input class="form-control" type="text" name="direccion" id="direccion" value="<?=$direccion->direccion?>" />
+								</div>
 							</div>
 							<div class="col-sm-4">
-								<label for="poblacion" accesskey="">Poblacion:</label><br />
-								<input type="text" name="poblacion" id="poblacion" value="<?=$direccion->poblacion?>" />
+								<div class="form-group">
+									<label for="poblacion" accesskey="">Poblacion:</label>
+									<input class="form-control" type="text" name="poblacion" id="poblacion" value="<?=$direccion->poblacion?>" />
+								</div>
 							</div>
 							<div class="col-sm-4">
-								<label for="provincia" accesskey="">Provincia:</label><br />
-								<input type="text" name="provincia" id="provincia" value="<?=$direccion->provincia?>" />
+								<div class="form-group">
+									<label for="provincia" accesskey="">Provincia:</label>
+									<input class="form-control" type="text" name="provincia" id="provincia" value="<?=$direccion->provincia?>" />
+								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-sm-4">
-								<label for="cp" accesskey="">Código postal:</label><br />
-								<input type="text" name="cp" id="cp" value="<?=$direccion->cp?>" />
+								<div class="form-group">
+									<label for="cp" accesskey="">Código postal:</label>
+									<input class="form-control" type="text" name="cp" id="cp" value="<?=$direccion->cp?>" />
+								</div>
 							</div>
 							<div class="col-sm-4">
-								<label for="pais" accesskey="">País:</label><br />
-								<input type="text" name="pais" id="pais" value="<?=$direccion->pais?>" />
+								<div class="form-group">
+									<label for="pais" accesskey="">País:</label>
+									<input class="form-control" type="text" name="pais" id="pais" value="<?=$direccion->pais?>" />
+								</div>
 							</div>
 							<div class="col-sm-4">
-								<label for="movil" accesskey="">Teléfono de contacto:</label><br />
-								<input type="text" name="movil" id="movil" value="<?=$direccion->movil?>" />
+								<div class="form-group">
+									<label for="movil" accesskey="">Teléfono de contacto:</label>
+									<input class="form-control" type="text" name="movil" id="movil" value="<?=$direccion->movil?>" />
+								</div>
 							</div>
 						</div>
 					</form>
@@ -283,40 +321,56 @@
 					<input name="idMulti_cliente" id="idMulti_cliente" type="hidden" value="<?=$arrCliente->cliente->id?>"/>
 					<div class="row">
 						<div class="col-sm-6">
-							<label for="nombre" accesskey="">Nombre:</label><br />
-							<input type="text" name="nombre" id="nombre" value="" placeholder="Nombre para identificar esta dirección..." />
+							<div class="form-group">
+								<label for="nombre" accesskey="">Nombre:</label>
+								<input class="form-control" type="text" name="nombre" id="nombre" value="" placeholder="Nombre para identificar esta dirección..." />
+							</div>
 						</div>
 						<div class="col-sm-6">
-							<label for="destinatario" accesskey="">Destinatario:</label><br />
-							<input type="text" name="destinatario" id="destinatario" value="<?=$arrCliente->cliente->nombre?> <?=$arrCliente->cliente->apellidos?>"  placeholder="Destinatario del envio" />
+							<div class="form-group">
+								<label for="destinatario" accesskey="">Destinatario:</label>
+								<input class="form-control" type="text" name="destinatario" id="destinatario" value="<?=$arrCliente->cliente->nombre?> <?=$arrCliente->cliente->apellidos?>"  placeholder="Destinatario del envio" />
+							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-4">
-							<label for="direccion" accesskey="">Direccion:</label><br />
-							<input type="text" name="direccion" id="direccion" value="" placeholder="Dirección completa" />
+							<div class="form-group">
+								<label for="direccion" accesskey="">Direccion:</label>
+								<input class="form-control" type="text" name="direccion" id="direccion" value="" placeholder="Dirección completa" />
+							</div>
 						</div>
 						<div class="col-sm-4">
-							<label for="poblacion" accesskey="">Poblacion:</label><br />
-							<input type="text" name="poblacion" id="poblacion" value="" placeholder="Población"/>
+							<div class="form-group">
+								<label for="poblacion" accesskey="">Poblacion:</label>
+								<input class="form-control" type="text" name="poblacion" id="poblacion" value="" placeholder="Población"/>
+							</div>
 						</div>
 						<div class="col-sm-4">
-							<label for="provincia" accesskey="">Provincia:</label><br />
-							<input type="text" name="provincia" id="provincia" value="" placeholder="Provincia" />
+							<div class="form-group">
+								<label for="provincia" accesskey="">Provincia:</label>
+								<input class="form-control" type="text" name="provincia" id="provincia" value="" placeholder="Provincia" />
+							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-4">
-							<label for="cp" accesskey="">Código postal:</label><br />
-							<input type="text" name="cp" id="cp" value="" placeholder="Código postal" />
+							<div class="form-group">
+								<label for="cp" accesskey="">Código postal:</label>
+								<input class="form-control" type="text" name="cp" id="cp" value="" placeholder="Código postal" />
+							</div>
 						</div>
 						<div class="col-sm-4">
-							<label for="pais" accesskey="">País:</label><br />
-							<input type="text" name="pais" id="pais" value="España" placeholder"País" />
+							<div class="form-group">
+								<label for="pais" accesskey="">País:</label>
+								<input class="form-control" type="text" name="pais" id="pais" value="España" placeholder"País" />
+							</div>
 						</div>
 						<div class="col-sm-4">
-							<label for="movil" accesskey="">Teléfono de contacto:</label><br />
-							<input type="text" name="movil" id="movil" value="<?=$arrCliente->cliente->movil?>" placeholder"Teléfono de contacto"/>
+							<div class="form-group">
+								<label for="movil" accesskey="">Teléfono de contacto:</label>
+								<input class="form-control" type="text" name="movil" id="movil" value="<?=$arrCliente->cliente->movil?>" placeholder"Teléfono de contacto"/>
+							</div>
 						</div>
 					</div>
 				</form>
