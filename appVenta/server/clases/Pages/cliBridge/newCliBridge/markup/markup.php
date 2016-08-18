@@ -3,21 +3,21 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			Registro de usuario
-			<input type="hidden" name="hash" id="hash" value="<?=$hash?>" />
+			<input type="hidden" name="keyTienda" id="keyTienda" value="<?=$keyTienda?>" />
 		</div>
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-sm-4">
 					<div class="form-group">
 						<label for="email" accesskey="">Correo electrónico: </label>
-						<input class="form-control" type="password" name="email" id="email" value="" placeholder="correo@electronico.com" />
+						<input class="form-control" type="text" name="email" id="email" value="" placeholder="correo@electronico.com" />
 						<p class="help-block">Email de acceso al sitio</p>
 					</div>
 				</div>
 				<div class="col-sm-4">
 					<div class="form-group">
 						<label for="pass" accesskey="">Contraseña:</label>
-						<input class="form-control" type="text" name="pass" id="pass" value="" />
+						<input class="form-control" type="password" name="pass" id="pass" value="" />
 					</div>
 				</div>
 				<div class="col-sm-4">

@@ -6,7 +6,11 @@ $(document).ready(function() {
 	setInterval(function() {
 		var _docHeight = (document.height !== undefined) ? document.height : document.body.offsetHeight;
 		//var _docWidth = (document.width !== undefined) ? document.width : document.body.offsetWidth;
-		parent.postMessage(_docHeight, '*');
+		var objMsg= {
+			service: "newPedBridgeIframeHeight",
+			parameters: _docHeight
+		}
+		parent.postMessage(objMsg, '*');
 	}
 	,100);
 
@@ -83,6 +87,7 @@ $(document).ready(function() {
 		var nombre=objSlDirEntrega.nombre;
 		var apellidos=objSlDirEntrega.apellidos;
 		var telefono=objSlDirEntrega.telefono;
+		var email=objSlDirEntrega.email;
 		var direccion=objSlDirEntrega.direccion;
 		var cp=objSlDirEntrega.cp;
 		var poblacion=objSlDirEntrega.poblacion;
@@ -115,6 +120,7 @@ $(document).ready(function() {
 			'nombre':nombre,
 			'apellidos':apellidos,
 			'telefono':telefono,
+			'email':email,
 			'direccion':direccion,
 			'cp':cp,
 			'poblacion':poblacion,
@@ -213,6 +219,70 @@ $(document).ready(function() {
 			muestraMsgModal('Código de cupón no introducido','Debe introducir el codigo del cupón que desea aplicar a su pedido.');
 		}
 	});
+
+	$('#btnAddDir').on('click', function () {
+		console.log("addDir");
+		$.post('<?=BASE_DIR.FILE_APP?>',{
+			'MODULE':'actions',
+			'acClase':'newPedBridge',
+			'acMetodo':'acAddDireccion',
+			'acTipo':'ajaxAssoc',
+			'id':0,
+			'nombre':$('#nombre','#modalAddDir').val(),
+			'destinatario':$('#destinatario','#modalAddDir').val(),
+			'movil':$('#movil','#modalAddDir').val(),
+			'direccion':$('#direccion','#modalAddDir').val(),
+			'poblacion':$('#poblacion','#modalAddDir').val(),
+			'provincia':$('#provincia','#modalAddDir').val(),
+			'cp':$('#cp','#modalAddDir').val(),
+			'pais':$('#pais','#modalAddDir').val()
+		},
+		function (response) {
+			console.log(response);
+			if (!response.data.resultado.valor){
+				muestraMsgModal('Error añadiendo dirección',response.data.resultado.msg);
+			} else {
+				$('#modalAddDir').modal('hide');
+				//$('#slDirEntrega ').selectlist('destroy');
+				var id=response.data.datos.id;
+				var nombre="";
+				var apellidos="";
+				var destinatario=response.data.datos.destinatario;
+				var telefono=response.data.datos.movil;
+				var direccion=response.data.datos.direccion;
+				var cp=response.data.datos.cp;
+				var poblacion=response.data.datos.poblacion;
+				var provincia=response.data.datos.provincia;
+				var pais=response.data.datos.pais;
+				var idDireccion=response.data.datos.idDireccion;
+				var denominacion=destinatario+' ('+direccion+', '+cp+', '+poblacion+', '+provincia+')';
+				var $li=$('<li />')
+					.attr('data-id',id)
+					.attr('data-nombre',nombre)
+					.attr('data-apellidos',apellidos)
+					.attr('data-destinatario',destinatario)
+					.attr('data-telefono',telefono)
+					.attr('data-direccion',direccion)
+					.attr('data-cp',cp)
+					.attr('data-poblacion',poblacion)
+					.attr('data-provincia',provincia)
+					.attr('data-pais',pais)
+					.attr('data-idDireccion',idDireccion)
+					.append(
+						$('<a>')
+							.attr('href','#')
+							.html(denominacion)
+					);
+				$('#slDirEntrega ul').append($li);
+
+				//$('#slDirEntrega').selectlist('destroy');
+				$('#slDirEntrega').selectlist();
+				//$('#slDirEntrega ul')
+			}
+		},
+		'json');
+	});
+
 });
 
 /*****************************************************************************/

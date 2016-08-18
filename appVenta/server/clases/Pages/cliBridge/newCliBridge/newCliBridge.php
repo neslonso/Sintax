@@ -32,7 +32,8 @@ class newCliBridge extends Bridge implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
 	public function markup() {
-		$hash=$_REQUEST['hash'];
+		$data=json_decode(base64_decode($_REQUEST['loginBridgeData']));
+		$keyTienda=$data->store;
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
 	}
 	public function acGrabar(){
@@ -50,7 +51,12 @@ class newCliBridge extends Bridge implements IPage {
 		$context  = stream_context_create($options);
 		$responseApi = file_get_contents($url, false, $context);
 		$result=json_decode($responseApi);
-		return "kk";
+		if ($result->resultado->valor){
+			$objCli=new \Multi_cliente();
+			$objCli->id=$result->datos->id;
+			$_SESSION['usuario']=$objCli;
+		}
+		return $result;
 	}
 }
 ?>

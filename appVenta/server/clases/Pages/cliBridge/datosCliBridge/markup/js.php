@@ -69,6 +69,13 @@ $(document).ready(function() {
 		"bStateSave": true
 	});
 
+	$('#btnEnviarCliChangePass').on('click', function () {
+		if (($('#pass').val()==$('#pass2').val()) && $('#pass').val()!=""){
+			$('#frmCliChangePass').submit();
+		} else {
+			muestraMsgModal('Cambio de contraseña','Debe escribir y repetir exactamente la contraseña tal y como quiera que figure en el sistema');
+		}
+	});
 
 	$('#btnEnviarCliEditPerfil').on('click', function () {
 		$('#frmCliEditPerfil').submit();

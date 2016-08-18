@@ -13,24 +13,41 @@
 			Datos de acceso
 		</div>
 		<div class="panel-body">
-			<div class="row">
-				<div class="col-sm-6">
-					<div class="form-group">
-						<label for="email" accesskey="">Dirección de correo electrónico: </label><br />
-						<input class="form-control" type="text" name="email" id="email" value="<?=$arrCliente->cliente->email?>" /><br />
+			<form action="<?=BASE_DIR.FILE_APP?>" method="post" enctype="multipart/form-data" id="frmCliChangePass">
+				<input name="MODULE" id="MODULE" type="hidden" value="actions"/>
+				<input name="acClase" id="acClase" type="hidden" value="datosCliBridge"/>
+				<input name="acMetodo" id="acMetodo" type="hidden" value="cambiarPass"/>
+				<input name="acTipo" id="acTipo" type="hidden" value="stdAssoc"/>
+				<input name="acReturnURI" id="acReturnURI" type="hidden" value="<?=$_SERVER["REQUEST_URI"]?>"/>
+				<input name="id" id="id" type="hidden" value="<?=$idUser?>"/>
+				<input name="email" type="hidden" value="<?=$arrCliente->cliente->email?>"/>
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="form-group">
+							<label for="emailAcceso" accesskey="">Dirección de correo electrónico: </label><br />
+							<input class="form-control" type="text" name="emailAcceso" id="emailAcceso" disabled="disabled" value="<?=$arrCliente->cliente->email?>" />
+							<p class="help-block">Si desea cambiar su email contacte con la tienda</p>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="form-group">
+							<label for="pass" accesskey="">Cambiar contraseña:</label>
+							<input class="form-control" type="password" name="pass" id="pass" value="" />
+							<p class="help-block">Déjelo vacío si no desea cambiar la contraseña</p>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="form-group">
+							<label for="pass" accesskey="">Repetir contraseña:</label>
+							<input class="form-control" type="password" name="pass2" id="pass2" value="" />
+							<p class="help-block">Déjelo vacío si no desea cambiar la contraseña</p>
+						</div>
 					</div>
 				</div>
-				<div class="col-sm-6">
-					<div class="form-group">
-						<label for="pass" accesskey="">Cambiar contraseña:</label>
-						<input class="form-control" type="password" name="pass" id="pass" value="" />
-						<p class="help-block">Déjelo vacío si no desea cambiar la contraseña</p>
-					</div>
-				</div>
-			</div>
+			</form>
 		</div>
 		<div class="panel-footer text-right">
-			<button type="button" class="btn btn-success">
+			<button type="button" id="btnEnviarCliChangePass" class="btn btn-success">
 				<span class="glyphicon glyphicon-ok"></span> Guardar
 			</button>
 		</div>
@@ -47,7 +64,6 @@
 				<input name="acMetodo" id="acMetodo" type="hidden" value="acGrabarPerfil"/>
 				<input name="acTipo" id="acTipo" type="hidden" value="stdAssoc"/>
 				<input name="acReturnURI" id="acReturnURI" type="hidden" value="<?=$_SERVER["REQUEST_URI"]?>"/>
-				<input name="hash" id="hash" type="hidden" value="<?=$hash?>"/>
 				<input name="id" id="id" type="hidden" value="<?=$idUser?>"/>
 				<div class="row">
 					<div class="col-sm-3">
@@ -137,7 +153,6 @@
 						<input name="acMetodo" id="acMetodo" type="hidden" value="acGrabarDireccion"/>
 						<input name="acTipo" id="acTipo" type="hidden" value="stdAssoc"/>
 						<input name="acReturnURI" id="acReturnURI" type="hidden" value="<?=$_SERVER["REQUEST_URI"]?>"/>
-						<input name="hash" id="hash" type="hidden" value="<?=$hash?>"/>
 						<input name="id" id="id" type="hidden" value="<?=$direccion->id?>"/>
 						<div class="row">
 							<div class="col-sm-6">
@@ -316,7 +331,6 @@
 					<input name="acMetodo" id="acMetodo" type="hidden" value="acGrabarDireccion"/>
 					<input name="acTipo" id="acTipo" type="hidden" value="stdAssoc"/>
 					<input name="acReturnURI" id="acReturnURI" type="hidden" value="<?=$_SERVER["REQUEST_URI"]?>"/>
-					<input name="hash" id="hash" type="hidden" value="<?=$hash?>"/>
 					<input name="id" id="id" type="hidden" value="0"/>
 					<input name="idMulti_cliente" id="idMulti_cliente" type="hidden" value="<?=$arrCliente->cliente->id?>"/>
 					<div class="row">

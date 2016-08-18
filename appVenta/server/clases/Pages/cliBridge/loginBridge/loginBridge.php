@@ -32,43 +32,52 @@ class loginBridge extends Bridge implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
 	public function markup() {
-		$hash=$_REQUEST['hash'];
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliLogin&hash='.$hash;
-		$result=file_get_contents($urlAPI);
-		$arrResult=json_decode($result);
-		//echo "<pre>".print_r($arrResult,true)."</pre>";
+		$data=json_decode(base64_decode($_REQUEST['loginBridgeData']));
+		$keyTienda=$data->store;
+		if (isset($_SESSION['usuario'])) {
+			$arrayMulti['id']=$_SESSION['usuario']->id;
+			$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliData';
+			$options = array(
+			    'http' => array(
+			        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+			        'method'  => 'POST',
+			        'content' => http_build_query($arrayMulti),
+			    ),
+			);
+			$context  = stream_context_create($options);
+			$envioMulti = file_get_contents($url, false, $context);
+			$arrResult=json_decode($envioMulti);
+		}
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
 	}
-	/*
-	public function usrLogin() {
-		$arrSanear=array(
-			'email'=> array('type' => 'text', 'subtype' => 'plain', 'minLenght' =>'5', 'msg'=>'Email no parece una dirección válida'),
-			'pass'=> array('type' => 'text', 'subtype' => 'plain', 'minLenght' =>'1', 'msg'=>'Debe introducir su contraseña'),
+
+	public function acLogin() {
+		//POST a la API de V3 para añadir el pedido a la multi
+		$arrayMulti=$_REQUEST;
+		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliLogin';
+		// use key 'http' even if you send the request to https://...
+		$options = array(
+		    'http' => array(
+		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+		        'method'  => 'POST',
+		        'content' => http_build_query($arrayMulti),
+		    ),
 		);
-
-		$arrSaneado=$this->sanitize($arrSanear);
-
-		$GLOBALS['firephp']->info($arrSaneado);
-		$algunoNoValido=false;
-		$msg='';
-		foreach ($arrSaneado as $key => $value) {
-			if (!$value[0]['usable']) {
-				$algunoNoValido=true;
-				$msg.=$arrSaneado[$key][0]['msg'].'<br />';
-			}
+		$context  = stream_context_create($options);
+		$envioMulti = file_get_contents($url, false, $context);
+		$result=json_decode($envioMulti);
+		if ($result->resultado->valor){
+			$objCli=new \Multi_cliente();
+			$objCli->id=$result->datos->id;
+			$_SESSION['usuario']=$objCli;
 		}
-
-		if ($algunoNoValido) {
-			throw new ActionException($msg);
-		}
-
-		$idCliente=Multi_cliente::login($arrSaneado['email'][0]['newValue'],$arrSaneado['pass'][0]['newValue']);
-		if (Multi_cliente::existeId($idCliente)) {
-			$this->logCliente($idCliente);
-		} else {
-			throw new ActionException('<div style="text-align:center">Nombre de usuario o contraseña incorrecto.</div>');
-		}
+		return $result;
 	}
-	*/
+
+	public function acLogout() {
+		unset($_SESSION['usuario']);
+		return true;
+	}
+
 }
 ?>

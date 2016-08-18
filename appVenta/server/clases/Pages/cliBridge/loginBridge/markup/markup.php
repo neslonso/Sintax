@@ -1,28 +1,8 @@
 <?="\n<!-- ".get_class()." -->\n"?>
 
-<div class="container-fluid">
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			Acceso
-		</div>
-		<div class="panel-body">
-			<div class="form-group">
-				<label for="email" accesskey="">Email: </label>
-				<input  class="form-control" type="text" name="email" id="email" value="" />
-			</div>
-			<div class="form-group">
-				<label for="pass" accesskey="">Clave:</label>
-				<input class="form-control" type="password" name="pass" id="pass" value="" />
-			</div>
-		</div>
-		<div class="panel-footer text-right">
-			<button type="button" class="btn btn-primary btn-sm">
-				<span class="glyphicon glyphicon-ok"></span> Entrar
-			</button>
-		</div>
-	</div>
+<div class="container-fluid containerLateral">
 <?
-if (isset($arrResult->datos)) {
+if (isset($_SESSION['usuario'])) {
 ?>
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -36,17 +16,46 @@ if (isset($arrResult->datos)) {
 				Crédito: <span class="label label-default"><?=$arrResult->datos->saldo?> €</span>
 			</div>
 			<div>
-				<a href="">Datos personales</a>
+				<a id="lnkDatos" href="#">Datos personales</a>
 			</div>
 			<div>
-				<a href="">Historial de pedidos</a>
+				<a id="lnkHistorial" href="#">Historial de pedidos</a>
 			</div>
 		</div>
 		<div class="panel-footer text-right">
-			<button type="button" class="btn btn-primary">
+			<button id="btnLogout" type="button" class="btn btn-primary">
 				<span class="glyphicon glyphicon-remove"></span> Salir
 			</button>
 		</div>
+	</div>
+<?
+} else {
+?>
+	<div class="panel panel-default">
+		<form id="frmLogin">
+			<div class="panel-heading">
+				Acceso
+				<input type="hidden" name="keyTienda" id="keyTienda" value="<?=$keyTienda?>" />
+			</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label for="email" accesskey="">Email: </label>
+					<input  class="form-control" type="text" name="email" id="email" value="" />
+				</div>
+				<div class="form-group">
+					<label for="pass" accesskey="">Clave:</label>
+					<input class="form-control" type="password" name="pass" id="pass" value="" />
+				</div>
+			</div>
+			<div class="panel-footer text-right">
+					<button id="btnLogin" type="button" class="btn btn-primary btn-sm">
+						<span class="glyphicon glyphicon-ok"></span> Entrar
+					</button>
+					<button id="btnRegistro" type="button" class="btn btn-default btn-sm btn-margin-top">
+						<span class="glyphicon glyphicon-plus"></span> Registrate
+					</button>
+			</div>
+		</form>
 	</div>
 <?
 }

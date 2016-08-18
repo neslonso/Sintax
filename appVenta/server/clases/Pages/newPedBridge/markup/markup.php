@@ -64,6 +64,11 @@
 							<div class="panel-body">
 								<?=$this->direccionEntregaSelectionControl($datosCli)?>
 							</div>
+							<div class="panel-footer text-right">
+									<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalAddDir">
+										<span class="glyphicon glyphicon-plus"></span> Añadir dirección
+									</button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -300,4 +305,76 @@ if ($totalRebotes>0) {
 		</div>
 	</div>
 </div>
+
+<div class="modal fade" id="modalAddDir" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Añadir dirección</h4>
+			</div>
+			<div class="modal-body">
+					<input name="id" id="id" type="hidden" value="0"/>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label for="nombre" accesskey="">Nombre:</label>
+								<input class="form-control" type="text" name="nombre" id="nombre" value="" placeholder="Nombre para identificar esta dirección..." />
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label for="destinatario" accesskey="">Destinatario:</label>
+								<input class="form-control" type="text" name="destinatario" id="destinatario" value=""  placeholder="Destinatario del envio" />
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label for="direccion" accesskey="">Direccion:</label>
+								<input class="form-control" type="text" name="direccion" id="direccion" value="" placeholder="Dirección completa" />
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label for="poblacion" accesskey="">Poblacion:</label>
+								<input class="form-control" type="text" name="poblacion" id="poblacion" value="" placeholder="Población"/>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label for="provincia" accesskey="">Provincia:</label>
+								<input class="form-control" type="text" name="provincia" id="provincia" value="" placeholder="Provincia" />
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label for="cp" accesskey="">Código postal:</label>
+								<input class="form-control" type="text" name="cp" id="cp" value="" placeholder="Código postal" />
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label for="pais" accesskey="">País:</label>
+								<input class="form-control" type="text" name="pais" id="pais" value="España" placeholder"País" />
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label for="movil" accesskey="">Teléfono de contacto:</label>
+								<input class="form-control" type="text" name="movil" id="movil" value="" placeholder"Teléfono de contacto"/>
+							</div>
+						</div>
+					</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+				<button type="button" id="btnAddDir" class="btn btn-primary">Grabar</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <?="\n<!-- /".get_class()." -->\n"?>
