@@ -6,9 +6,30 @@ use Sintax\Core\ReturnInfo;
 class newPedBridge extends Bridge implements IPage {
 	public function __construct(User $objUsr) {
 		parent::__construct($objUsr);
+		if (isset($_REQUEST['newPedBridgeDataValue'])) {
+			$newPedBridgeData=json_decode(base64_decode($_REQUEST['newPedBridgeDataValue']));
+			$_SESSION['newPedBridgeDataOrigData']=$newPedBridgeData;
+		} else {
+			if (isset($_SESSION['newPedBridgeDataOrigData'])) {
+				$newPedBridgeData=$_SESSION['newPedBridgeDataOrigData'];
+			} else {
+				throw new Exception("No es posible procesar el pedido, datos no recibidos.", 1);
+			}
+		}
 	}
 	public function pageValida () {
-		return $this->objUsr->pagePermitida($this);
+		$usrClass=get_class($this->objUsr);
+		if ($usrClass=="Multi_cliente") {
+			return $this->objUsr->pagePermitida($this);
+		} else {
+			$newPedBridgeData=$_SESSION['newPedBridgeDataOrigData'];
+			$loginBridgeData=new \stdClass();
+			$loginBridgeData->store=$newPedBridgeData->store;
+			$loginBridgeDataValue=base64_encode(json_encode($loginBridgeData));
+			$_REQUEST['loginBridgeData']=$loginBridgeDataValue;
+			ReturnInfo::add('Es necesario que se identifique como cliente para poder realizar pedidos','Disculpe, no se encuentra identificado');
+			return "\\Sintax\\Pages\\loginBridge";
+		}
 	}
 	public function accionValida($metodo) {
 		return $this->objUsr->accionPermitida($this,$metodo);
@@ -37,8 +58,7 @@ class newPedBridge extends Bridge implements IPage {
 		//$hash=$salt.hash('sha256',$salt.$pass);
 		$hash='';
 
-		$newPedBridgeData=json_decode(base64_decode($_REQUEST['newPedBridgeDataValue']));
-		$_SESSION['newPedBridgeDataOrigData']=$newPedBridgeData;
+		$newPedBridgeData=$_SESSION['newPedBridgeDataOrigData'];
 
 		$subService='arrModosPago';
 		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&hash='.$hash;
@@ -46,11 +66,13 @@ class newPedBridge extends Bridge implements IPage {
 		$arrModosPago=json_decode($result);
 
 		$subService='datosCli';
-		$idCli=$newPedBridgeData->idCli;
+		//$idCli=$newPedBridgeData->idCli;
+		$idCli=$_SESSION['usuario']->id;
 		$store=$newPedBridgeData->store;
 		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store='.$store.'&idCli='.$idCli.'&hash='.$hash;
 		$result=file_get_contents($urlAPI);
 		$datosCli=json_decode($result);
+		$GLOBALS['firephp']->info($datosCli);
 
 		$subService='storeData';
 		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store='.$store.'&hash='.$hash;
@@ -64,6 +86,7 @@ class newPedBridge extends Bridge implements IPage {
 
 	public function acGrabar () {
 		$newPedBridgeData=$_SESSION['newPedBridgeDataOrigData'];
+
 		echo "request: <pre>".print_r($_REQUEST,true)."</pre>";
 		echo "Datos recibidos por fed16 desde store: <pre>".print_r($newPedBridgeData,true)."</pre>";
 
@@ -207,6 +230,31 @@ class newPedBridge extends Bridge implements IPage {
 				<p class="help-block">Introduzca o seleccione el cupón que desea aplicar al pedido</p>
 			</div>
 		';
+		return $result;
+	}
+
+	public function acAddDireccion() {
+		$newPedBridgeData=$_SESSION['newPedBridgeDataOrigData'];
+		//POST a la API de V3 para añadir el pedido a la multi
+		$arrayMulti=$_REQUEST;
+		$arrayMulti['keyTienda']=$newPedBridgeData->store;
+		$arrayMulti['idMulti_cliente']=$_SESSION['usuario']->id;
+		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&&cliService=cliEditDir';
+		// use key 'http' even if you send the request to https://...
+		$options = array(
+		    'http' => array(
+		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+		        'method'  => 'POST',
+		        'content' => http_build_query($arrayMulti),
+		    ),
+		);
+		$context  = stream_context_create($options);
+		$envioMulti = file_get_contents($url, false, $context);
+		/*echo "envioMulti: <pre>";
+		var_dump($envioMulti);
+		echo "</pre>";*/
+
+		$result=json_decode($envioMulti);
 		return $result;
 	}
 

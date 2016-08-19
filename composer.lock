@@ -544,12 +544,12 @@
             "version": "v1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/francoispluchino/composer-asset-plugin.git",
+                "url": "https://github.com/fxpio/composer-asset-plugin.git",
                 "reference": "dbc856439a09f07987de673aa8a264c1b88b0c6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/francoispluchino/composer-asset-plugin/zipball/dbc856439a09f07987de673aa8a264c1b88b0c6b",
+                "url": "https://api.github.com/repos/fxpio/composer-asset-plugin/zipball/dbc856439a09f07987de673aa8a264c1b88b0c6b",
                 "reference": "dbc856439a09f07987de673aa8a264c1b88b0c6b",
                 "shasum": ""
             },
