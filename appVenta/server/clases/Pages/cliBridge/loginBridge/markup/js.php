@@ -1,6 +1,22 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
+	setInterval(function() {
+		var _docHeight = (document.height !== undefined) ? document.height : document.body.offsetHeight;
+		//var _docWidth = (document.width !== undefined) ? document.width : document.body.offsetWidth;
+		var objMsg= {
+			service: "loginBridgeIframeHeight",
+			parameters: _docHeight
+		}
+		parent.postMessage(objMsg, '*');
+	}
+	,100);
+
+	$('#frmLogin').keypress(function(e){
+		if(e.which == 13) {
+			$('#frmLogin #btnLogin').click();
+		}
+	});
 
 	$('#frmLogin #btnLogin').on('click', function () {
 		if ($('#frmLogin #email').val()!="" && $('#frmLogin #pass').val()!=""){

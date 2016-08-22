@@ -4,20 +4,22 @@
 <?
 if (isset($_SESSION['usuario'])) {
 ?>
-	<div class="panel panel-default">
+	<div class="panel panel-default text-center">
 		<div class="panel-heading">
 			<?=$arrResult->datos->saludo?> <?=$arrResult->datos->nombre?>
 		</div>
 		<div class="panel-body">
 			<div>
-				Descuento: <span class="label label-default"><?=$arrResult->datos->tipoDescuento?> %</span>
+				Descuento:<br /><span class="label label-default"><?=$arrResult->datos->tipoDescuento?> %</span>
 			</div>
 			<div>
-				Crédito: <span class="label label-default"><?=$arrResult->datos->saldo?> €</span>
+				Crédito:<br /><span class="label label-default"><?=$arrResult->datos->saldo?> €</span>
 			</div>
+			<hr />
 			<div>
 				<a id="lnkDatos" href="#">Datos personales</a>
 			</div>
+			<hr />
 			<div>
 				<a id="lnkHistorial" href="#">Historial de pedidos</a>
 			</div>

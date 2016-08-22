@@ -1,29 +1,82 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
+var _top=0;
+var _scrollTop=0;
 
 function grabarDireccion(id){
 	$('#frmCliDir'+id).submit();
 }
 
 function borrarDireccion(id){
-	//Post ('action','<?=BASE_DIR.FILE_APP?>','MODULE','actions','acClase','datosCliBridge','acMetodo','borrarDireccion','acTipo','stdAssoc','id',id);
-	$.post('<?=BASE_DIR.FILE_APP?>',{
-		'MODULE':'actions',
-		'acClase':'datosCliBridge',
-		'acMetodo':'borrarDireccion',
-		'acTipo':'ajax',
-		'hash':$('#hash').val(),
-		'id':id
-	},
-	function (response) {
-		$('#panelDir'+id).remove();
-		muestraMsgModal('Direcciones de entrega','La dirección se ha eliminado correctamente');
-	},
-	'json');
+	bootbox.dialog({
+		message:'¿Confirma que desea eliminar la dirección?',
+		title:'Eliminar dirección',
+		onEscape: true,
+		buttons: {
+			confirmar: {
+				label: 'Si, eliminar dirección',
+				classname: 'btn-danger',
+				callback: function () {
+					//Post ('action','<?=BASE_DIR.FILE_APP?>','MODULE','actions','acClase','datosCliBridge','acMetodo','borrarDireccion','acTipo','stdAssoc','id',id);
+					$.post('<?=BASE_DIR.FILE_APP?>',{
+						'MODULE':'actions',
+						'acClase':'datosCliBridge',
+						'acMetodo':'borrarDireccion',
+						'acTipo':'ajax',
+						'hash':$('#hash').val(),
+						'id':id
+					},
+					function (response) {
+						$('#panelDir'+id).remove();
+						muestraMsgModal('Direcciones de entrega','La dirección se ha eliminado correctamente');
+					},
+					'json');
+				}
+			},
+			cancelar: {
+				label: 'No',
+				classname: 'btn-primary'
+			}
+		}
+	});
 }
 
 $(document).ready(function() {
 	"use strict";
+
+	setInterval(function() {
+		var _docHeight = (document.height !== undefined) ? document.height : document.body.offsetHeight;
+		//var _docWidth = (document.width !== undefined) ? document.width : document.body.offsetWidth;
+		var objMsg= {
+			service: "datosCliBridgeIframeHeight",
+			parameters: _docHeight
+		}
+		parent.postMessage(objMsg, '*');
+	}
+	,100);
+
+	window.addEventListener('message', function(event) {
+		// IMPORTANT: Check the origin of the data!
+		if (~event.origin.indexOf('celorriofarma')) {
+			// The data has been sent from your site. The data sent with postMessage is stored in event.data
+			switch (event.data.service) {
+				case 'scrollInfo':
+					_top=event.data.parameters._top;
+					_scrollTop=event.data.parameters._scrollTop;
+					//console.log(event.data.parameters);
+					break;
+				default:
+					console.log('FED16: BAD DATA');
+					console.log(event);
+					break;
+			}
+		} else {
+			// The data hasn't been sent from your site!. Be careful! Do not use it.
+			console.log('FED16: BAD ORIGIN');
+			return;
+		}
+	});
+
 
 	var dtLanguage={
 		"sProcessing":   "Procesando...",
@@ -85,5 +138,10 @@ $(document).ready(function() {
 		$('#frmAddDir').submit();
 	});
 
-
+	$('body')
+	.on('show.bs.modal', '.modal', function (e) {
+		var $modalDialog=$(this).find(".modal-dialog");
+		var marginTop=20;
+		$modalDialog.css({'margin-top': marginTop + _scrollTop - _top});
+	});
 });
