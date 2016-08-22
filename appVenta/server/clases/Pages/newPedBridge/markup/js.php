@@ -244,27 +244,29 @@ $(document).ready(function() {
 			} else {
 				$('#modalAddDir').modal('hide');
 				//$('#slDirEntrega ').selectlist('destroy');
-				var id=1;
-				var nombre=2;
-				var apellidos=3;
-				var telefono=4;
-				var email=5;
+				var id=response.data.datos.id;
+				var nombre="";
+				var apellidos="";
+				var destinatario=response.data.datos.destinatario;
+				var telefono=response.data.datos.movil;
 				var direccion=response.data.datos.direccion;
 				var cp=response.data.datos.cp;
 				var poblacion=response.data.datos.poblacion;
 				var provincia=response.data.datos.provincia;
-				var idDireccion=10;
-				var denominacion=nombre+' ('+direccion+', '+cp+', '+poblacion+', '+provincia+')';
+				var pais=response.data.datos.pais;
+				var idDireccion=response.data.datos.idDireccion;
+				var denominacion=destinatario+' ('+direccion+', '+cp+', '+poblacion+', '+provincia+')';
 				var $li=$('<li />')
 					.attr('data-id',id)
 					.attr('data-nombre',nombre)
 					.attr('data-apellidos',apellidos)
+					.attr('data-destinatario',destinatario)
 					.attr('data-telefono',telefono)
-					.attr('data-email',email)
 					.attr('data-direccion',direccion)
 					.attr('data-cp',cp)
 					.attr('data-poblacion',poblacion)
 					.attr('data-provincia',provincia)
+					.attr('data-pais',pais)
 					.attr('data-idDireccion',idDireccion)
 					.append(
 						$('<a>')
