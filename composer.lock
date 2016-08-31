@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1d0f101bccf69898c17c2959ac8b5b4b",
+    "hash": "ce0a79ff3168e4e3779bd279a500e7c2",
     "packages": [
         {
             "name": "andrewsville/php-token-reflection",
@@ -52,6 +52,37 @@
                 "tokenizer"
             ],
             "time": "2014-08-06 16:37:08"
+        },
+        {
+            "name": "bower-asset/bootbox",
+            "version": "v4.4.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:makeusabrew/bootbox.git",
+                "reference": "cb756203e250ed0ff2539359ff0ad1c3ffb8e8d3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/makeusabrew/bootbox/zipball/cb756203e250ed0ff2539359ff0ad1c3ffb8e8d3",
+                "reference": "cb756203e250ed0ff2539359ff0ad1c3ffb8e8d3",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/bootstrap": ">=3.0.0"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "./bootbox.js",
+                "bower-asset-ignore": [
+                    "CHANGELOG.md",
+                    "CONTRIBUTING",
+                    "Gruntfile.js",
+                    "header.txt",
+                    "karma*.js",
+                    "build",
+                    "tests"
+                ]
+            }
         },
         {
             "name": "bower-asset/bootstrap",
@@ -1662,7 +1693,8 @@
         "bower-asset/twitter-bootstrap-wizard": 20,
         "bower-asset/datatables-bootstrap3": 20,
         "bower-asset/fontawesome": 20,
-        "bower-asset/fuelux": 20
+        "bower-asset/fuelux": 20,
+        "bower-asset/bootbox": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

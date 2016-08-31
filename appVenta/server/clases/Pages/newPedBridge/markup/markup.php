@@ -1,12 +1,14 @@
 <?="\n<!-- ".get_class()." -->\n"?>
 <div class="fuelux">
-	<div class="wizard" data-initialize="wizard" id="newPedWizard" data-store="<?=$store?>" data-tipo-dto-cliente="<?=$datosCli->tipoDescuento?>">
+	<div class="wizard" data-initialize="wizard" id="newPedWizard"
+	data-store="<?=$store?>"
+	data-id-multi_cliente="<?=$datosCli->id?>"
+	data-nombre-cliente="<?=$datosCli->nombre?>"
+	data-apellidos-cliente="<?=$datosCli->apellidos?>"
+	data-email-cliente="<?=$datosCli->email?>"
+	data-tipo-dto-cliente="<?=$datosCli->tipoDescuento?>">
 		<div class="steps-container">
 			<ul class="steps">
-				<li data-step="0">
-					<span class="badge">1</span>Debug
-					<span class="chevron"></span>
-				</li>
 				<li data-step="1" class="active">
 					<span class="badge">1</span>Pago y entrega
 					<span class="chevron"></span>
@@ -30,20 +32,6 @@
 			</button>
 		</div>
 		<div class="step-content">
-			<div class="step-pane sample-pane alert" data-step="0">
-				<div class="row">
-					<div class="col-md-4">
-						newPedBridgeData:
-						<pre><?=var_export($newPedBridgeData)?></pre>
-					</div><div class="col-md-4">
-						datosCli:
-						<pre><?=var_export($datosCli)?></pre>
-					</div><div class="col-md-4">
-						storeData:
-						<pre><?=var_export($storeData)?></pre>
-					</div>
-				</div>
-			</div>
 			<div class="step-pane active sample-pane alert" data-step="1">
 				<div class="row">
 					<div class="col-md-6">
@@ -62,17 +50,16 @@
 								<h3 class="panel-title">Dirección de entrega</h3>
 							</div>
 							<div class="panel-body">
-								<?=$this->direccionEntregaSelectionControl($datosCli)?>
+								<?=$this->direccionEntregaSelectionControl($datosCli,$idDirPredeterminada)?>
 							</div>
 							<div class="panel-footer text-right">
-									<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalAddDir">
-										<span class="glyphicon glyphicon-plus"></span> Añadir dirección
-									</button>
+								<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalAddDir">
+									<span class="glyphicon glyphicon-plus"></span> Añadir dirección
+								</button>
 							</div>
 						</div>
 					</div>
 				</div>
-				<!--<pre><?var_dump($newPedBridgeData)?></pre>-->
 			</div>
 			<div class="step-pane sample-pane alert" data-step="2">
 				<div class="row">
@@ -119,7 +106,7 @@ if ( $this->totalLineas($newPedBridgeData->lineas) > $storeData->IMPORTE_MINIMO_
 								<ul>
 									<li>Importe necesario: <?=$storeData->IMPORTE_MINIMO_APLICACION_CREDITO?> €</li>
 									<li>Importe actual: <?=$this->totalLineas($newPedBridgeData->lineas)?> €</li>
-									<li>Faltan: <?=$storeData->IMPORTE_MINIMO_APLICACION_CREDITO - $this->totalLineas($newPedBridgeData->lineas)?> €. <a href="#" title="Ver ofertas de valor aproximado"><i class="fa fa-search-plus" aria-hidden="true"></i></a>
+									<li>Faltan: <?=$storeData->IMPORTE_MINIMO_APLICACION_CREDITO - $this->totalLineas($newPedBridgeData->lineas)?> €. <!--<a href="#" title="Ver ofertas de valor aproximado"><i class="fa fa-search-plus" aria-hidden="true"></i></a>-->
 									<li>Crédito disponible: <?=$datosCli->saldoCredito?> €</li>
 								</ul>
 								<span id="creditoAplicar" data-credito-aplicar="0.00" data-saldo-inicial="<?=$datosCli->saldoCredito?>"></span>

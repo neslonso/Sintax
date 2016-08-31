@@ -20,15 +20,36 @@ $(document).ready(function() {
 	}
 
 	/*
-	$('#newPedWizard').on('actionclicked.fu.wizard', function (evt, data) {
-	});
 	$('#newPedWizard').on('stepclicked.fu.wizard', function (evt, data) {
 	});
 	*/
 
-	$('#newPedWizard').on('changed.fu.wizard', function (evt, data) {
-		//evt.preventDefault();
+	$('#newPedWizard').on('actionclicked.fu.wizard', function (evt, data) {
 		//console.log (data);
+		if (data.step==1 && data.direction=='next') {
+			$dirRadioChecked=$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl');
+			if (!$dirRadioChecked.length>0) {
+				muestraMsgModal('Dirección de entega','Debe seleccionar una dirección de entrega para su pedido.');
+				//$('#newPedWizard').wizard('selectedItem', {step:1});
+
+				var veces=0;
+				var intervalId=setInterval(function() {
+					veces+=1;
+					$('[data-target="#modalAddDir"]').toggleClass('btn-danger');
+ 					$('.panel','#direccionEntregaSelectionControl').toggleClass('panel-danger');
+					if (veces>20) {
+						$('[data-target="#modalAddDir"]').removeClass('btn-danger');
+						$('.panel','#direccionEntregaSelectionControl').removeClass('panel-danger');
+						clearInterval(intervalId);
+					}
+				}
+				,250);
+				evt.preventDefault();
+			}
+		}
+	});
+
+	$('#newPedWizard').on('changed.fu.wizard', function (evt, data) {
 		btnNextAdjust(this,data.step);
 
 		var ultimoPaso=$(this).find('.steps li').length;
@@ -60,48 +81,67 @@ $(document).ready(function() {
 				title: ulDtosDescImporte
 			});
 
-			var portes=parseFloat($('#spPortes').data('portes'));
-			$('#spPortes').html(portes.toFixed(2));
+			$.overlay({
+				progress: {class:'progress-bar-success'}
+			});
+			calculaPortes(
+				$('#spTotalLineas').data('totalLineas'),
+				$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl').val(),
+				function() {
+					var portes=parseFloat($('#spPortes').data('portes'));
+					$('#spPortes').html(portes.toFixed(2));
 
-			console.log('totalLineas: ' + totalLineas);
-			console.log('dtoImporte: ' + dtoImporte);
-			console.log('baseDtosPorcentuales: ' + baseDtosPorcentuales);
-			console.log('dtoMonto: ' + dtoMonto);
-			console.log('portes: ' + portes);
+					console.log('totalLineas: ' + totalLineas);
+					console.log('dtoImporte: ' + dtoImporte);
+					console.log('baseDtosPorcentuales: ' + baseDtosPorcentuales);
+					console.log('dtoMonto: ' + dtoMonto);
+					console.log('portes: ' + portes);
 
-			var total=totalLineas-dtoMonto-dtoImporte+portes;
-			total=(Math.round(total*100)/100).toFixed(2);
-			$('#spTotal').html(total).data('total',total);
+					var total=totalLineas-dtoMonto-dtoImporte+portes;
+					total=(Math.round(total*100)/100).toFixed(2);
+					$('#spTotal').html(total).data('total',total);
 
-			var montoDevolucionImportePedidoEnCredito=(Math.round(
-			total*parseFloat($('#spFidelizacionCredit').data('tipoDevolucionImportePedidoEnCredito'))/100
-			*100)/100).toFixed(2);
-			$('#spFidelizacionCredit').html(montoDevolucionImportePedidoEnCredito+'€').data('montoDevolucionImportePedidoEnCredito',montoDevolucionImportePedidoEnCredito);
-
+					var montoDevolucionImportePedidoEnCredito=(Math.round(
+					total*parseFloat($('#spFidelizacionCredit').data('tipoDevolucionImportePedidoEnCredito'))/100
+					*100)/100).toFixed(2);
+					$('#spFidelizacionCredit').html(montoDevolucionImportePedidoEnCredito+'€').data('montoDevolucionImportePedidoEnCredito',montoDevolucionImportePedidoEnCredito);
+					$.overlay('destroy');
+				}
+			);
 		}
 
 	});
 
 	$('#newPedWizard').on('finished.fu.wizard', function (evt) {
-		var objSlDirEntrega=$('#slDirEntrega').selectlist('selectedItem');
-		var nombre=objSlDirEntrega.nombre;
-		var apellidos=objSlDirEntrega.apellidos;
-		var telefono=objSlDirEntrega.telefono;
-		var email=objSlDirEntrega.email;
-		var direccion=objSlDirEntrega.direccion;
-		var cp=objSlDirEntrega.cp;
-		var poblacion=objSlDirEntrega.poblacion;
-		var provincia=objSlDirEntrega.provincia;
+		$dirRadioChecked=$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl');
+		if (!$dirRadioChecked.data()) {
+			muestraMsgModal('Dirección de entega','Debe seleccionar una dirección de entrega para su pedido.');
+			$('#newPedWizard').wizard('selectedItem', {step:1});
+			return;
+		}
+		var destinatario=$dirRadioChecked.data('destinatario');
+		var direccion=$dirRadioChecked.data('direccion');
+		var poblacion=$dirRadioChecked.data('poblacion');
+		var provincia=$dirRadioChecked.data('provincia');
+		var cp=$dirRadioChecked.data('cp');
+		var pais=$dirRadioChecked.data('pais');
+		var telefono=$dirRadioChecked.data('movil');
 
-		var idUsuario=objSlDirEntrega.id;
+		var nombre=$('#newPedWizard').data('nombreCliente');;
+		var apellidos=$('#newPedWizard').data('apellidosCliente');;
+		var email=$('#newPedWizard').data('emailCliente');
+		var idMulti_cliente=$('#newPedWizard').data('idMulti_cliente');
+
 
 		var objCmbCupon=$('#cuponCombo').combobox('selectedItem');
 		var idCupon=objCmbCupon.id;
+		if (typeof idCupon=='undefined') {idCupon=null;}
+		var idMulti_cupon=idCupon;
 
 		var portes=parseFloat($('#spPortes').data('portes'));
 
-		//var credito=$('#creditoAplicar').data('creditoAplicar');
 		var credito=$('#ulDtos').find('#dtoCredito').data('importe');
+		if (typeof credito=='undefined') {credito=0;}
 
 		var idPedidoModoPago=$('input[name="modoPago"]:checked').val();
 		var lineas=[];
@@ -119,23 +159,27 @@ $(document).ready(function() {
 		var pedData={
 			'nombre':nombre,
 			'apellidos':apellidos,
+			'destinatario':destinatario,
 			'telefono':telefono,
 			'email':email,
 			'direccion':direccion,
 			'cp':cp,
 			'poblacion':poblacion,
 			'provincia':provincia,
+			'pais':pais,
 			//'horario':'horario',
 			'portes':portes,
 			'credito':credito,
 			//'notas':'notas',
-			'idUsuario':idUsuario,
-			'idCupon':idCupon,
+			//'idUsuario':idUsuario,
+			//'idCupon':idCupon,
 			'idPedidoModoPago':idPedidoModoPago,
 			//'keyTienda':'keyTienda',
+			'idMulti_cliente':idMulti_cliente,
+			'idMulti_cupon':idMulti_cupon,
 			'lineas': lineas,
 			'dtos':dtos,
-			'comentarios':comentarios
+			'comentarios':comentarios,
 		}
 		console.log(pedData);
 		if (confirm("¿Realizar el POST?")) {
@@ -160,11 +204,6 @@ $(document).ready(function() {
 		$('#creditoAplicar').text(value+"€");
 	});
 
-
-	$('#cuponCombo').on('changed.fu.combobox', function (evt, data) {
-		$(this).data('dirty',true);
-	});
-
 	$('#addCredito').on('click', function () {
 		var credito=$('#creditoAplicar').data('creditoAplicar');
 		ulDtosDel('dtoCredito');
@@ -175,6 +214,12 @@ $(document).ready(function() {
 			muestraMsgModal('Crédito de cliente aplicado.','No se aplicará crédito de cliente.');
 		}
 	});
+
+	/*
+	$('#cuponCombo').on('changed.fu.combobox', function (evt, data) {
+		$(this).data('dirty',true);
+	});
+	*/
 
 	$('#addCupon').on('click', function () {
 		ulDtosDel('dtoCupon');
@@ -221,7 +266,6 @@ $(document).ready(function() {
 	});
 
 	$('#btnAddDir').on('click', function () {
-		console.log("addDir");
 		$.post('<?=BASE_DIR.FILE_APP?>',{
 			'MODULE':'actions',
 			'acClase':'newPedBridge',
@@ -239,50 +283,23 @@ $(document).ready(function() {
 		},
 		function (response) {
 			console.log(response);
-			if (!response.data.resultado.valor){
-				muestraMsgModal('Error añadiendo dirección',response.data.resultado.msg);
+			if (!response.exito){
+				muestraMsgModal('Error añadiendo dirección',response.msg);
 			} else {
 				$('#modalAddDir').modal('hide');
-				//$('#slDirEntrega ').selectlist('destroy');
-				var id=response.data.datos.id;
-				var nombre="";
-				var apellidos="";
-				var destinatario=response.data.datos.destinatario;
-				var telefono=response.data.datos.movil;
-				var direccion=response.data.datos.direccion;
-				var cp=response.data.datos.cp;
-				var poblacion=response.data.datos.poblacion;
-				var provincia=response.data.datos.provincia;
-				var pais=response.data.datos.pais;
-				var idDireccion=response.data.datos.idDireccion;
-				var denominacion=destinatario+' ('+direccion+', '+cp+', '+poblacion+', '+provincia+')';
-				var $li=$('<li />')
-					.attr('data-id',id)
-					.attr('data-nombre',nombre)
-					.attr('data-apellidos',apellidos)
-					.attr('data-destinatario',destinatario)
-					.attr('data-telefono',telefono)
-					.attr('data-direccion',direccion)
-					.attr('data-cp',cp)
-					.attr('data-poblacion',poblacion)
-					.attr('data-provincia',provincia)
-					.attr('data-pais',pais)
-					.attr('data-idDireccion',idDireccion)
-					.append(
-						$('<a>')
-							.attr('href','#')
-							.html(denominacion)
-					);
-				$('#slDirEntrega ul').append($li);
-
-				//$('#slDirEntrega').selectlist('destroy');
-				$('#slDirEntrega').selectlist();
-				//$('#slDirEntrega ul')
+				$('#direccionEntregaSelectionControl').replaceWith(response.data);
+				$('[name="idDirEntrega"]').change();
 			}
 		},
 		'json');
 	});
 
+
+	$('body')
+	.on('change', '[name="idDirEntrega"]', function (e) {
+ 		$('.panel','#direccionEntregaSelectionControl').removeClass('panel-success').addClass('panel-default');
+		$(this).closest('.panel').removeClass('panel-default').addClass('panel-success');
+	});
 });
 
 /*****************************************************************************/
@@ -368,5 +385,52 @@ function btnNextAdjust(wizard,paso) {
 	} else {
 		$(wizard).find('.actions .btn-next').removeClass('btn-warning').addClass('btn-primary');
 	}
+}
+
+function calculaPortes(importe,idDireccion,callback) {
+	$.post('<?=BASE_DIR.FILE_APP?>',{
+		'MODULE':'actions',
+		'acClase':'newPedBridge',
+		'acMetodo':'acGetPortes',
+		'acTipo':'ajaxAssoc',
+		'importe':importe,
+		'idDireccion':idDireccion,
+	},
+	function (response) {
+		if (!response.exito){
+			muestraMsgModal('Error calculando gastos de envío','Se ha producido el siguiente error durante el cálculo de gastos de envio:<br/>'+response.msg);
+		} else {
+			var portes=response.data
+			portes=parseFloat(portes).toFixed(2);
+			$('#spPortes').html(portes).data('portes',portes);
+		}
+		if ($.isFunction(callback)) {
+			callback(response);
+		}
+	},
+	'json');
+}
+
+function msgRedirect() {
+	bootbox.dialog({
+		message:'Es necesario seleccionar al menos un producto para poder realizar su pedido',
+		title:'Su pedido no contiene ningún producto',
+		onEscape: false,
+		closeButton: false,
+		buttons: {
+			aceptar: {
+				label: 'Aceptar',
+				classname: 'btn-primary',
+				callback: function () {
+					var objMsg= {
+						service: "redirect",
+						parameters: "root"
+					}
+					parent.postMessage(objMsg, "*");
+					return false;
+				}
+			}
+		}
+	});
 }
 <?="\n/*".get_class()."*/\n"?>

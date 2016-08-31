@@ -53,7 +53,8 @@ if (isset($_SESSION['usuario'])) {
 					<button id="btnLogin" type="button" class="btn btn-primary btn-sm">
 						<span class="glyphicon glyphicon-ok"></span> Entrar
 					</button>
-					<button id="btnRegistro" type="button" class="btn btn-default btn-sm btn-margin-top">
+					<br />
+					<button id="btnRegistro" type="button" class="btn btn-warning btn-sm btn-margin-top">
 						<span class="glyphicon glyphicon-plus"></span> Registrate
 					</button>
 			</div>

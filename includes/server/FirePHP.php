@@ -1,7 +1,7 @@
 <?
 /*<!--firePHP-->*/
 //http://www.firephp.org/HQ/Use.htm
-$firephp = FirePHP::getInstance(true);
+$fp = $firephp = FirePHP::getInstance(true);
 //$firephp-> *
 
 //require_once('./includes/server/FirePHPCore-0.3.2/lib/FirePHPCore/fb.php');
