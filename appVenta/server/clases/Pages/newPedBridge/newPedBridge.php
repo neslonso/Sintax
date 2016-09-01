@@ -74,6 +74,17 @@ class newPedBridge extends Bridge implements IPage {
 		$store=$newPedBridgeData->store;
 		$idDirPredeterminada=(isset($datosCli->arrDirecciones[0]))?$datosCli->arrDirecciones[0]->id:NULL;
 
+		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=paises';
+		$options = array(
+		    'http' => array(
+		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+		        'method'  => 'POST'
+		    ),
+		);
+		$context  = stream_context_create($options);
+		$responseApi = file_get_contents($url, false, $context);
+		$arrPaises=json_decode($responseApi);
+
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
 	}
 
@@ -149,54 +160,13 @@ class newPedBridge extends Bridge implements IPage {
 		return $result;
 	}
 
-	/*
-	public function direccionEntregaSelectionControl($datosCli) {
-		$arrDirsCli=$datosCli->arrDirecciones;
-		$result='
-				<div class="form-group">
-					<label class="control-label sr-only" for="slDirEntrega">Dirección de entrega:</label>
-					<div class="controls">
-						<div class="btn-group selectlist" data-resize="auto" data-initialize="selectlist" id="slDirEntrega">
-							<button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">
-								<span class="selected-label">&nbsp;</span>
-								<span class="caret"></span>
-								<span class="sr-only">Desplegar lista de direcciones de entrega</span>
-							</button>
-							<ul class="dropdown-menu" role="menu">
-		';
-		foreach ($arrDirsCli as $stdObjDirCli) {
-			$denominacion=$stdObjDirCli->nombre.' ('.$stdObjDirCli->direccion.', '.$stdObjDirCli->cp.', '.$stdObjDirCli->poblacion.', '.$stdObjDirCli->provincia.')';
-			$result.='<li
-				data-id="'.$datosCli->id.'"
-				data-nombre="'.$datosCli->nombre.'"
-				data-apellidos="'.$datosCli->apellidos.'"
-				data-telefono="'.$datosCli->telefono.'"
-				data-email="'.$datosCli->email.'"
-				data-direccion="'.$stdObjDirCli->direccion.'"
-				data-cp="'.$stdObjDirCli->cp.'"
-				data-poblacion="'.$stdObjDirCli->poblacion.'"
-				data-provincia="'.$stdObjDirCli->provincia.'"
-				data-id-direccion="'.$stdObjDirCli->id.'"><a href="#">'.$denominacion.'</a></li>';
-		}
-		$result.='
-							</ul>
-							<input class="hidden hidden-field" name="slDirEntrega" readonly="readonly" aria-hidden="true" type="text"/>
-						</div>
-						<p class="help-block">Seleccione la dirección en la que desea recibir su pedido</p>
-					</div>
-				</div>
-
-		';
-		return $result;
-	}
-	*/
-
 	public function direccionEntregaSelectionControl($datosCli,$checkedId=NULL) {
 		$arrDirsCli=$datosCli->arrDirecciones;
 		$result='
 		<div id="direccionEntregaSelectionControl">
 			<div class="row">
 		';
+		$i=1;
 		foreach ($arrDirsCli as $stdObjDirCli) {
 			$checked=($checkedId==$stdObjDirCli->id)?'checked="checked"':'';
 			$labelClass=($checked)?'checked':'';
@@ -233,6 +203,8 @@ class newPedBridge extends Bridge implements IPage {
 					</div>
 				</div>
 			';
+			if($i%3==0){$result.='<div class="clearfix"></div>';}
+			$i++;
 		}
 		$result.='
 			</div>
@@ -310,7 +282,6 @@ class newPedBridge extends Bridge implements IPage {
 		}
 		return $result;
 	}
-
 	public function acGetPortes() {
 		$newPedBridgeData=$_SESSION['newPedBridgeDataOrigData'];
 		$arrayMulti['subService']='portes';

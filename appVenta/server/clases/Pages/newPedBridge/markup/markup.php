@@ -346,7 +346,16 @@ if ($totalRebotes>0) {
 						<div class="col-sm-4">
 							<div class="form-group">
 								<label for="pais" accesskey="">País:</label>
-								<input class="form-control" type="text" name="pais" id="pais" value="España" placeholder"País" />
+								<select name="pais" id="pais" class="form-control">
+<?
+								foreach ($arrPaises->paises as $pais) {
+									$selected=($pais->id==$arrPaises->paisDefecto)?"selected='selected'":"";
+?>
+									    <option <?=$selected?> data-id="<?=$pais->id?>" data-iso="<?=$pais->iso?>" value="<?=$pais->nombre?>"><?=$pais->nombre?></option>
+<?
+								}
+?>
+								</select>
 							</div>
 						</div>
 						<div class="col-sm-4">

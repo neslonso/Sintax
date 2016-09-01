@@ -266,32 +266,60 @@ $(document).ready(function() {
 	});
 
 	$('#btnAddDir').on('click', function () {
-		$.post('<?=BASE_DIR.FILE_APP?>',{
-			'MODULE':'actions',
-			'acClase':'newPedBridge',
-			'acMetodo':'acAddDireccion',
-			'acTipo':'ajaxAssoc',
-			'id':0,
-			'nombre':$('#nombre','#modalAddDir').val(),
-			'destinatario':$('#destinatario','#modalAddDir').val(),
-			'movil':$('#movil','#modalAddDir').val(),
-			'direccion':$('#direccion','#modalAddDir').val(),
-			'poblacion':$('#poblacion','#modalAddDir').val(),
-			'provincia':$('#provincia','#modalAddDir').val(),
-			'cp':$('#cp','#modalAddDir').val(),
-			'pais':$('#pais','#modalAddDir').val()
-		},
-		function (response) {
-			console.log(response);
-			if (!response.exito){
-				muestraMsgModal('Error añadiendo dirección',response.msg);
-			} else {
-				$('#modalAddDir').modal('hide');
-				$('#direccionEntregaSelectionControl').replaceWith(response.data);
-				$('[name="idDirEntrega"]').change();
-			}
-		},
-		'json');
+		var nombre=$('#nombre','#modalAddDir').val();
+		var destinatario=$('#destinatario','#modalAddDir').val();
+		var direccion=$('#direccion','#modalAddDir').val();
+		var poblacion=$('#poblacion','#modalAddDir').val();
+		var provincia=$('#provincia','#modalAddDir').val();
+		var cp=$('#cp','#modalAddDir').val();
+		var movil=$('#movil','#modalAddDir').val();
+		var pais=$('#pais','#modalAddDir').val();
+		if (nombre=="" || destinatario=="" || direccion=="" || poblacion=="" || provincia=="" || cp=="" || movil==""){
+			muestraMsgModal('Error en el formulario','Por favor, rellene todos los campos de la dirección');
+		} else {
+			//comprobamos si el cp es válido para la tienda
+			$.post('<?=BASE_DIR.FILE_APP?>',{
+				'MODULE':'actions',
+				'acClase':'datosCliBridge',
+				'acMetodo':'acCheckCP',
+				'acTipo':'ajax',
+				'cp':cp,
+				'pais':pais
+			},
+			function (response) {
+				if (!response.data.resultado.valor){
+					muestraMsgModal('Error',response.data.resultado.msg);
+				} else {
+					$.post('<?=BASE_DIR.FILE_APP?>',{
+						'MODULE':'actions',
+						'acClase':'newPedBridge',
+						'acMetodo':'acAddDireccion',
+						'acTipo':'ajaxAssoc',
+						'id':0,
+						'nombre':$('#nombre','#modalAddDir').val(),
+						'destinatario':$('#destinatario','#modalAddDir').val(),
+						'movil':$('#movil','#modalAddDir').val(),
+						'direccion':$('#direccion','#modalAddDir').val(),
+						'poblacion':$('#poblacion','#modalAddDir').val(),
+						'provincia':$('#provincia','#modalAddDir').val(),
+						'cp':$('#cp','#modalAddDir').val(),
+						'pais':$('#pais','#modalAddDir').val()
+					},
+					function (response) {
+						console.log(response);
+						if (!response.exito){
+							muestraMsgModal('Error añadiendo dirección',response.msg);
+						} else {
+							$('#modalAddDir').modal('hide');
+							$('#direccionEntregaSelectionControl').replaceWith(response.data);
+							$('[name="idDirEntrega"]').change();
+						}
+					},
+					'json');
+				}
+			},
+			'json');
+		}
 	});
 
 
