@@ -12,7 +12,8 @@
 				<input name="acTipo" id="acTipo" type="hidden" value="stdAssoc"/>
 				<input name="acReturnURI" id="acReturnURI" type="hidden" value="<?=$_SERVER["REQUEST_URI"]?>"/>
 				<input name="hash" id="hash" type="hidden" value="<?=$hash?>"/>
-				<table id="multi_pedidoTable" class="table table-striped table-bordered">
+				<input name="store" id="store" type="hidden" value="<?=$store?>"/>
+				<table id="multi_pedidoTable<?=$store?>" class="table table-striped table-bordered">
 					<thead>
 						<tr>
 							<th>numero</th>

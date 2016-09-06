@@ -144,7 +144,7 @@
 ?>
 			<div id="panelDir<?=$direccion->id?>" class="panel panel-warning">
 				<div onclick="panelClick('<?=$direccion->id?>');" class="panel-heading cursorLink">
-					<?=$direccion->nombre?>
+					<?=($direccion->nombre!="")?$direccion->nombre:$direccion->direccion;?>
 					<span id="spanDir<?=$direccion->id?>" class="pull-right clickable panel-collapsed"><i id="icoDir<?=$direccion->id?>" class="glyphicon glyphicon-chevron-down"></i></span>
 				</div>
 				<div id="panelDirBody<?=$direccion->id?>" class="panel-body collapse">

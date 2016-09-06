@@ -16,7 +16,7 @@ function grabarDireccion(id){
 	*/
 	var pais=$('#frmCliDir'+id+' #pais').val();
 	var movil=$('#frmCliDir'+id+' #nmovil').val();
-	if (nombre=="" || destinatario=="" || direccion=="" || poblacion=="" || provincia=="" || cp=="" || movil==""){
+	if (destinatario=="" || direccion=="" || poblacion=="" || provincia=="" || cp=="" || movil==""){
 		muestraMsgModal('Error en el formulario','Por favor, rellene todos los campos de la dirección');
 	} else {
 		//comprobamos si el cp es válido para la tienda

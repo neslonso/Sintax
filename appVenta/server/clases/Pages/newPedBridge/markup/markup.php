@@ -71,24 +71,29 @@
 							<div class="panel-body">
 <?
 if ( $this->totalLineas($newPedBridgeData->lineas) > $storeData->IMPORTE_MINIMO_APLICACION_CREDITO) {
+								$creditoMaximoAplicable=($this->totalLineas($newPedBridgeData->lineas)>$datosCli->saldoCredito)?$datosCli->saldoCredito:$this->totalLineas($newPedBridgeData->lineas);
 ?>
 								<div class="row">
 									<div class="col-md-2">
 										<span class="h3">0.00€</span>
 									</div>
 									<div class="col-md-7">
-										<input type="range" name="credito" id="credito" value="0" min="0.0" max="<?=$datosCli->saldoCredito?>" step="0.01" />
+										<input type="range" name="credito" id="credito" value="<?=$creditoMaximoAplicable?>" min="0.0" max="<?=$creditoMaximoAplicable?>" step="0.01" />
 									</div>
 									<div class="col-md-3 text-right">
-										<span class="h3"><?=$datosCli->saldoCredito?>€</span>
+										<span class="h3"><?=$creditoMaximoAplicable?>€</span>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-md-2"></div>
 									<div class="col-md-7 text-center">
 										<span class="h2"><small>Crédito a aplicar:</small></span>
-										<span id="creditoAplicar" class="h3" data-credito-aplicar="0.00"
-											data-saldo-inicial="<?=$datosCli->saldoCredito?>">0.00€</span>
+										<span id="creditoAplicar" class="h3" data-credito-aplicar="<?=$creditoMaximoAplicable?>"
+											data-saldo-inicial="<?=$datosCli->saldoCredito?>"><?=$creditoMaximoAplicable?>€</span>
+										<div class="small">
+											Dispone de <b><?=$datosCli->saldoCredito?>€</b> de crédito.<br>
+											En este pedido puede aplicar hasta <b><?=$creditoMaximoAplicable?>€</b>
+										</div>
 
 									</div>
 								</div>
@@ -230,12 +235,12 @@ $totalRebotesDesc.='</table>';
 						<div>Total productos: <span id="spTotalLineas" class="spCalculado" data-total-lineas="<?=$this->totalLineas($newPedBridgeData->lineas)?>"><?=$this->totalLineas($newPedBridgeData->lineas)?></span> €</div>
 						<div>
 							<span id="tipDtosImporte">
-								Descuentos por importe: <span id="spDescuentoImporte" class="spCalculado"></span> €
+								Descuentos por fidelización: <span id="spDescuentoImporte" class="spCalculado"></span> €
 							</span>
 						</div>
 						<div>
 							<span id="tipDtosTipo">
-								Descuentos porcentuales (<span id="spDtoTipo" class="spCalculado"></span>%): <span id="spDtoMonto" class="spCalculado"></span> €
+								Otros descuentos (<span id="spDtoTipo" class="spCalculado"></span>%): <span id="spDtoMonto" class="spCalculado"></span> €
 							</span>
 						</div>
 						<div>Gastos de envío: <span id="spPortes" class="spCalculado" data-portes="<?=$newPedBridgeData->portes?>"><?=$newPedBridgeData->portes?></span> €</div>
@@ -351,7 +356,7 @@ if ($totalRebotes>0) {
 								foreach ($arrPaises->paises as $pais) {
 									$selected=($pais->id==$arrPaises->paisDefecto)?"selected='selected'":"";
 ?>
-									    <option <?=$selected?> data-id="<?=$pais->id?>" data-iso="<?=$pais->iso?>" value="<?=$pais->nombre?>"><?=$pais->nombre?></option>
+										<option <?=$selected?> data-id="<?=$pais->id?>" data-iso="<?=$pais->iso?>" value="<?=$pais->nombre?>"><?=$pais->nombre?></option>
 <?
 								}
 ?>

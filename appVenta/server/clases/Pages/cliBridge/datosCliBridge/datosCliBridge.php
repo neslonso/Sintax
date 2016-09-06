@@ -129,6 +129,7 @@ class datosCliBridge extends Bridge implements IPage {
 		//POST a la API de V3 para modificar los datos
 		$arrayPost=$_REQUEST;
 		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=checkCP';
+		$GLOBALS['firephp']->info(http_build_query($arrayPost),"content");
 		// use key 'http' even if you send the request to https://...
 		$options = array(
 		    'http' => array(

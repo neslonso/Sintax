@@ -91,8 +91,8 @@ class newPedBridge extends Bridge implements IPage {
 	public function acGrabar () {
 		$newPedBridgeData=$_SESSION['newPedBridgeDataOrigData'];
 
-		echo "request: <pre>".print_r($_REQUEST,true)."</pre>";
-		echo "Datos recibidos por fed16 desde store: <pre>".print_r($newPedBridgeData,true)."</pre>";
+		//echo "request: <pre>".print_r($_REQUEST,true)."</pre>";
+		//echo "Datos recibidos por fed16 desde store: <pre>".print_r($newPedBridgeData,true)."</pre>";
 
 		//POST a la API de V3 para añadir el pedido a la multi
 		$arrayMulti=$_REQUEST;
@@ -108,9 +108,9 @@ class newPedBridge extends Bridge implements IPage {
 		);
 		$context  = stream_context_create($options);
 		$envioMulti = file_get_contents($url, false, $context);
-		echo "envioMulti: <pre>";
-		var_dump($envioMulti);
-		echo "</pre>";
+		//echo "envioMulti: <pre>";
+		//var_dump($envioMulti);
+		//echo "</pre>";
 
 		$result=json_decode($envioMulti);
 		if (isset($result->exception)) {
@@ -123,10 +123,22 @@ class newPedBridge extends Bridge implements IPage {
 			*/
 			throw new \ActionException($result->infoExc, 1);
 		} else {
-			//Vaciar la cesta
+			//Falta vaciar la cesta
+			echo '
+				<script>
+					var objMsg= {
+						service: "redirect",
+						parameters: "url",
+						parametersII: "'.$result->returnURI.'"
+					}
+					parent.postMessage(objMsg, "*");
+				</script>
+				Redirigiendo...
+			';
+			die();
 			$GLOBALS['acReturnURI']=$result->returnURI;
 			echo "result: <pre>".print_r($result,true)."</pre>";
-			echo '<a href="'.$result->returnURI.'">'.$result->returnURI.'</a>';
+			echo '<hr /><a href="'.$result->returnURI.'">'.$result->returnURI.'</a><hr />';
 		}
 	}
 
@@ -224,28 +236,31 @@ class newPedBridge extends Bridge implements IPage {
 		return $result;
 	}
 
-
-	public function cuponSelectionControl($arrCupsCli) {
+	public function cuponSelectionControl($arrCups,$seletedId="") {
 		$result='
-			<div class="form-group">
-				<label class="control-label" for="cuponInput"></label>
-				<div class="input-group input-append dropdown combobox" data-initialize="combobox" id="cuponCombo">
-					<input id="cuponInput" name="cuponInput" type="text" aria-label="" class="form-control" placeholder="cupón descuento">
-					<div class="input-group-btn">
-						<button type="button" class="btn btn-primary dropdown-toggle" aria-label=" autofill suggestions" data-toggle="dropdown"><span class="caret"></span></button>
-						<ul class="dropdown-menu dropdown-menu-right" role="menu">
+			<div id="cuponSelectionControl">
+				<div class="form-group">
+					<label class="control-label" for="cuponInput"></label>
+					<div class="input-group input-append dropdown combobox" data-initialize="combobox" id="cuponCombo">
+						<input id="cuponInput" name="cuponInput" type="text" aria-label="" class="form-control" placeholder="cupón descuento">
+						<div class="input-group-btn">
+							<button type="button" class="btn btn-primary dropdown-toggle" aria-label=" autofill suggestions" data-toggle="dropdown"><span class="caret"></span></button>
+							<ul class="dropdown-menu dropdown-menu-right" role="menu">
 		';
-		foreach ($arrCupsCli as $stdObjCupCli) {
+		foreach ($arrCups as $stdObjCupCli) {
+			$selected=($stdObjCupCli->id==$seletedId)?'data-selected="true"':'';
 			$denominacion=$stdObjCupCli->codigo.'. '.$stdObjCupCli->tipoDescuento.'% de descuento. Válido hasta '.\Fecha::fromMysql($stdObjCupCli->caducidad)->toFechaEs().'';
-			$result.='<li
-				data-id="'.$stdObjCupCli->id.'"
-				data-value="'.$stdObjCupCli->codigo.'"><a href="#">'.$denominacion.'</a></li>';
+			$result.='
+								<li '.$selected.'
+									data-id="'.$stdObjCupCli->id.'"
+									data-value="'.$stdObjCupCli->codigo.'"><a href="#">'.$denominacion.'</a></li>';
 		}
 		$result.='
-						</ul>
+							</ul>
+						</div>
 					</div>
+					<p class="help-block">Introduzca o seleccione el cupón que desea aplicar al pedido</p>
 				</div>
-				<p class="help-block">Introduzca o seleccione el cupón que desea aplicar al pedido</p>
 			</div>
 		';
 		return $result;
@@ -282,6 +297,7 @@ class newPedBridge extends Bridge implements IPage {
 		}
 		return $result;
 	}
+
 	public function acGetPortes() {
 		$newPedBridgeData=$_SESSION['newPedBridgeDataOrigData'];
 		$arrayMulti['subService']='portes';
@@ -293,17 +309,54 @@ class newPedBridge extends Bridge implements IPage {
 		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE';
 		// use key 'http' even if you send the request to https://...
 		$options = array(
-		    'http' => array(
-		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-		        'method'  => 'POST',
-		        'content' => http_build_query($arrayMulti),
-		    ),
+			'http' => array(
+				'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+				'method'  => 'POST',
+				'content' => http_build_query($arrayMulti),
+			),
 		);
 		$context  = stream_context_create($options);
 		$apiResult = file_get_contents($urlAPI, false, $context);
 		$GLOBALS['firephp']->info($apiResult,"result acGetPortes");
 		$result=json_decode($apiResult);
 		return $result;
+	}
+
+	public function acValidaCupon() {
+		$newPedBridgeData=$_SESSION['newPedBridgeDataOrigData'];
+		$datosCli=$_SESSION['datosCli'];
+		$arrayMulti['subService']='getCuponByCode';
+		$arrayMulti['store']=$newPedBridgeData->store;
+		//$sharedSecret="fed16newPedBridge";
+		//$salt=hash('sha256', uniqid(mt_rand(), true));
+		//$hash=$salt.hash('sha256',$salt.$pass);
+		$arrayMulti['hash']='';
+		$arrayMulti['cuponCode']=$_REQUEST['codigo'];
+
+		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE';
+
+		$options = array(
+			'http' => array(
+				'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+				'method'  => 'POST',
+				'content' => http_build_query($arrayMulti),
+			),
+		);
+		$context  = stream_context_create($options);
+		$apiResult = file_get_contents($urlAPI, false, $context);
+		$GLOBALS['firephp']->info($apiResult,"result acValidaCupon");
+		$result=json_decode($apiResult);
+		$arrCups=$datosCli->arrCupones;
+		array_push($arrCups,$result);
+		$result->combo=$this->cuponSelectionControl($arrCups,$result->id);
+		return $result;
+
+		/*response.data.existe
+		response.data.combo
+		stdObjCupCli->codigo
+		stdObjCupCli->tipoDescuento
+		stdObjCupCli->caducidad
+		stdObjCupCli->id*/
 	}
 /* Peticion de datos a API ****************************************************/
 	private function getArrModosPago() {
@@ -323,13 +376,13 @@ class newPedBridge extends Bridge implements IPage {
 		//$salt=hash('sha256', uniqid(mt_rand(), true));
 		//$hash=$salt.hash('sha256',$salt.$pass);
 		$hash='';
-		$newPedBridgeData=$_SESSION['newPedBridgeDataOrigData'];
 
 		$subService='datosCli';
 		$idCli=$this->objUsr->id;
-		$store=$newPedBridgeData->store;
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store='.$store.'&idCli='.$idCli.'&hash='.$hash;
+		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store=&idCli='.$idCli.'&hash='.$hash;
+		//error_log("Excep: ".$urlAPI);
 		$result=file_get_contents($urlAPI);
+		//error_log("Excep: ".$result);
 		$datosCli=json_decode($result);
 		return $datosCli;
 	}
