@@ -263,7 +263,7 @@ try {
 				$msg=$infoExc;
 				$title="Situación de excepción no controlada";
 				ReturnInfo::add($msg,$title);
-				$location=BASE_DIR.FILE_APP."?page=error";
+				$location=BASE_DIR.FILE_APP."?page=Error";
 			}
 			error_log('redireccionando a ('.$location.')');
 			$firephp->info($location,'redireccionando a ($location)');
