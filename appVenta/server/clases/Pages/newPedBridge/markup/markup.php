@@ -71,24 +71,29 @@
 							<div class="panel-body">
 <?
 if ( $this->totalLineas($newPedBridgeData->lineas) > $storeData->IMPORTE_MINIMO_APLICACION_CREDITO) {
+								$creditoMaximoAplicable=($this->totalLineas($newPedBridgeData->lineas)>$datosCli->saldoCredito)?$datosCli->saldoCredito:$this->totalLineas($newPedBridgeData->lineas);
 ?>
 								<div class="row">
 									<div class="col-md-2">
 										<span class="h3">0.00€</span>
 									</div>
 									<div class="col-md-7">
-										<input type="range" name="credito" id="credito" value="0" min="0.0" max="<?=$datosCli->saldoCredito?>" step="0.01" />
+										<input type="range" name="credito" id="credito" value="<?=$creditoMaximoAplicable?>" min="0.0" max="<?=$creditoMaximoAplicable?>" step="0.01" />
 									</div>
 									<div class="col-md-3 text-right">
-										<span class="h3"><?=$datosCli->saldoCredito?>€</span>
+										<span class="h3"><?=$creditoMaximoAplicable?>€</span>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-md-2"></div>
 									<div class="col-md-7 text-center">
 										<span class="h2"><small>Crédito a aplicar:</small></span>
-										<span id="creditoAplicar" class="h3" data-credito-aplicar="0.00"
-											data-saldo-inicial="<?=$datosCli->saldoCredito?>">0.00€</span>
+										<span id="creditoAplicar" class="h3" data-credito-aplicar="<?=$creditoMaximoAplicable?>"
+											data-saldo-inicial="<?=$datosCli->saldoCredito?>"><?=$creditoMaximoAplicable?>€</span>
+										<div class="small">
+											Dispone de <b><?=$datosCli->saldoCredito?>€</b> de crédito.<br>
+											En este pedido puede aplicar hasta <b><?=$creditoMaximoAplicable?>€</b>
+										</div>
 
 									</div>
 								</div>

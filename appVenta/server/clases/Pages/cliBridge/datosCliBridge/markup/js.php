@@ -4,7 +4,40 @@ var _top=0;
 var _scrollTop=0;
 
 function grabarDireccion(id){
-	$('#frmCliDir'+id).submit();
+	var nombre=$('#frmCliDir'+id+' #nombre').val();
+	var destinatario=$('#frmCliDir'+id+' #destinatario').val();
+	var direccion=$('#frmCliDir'+id+' #direccion').val();
+	var poblacion=$('#frmCliDir'+id+' #poblacion').val();
+	var provincia=$('#frmCliDir'+id+' #provincia').val();
+	var cp=$('#frmCliDir'+id+' #cp').val();
+	/*
+	var idPais=$('#frmCliDir'+id+' #pais').data('id');
+	var isoPais=$('#frmCliDir'+id+' #pais').data('iso');
+	*/
+	var pais=$('#frmCliDir'+id+' #pais').val();
+	var movil=$('#frmCliDir'+id+' #nmovil').val();
+	if (destinatario=="" || direccion=="" || poblacion=="" || provincia=="" || cp=="" || movil==""){
+		muestraMsgModal('Error en el formulario','Por favor, rellene todos los campos de la dirección');
+	} else {
+		//comprobamos si el cp es válido para la tienda
+		console.log("pais:"+pais);
+		$.post('<?=BASE_DIR.FILE_APP?>',{
+			'MODULE':'actions',
+			'acClase':'datosCliBridge',
+			'acMetodo':'acCheckCP',
+			'acTipo':'ajax',
+			'cp':cp,
+			'pais':pais
+		},
+		function (response) {
+			if (!response.data.resultado.valor){
+				muestraMsgModal('Error',response.data.resultado.msg);
+			} else {
+				$('#frmCliDir'+id).submit();
+			}
+		},
+		'json');
+	}
 }
 
 function borrarDireccion(id){
@@ -134,10 +167,6 @@ $(document).ready(function() {
 		$('#frmCliEditPerfil').submit();
 	});
 
-	$('#btnAddDir').on('click', function () {
-		$('#frmAddDir').submit();
-	});
-
 	$('body')
 	.on('show.bs.modal', '.modal', function (e) {
 		var $modalDialog=$(this).find(".modal-dialog");
@@ -145,3 +174,30 @@ $(document).ready(function() {
 		$modalDialog.css({'margin-top': marginTop + _scrollTop - _top});
 	});
 });
+
+function panelClick(id){
+	if(!$('#spanDir'+id).hasClass('panel-collapsed')) {
+		$('#panelDirBody'+id+', #panelDirFooter'+id).slideUp();
+		$('#spanDir'+id).addClass('panel-collapsed');
+		$('#icoDir'+id).removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+	} else {
+		$('#panelDirBody'+id+', #panelDirFooter'+id).slideDown();
+		$('#spanDir'+id).removeClass('panel-collapsed');
+		$('#icoDir'+id).removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+	}
+}
+
+/*
+$(document).on('click', '.panel-heading span.clickable', function(e){
+    var $this = $(this);
+	if(!$this.hasClass('panel-collapsed')) {
+		$this.parents('.panel').find('.panel-body').slideUp();
+		$this.addClass('panel-collapsed');
+		$this.find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+	} else {
+		$this.parents('.panel').find('.panel-body').slideDown();
+		$this.removeClass('panel-collapsed');
+		$this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+	}
+})
+*/

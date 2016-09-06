@@ -143,10 +143,11 @@
 		foreach ($arrCliente->direcciones as $direccion) {
 ?>
 			<div id="panelDir<?=$direccion->id?>" class="panel panel-warning">
-				<div class="panel-heading">
-					<?=$direccion->nombre?>
+				<div onclick="panelClick('<?=$direccion->id?>');" class="panel-heading cursorLink">
+					<?=($direccion->nombre!="")?$direccion->nombre:$direccion->direccion;?>
+					<span id="spanDir<?=$direccion->id?>" class="pull-right clickable panel-collapsed"><i id="icoDir<?=$direccion->id?>" class="glyphicon glyphicon-chevron-down"></i></span>
 				</div>
-				<div class="panel-body">
+				<div id="panelDirBody<?=$direccion->id?>" class="panel-body collapse">
 					<form action="<?=BASE_DIR.FILE_APP?>" method="post" enctype="multipart/form-data" id="frmCliDir<?=$direccion->id?>">
 						<input name="MODULE" id="MODULE" type="hidden" value="actions"/>
 						<input name="acClase" id="acClase" type="hidden" value="datosCliBridge"/>
@@ -154,6 +155,7 @@
 						<input name="acTipo" id="acTipo" type="hidden" value="stdAssoc"/>
 						<input name="acReturnURI" id="acReturnURI" type="hidden" value="<?=$_SERVER["REQUEST_URI"]?>"/>
 						<input name="id" id="id" type="hidden" value="<?=$direccion->id?>"/>
+						<input name="idMulti_cliente" id="idMulti_cliente" type="hidden" value="<?=$arrCliente->cliente->id?>"/>
 						<div class="row">
 							<div class="col-sm-6">
 								<div class="form-group">
@@ -198,7 +200,28 @@
 							<div class="col-sm-4">
 								<div class="form-group">
 									<label for="pais" accesskey="">País:</label>
-									<input class="form-control" type="text" name="pais" id="pais" value="<?=$direccion->pais?>" />
+
+									<select name="pais" id="pais" class="form-control">
+<?
+								foreach ($arrCliente->paises as $pais) {
+									if ($direccion->idPais>0) {
+										$selected=($pais->id==$direccion->idPais)?"selected='selected'":"";
+									} else {
+										$selected=($pais->id==$arrCliente->paisDefecto)?"selected='selected'":"";
+									}
+?>
+									    <option <?=$selected?> data-id="<?=$pais->id?>" data-iso="<?=$pais->iso?>" value="<?=$pais->nombre?>"><?=$pais->nombre?></option>
+<?
+								}
+?>
+									</select>
+<?
+								if ($direccion->idPais==0){
+?>
+									<p class="bg-danger" style="padding:5px !important; margin-top:3px !important;">Por favor, guarde nuevamente esta dirección ya que en nuestros sistemas figura como país <b><?=$direccion->pais?></b></p>
+<?
+								}
+?>
 								</div>
 							</div>
 							<div class="col-sm-4">
@@ -210,7 +233,7 @@
 						</div>
 					</form>
 				</div>
-				<div class="panel-footer text-right">
+				<div  id="panelDirFooter<?=$direccion->id?>" class="panel-footer text-right collapse">
 					<button type="button" onclick="borrarDireccion('<?=$direccion->id?>');" class="btn btn-danger">
 						<span class="glyphicon glyphicon-remove"></span> Eliminar
 					</button>
@@ -325,7 +348,7 @@
 				<h4 class="modal-title">Añadir dirección</h4>
 			</div>
 			<div class="modal-body">
-				<form action="<?=BASE_DIR.FILE_APP?>" method="post" enctype="multipart/form-data" id="frmAddDir">
+				<form action="<?=BASE_DIR.FILE_APP?>" method="post" enctype="multipart/form-data" id="frmCliDir0">
 					<input name="MODULE" id="MODULE" type="hidden" value="actions"/>
 					<input name="acClase" id="acClase" type="hidden" value="datosCliBridge"/>
 					<input name="acMetodo" id="acMetodo" type="hidden" value="acGrabarDireccion"/>
@@ -377,7 +400,16 @@
 						<div class="col-sm-4">
 							<div class="form-group">
 								<label for="pais" accesskey="">País:</label>
-								<input class="form-control" type="text" name="pais" id="pais" value="España" placeholder"País" />
+								<select name="pais" id="pais" class="form-control">
+<?
+								foreach ($arrCliente->paises as $pais) {
+									$selected=($pais->id==$arrCliente->paisDefecto)?"selected='selected'":"";
+?>
+									    <option <?=$selected?> data-id="<?=$pais->id?>" data-iso="<?=$pais->iso?>" value="<?=$pais->nombre?>"><?=$pais->nombre?></option>
+<?
+								}
+?>
+								</select>
 							</div>
 						</div>
 						<div class="col-sm-4">
@@ -391,7 +423,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-				<button type="button" id="btnAddDir" class="btn btn-primary">Grabar</button>
+				<button type="button" id="btnAddDir" onclick="grabarDireccion('0');" class="btn btn-primary">Grabar</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

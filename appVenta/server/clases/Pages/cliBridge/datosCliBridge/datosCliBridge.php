@@ -125,5 +125,23 @@ class datosCliBridge extends Bridge implements IPage {
 		$result=json_decode($responseApi);
 		ReturnInfo::add($result->resultado->msg,'Datos de acceso');
 	}
+	public function acCheckCP(){
+		//POST a la API de V3 para modificar los datos
+		$arrayPost=$_REQUEST;
+		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=checkCP';
+		$GLOBALS['firephp']->info(http_build_query($arrayPost),"content");
+		// use key 'http' even if you send the request to https://...
+		$options = array(
+		    'http' => array(
+		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+		        'method'  => 'POST',
+		        'content' => http_build_query($arrayPost),
+		    ),
+		);
+		$context  = stream_context_create($options);
+		$responseApi = file_get_contents($url, false, $context);
+		$result=json_decode($responseApi);
+		return $result;
+	}
 }
 ?>
