@@ -53,6 +53,9 @@ $(document).ready(function() {
 		btnNextAdjust(this,data.step);
 
 		var ultimoPaso=$(this).find('.steps li').length;
+		if (data.step==ultimoPaso-1) {
+			$('#addCredito').click();
+		}
 		if (data.step==ultimoPaso) {
 			var totalLineas=$('#spTotalLineas').data('totalLineas');
 
