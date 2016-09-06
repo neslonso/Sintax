@@ -179,13 +179,15 @@ try {
 					}
 					$firephp->groupEnd();
 					$firephp->groupEnd();
-					unset($_SESSION['lastAction'][$acClase][$acMetodo]);
-					if (count($_SESSION['lastAction'][$acClase])==0) {
-						unset($_SESSION['lastAction'][$acClase]);
-					}
-					if (count($_SESSION['lastAction'])==0) {
-						unset($_SESSION['lastAction']);
-					}
+					try {
+						unset($_SESSION['lastAction'][$acClase][$acMetodo]);
+						if (count($_SESSION['lastAction'][$acClase])==0) {
+							unset($_SESSION['lastAction'][$acClase]);
+						}
+						if (count($_SESSION['lastAction'])==0) {
+							unset($_SESSION['lastAction']);
+						}
+					} catch (Exception $e) {}
 				}
 			} else {
 				$result="operación no permitida. (ERROR_NO_VALIDA)";

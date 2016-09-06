@@ -37,7 +37,7 @@ $(document).ready(function() {
 
 	$(document).on("click", "#multi_pedidoTable"+keyTienda+" tbody tr",
 		function () {
-			window.location='<?=BASE_URL?>index.php?page=pedBridge&id='+$(this).data('id')+'&hash='+$('#hash').val();
+			window.location='<?=BASE_URL?><?=FILE_APP?>?page=pedBridge&id='+$(this).data('id')+'&store='+$('#store').val()+'&idUser='+$('#idUser').val();
 		}
 	);
 });

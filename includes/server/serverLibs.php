@@ -11,6 +11,8 @@ require_once SKEL_ROOT_DIR."includes/server/clases/Filesystem.php";
 require_once SKEL_ROOT_DIR."includes/server/clases/User.php";
 require_once SKEL_ROOT_DIR."includes/server/clases/Page.php";
 
+require_once SKEL_ROOT_DIR."includes/server/clases/Entity.php";
+
 require_once SKEL_ROOT_DIR."includes/server/vendor/jsmin-1.1.1.php";
 
 if (file_exists(SKEL_ROOT_DIR."includes/server/vendor/composerVendor/autoload.php")) {

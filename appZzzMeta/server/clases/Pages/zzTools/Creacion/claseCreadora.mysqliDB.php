@@ -6,6 +6,13 @@ ClaseCreadora 2.0
 20110110 - 20141009
 
 /* History
+/* v 3.0 (20160506)
+	* Añadida clase "ClassEntitySubclaser" para escribir codigo de subclases de Sintax\Core\Entity. Esto deja obsoleta a la clase creadora.
+	* Añadida clase "PHPUnitTestcaseClassCreator" para escribir codigo de subclases de PHPUnit_Framework_TestCase
+
+/* v 2.1 (20160503)
+	* Actualizado constructor y funcion db() para que la clase reciba la conexion a DB como parámetro.
+
 /* v 2.0 (20141009)
 	* Remodelada para su integración en S!nt@x
 	* Estrcuturada en varias metodos
@@ -20,6 +27,313 @@ ClaseCreadora 2.0
 	* Empezamos la history
 	* Añadida llamada a htmlentities en cargarId, ya que los valores cargados de la BD serán usados en HTML y
 	* los caracteres convertidos a entidades HTML para que no produzcan problemas.
+
+/**************************************************************************************************************/
+//Crea un fichero php con el codigo basico que solemos usar para las clases
+//El fichero creado tira de las funciones de MysqliDB.php
+//Se supone que el primer atributo de arrAtributos es la clave primaria de la tabla
+class ClassEntitySubclaser {
+	private $ruta;
+	private $nombreClase;
+	private $arrAtributos;
+	private $nombreTabla;
+	private $arrFksFrom;
+	private $arrFksTo;
+	private $sl;//saltoLinea
+	private $sg;//sangrado
+
+	function __construct ($ruta,$nombreClase, $arrAtributos, $nombreTabla, $arrFksFrom,$arrFksTo) {
+		$this->ruta=$ruta;
+		$this->nombreClase=$nombreClase;
+		$this->arrAtributos=$arrAtributos;
+		$this->nombreTabla=$nombreTabla;
+		$this->arrFksFrom=$arrFksFrom;
+		$this->arrFksTo=$arrFksTo;
+
+		$arrNombresAtributos=array_keys($arrAtributos);
+		$this->nombreKeyFIeld=$nombreKeyField=$arrNombresAtributos[0];
+		//PHP 5.4+ -> $this->nombreKeyFIeld=$nombreKeyField=array_keys($arrAtributos)[0];
+		$this->sl="\n";
+		$this->sg="\t";
+		$sl=$this->sl;
+		$sg=$this->sg;
+
+		$classCode='';
+		$classCode.="<?".$sl;
+		//Apertura de la clase
+		$classCode.="class ".$nombreClase." extends Entity implements IEntity {".$sl;
+
+		//Main
+			$classCode.=$this->declaraciones($nombreTabla,$nombreKeyField);
+			$classCode.=$this->constructor($arrAtributos);
+			$classCode.=$this->noReferenciado($arrFksTo);
+			//$classCode.=$this->cargarArray();
+			//$classCode.=$this->cargarObj();
+			$classCode.="/* Getters y Setters **********************************************************/".$sl;
+			$classCode.=$this->settersGetters($arrAtributos);
+			$classCode.="/******************************************************************************/".$sl;
+		//FkFrom
+			$classCode.=$sl;
+			$classCode.="/* Funciones FkFrom ***********************************************************/".$sl;
+			$classCode.=$sl;
+			//Inicio funciones FkFrom
+			$classCode.=$this->FkFrom($arrFksFrom);
+			//Fin funciones FkFrom
+		//FkTo
+			$classCode.=$sl;
+			$classCode.="/* Funciones FkTo *************************************************************/".$sl;
+			$classCode.=$sl;
+			//Inicio funciones FkTo
+			$classCode.=$this->FkTo($arrFksTo);
+			//Fin funciones FkTo
+
+		//Llave de cierre de la clase
+		$classCode.="}".$sl;
+		$classCode.="?>".$sl;
+		$file=$ruta."/".$nombreClase.".php";
+		$fp=fopen ($file,"w");
+		fwrite ($fp,$classCode);
+		fclose ($fp);
+		chmod ($file,0777);
+	}
+
+	private function declaraciones($nombreTabla,$nombreKeyField) {
+		$sl=$this->sl;
+		$sg=$this->sg;
+		$resultCode='';
+		$resultCode.=$sg.'protected static $table="'.$nombreTabla.'";'.$sl;
+		$resultCode.=$sg.'protected static $keyField="'.$nombreKeyField.'";'.$sl;
+		$resultCode.=$sl;
+		return $resultCode;
+	}
+	private function constructor($arrAtributos) {
+		$sl=$this->sl;
+		$sg=$this->sg;
+		$resultCode='';
+		$resultCode.=$sg.'/**'.$sl;
+		$resultCode.=$sg.' * [constructor de la clase]'.$sl;
+		$resultCode.=$sg.' * @param MysqliDB db clase de acceso a datos'.$sl;
+		$resultCode.=$sg.' * @param string keyValue Valor de la clave primaria que identifica el registro asociado a la instancia a construir'.$sl;
+		$resultCode.=$sg.' */'.$sl;
+		$resultCode.=$sg.'public function __construct (\MysqliDB $db=NULL, $keyValue=NULL) {'.$sl;
+		$resultCode.=$sg.$sg.'parent::__construct($db,$keyValue);'.$sl;
+		$resultCode.=$sg.$sg.'$this->arrDbData=array('.$sl;
+		foreach ($arrAtributos as $nombreAtributo => $sqlData) {
+			$resultCode.=$sg.$sg.$sg.'"'.$nombreAtributo.'" => NULL'.$sl;
+		}
+		$resultCode.=$sg.$sg.");".$sl;
+		$resultCode.=$sg."}".$sl;
+		$resultCode.=$sl;
+		return $resultCode;
+	}
+	private function noReferenciado($arrFksTo) {
+		$sl=$this->sl;
+		$sg=$this->sg;
+		$resultCode='';
+		$resultCode.=$sg.'public function noReferenciado() {'.$sl;
+		if (count($arrFksTo)>0) {
+			foreach ($arrFksTo as $objFkInfo) {
+				$fTable=$objFkInfo->TABLE_NAME;
+				$fField=$objFkInfo->COLUMN_NAME;
+				$resultCode.=$sg.$sg.'$sql="SELECT '.$fField.' FROM '.$fTable.' WHERE '.$fField.'=\'".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."\'";'.$sl;
+				$resultCode.=$sg.$sg.'$noReferenciadoEn'.ucfirst($fTable).'=($this->db()->get_num_rows($sql)==0)?true:false;'.$sl;
+			}
+			$strConds='';
+			foreach ($arrFksTo as $objFkInfo) {
+				$fTable=$objFkInfo->TABLE_NAME;
+				$fField=$objFkInfo->COLUMN_NAME;
+				$strConds.='$noReferenciadoEn'.ucfirst($fTable).' && ';
+			}
+			$strConds=substr($strConds, 0, -4);
+			$resultCode.=$sg.$sg.'$result=('.$strConds.')?true:false;'.$sl;
+			$resultCode.=$sg.$sg.'return $result;'.$sl;
+		} else {
+			$resultCode.=$sg.$sg.'$result=true;'.$sl;
+			$resultCode.=$sg.$sg.'return $result;'.$sl;
+		}
+		$resultCode.=$sg.'}'.$sl;
+		return $resultCode;
+	}
+	private function settersGetters($arrAtributos) {
+		$sl=$this->sl;
+		$sg=$this->sg;
+		$resultCode='';
+		foreach ($arrAtributos as $nombreAtributo => $sqlData) {
+			$resultCode.=$sg.'public function GET'.$nombreAtributo.' ($entity_decode=false) {';
+			$resultCode.='return ($entity_decode)?html_entity_decode($this->arrDbData["'.$nombreAtributo.'"],ENT_QUOTES,"UTF-8"):$this->arrDbData["'.$nombreAtributo.'"];';
+			$resultCode.='}'.$sl;
+
+			$resultCode.=$sg.'public function SET'.$nombreAtributo.' ($'.$nombreAtributo.',$entity_encode=false) {';
+			$resultCode.='$this->arrDbData["'.$nombreAtributo.'"]=($entity_encode)?htmlentities($'.$nombreAtributo.',ENT_QUOTES,"UTF-8"):$'.$nombreAtributo.';';
+			$resultCode.='}'.$sl;
+			$resultCode.=$sl;
+		}
+		return $resultCode;
+	}
+	private function FkFrom($arrFksFrom) {
+		$sl=$this->sl;
+		$sg=$this->sg;
+		$resultCode='';
+
+		$arrTables=array();
+		foreach ($arrFksFrom as $objFkInfo) {
+			$fTable=$objFkInfo->REFERENCED_TABLE_NAME;
+			$fField=$objFkInfo->COLUMN_NAME;
+			if (!array_key_exists($fTable, $arrTables)) {
+				$arrTables[$fTable]=$fTable;
+			} else {
+				if (!is_array($arrTables[$fTable])) {
+					$tmp=$arrTables[$fTable];
+					$arrTables[$fTable]=array();
+					$arrTables[$fTable][]=$tmp;
+				}
+				$arrTables[$fTable][]=$fField;
+			}
+		}
+		foreach ($arrFksFrom as $objFkInfo) {
+			$fTable=$objFkInfo->REFERENCED_TABLE_NAME;
+			$fField=$objFkInfo->COLUMN_NAME;
+			$functionName=$fTable;
+			if (is_array($arrTables[$fTable])) {
+				$functionName=$fTable.'By'.ucfirst($fField);
+			}
+			$resultCode.=$sg.'public function obj'.ucfirst($functionName).'() {'.$sl;
+			$resultCode.=$sg.$sg.'return new '.ucfirst($fTable).'($this->arrDbData["'.$fField.'"]);'.$sl;
+			$resultCode.=$sg.'}'.$sl;
+		}
+		return $resultCode;
+	}
+	private function FkTo($arrFksTo) {
+		$sl=$this->sl;
+		$sg=$this->sg;
+		$resultCode='';
+
+		$arrTables=array();
+		foreach ($arrFksTo as $objFkInfo) {
+			$fTable=$objFkInfo->TABLE_NAME;
+			$fField=$objFkInfo->COLUMN_NAME;
+			if (!array_key_exists($fTable, $arrTables)) {
+				$arrTables[$fTable]=$fTable;
+			} else {
+				if (!is_array($arrTables[$fTable])) {
+					$tmp=$arrTables[$fTable];
+					$arrTables[$fTable]=array();
+					$arrTables[$fTable][]=$tmp;
+				}
+				$arrTables[$fTable][]=$fField;
+			}
+		}
+		foreach ($arrFksTo as $objFkInfo) {
+			$fTable=$objFkInfo->TABLE_NAME;
+			$fField=$objFkInfo->COLUMN_NAME;
+
+			$functionName=$fTable;
+			if ($objFkInfo->manyToMany) {
+				$ffTable=$objFkInfo->ffTable;
+				$ffField=$objFkInfo->ffField;
+				$functionName=$ffTable;
+			}
+
+			if (is_array($arrTables[$fTable])) {
+				$functionName.='By'.ucfirst($fField);
+			}
+			$resultCode.=$sg.'public function arr'.ucfirst($functionName).'($where="",$order="",$limit="",$tipo="arrStdObjs") {'.$sl;
+			$resultCode.=$sg.$sg.'$sqlWhere=($where!="")?" WHERE '.$fField.'=\'".$this->db()->real_escape_String($this->arrDBData[static::$keyField])."\' AND ".$where:" WHERE '.$fField.'=\'".$this->db()->real_escape_string($this->arrDBData[static::$keyField])."\'";'.$sl;
+			$resultCode.=$sg.$sg.'$sqlOrder=($order!="")?" ORDER BY ".$order:"";'.$sl;
+			$resultCode.=$sg.$sg.'$sqlLimit=($limit!="")?" LIMIT ".$limit:"";'.$sl;
+			if (!$objFkInfo->manyToMany) {
+				$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$fTable.'".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
+			} else {
+				$resultCode.=$sg.$sg.'//TODO: OJO!, al escrbir esta consulta no conocemos el nombre de la clave primaria en la tabla del otro extremo de la relaccion manyToMany ('.$ffTable.'), se está usando siempre id.'.$sl;
+				$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$fTable.' INNER JOIN '.$ffTable.' ON '.$fTable.'.'.$ffField.'='.$ffTable.'.'.('id').'".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
+			}
+			$resultCode.=$sg.$sg.'$arr=array();'.$sl;
+			$resultCode.=$sg.$sg.'$rsl=$this->db()->query($sql);'.$sl;
+			$resultCode.=$sg.$sg.'while ($data=$rsl->fetch_object()) {'.$sl;
+			$resultCode.=$sg.$sg.$sg.'switch ($tipo) {'.$sl;
+			$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{static::$keyField});break;'.$sl;
+			$resultCode.=$sg.$sg.$sg.$sg.'case "arrClassObjs":'.$sl;
+			if (!$objFkInfo->manyToMany) {
+				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '.ucfirst($fTable).'($data->{static::$keyField});'.$sl;
+			} else {
+				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '.ucfirst($ffTable).'($data->{static::$keyField});'.$sl;
+			}
+			$resultCode.=$sg.$sg.$sg.$sg.$sg.'array_push($arr,$obj);'.$sl;
+			$resultCode.=$sg.$sg.$sg.$sg.$sg.'unset($obj);'.$sl;
+			$resultCode.=$sg.$sg.$sg.$sg.'break;'.$sl;
+			$resultCode.=$sg.$sg.$sg.$sg.'case "arrStdObjs":'.$sl;
+			$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new \stdClass();'.$sl;
+			$resultCode.=$sg.$sg.$sg.$sg.$sg.'foreach ($data as $field => $value) {'.$sl;
+			$resultCode.=$sg.$sg.$sg.$sg.$sg.$sg.'$obj->$field=$value;'.$sl;
+			$resultCode.=$sg.$sg.$sg.$sg.$sg.'}'.$sl;
+			$resultCode.=$sg.$sg.$sg.$sg.$sg.'array_push($arr,$obj);'.$sl;
+			$resultCode.=$sg.$sg.$sg.$sg.$sg.'unset ($obj);'.$sl;
+			$resultCode.=$sg.$sg.$sg.$sg.'break;'.$sl;
+			$resultCode.=$sg.$sg.$sg.'}'.$sl;
+			$resultCode.=$sg.$sg.'}'.$sl;
+			$resultCode.=$sg.$sg.'return $arr;'.$sl;
+			$resultCode.=$sg.'}'.$sl;
+		}
+		return $resultCode;
+	}
+}
+
+class PHPUnitTestcaseClassCreator {
+	private $sl;//saltoLinea
+	private $sg;//sangrado
+
+	function __construct ($ruta,$nombreClase) {
+		$this->ruta=$ruta;
+		$this->nombreClase=$nombreClase;
+
+		$this->sl="\n";
+		$this->sg="\t";
+		$sl=$this->sl;
+		$sg=$this->sg;
+
+		$classCode='<?'.$sl;
+		$classCode.='namespace Sintax\Tests;'.$sl;
+		$classCode.=''.$sl;
+		$classCode.='/**'.$sl;
+		$classCode.=' * @coversDefaultClass Sintax\Pages\crudPrueba //Sirve para no tener que poner toda la ruta de la clase en los covers de los test'.$sl;
+		$classCode.=' */'.$sl;
+		$classCode.='class '.$this->nombreClase.' extends \PHPUnit_Framework_TestCase {'.$sl;
+		$classCode.=$sg.'protected $backupGlobals = FALSE;//PHPUnit hace copia de seguridad de las variables globales y las restaura al acabar cada test, esto es para que no lo haga'.$sl;
+		$classCode.=''.$sl;
+		$classCode.=$sg.'public function setUp() {parent::setUp();}'.$sl;
+		$classCode.=$sg.'public function tearDown() {parent::tearDown();}'.$sl;
+		$classCode.=''.$sl;
+
+		$classCode.=$sg.'/**'.$sl;
+		$classCode.=$sg.' * @covers Nothing'.$sl;
+		$classCode.=$sg.' */'.$sl;
+		$classCode.=$sg.'public function testEmpty () {'.$sl;
+		$classCode.=$sg.$sg.'$this->assertTrue(true);'.$sl;
+		$classCode.=$sg.'}'.$sl;
+
+		$classCode.=$sg.'/**'.$sl;
+		$classCode.=$sg.' * @covers Nothing'.$sl;
+		$classCode.=$sg.' */'.$sl;
+		$classCode.=$sg.'public function testClassEntityExists () {'.$sl;
+		$classCode.=$sg.$sg.'$this->assertTrue(class_exists("\Sintax\Core\Entity"));'.$sl;
+		$classCode.=$sg.'}'.$sl;
+
+		$classCode.='}'.$sl;
+		$classCode.='?>'.$sl;
+
+		$file=$ruta."/".$nombreClase.".php";
+		$fp=fopen ($file,"w");
+		fwrite ($fp,$classCode);
+		fclose ($fp);
+		chmod ($file,0777);
+	}
+}
+
+
+
+
+
+
 /**************************************************************************************************************/
 //Crea un fichero php con el codigo basico que solemos usar para las clases
 //El fichero creado tira de las funciones de MysqliDB.php
@@ -108,14 +422,22 @@ class Creadora {
 		foreach ($arrAtributos as $nombreAtributo => $sqlData) {
 			$resultCode.=$sg."private $".$nombreAtributo.";".$sl;
 		}
+		$resultCode.=$sl;
+		$resultCode.=$sg."private \$db;".$sl;
 		return $resultCode;
 	}
 	private function constructor() {
 		$sl=$this->sl;
 		$sg=$this->sg;
 		$resultCode='';
-		$resultCode.=$sg."public function __construct (\$id=\"\") {".$sl;
-		$resultCode.=$sg.$sg."if (\$id!=\"\") {".$sl;
+		$resultCode.=$sg.'/**';
+		$resultCode.=$sg.' * [constructor de la clase]';
+		$resultCode.=$sg.' * @param mysqli db clase de acceso a datos';
+		$resultCode.=$sg.' * @param string id identificador del registro asociado a la instancia a construir';
+		$resultCode.=$sg.' */';
+		$resultCode.=$sg."public function __construct (mysqli \$db=NULL, \$id=NULL) {".$sl;
+		$resultCode.=$sg.$sg."if (!is_empty(\$id) && !is_empty(\$db)) {".$sl;
+		$resultCode.=$sg.$sg.$sg."\$this->db=\$db;".$sl;
 		$resultCode.=$sg.$sg.$sg."\$this->cargarId (\$id);".$sl;
 		$resultCode.=$sg.$sg."}".$sl;
 		$resultCode.=$sg."}".$sl;
@@ -127,7 +449,8 @@ class Creadora {
 		$sg=$this->sg;
 		$resultCode='';
 		$resultCode.=$sg.'private static function db() {'.$sl;
-		$resultCode.=$sg.'	return cDb::gI();'.$sl;
+		//$resultCode.=$sg.'	return cDb::gI();'.$sl;
+		$resultCode.=$sg.'	return $this->db;'.$sl;
 		$resultCode.=$sg.'}'.$sl;
 		$resultCode.=$sl;
 		return $resultCode;
@@ -138,8 +461,8 @@ class Creadora {
 		$resultCode='';
 		$resultCode.=$sg."public function cargarId (\$id) {".$sl;
 		$resultCode.=$sg.$sg."\$result=false;".$sl;
-		$resultCode.=$sg.$sg."\$sql=\"SELECT * FROM ".$nombreTabla." WHERE id='\".self::db()->real_escape_string(\$id).\"'\";".$sl;
-		$resultCode.=$sg.$sg."\$data=self::db()->get_obj(\$sql);".$sl;
+		$resultCode.=$sg.$sg."\$sql=\"SELECT * FROM ".$nombreTabla." WHERE id='\".\$this->db()->real_escape_string(\$id).\"'\";".$sl;
+		$resultCode.=$sg.$sg."\$data=\$this->db()->get_obj(\$sql);".$sl;
 		$resultCode.=$sg.$sg."if (\$data) {".$sl;
 		foreach ($arrAtributos as $nombreAtributo => $sqlData) {
 			//$resultCode.=$sg.$sg.$sg."\$this->".$nombreAtributo."=htmlentities(\$data->".$nombreAtributo.",ENT_QUOTES,\"UTF-8\");".$sl;
@@ -158,7 +481,7 @@ class Creadora {
 		$resultCode.=$sg."public function grabar () {".$sl;
 		$resultCode.=$sg.$sg."\$result=false;".$sl;
 		foreach ($arrAtributos as $nombreAtributo => $sqlData) {
-			$resultCode.=$sg.$sg."\$sqlValue_".$nombreAtributo."=(is_null(\$this->".$nombreAtributo."))?\"NULL\":\"'\".self::db()->real_escape_string(\$this->".$nombreAtributo.").\"'\";".$sl;
+			$resultCode.=$sg.$sg."\$sqlValue_".$nombreAtributo."=(is_null(\$this->".$nombreAtributo."))?\"NULL\":\"'\".\$this->db()->real_escape_string(\$this->".$nombreAtributo.").\"'\";".$sl;
 		}
 		$resultCode.=$sg.$sg."if (\$this->id!=\"\") { //UPDATE".$sl;
 
@@ -176,7 +499,7 @@ class Creadora {
 		$resultCode.=$sg.$sg."} else { //INSERT".$sl;
 
 		$arrKeys=array_keys($arrAtributos);
-		$resultCode.=$sg.$sg.$sg."\$this->id=\$sqlValue_id=self::db()->nextId (\"".$nombreTabla."\",\"".$arrKeys[0]."\");".$sl;
+		$resultCode.=$sg.$sg.$sg."\$this->id=\$sqlValue_id=\$this->db()->nextId (\"".$nombreTabla."\",\"".$arrKeys[0]."\");".$sl;
 		$resultCode.=$sg.$sg.$sg."\$this->insert=\$sqlValue_insert=\$this->update=\$sqlValue_update=date(\"YmdHis\");".$sl;
 		$resultCode.=$sg.$sg.$sg."\$sql=\"INSERT INTO ".$nombreTabla." ( \".".$sl;
 		$code="";
@@ -193,7 +516,7 @@ class Creadora {
 		$resultCode.=$code.")\";".$sl;
 		$resultCode.=$sg.$sg."}".$sl;
 
-		$resultCode.=$sg.$sg."\$result=self::db()->query (\$sql);".$sl;
+		$resultCode.=$sg.$sg."\$result=\$this->db()->query (\$sql);".$sl;
 
 		$resultCode.=$sg.$sg."return \$result;".$sl;
 		$resultCode.=$sg."}".$sl;
@@ -206,8 +529,8 @@ class Creadora {
 		$resultCode.=$sg.'public function borrar() {'.$sl;
 		$resultCode.=$sg.$sg.'$result=false;'.$sl;
 		$resultCode.=$sg.$sg.'if ($this->noReferenciado()) {'.$sl;
-		$resultCode.=$sg.$sg.$sg.'$sql="DELETE FROM '.$nombreTabla.' WHERE id=\'".self::db()->real_escape_string($this->id)."\'";'.$sl;
-		$resultCode.=$sg.$sg.$sg.'self::db()->query($sql);'.$sl;
+		$resultCode.=$sg.$sg.$sg.'$sql="DELETE FROM '.$nombreTabla.' WHERE id=\'".\$this->db()->real_escape_string($this->id)."\'";'.$sl;
+		$resultCode.=$sg.$sg.$sg.'\$this->db()->query($sql);'.$sl;
 		$resultCode.=$sg.$sg.$sg.'$result=true;'.$sl;
 		$resultCode.=$sg.$sg.'}'.$sl;
 		$resultCode.=$sg.$sg.'return $result;'.$sl;
@@ -307,8 +630,8 @@ class Creadora {
 		$sg=$this->sg;
 		$resultCode='';
 		$resultCode.=$sg.'public static function existeId($id) {'.$sl;
-		$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$nombreTabla.' WHERE id=\'".self::db()->real_escape_string($id)."\'";'.$sl;
-		$resultCode.=$sg.$sg.'$data=self::db()->get_obj($sql);'.$sl;
+		$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$nombreTabla.' WHERE id=\'".\$this->db()->real_escape_string($id)."\'";'.$sl;
+		$resultCode.=$sg.$sg.'$data=\$this->db()->get_obj($sql);'.$sl;
 		$resultCode.=$sg.$sg.'if ($data) {$result=true;} else {$result=false;}'.$sl;
 		$resultCode.=$sg.$sg.'return $result;'.$sl;
 		$resultCode.=$sg."}".$sl;
@@ -324,7 +647,7 @@ class Creadora {
 		$resultCode.=$sg.$sg.'$sqlLimit=($limit!="")?" LIMIT ".$limit:"";'.$sl;
 		$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$nombreTabla.'".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
 		$resultCode.=$sg.$sg.'$arr=array();'.$sl;
-		$resultCode.=$sg.$sg.'$rsl=self::db()->query($sql);'.$sl;
+		$resultCode.=$sg.$sg.'$rsl=\$this->db()->query($sql);'.$sl;
 		$resultCode.=$sg.$sg.'while ($data=$rsl->fetch_object()) {'.$sl;
 		$resultCode.=$sg.$sg.$sg.'switch ($tipo) {'.$sl;
 		$resultCode.=$sg.$sg.$sg.$sg.'case "arrIds": array_push($arr,$data->id);break;'.$sl;
@@ -356,13 +679,13 @@ class Creadora {
 		$resultCode.=$sg.'	$sqlView="CREATE OR REPLACE VIEW `'.$nombreVista.'` AS'.$sl;
 		$resultCode.=$sg.'		SELECT * FROM '.$nombreTabla.';'.$sl;
 		$resultCode.=$sg.'	";'.$sl;
-		$resultCode.=$sg.'	self::db()->query($sqlView);'.$sl;
+		$resultCode.=$sg.'	\$this->db()->query($sqlView);'.$sl;
 		$resultCode.=$sg.'	$sqlWhere=($where!="")?" WHERE ".$where:"";'.$sl;
 		$resultCode.=$sg.'	$sqlOrder=($order!="")?" ORDER BY ".$order:"";'.$sl;
 		$resultCode.=$sg.'	$sqlLimit=($limit!="")?" LIMIT ".$limit:"";'.$sl;
 		$resultCode.=$sg.'	$sql="SELECT * FROM '.$nombreVista.'".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
 		$resultCode.=$sg.'	$arr=array();'.$sl;
-		$resultCode.=$sg.'	$rsl=self::db()->query($sql);'.$sl;
+		$resultCode.=$sg.'	$rsl=\$this->db()->query($sql);'.$sl;
 		$resultCode.=$sg.'	while ($data=$rsl->fetch_object()) {'.$sl;
 		$resultCode.=$sg.'		$objSeg=new self($data->id);'.$sl;
 		$resultCode.=$sg.'		$obj=new \stdClass();'.$sl;
@@ -385,8 +708,8 @@ class Creadora {
 			foreach ($arrFksTo as $objFkInfo) {
 				$fTable=$objFkInfo->TABLE_NAME;
 				$fField=$objFkInfo->COLUMN_NAME;
-				$resultCode.=$sg.$sg.'$sql="SELECT '.$fField.' FROM '.$fTable.' WHERE '.$fField.'=\'".self::db()->real_escape_string($this->id)."\'";'.$sl;
-				$resultCode.=$sg.$sg.'$noReferenciadoEn'.ucfirst($fTable).'=(self::db()->get_num_rows($sql)==0)?true:false;'.$sl;
+				$resultCode.=$sg.$sg.'$sql="SELECT '.$fField.' FROM '.$fTable.' WHERE '.$fField.'=\'".\$this->db()->real_escape_string($this->id)."\'";'.$sl;
+				$resultCode.=$sg.$sg.'$noReferenciadoEn'.ucfirst($fTable).'=(\$this->db()->get_num_rows($sql)==0)?true:false;'.$sl;
 			}
 			$strConds='';
 			foreach ($arrFksTo as $objFkInfo) {
@@ -472,7 +795,7 @@ class Creadora {
 				$functionName.='By'.ucfirst($fField);
 			}
 			$resultCode.=$sg.'public function arr'.ucfirst($functionName).'($where="",$order="",$limit="",$tipo="arrStdObjs") {'.$sl;
-			$resultCode.=$sg.$sg.'$sqlWhere=($where!="")?" WHERE '.$fField.'=\'".self::db()->real_escape_String($this->id)."\' AND ".$where:" WHERE '.$fField.'=\'".self::db()->real_escape_string($this->id)."\'";'.$sl;
+			$resultCode.=$sg.$sg.'$sqlWhere=($where!="")?" WHERE '.$fField.'=\'".\$this->db()->real_escape_String($this->id)."\' AND ".$where:" WHERE '.$fField.'=\'".\$this->db()->real_escape_string($this->id)."\'";'.$sl;
 			$resultCode.=$sg.$sg.'$sqlOrder=($order!="")?" ORDER BY ".$order:"";'.$sl;
 			$resultCode.=$sg.$sg.'$sqlLimit=($limit!="")?" LIMIT ".$limit:"";'.$sl;
 			if (!$objFkInfo->manyToMany) {
@@ -481,7 +804,7 @@ class Creadora {
 				$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$fTable.' INNER JOIN '.$ffTable.' ON '.$fTable.'.'.$ffField.'='.$ffTable.'.id".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
 			}
 			$resultCode.=$sg.$sg.'$arr=array();'.$sl;
-			$resultCode.=$sg.$sg.'$rsl=self::db()->query($sql);'.$sl;
+			$resultCode.=$sg.$sg.'$rsl=\$this->db()->query($sql);'.$sl;
 			$resultCode.=$sg.$sg.'while ($data=$rsl->fetch_object()) {'.$sl;
 			$resultCode.=$sg.$sg.$sg.'switch ($tipo) {'.$sl;
 			$resultCode.=$sg.$sg.$sg.$sg.'case "arrIds": array_push($arr,$data->id);break;'.$sl;

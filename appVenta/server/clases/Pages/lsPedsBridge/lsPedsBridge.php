@@ -19,7 +19,6 @@ class lsPedsBridge extends Bridge implements IPage {
 		$usrClass=get_class($this->objUsr);
 		if ($usrClass=="Multi_cliente") {
 			//esta identificado en fed16
-			error_log("Excep: esta identificado en fed16");
 			$_SESSION['datosCli']=$this->getDatosCli("",$this->objUsr->id,$hash);
 			return $this->objUsr->pagePermitida($this);
 		} else {
@@ -60,10 +59,19 @@ class lsPedsBridge extends Bridge implements IPage {
 	public function markup() {
 		$hash=$_REQUEST['hash'];
 		$datosCli=$_SESSION['datosCli'];
-		$idUser=$datosCli->idEnOrigen;
+		if ($datosCli->idEnOrigen) {
+			$campo="idEnOrigen";
+			$value=$datosCli->idEnOrigen;
+			$idUser=$datosCli->idEnOrigen;
+		} else {
+			$campo="id";
+			$value=$datosCli->id;
+			$idUser=$datosCli->id;
+		}
 		$store=$datosCli->keyTienda;
 
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=storeUserPeds&store='.$store.'&idUser='.$idUser.'&hash='.$_REQUEST['hash'];
+		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=storeUserPeds&store='.$store.'&campo='.$campo.'&value='.$value;
+		error_log("Excep: ".$urlAPI);
 		$result=file_get_contents($urlAPI);
 		$pedidos=json_decode($result);
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
@@ -80,8 +88,9 @@ class lsPedsBridge extends Bridge implements IPage {
 	private function getDatosCli($store,$idEnStore,$hash) {
 		$subService='datosCli';
 		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store='.$store.'&idCli='.$idEnStore.'&hash='.$hash;
+		//error_log("lsPedsBridge::getDatosCli::Excep: ".$urlAPI);
 		$result=file_get_contents($urlAPI);
-		error_log("Excep: ".$result);
+		//error_log("lsPedsBridge::getDatosCli::Excep: ".$result);
 		$datosCli=json_decode($result);
 		return $datosCli;
 	}

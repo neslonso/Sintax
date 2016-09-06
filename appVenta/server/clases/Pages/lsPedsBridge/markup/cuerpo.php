@@ -13,6 +13,7 @@
 				<input name="acReturnURI" id="acReturnURI" type="hidden" value="<?=$_SERVER["REQUEST_URI"]?>"/>
 				<input name="hash" id="hash" type="hidden" value="<?=$hash?>"/>
 				<input name="store" id="store" type="hidden" value="<?=$store?>"/>
+				<input name="idUser" id="idUser" type="hidden" value="<?=$idUser?>"/>
 				<table id="multi_pedidoTable<?=$store?>" class="table table-striped table-bordered">
 					<thead>
 						<tr>

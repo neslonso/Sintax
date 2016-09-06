@@ -173,10 +173,10 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 		$extends=$_POST['extends'];
 		$markupFunc=$_POST['markupFunc'];
 		$markupFile=$_POST['markupFile'];
+		$chkTestClass=$_REQUEST['chkTestClass'];
 		if (strstr($_POST['class'], self::DB_NAME_TABLE_NAME_SEPARATOR)) {
 			list($db,$class)=split(self::DB_NAME_TABLE_NAME_SEPARATOR,$_POST['class']);
-			$arrDbs=unserialize(DBS);
-			\cDb::conf($arrDbs[$db]['_DB_HOST_'],$arrDbs[$db]['_DB_USER_'],$arrDbs[$db]['_DB_PASSWD_'],$arrDbs[$db]['_DB_NAME_']);
+			\cDb::confByKey($db);
 		} else {
 			$db=$class='';
 		}
@@ -194,7 +194,11 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 		}
 
 		if ($class!="") {
-			$this->CrearClase($arrDbs[$db]['_DB_NAME_'],$class,$rutaLogic);
+			$this->CrearClase(\cDb::getInstance()->GETdb(),$class,$rutaLogic);
+			if ($chkTestClass) {
+				$this->CrearTest($class,$rutaLogic);
+			}
+
 		}
 
 		if ($page=='') {
@@ -216,7 +220,7 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 		fwrite ($fp,'<?if (false) {?><style><?}?>'.$sl);
 		fwrite ($fp,'<?="\n/*".get_class()."*/\n"?>'.$sl);
 		if ($class!="") {
-			$stdObjTableInfo=$this->getTableInfo($arrDbs[$db]['_DB_NAME_'],$class,$arrExcluidos);
+			$stdObjTableInfo=$this->getTableInfo(\cDb::getInstance()->GETdb(),$class,$arrExcluidos);
 			if (BOOTSTRAP!=false) {
 				switch ($pageType) {
 					case 'CRUD':
@@ -381,14 +385,21 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 		fwrite ($fp,"?>".$sl);
 		fclose ($fp);
 		chmod ($file,0777);
+		if ($chkTestClass) {
+			$this->CrearTest($page,$ruta.$page);
+		}
+
 	}
 
 	public function acCrearClase() {
 		list($db,$class)=split(self::DB_NAME_TABLE_NAME_SEPARATOR,$_REQUEST['class']);
-		$arrDbs=unserialize(DBS);
-		\cDb::conf($arrDbs[$db]['_DB_HOST_'],$arrDbs[$db]['_DB_USER_'],$arrDbs[$db]['_DB_PASSWD_'],$arrDbs[$db]['_DB_NAME_']);
+		$chkTestClass=$_REQUEST['chkTestClass'];
+		\cDb::confByKey($db);
 		$rutaLogic=SKEL_ROOT_DIR.$_POST['rutaLogic'];
 		$this->CrearClase($db,$class,$rutaLogic);
+		if ($chkTestClass) {
+			$this->CrearTest($class,$rutaLogic);
+		}
 	}
 
 /* CRUD creation functions ****************************************************/
@@ -964,16 +975,27 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 		//$ruta=RUTA_APP."server/clases/Logic/";
 		$stdObjTableInfo=$this->getTableInfo($db,$class);
 		if (!file_exists($ruta.ucfirst($stdObjTableInfo->tableName).".php")) {
+			$objClassEntitySubclaser=new \ClassEntitySubclaser (
+				$ruta,
+				ucfirst($stdObjTableInfo->tableName),
+				$stdObjTableInfo->arrAttrs,
+				$stdObjTableInfo->tableName,
+				$stdObjTableInfo->arrFksFrom,
+				$stdObjTableInfo->arrFksTo
+			);
+			/*
 			$objCreadora=new \Creadora (
 				$ruta,
 				ucfirst($stdObjTableInfo->tableName),
 				$stdObjTableInfo->arrAttrs,
 				$stdObjTableInfo->tableName,
 				$stdObjTableInfo->arrFksFrom,
-				$stdObjTableInfo->arrFksTo);
+				$stdObjTableInfo->arrFksTo
+			);
 			//$objCreadora=new Creadora (ucfirst($tableName), $arrAttrs, $tableName);
 			//$objCreadora->creadoraJS (ucfirst($tableName), $arrAttrs, $tableName);
 			//$objCreadora->frmSimple($arrAttrs,ucfirst($tableName));
+			*/
 			$title='Clase '.$class.' creada';
 			$msg='<h2 title="'.print_r ($stdObjTableInfo->arrAttrs,true).'">Creando clase '.ucfirst($stdObjTableInfo->tableName).' (tooltip)</h2>';
 			$msg.="<h3>Atributos</h3><pre>".print_r ($stdObjTableInfo->arrAttrs,true)."</pre>";
@@ -1277,6 +1299,24 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 		}
 		$result.='</select>';
 		return $result;
+	}
+
+	private function CrearTest($class,$ruta) {
+		//$ruta=RUTA_APP."server/clases/Logic/";
+		$testClassName="test".ucfirst($class);
+		error_log($class);
+		if (!file_exists($ruta.$testClassName.".php")) {
+			$objPHPUnitTestcaseClassCreator=new \PHPUnitTestcaseClassCreator ($ruta,$testClassName);
+			$title='Clase '.$class.' creada';
+			$msg='<h2>Creando clase '.$testClassName.'</h2>';
+			$msg.="<h3>URL: ".BASE_URL.FILE_APP."?MODULE=phpunit&test=".$testClassName."</h3>";
+			$msg.="<hr /><hr /><hr />";
+			ReturnInfo::add($msg,$title);
+		} else {
+			$title='Clase '.$testClassName.' NO re-creada';
+			$msg='La clase ya existe.';
+			ReturnInfo::add($msg,$title);
+		}
 	}
 }
 ?>
