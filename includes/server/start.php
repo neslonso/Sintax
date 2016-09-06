@@ -41,7 +41,6 @@ define ('MODULES', serialize(array(
 
 require_once SKEL_ROOT_DIR."includes/server/IPS_DEV.php";
 
-
 require_once SKEL_ROOT_DIR."includes/server/APPS.php";
 
 require_once SKEL_ROOT_DIR."includes/server/DBS.php";
