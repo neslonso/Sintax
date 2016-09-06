@@ -201,7 +201,7 @@ abstract class Page implements IPage {
 		throw new Exception('El metodo markup debe ser implementado en la clase '.get_class($this));
 
 		//Si se llama a esta funcion por herencia (desde una clase que desciendade esta y no la tengo, p.e.) __FILE__
-		//no hará lo esperado, ya que resuleve al este fichero y no al fichero que contiene la clase descendientee
+		//no hará lo esperado, ya que resuleve a este fichero y no al fichero que contiene la clase descendiente
 		//require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/markup.php');
 	}
 

@@ -24,7 +24,7 @@ echo "Lista de cabeceras de response (var_dump(apache_request_headers())): ";
 var_dump(apache_response_headers());
 */
 echo "Lista de cabeceras de response (var_dump(headers_list())): ";
-echo '<pre style="height:200px;">';
+echo '<pre style="width:100%; height:200px; overflow:scroll;">';
 var_dump(headers_list());
 echo "</pre>";
 ?>

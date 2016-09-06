@@ -107,9 +107,9 @@ cDb::getInstance()->query('SELECT * FROM tabla');
 						(no es necesario enviarlas por la red) especialmente si no se trata de gran cantidad de ellas o si su volumen
 						no es muy muy grande, por lo que <span class="skelName">S!nt@x</span> simplifica el proceso de elección cargando unas pocas bibliotecas de
 						<i>amplio espectro</i>, como PHPMailer. No obstante, la carga de las bibliotecas de servidor se regula a través
-						del fichero <code>./includes/server/serverLibs.php</code>, compuesto unicamente de sentencias requiere.<br />
+						del fichero <code>./includes/server/serverLibs.php</code>, compuesto unicamente de sentencias require.<br />
 
-						En cuanto a bibvliotecas de cliente, la carga de las principales se regula desde el fichero
+						En cuanto a bibliotecas de cliente, la carga de las principales se regula desde el fichero
 						<code>./includes/server/clientLibs.php</code> por medio de diversas constantes. Es recomendable que
 						revises las bibliotecas que quieres utilizar en las aplicaciones de tu proyecto y sus versiones.
 					</div>
@@ -142,7 +142,7 @@ cDb::getInstance()->query('SELECT * FROM tabla');
 					</p>
 					<p>
 						Siguiendo las convenciones de nomeclatura conseguiremos tener que utilizar menos identificadores y más cortos,
-						código más autodocumentado y una mayor facilidad a la hora de orientarnos y refactorizar y mantener nuestro código.
+						código más autodocumentado y una mayor facilidad a la hora de orientarnos, refactorizar y mantener nuestro código.
 						Estas convenciones abarcan desde el nombrado de tablas y campos de la base de datos, hasta el nombre de los
 						ficheros que compondrán cada clase de página (Page) de nuestras APPs.
 					</p>
