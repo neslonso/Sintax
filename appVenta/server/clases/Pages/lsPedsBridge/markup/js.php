@@ -21,8 +21,8 @@ $(document).ready(function() {
 		}
 	};
 
-
-	var $dt=$('#multi_pedidoTable').DataTable({
+	var keyTienda=$('#store').val();
+	var $dt=$('#multi_pedidoTable'+keyTienda).DataTable({
 		'aoColumns': [
 			{"sWidth":"7%"},
 			{"sWidth":"5%"},
@@ -35,9 +35,9 @@ $(document).ready(function() {
 		"bStateSave": true
 	});
 
-	$(document).on("click", "#multi_pedidoTable tbody tr",
+	$(document).on("click", "#multi_pedidoTable"+keyTienda+" tbody tr",
 		function () {
-			window.location='<?=BASE_URL?>index.php?page=pedBridge&id='+$(this).data('id')+'&hash='+$('#hash').val();
+			window.location='<?=BASE_URL?>index.php?page=pedBridge&id='+$(this).data('id')+'&store='+$('#store').val()+'&idUser='+$('#idUser').val();
 		}
 	);
 });

@@ -53,6 +53,9 @@ $(document).ready(function() {
 		btnNextAdjust(this,data.step);
 
 		var ultimoPaso=$(this).find('.steps li').length;
+		if (data.step==ultimoPaso-1) {
+			$('#addCredito').click();
+		}
 		if (data.step==ultimoPaso) {
 			var totalLineas=$('#spTotalLineas').data('totalLineas');
 
@@ -182,12 +185,12 @@ $(document).ready(function() {
 			'comentarios':comentarios,
 		}
 		console.log(pedData);
-		if (confirm("¿Realizar el POST?")) {
+		//if (confirm("¿Realizar el POST?")) {
 			Post ('action','<?=BASE_DIR.FILE_APP?>',
 				'MODULE','actions','acClase','newPedBridge','acMetodo','acGrabar','acTipo','stdAssoc',
 				'pedData',pedData
 			);
-		}
+		//}
 	});
 
 	$('input[type=radio][name=modoPago]').change(function() {
@@ -226,34 +229,39 @@ $(document).ready(function() {
 		var comboSelectedItem=$('#cuponCombo').combobox('selectedItem');
 		var codigoCupon=(comboSelectedItem.value)?comboSelectedItem.value:comboSelectedItem.text;
 		if (codigoCupon!="") {
-			var hash='';
-			var store=$('#newPedWizard').data('store');
-			var urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService=getCuponByCode&store='+store+'&cuponCode='+codigoCupon+'&hash='+hash;
 			$('#cuponCombo').combobox('disable');
 			$('#addCupon').button('loading');
-			$.get(urlAPI,
-				function (response,textStatus,jqXHR) {
-					console.log(response);
-					if (response) {
-						if (!response.caducado) {
-							//$('#cupon').prop('disabled', true).addClass('ui-state-disabled');
-							//btnAddCupon.value="Eliminar cupón";
-
-							muestraMsgModal('El cupón introducido es válido.','Se aplicará el descuento del cupón ('+response.tipoDescuento+'%)');
-
+			$.post('<?=BASE_DIR.FILE_APP?>',{
+				'MODULE':'actions',
+				'acClase':'newPedBridge',
+				'acMetodo':'acValidaCupon',
+				'acTipo':'ajaxAssoc',
+				'codigo':codigoCupon,
+			},
+			function (response) {
+				console.log('Response cupon');
+				console.log(response);
+				if (!response.exito){
+					muestraMsgModal('Error validando cupon','Se ha producido el siguiente error durante la validación del cupón:<br/>'+response.msg);
+				} else {
+					if (response.data.id) {
+						if (!response.data.caducado) {
+							muestraMsgModal('El cupón introducido es válido.','Se aplicará el descuento del cupón ('+response.data.tipoDescuento+'%)');
 							var msgAplicable='';
-							if (response.restringido) {
+							if (response.data.restringido) {
 								msgAplicable='<p class="help-block">Aplicable sólo a los productos indicados en el cupón</p>';
 							}
-							ulDtosAdd('dtoCupon','Descuento cupón '+response.codigo+''+msgAplicable,response.tipoDescuento,'');//response.codigo o response.id van a tener que ir en el UL??
+							ulDtosAdd('dtoCupon','Descuento cupón '+response.data.codigo+''+msgAplicable,response.data.tipoDescuento,'');
+							$('#cuponSelectionControl').replaceWith(response.data.combo);
 						} else {
-							muestraMsgModal('El cupón introducido no es válido.','El cupón '+response.codigo+' ha caducado.');
+							muestraMsgModal('El cupón introducido no es válido.','El cupón '+response.data.codigo+' ha caducado.');
 						}
 					} else {
-						muestraMsgModal('El cupón introducido no es válido.','No se ha encontrado el cupón "'+codigoCupon+'".');
+						muestraMsgModal('El cupón introducido no es válido.','No se ha encontrado el cupón "'+response.data.codigo+'".');
 					}
-				},
-				'json'
+				}
+			},
+			'json'
 			).fail(function () {
 				muestraMsgModal('Fallo en la carga de datos de cupón','No fue posible validar el cupón introducido, por favor, intentelo de nuevo más tarde o utilize un cupón diferente.');
 			}).always(function () {
@@ -261,7 +269,7 @@ $(document).ready(function() {
 				$('#addCupon').button('reset');
 			});
 		} else {
-			muestraMsgModal('Código de cupón no introducido','Debe introducir el codigo del cupón que desea aplicar a su pedido.');
+			muestraMsgModal('Código de cupón no introducido','Debe introducir el codigo del cupón que desea aplicar a su pedido o escoger de la lista.');
 		}
 	});
 

@@ -230,12 +230,12 @@ $totalRebotesDesc.='</table>';
 						<div>Total productos: <span id="spTotalLineas" class="spCalculado" data-total-lineas="<?=$this->totalLineas($newPedBridgeData->lineas)?>"><?=$this->totalLineas($newPedBridgeData->lineas)?></span> €</div>
 						<div>
 							<span id="tipDtosImporte">
-								Descuentos por importe: <span id="spDescuentoImporte" class="spCalculado"></span> €
+								Descuentos por fidelización: <span id="spDescuentoImporte" class="spCalculado"></span> €
 							</span>
 						</div>
 						<div>
 							<span id="tipDtosTipo">
-								Descuentos porcentuales (<span id="spDtoTipo" class="spCalculado"></span>%): <span id="spDtoMonto" class="spCalculado"></span> €
+								Otros descuentos (<span id="spDtoTipo" class="spCalculado"></span>%): <span id="spDtoMonto" class="spCalculado"></span> €
 							</span>
 						</div>
 						<div>Gastos de envío: <span id="spPortes" class="spCalculado" data-portes="<?=$newPedBridgeData->portes?>"><?=$newPedBridgeData->portes?></span> €</div>
@@ -346,7 +346,16 @@ if ($totalRebotes>0) {
 						<div class="col-sm-4">
 							<div class="form-group">
 								<label for="pais" accesskey="">País:</label>
-								<input class="form-control" type="text" name="pais" id="pais" value="España" placeholder"País" />
+								<select name="pais" id="pais" class="form-control">
+<?
+								foreach ($arrPaises->paises as $pais) {
+									$selected=($pais->id==$arrPaises->paisDefecto)?"selected='selected'":"";
+?>
+										<option <?=$selected?> data-id="<?=$pais->id?>" data-iso="<?=$pais->iso?>" value="<?=$pais->nombre?>"><?=$pais->nombre?></option>
+<?
+								}
+?>
+								</select>
 							</div>
 						</div>
 						<div class="col-sm-4">

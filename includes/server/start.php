@@ -45,8 +45,8 @@ define ('IPS_DEV', serialize(array_merge(
 		//'83.43.177.42',//León Carbajal 20160204
 		//'88.14.241.127',//León Carbajal 20160319
 		//'83.35.214.173',//León Carbajal 20160414
-		'88.9.52.215',//León Carbajal 20160427
-		'88.14.232.57',//León Carbajal 2016822
+		//'88.9.52.215',//León Carbajal 20160427
+		//'88.14.232.57',//León Carbajal 20160822
 	),
 	array(
 		'193.146.109.133',//Unileon
@@ -62,6 +62,7 @@ define ('IPS_DEV', serialize(array_merge(
 		//'47.62.225.110',//Diego Madrid 20160404
 		//'47.62.94.42',//Diego Madrid 20160419
 		'47.62.161.15',//Diego Madrid 20160817
+		'47.62.94.97',//Diego Madrid 20160830
 	),
 	array()
 )));

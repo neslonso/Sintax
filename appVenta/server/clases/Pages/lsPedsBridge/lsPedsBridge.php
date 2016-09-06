@@ -12,7 +12,28 @@ class lsPedsBridge extends Bridge implements IPage {
 		*/
 	}
 	public function pageValida () {
-		return $this->objUsr->pagePermitida($this);
+		$hash=$_REQUEST['hash'];
+		$arrHash=explode("@@@", base64_decode($hash));
+		$idUser=$arrHash[0];
+		$store=$arrHash[1];
+		$usrClass=get_class($this->objUsr);
+		if ($usrClass=="Multi_cliente") {
+			//esta identificado en fed16
+			$_SESSION['datosCli']=$this->getDatosCli("",$this->objUsr->id,$hash);
+			return $this->objUsr->pagePermitida($this);
+		} else {
+			if ($idUser) {
+				//no esta identificado en fed16 pero hemos recibido un idUser desde el store
+				$_SESSION['datosCli']=$this->getDatosCli($store,$idUser,$hash);
+			} else {
+				$loginBridgeData=new \stdClass();
+				$loginBridgeData->store=$store;
+				$loginBridgeDataValue=base64_encode(json_encode($loginBridgeData));
+				$_REQUEST['loginBridgeData']=$loginBridgeDataValue;
+				ReturnInfo::add('Es necesario que se identifique como cliente para poder acceder a sus pedidos','Disculpe, no se encuentra identificado');
+				return "\\Sintax\\Pages\\loginBridge";
+			}
+		}
 	}
 	public function accionValida($metodo) {
 		return $this->objUsr->accionPermitida($this,$metodo);
@@ -37,7 +58,20 @@ class lsPedsBridge extends Bridge implements IPage {
 	}
 	public function markup() {
 		$hash=$_REQUEST['hash'];
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=storeUserPeds&hash='.$_REQUEST['hash'];
+		$datosCli=$_SESSION['datosCli'];
+		if ($datosCli->idEnOrigen) {
+			$campo="idEnOrigen";
+			$value=$datosCli->idEnOrigen;
+			$idUser=$datosCli->idEnOrigen;
+		} else {
+			$campo="id";
+			$value=$datosCli->id;
+			$idUser=$datosCli->id;
+		}
+		$store=$datosCli->keyTienda;
+
+		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=storeUserPeds&store='.$store.'&campo='.$campo.'&value='.$value;
+		error_log("Excep: ".$urlAPI);
 		$result=file_get_contents($urlAPI);
 		$pedidos=json_decode($result);
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
@@ -51,6 +85,15 @@ class lsPedsBridge extends Bridge implements IPage {
 		$pedidos=file_get_contents($urlAPI);
 		return json_decode($pedidos);
 	}*/
+	private function getDatosCli($store,$idEnStore,$hash) {
+		$subService='datosCli';
+		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store='.$store.'&idCli='.$idEnStore.'&hash='.$hash;
+		//error_log("lsPedsBridge::getDatosCli::Excep: ".$urlAPI);
+		$result=file_get_contents($urlAPI);
+		//error_log("lsPedsBridge::getDatosCli::Excep: ".$result);
+		$datosCli=json_decode($result);
+		return $datosCli;
+	}
 }
 ?>
 
