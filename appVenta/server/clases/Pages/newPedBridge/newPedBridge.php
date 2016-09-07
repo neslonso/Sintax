@@ -332,6 +332,7 @@ class newPedBridge extends Bridge implements IPage {
 		//$hash=$salt.hash('sha256',$salt.$pass);
 		$arrayMulti['hash']='';
 		$arrayMulti['cuponCode']=$_REQUEST['codigo'];
+		$arrayMulti['idUser']=$datosCli->id;
 
 		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE';
 
