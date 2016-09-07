@@ -71,7 +71,6 @@ class lsPedsBridge extends Bridge implements IPage {
 		$store=$datosCli->keyTienda;
 
 		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=storeUserPeds&store='.$store.'&campo='.$campo.'&value='.$value;
-		error_log("Excep: ".$urlAPI);
 		$result=file_get_contents($urlAPI);
 		$pedidos=json_decode($result);
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
@@ -88,9 +87,7 @@ class lsPedsBridge extends Bridge implements IPage {
 	private function getDatosCli($store,$idEnStore,$hash) {
 		$subService='datosCli';
 		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store='.$store.'&idCli='.$idEnStore.'&hash='.$hash;
-		//error_log("lsPedsBridge::getDatosCli::Excep: ".$urlAPI);
 		$result=file_get_contents($urlAPI);
-		//error_log("lsPedsBridge::getDatosCli::Excep: ".$result);
 		$datosCli=json_decode($result);
 		return $datosCli;
 	}

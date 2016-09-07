@@ -245,7 +245,7 @@ $(document).ready(function() {
 					muestraMsgModal('Error validando cupon','Se ha producido el siguiente error durante la validación del cupón:<br/>'+response.msg);
 				} else {
 					if (response.data.id) {
-						if (!response.data.caducado) {
+						if (!response.data.caducado && !response.data.utilizado) {
 							muestraMsgModal('El cupón introducido es válido.','Se aplicará el descuento del cupón ('+response.data.tipoDescuento+'%)');
 							var msgAplicable='';
 							if (response.data.restringido) {
@@ -254,7 +254,11 @@ $(document).ready(function() {
 							ulDtosAdd('dtoCupon','Descuento cupón '+response.data.codigo+''+msgAplicable,response.data.tipoDescuento,'');
 							$('#cuponSelectionControl').replaceWith(response.data.combo);
 						} else {
-							muestraMsgModal('El cupón introducido no es válido.','El cupón '+response.data.codigo+' ha caducado.');
+							if (response.data.caducado) {
+								muestraMsgModal('El cupón introducido no es válido.','El cupón '+response.data.codigo+' ha caducado.');
+							} else if (response.data.utilizado) {
+								muestraMsgModal('El cupón introducido no es válido.','Usted ya ha utiilizado utilizado el cupón '+response.data.codigo+' en otro pedido.');
+							}
 						}
 					} else {
 						muestraMsgModal('El cupón introducido no es válido.','No se ha encontrado el cupón "'+response.data.codigo+'".');

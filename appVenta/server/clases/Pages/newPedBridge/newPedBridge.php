@@ -380,9 +380,7 @@ class newPedBridge extends Bridge implements IPage {
 		$subService='datosCli';
 		$idCli=$this->objUsr->id;
 		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store=&idCli='.$idCli.'&hash='.$hash;
-		//error_log("Excep: ".$urlAPI);
 		$result=file_get_contents($urlAPI);
-		//error_log("Excep: ".$result);
 		$datosCli=json_decode($result);
 		return $datosCli;
 	}
