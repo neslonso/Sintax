@@ -6,4 +6,15 @@ $(document).ready(function() {
 		muestraMsgModal("Continuación del pedido",$("#txtPopup").html());
 		$('.modal').find('.btnPagar').attr('id', 'fakeId');
 	}
+
+	setInterval(function() {
+		var _docHeight = (document.height !== undefined) ? document.height : document.body.offsetHeight;
+		//var _docWidth = (document.width !== undefined) ? document.width : document.body.offsetWidth;
+		var objMsg= {
+			service: "pedBridgeIframeHeight",
+			parameters: _docHeight
+		}
+		parent.postMessage(objMsg, '*');
+	}
+	,100);
 });
