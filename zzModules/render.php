@@ -1,5 +1,6 @@
 <?
 ob_start();
+if (!isset($_REQUEST['session_name'])) {$_REQUEST['session_name']='';}
 ?>
 <?
 try {
