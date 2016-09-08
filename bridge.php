@@ -2,11 +2,8 @@
 $tInicial=microtime(true);
 ?>
 <?
-if (isset($_REQUEST['session_name'])) {
-	session_name ($_REQUEST['session_name']);
-} else {
-	$_REQUEST['session_name']='';
-}
+$session_name=(isset($_REQUEST['session_name']))?isset($_REQUEST['session_name']):'';
+sess_name ($session_name);
 
 define ('SKEL_ROOT_DIR',realpath(__DIR__.'/'.'./').'/');
 $module='';

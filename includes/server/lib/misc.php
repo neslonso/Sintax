@@ -1,4 +1,9 @@
 <?
+function sess_name ($name) {
+	if (!empty($name)) {
+		session_name ($name);
+	}
+}
 //NOTA: Considerar que en ciertas ocasiones (por ejemplo cuando tenemos un select y solo necesitamos la id seleccionada,
 //	no el texto selected="selected", lo mejor es tratarlo como un cmapo normal
 function arrFormFromArrPost ($arrPost, $nonTextFields=NULL, $checkboxCheckedValue=1) {

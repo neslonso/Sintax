@@ -90,7 +90,14 @@ $(document).ready(function() {
 
 	window.addEventListener('message', function(event) {
 		// IMPORTANT: Check the origin of the data!
-		if (~event.origin.indexOf('celorriofarma')) {
+		if (
+			~event.origin.indexOf('celorriofarma') ||
+			~event.origin.indexOf('parafarmaciasolobebes') ||
+			~event.origin.indexOf('parafarmaciasolocosmetica') ||
+			~event.origin.indexOf('bebefarma') ||
+			~event.origin.indexOf('farmadis') ||
+			~event.origin.indexOf('farmaciacelorrio')
+		) {
 			// The data has been sent from your site. The data sent with postMessage is stored in event.data
 			switch (event.data.service) {
 				case 'scrollInfo':
