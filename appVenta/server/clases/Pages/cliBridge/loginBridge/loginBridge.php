@@ -52,7 +52,7 @@ class loginBridge extends Bridge implements IPage {
 	}
 
 	public function acLogin() {
-		//POST a la API de V3 para añadir el pedido a la multi
+		//POST a la API de V3
 		$arrayMulti=$_REQUEST;
 		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliLogin';
 		// use key 'http' even if you send the request to https://...

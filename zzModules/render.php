@@ -124,8 +124,8 @@ xmlns:fb="http://www.facebook.com/2008/fbml"
 <!--Favicon -->
 <?=$Page->favIcon()?>
 <!-- /Favicon -->
-<link rel="stylesheet" href="<?=BASE_URL?><?=FILE_APP?>?MODULE=CSS&amp;APP=<?=FILE_APP?>&amp;page=<?=get_class($Page)?>" />
-<script type="text/javascript" src="<?=BASE_URL?><?=FILE_APP?>?MODULE=JS&amp;APP=<?=FILE_APP?>&amp;page=<?=get_class($Page)?>"></script>
+<link rel="stylesheet" href="<?=BASE_URL?><?=FILE_APP?>?MODULE=CSS&amp;APP=<?=FILE_APP?>&amp;page=<?=get_class($Page)?>&amp;session_name=<?=$_REQUEST['session_name']?>" />
+<script type="text/javascript" src="<?=BASE_URL?><?=FILE_APP?>?MODULE=JS&amp;APP=<?=FILE_APP?>&amp;page=<?=get_class($Page)?>&amp;session_name=<?=$_REQUEST['session_name']?>"></script>
 <!-- Page Head (Class <?=get_class($Page);?>)-->
 <?=$Page->head()."\n";?>
 <!-- /Page Head (Class <?=get_class($Page);?>)-->

@@ -4,7 +4,7 @@
  * History
  * 0.1 (20160907)
  * Template sin funcionalidad, basada en http://stefangabos.ro/jquery/jquery-plugin-boilerplate-revisited/
- * Uso:
+ * Interfaz con el exterior:
  * $(document).ready(function() {
  *
  *    // attach the plugin to an element
