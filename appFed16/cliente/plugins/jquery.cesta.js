@@ -23,7 +23,7 @@
 // Window y document se pasan para convertirlas en varialbes locales y que el acceso sea un poco mas rápido
 // undefined no se pasa para que sea de verdad undefined, por si acaso algo lo ha modificado (en ECMAScript
 // 3 es posible modificar el valor de undefined, en ECMAScript 5 ya no).
-(function($) {
+;(function($) {
 	$.jqCesta = function(element, options) {
 		// plugin's default options
 		// this is private property and is  accessible only from inside the plugin
