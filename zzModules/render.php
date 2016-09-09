@@ -1,6 +1,5 @@
 <?
 ob_start();
-if (!isset($_REQUEST['session_name'])) {$_REQUEST['session_name']='';}
 ?>
 <?
 try {
@@ -125,7 +124,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml"
 <!--Favicon -->
 <?=$Page->favIcon()?>
 <!-- /Favicon -->
-<?$session_name=(isset($_REQUEST['session_name']))?isset($_REQUEST['session_name']):'';?>
+<?$session_name=(isset($_REQUEST['session_name']))?$_REQUEST['session_name']:'';?>
 <link rel="stylesheet" href="<?=BASE_URL?><?=FILE_APP?>?MODULE=CSS&amp;APP=<?=FILE_APP?>&amp;page=<?=get_class($Page)?>&amp;session_name=<?=$session_name?>" />
 <script type="text/javascript" src="<?=BASE_URL?><?=FILE_APP?>?MODULE=JS&amp;APP=<?=FILE_APP?>&amp;page=<?=get_class($Page)?>&amp;session_name=<?=$session_name?>"></script>
 <!-- Page Head (Class <?=get_class($Page);?>)-->

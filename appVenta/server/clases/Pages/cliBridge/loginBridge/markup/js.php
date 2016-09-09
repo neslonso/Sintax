@@ -28,7 +28,7 @@ $(document).ready(function() {
 				'keyTienda':$('#keyTienda').val(),
 				'email':$('#email').val(),
 				'pass':$('#pass').val(),
-				'session_name':'<?=$_REQUEST['session_name']?>'
+				'session_name':'<?=$GLOBALS['session_name']?>'
 			},
 			function (response) {
 				if (!response.data.resultado.valor){
@@ -53,7 +53,7 @@ $(document).ready(function() {
 			'acClase':'loginBridge',
 			'acMetodo':'acLogout',
 			'acTipo':'ajax',
-			'session_name':'<?=$_REQUEST['session_name']?>'
+			'session_name':'<?=$GLOBALS['session_name']?>'
 		},
 		function (response) {
 				var objMsg= {

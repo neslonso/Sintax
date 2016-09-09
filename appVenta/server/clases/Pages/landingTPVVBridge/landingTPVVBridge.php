@@ -39,7 +39,7 @@ class landingTPVVBridge extends Bridge implements IPage {
 				$pagado=false;
 			}
 		}
-		$urlPeds=BASE_URL.FILE_APP."?page=lsPedsBridge&hash=".$_REQUEST['hash'];
+		$urlPeds=BASE_URL.FILE_APP."?page=lsPedsBridge&hash=".$_REQUEST['hash']."&session_name=".$GLOBALS['session_name'];
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
 	}
 }

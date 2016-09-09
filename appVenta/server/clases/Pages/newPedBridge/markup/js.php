@@ -188,7 +188,7 @@ $(document).ready(function() {
 		//if (confirm("¿Realizar el POST?")) {
 			Post ('action','<?=BASE_DIR.FILE_APP?>',
 				'MODULE','actions','acClase','newPedBridge','acMetodo','acGrabar','acTipo','stdAssoc',
-				'pedData',pedData,'session_name','<?=$_REQUEST['session_name']?>'
+				'pedData',pedData,'session_name','<?=$GLOBALS['session_name']?>'
 			);
 		//}
 	});
@@ -237,7 +237,7 @@ $(document).ready(function() {
 				'acMetodo':'acValidaCupon',
 				'acTipo':'ajaxAssoc',
 				'codigo':codigoCupon,
-				'session_name':'<?=$_REQUEST['session_name']?>'
+				'session_name':'<?=$GLOBALS['session_name']?>'
 			},
 			function (response) {
 				console.log('Response cupon');
@@ -293,7 +293,7 @@ $(document).ready(function() {
 			'provincia':$('#provincia','#modalAddDir').val(),
 			'cp':$('#cp','#modalAddDir').val(),
 			'pais':$('#pais','#modalAddDir').val(),
-			'session_name':'<?=$_REQUEST['session_name']?>'
+			'session_name':'<?=$GLOBALS['session_name']?>'
 		},
 		function (response) {
 			console.log(response);
@@ -409,7 +409,7 @@ function calculaPortes(importe,idDireccion,callback) {
 		'acTipo':'ajaxAssoc',
 		'importe':importe,
 		'idDireccion':idDireccion,
-		'session_name':'<?=$_REQUEST['session_name']?>'
+		'session_name':'<?=$GLOBALS['session_name']?>'
 	},
 	function (response) {
 		if (!response.exito){
