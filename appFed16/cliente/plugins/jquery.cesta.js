@@ -57,6 +57,8 @@
 			// the plugin's final properties are the merged default and
 			// user-provided options (if any)
 			plugin.settings = $.extend({}, defaults, options);
+			//enlace hoja estilos
+			incluirCssPlugin();/*revisarlo, problem*/
 			// code goes here
 			plugin.iniciarMiniCesta();
 
@@ -75,17 +77,19 @@
 		}
 
 		plugin.iniciarMiniCesta = function(){
-			$('#divJqCesta').html('<input type="button" id="btnIniCesta" name="btnIniCesta" value="Comprar"><div id="divCesta"><div id="divContCesta"></div></div>').appendTo(element);
+			$('#divJqCesta').html('<div id="linkHead" class="link-cart"><a id="btnIniCesta" class="btn btn-default" href="#menu-toggle"><i class="fa fa-shopping-cart"></i>Cesta</a></div> <div id="divCesta" class="content-cart" style="display:none;"></div>').appendTo(element);
 			$('#btnIniCesta').click(function(event) {
 				plugin.previsualizarCesta();
 			});
 		}
 
 		plugin.previsualizarCesta = function(){
-			$('#divContCesta').html('Hola plugin').appendTo(element);
-			$('#divCesta').css ({position:'absolute'}, {left: 0}, {top: 0}, {width(integer)});
-			cargarCesta();
+
+			$('#divCesta').animate({width: 'toggle'});
+			var html_item = '<div class="col-lg-12"><div class="col-sm-6"><img class="img-responsive" src="./appFed16/binaries/imgs/shop-item.jpg" alt=""></div><div class="col-sm-6"><p id="ttl-item-cart" style="font-size:x-small">LOREM PRODUCT</p><p id="unit-item-cart" style="font-size:x-small; color:grey;">Cantidad: <span>2</span></p></div></div>';
+			$('#divCesta').html('<div id="div-item-cart" class="row">' +  html_item +  html_item  + '</div><div id="total-cart" class="row"><div class="col-lg-12"><div class="col-sm-6"><h4> EJ Imagen</h4></div><div class="col-sm-6"><h4>EJ TXTArticulo</h4></div></div></div>').appendTo(element);
 		}
+
 
 		// private methods
 		// these methods can be called only from inside the plugin like:
@@ -95,7 +99,22 @@
 		var foo_private_method = function() {
 			// code goes here
 		}
-
+		var incluirCssPlugin = function() {
+			var head = $("head");
+			var headlinklast = head.find("link[rel='stylesheet']:last");
+			var linkElement = "<link rel='stylesheet' href='./appFed16/cliente/plugins/jquery.cesta.css' type='text/css' media='screen'>";
+			console.log("Add css plugin cesta");
+			if (headlinklast.length){
+			   headlinklast.after(linkElement);
+			}
+			else {
+			   head.append(linkElement);
+			}
+		}
+		var addItem = function(img, ttl, unit, id) {
+			var html_item = '<div class="col-lg-12"><div class="col-sm-6"><img class="img-responsive" src="./appFed16/binaries/imgs/shop-item.jpg" alt=""></div><div class="col-sm-6"><p id="ttl-item-cart" style="font-size:x-small">LOREM PRODUCT</p><p id="unit-item-cart" style="font-size:x-small; color:grey;">Cantidad: <span>2</span></p></div></div>';
+			$('#div-item-cart').html(html_item).appendTo(element);
+		}
 		var cargarCesta = function() {
 			// code goes here
 		}

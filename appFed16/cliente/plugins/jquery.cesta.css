@@ -1,0 +1,21 @@
+<?if (false) {?><style><?}?>
+<?="\n/*".get_class()."*/\n"?>
+
+
+/*********  CESTA **********/
+.content-cart{
+    position: absolute;
+    right: 0;
+    height: 400px;
+    width: 60%;
+    background-color: @color-bg-items;
+    opacity: 0.5;
+    /*border: 1px solid @color-btn-items-border;*/
+
+}
+
+.link-cart{
+    text-align: left;
+    margin-top: 0px !important;
+    clear: both;
+}
