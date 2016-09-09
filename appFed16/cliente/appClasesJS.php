@@ -4,3 +4,4 @@
  * ejemplo: <script type="text/javascript" src="./appZzShared/cliente/lib/jquery.prodSelector/jquery.prodSelector.js"></script>
  */
 ?>
+<script type="text/javascript" src="./appFed16/cliente/plugins/jquery.cesta.js"></script>
