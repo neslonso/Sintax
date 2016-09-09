@@ -58,6 +58,9 @@
 			// user-provided options (if any)
 			plugin.settings = $.extend({}, defaults, options);
 			// code goes here
+			plugin.iniciarMiniCesta();
+
+
 		}
 
 		// public methods
@@ -71,6 +74,19 @@
 			// code goes here
 		}
 
+		plugin.iniciarMiniCesta = function(){
+			$('#divJqCesta').html('<input type="button" id="btnIniCesta" name="btnIniCesta" value="Comprar"><div id="divCesta"><div id="divContCesta"></div></div>').appendTo(element);
+			$('#btnIniCesta').click(function(event) {
+				plugin.previsualizarCesta();
+			});
+		}
+
+		plugin.previsualizarCesta = function(){
+			$('#divContCesta').html('Hola plugin').appendTo(element);
+			$('#divCesta').css ({position:'absolute'}, {left: 0}, {top: 0}, {width(integer)});
+			cargarCesta();
+		}
+
 		// private methods
 		// these methods can be called only from inside the plugin like:
 		// methodName(arg1, arg2, ... argn)
@@ -80,6 +96,9 @@
 			// code goes here
 		}
 
+		var cargarCesta = function() {
+			// code goes here
+		}
 		// call the "constructor" method
 		plugin.init();
 	}
