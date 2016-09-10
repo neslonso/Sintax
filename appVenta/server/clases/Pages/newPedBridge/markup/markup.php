@@ -6,7 +6,8 @@
 	data-nombre-cliente="<?=$datosCli->nombre?>"
 	data-apellidos-cliente="<?=$datosCli->apellidos?>"
 	data-email-cliente="<?=$datosCli->email?>"
-	data-tipo-dto-cliente="<?=$datosCli->tipoDescuento?>">
+	data-tipo-dto-cliente="<?=$datosCli->tipoDescuento?>"
+	data-arr-dtos-volumen="<?=$jsonArrDtosVolumen?>">
 		<div class="steps-container">
 			<ul class="steps">
 				<li data-step="1" class="active">
@@ -243,7 +244,7 @@ $totalRebotesDesc.='</table>';
 								Otros descuentos (<span id="spDtoTipo" class="spCalculado"></span>%): <span id="spDtoMonto" class="spCalculado"></span> €
 							</span>
 						</div>
-						<div>Gastos de envío: <span id="spPortes" class="spCalculado" data-portes="<?=$newPedBridgeData->portes?>"><?=$newPedBridgeData->portes?></span> €</div>
+						<div>Gastos de envío: <span id="spPortes" class="spCalculado" data-portes=""></span> €</div>
 						<div>Total Pedido: <span id="spTotal" class="spCalculado"></span> €</div>
 					</div>
 				</div>
