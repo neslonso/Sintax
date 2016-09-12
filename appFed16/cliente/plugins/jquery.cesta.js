@@ -77,17 +77,30 @@
 		}
 
 		plugin.iniciarMiniCesta = function(){
-			$('#divJqCesta').html('<div id="linkHead" class="link-cart"><a id="btnIniCesta" class="btn btn-default" href="#menu-toggle"><i class="fa fa-shopping-cart"></i>Cesta</a></div> <div id="divCesta" class="content-cart" style="display:none;"></div>').appendTo(element);
+			//console.log("cesta");
+			$('#divJqCesta').html('<a id="btnIniCesta" class="btn btn-default" href="#menu-toggle"><i class="fa fa-shopping-cart"></i>Cesta <span class="badge" id="und-cart">0</span></a> <div id="divCesta" class="content-cart"></div>').appendTo(element);
+
+
 			$('#btnIniCesta').click(function(event) {
 				plugin.previsualizarCesta();
 			});
+
 		}
 
 		plugin.previsualizarCesta = function(){
 
-			$('#divCesta').animate({width: 'toggle'});
 			var html_item = '<div class="col-lg-12"><div class="col-sm-6"><img class="img-responsive" src="./appFed16/binaries/imgs/shop-item.jpg" alt=""></div><div class="col-sm-6"><p id="ttl-item-cart" style="font-size:x-small">LOREM PRODUCT</p><p id="unit-item-cart" style="font-size:x-small; color:grey;">Cantidad: <span>2</span></p></div></div>';
-			$('#divCesta').html('<div id="div-item-cart" class="row">' +  html_item +  html_item  + '</div><div id="total-cart" class="row"><div class="col-lg-12"><div class="col-sm-6"><h4> EJ Imagen</h4></div><div class="col-sm-6"><h4>EJ TXTArticulo</h4></div></div></div>').appendTo(element);
+			$('#divCesta').html('<div id="div-item-cart" class="row">' +  html_item +  html_item    + '</div><div id="total-cart" class="row"><div class="col-lg-12"><div class="col-sm-6"><h4> EJ Imagen</h4></div><div class="col-sm-6"><h4>EJ TXTArticulo</h4></div></div></div>').appendTo(element);
+			$('#divCesta').removeClass('content-cart-outside');
+ 			$('#divCesta').addClass('content-cart-inside');
+			/*$("#divCesta").mouseenter(function(e){
+				$('#divCesta').removeClass('content-cart-outside');
+ 				$('#divCesta').addClass('content-cart-inside ');
+			});*/
+			$("#divCesta").mouseleave(function(e){
+				$('#divCesta').addClass('content-cart-outside');
+				$('#divCesta').removeClass('content-cart-inside');
+			});
 		}
 
 
@@ -103,7 +116,6 @@
 			var head = $("head");
 			var headlinklast = head.find("link[rel='stylesheet']:last");
 			var linkElement = "<link rel='stylesheet' href='./appFed16/cliente/plugins/jquery.cesta.css' type='text/css' media='screen'>";
-			console.log("Add css plugin cesta");
 			if (headlinklast.length){
 			   headlinklast.after(linkElement);
 			}

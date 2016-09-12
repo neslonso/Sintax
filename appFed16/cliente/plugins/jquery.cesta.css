@@ -1,21 +1,70 @@
 <?if (false) {?><style><?}?>
 <?="\n/*".get_class()."*/\n"?>
 
-
+@color-bg-cart: #fff;
+@color-border-cart: : #ff94be;
 /*********  CESTA **********/
+/*  CESTA */
 .content-cart{
     position: absolute;
     right: 0;
-    height: 400px;
-    width: 60%;
-    background-color: @color-bg-items;
-    opacity: 0.5;
-    /*border: 1px solid @color-btn-items-border;*/
-
+    height: auto;
+    width: 300px;
+    background-color: @color-bg-cart;
+    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
+.content-cart{
+    margin-top: 43px ;
+    right: -300px !important;
+    width: 300px !important;
+    height: auto !important;
+    border-top: 2px solid #ff94be;
+}
+.content-cart-items{
+     max-height: 400px;
+}
 .link-cart{
     text-align: left;
     margin-top: 0px !important;
     clear: both;
 }
+
+
+.content-cart-inside {
+  animation: lateralMove 3s;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+}
+
+.content-cart-outside {
+  animation: lateralMove2 3s;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes lateralMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    -ms-transform: translateX(-300px); /* IE 9 */
+    -webkit-transform: translateX(-300px); /* Chrome, Safari, Opera */
+    transform: translateX(-300px);
+  }
+}
+
+
+@keyframes lateralMove2 {
+  0% {
+    -ms-transform: translateX(0); /* IE 9 */
+    -webkit-transform: translateX(0); /* Chrome, Safari, Opera */
+    transform: translateX(0);
+  }
+  100% {
+    -ms-transform: translateX(-300px); /* IE 9 */
+    -webkit-transform: translateX(-300px); /* Chrome, Safari, Opera */
+    transform: translateX(-300px);
+  }
+}
+
