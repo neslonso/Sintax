@@ -96,7 +96,8 @@ $(document).ready(function() {
 			~event.origin.indexOf('parafarmaciasolocosmetica') ||
 			~event.origin.indexOf('bebefarma') ||
 			~event.origin.indexOf('farmadis') ||
-			~event.origin.indexOf('farmaciacelorrio')
+			~event.origin.indexOf('farmaciacelorrio') ||
+			~event.origin.indexOf('parafarmaciasolobebes')
 		) {
 			// The data has been sent from your site. The data sent with postMessage is stored in event.data
 			switch (event.data.service) {
