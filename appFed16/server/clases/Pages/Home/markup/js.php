@@ -4,12 +4,20 @@ $(document).ready(function() {
 	$('#divJqCesta').jqCesta({'foo': 'bar'});
 	$("#menu-toggle").click(function(e) {
         e.preventDefault();
-        $("#wrapper").toggleClass("toggled").promise().done (function(){
-	        if ($("#wrapper").hasClass("toggled")) {
-	        	$("#sidebar-wrapper").css("overflow-y","auto");
-			} else {
+        if ($("#wrapper").hasClass("toggled")) {
+        	//está cerrado y lo vamos a abrir
+        	$("#sidebar-wrapper").css("overflow-y","auto");
+        	$("#wrapper").toggleClass("toggled");
+			$(this).delay(600).queue(function() {
+				//ajustamos para que quite el overflow cuando ya termine la animacion
 				$("#sidebar-wrapper").css("overflow-y","visible");
-			}
-		});
+				$(this).dequeue();
+			});
+
+		} else {
+			//está abierto y lo vamos a cerrar
+			$("#sidebar-wrapper").css("overflow-y","auto");
+			$("#wrapper").toggleClass("toggled");
+		}
     });
 });

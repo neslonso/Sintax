@@ -29,7 +29,7 @@ FIX VIDEO -->
 /* ==============================================
 TABBED HOVER -->
 =============================================== */
-  
+
   $('.nav-pills > li ').hover( function(){
     if($(this).hasClass('hoverblock'))
       return;
