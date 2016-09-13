@@ -311,13 +311,13 @@ if ($totalRebotes>0) {
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="form-group">
-								<label for="nombre" accesskey="">Nombre:</label>
+								<label for="nombre" accesskey="">Nombre</label>
 								<input class="form-control" type="text" name="nombre" id="nombre" value="" placeholder="Nombre para identificar esta dirección..." />
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="form-group">
-								<label for="destinatario" accesskey="">Destinatario:</label>
+								<label for="destinatario" accesskey="">Destinatario*</label>
 								<input class="form-control" type="text" name="destinatario" id="destinatario" value=""  placeholder="Destinatario del envio" />
 							</div>
 						</div>
@@ -325,19 +325,19 @@ if ($totalRebotes>0) {
 					<div class="row">
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label for="direccion" accesskey="">Direccion:</label>
+								<label for="direccion" accesskey="">Direccion*</label>
 								<input class="form-control" type="text" name="direccion" id="direccion" value="" placeholder="Dirección completa" />
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label for="poblacion" accesskey="">Poblacion:</label>
+								<label for="poblacion" accesskey="">Poblacion*</label>
 								<input class="form-control" type="text" name="poblacion" id="poblacion" value="" placeholder="Población"/>
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label for="provincia" accesskey="">Provincia:</label>
+								<label for="provincia" accesskey="">Provincia*</label>
 								<input class="form-control" type="text" name="provincia" id="provincia" value="" placeholder="Provincia" />
 							</div>
 						</div>
@@ -345,13 +345,13 @@ if ($totalRebotes>0) {
 					<div class="row">
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label for="cp" accesskey="">Código postal:</label>
+								<label for="cp" accesskey="">Código postal*</label>
 								<input class="form-control" type="text" name="cp" id="cp" value="" placeholder="Código postal" />
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label for="pais" accesskey="">País:</label>
+								<label for="pais" accesskey="">País*</label>
 								<select name="pais" id="pais" class="form-control">
 <?
 								foreach ($arrPaises->paises as $pais) {
@@ -366,7 +366,7 @@ if ($totalRebotes>0) {
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label for="movil" accesskey="">Teléfono de contacto:</label>
+								<label for="movil" accesskey="">Teléfono de contacto*</label>
 								<input class="form-control" type="text" name="movil" id="movil" value="" placeholder"Teléfono de contacto"/>
 							</div>
 						</div>

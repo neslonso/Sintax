@@ -280,33 +280,43 @@ $(document).ready(function() {
 	});
 
 	$('#btnAddDir').on('click', function () {
-		$.post('<?=BASE_DIR.FILE_APP?>',{
-			'MODULE':'actions',
-			'acClase':'newPedBridge',
-			'acMetodo':'acAddDireccion',
-			'acTipo':'ajaxAssoc',
-			'id':0,
-			'nombre':$('#nombre','#modalAddDir').val(),
-			'destinatario':$('#destinatario','#modalAddDir').val(),
-			'movil':$('#movil','#modalAddDir').val(),
-			'direccion':$('#direccion','#modalAddDir').val(),
-			'poblacion':$('#poblacion','#modalAddDir').val(),
-			'provincia':$('#provincia','#modalAddDir').val(),
-			'cp':$('#cp','#modalAddDir').val(),
-			'pais':$('#pais','#modalAddDir').val(),
-			'session_name':'<?=$GLOBALS['session_name']?>'
-		},
-		function (response) {
-			console.log(response);
-			if (!response.exito){
-				muestraMsgModal('Error añadiendo dirección',response.msg);
-			} else {
-				$('#modalAddDir').modal('hide');
-				$('#direccionEntregaSelectionControl').replaceWith(response.data);
-				$('[name="idDirEntrega"]').change();
-			}
-		},
-		'json');
+		var destinatario=$('#destinatario','#modalAddDir').val();
+		var direccion=$('#direccion','#modalAddDir').val();
+		var poblacion=$('#poblacion','#modalAddDir').val();
+		var provincia=$('#provincia','#modalAddDir').val();
+		var cp=$('#cp','#modalAddDir').val();
+		var movil=$('#movil','#modalAddDir').val();
+		if (destinatario=="" || direccion=="" || poblacion=="" || provincia=="" || cp=="" || movil==""){
+			muestraMsgModal('Error en el formulario','Por favor, rellene todos los campos marcados como obligatorios (<b>*</b>) de la dirección');
+		} else {
+			$.post('<?=BASE_DIR.FILE_APP?>',{
+				'MODULE':'actions',
+				'acClase':'newPedBridge',
+				'acMetodo':'acAddDireccion',
+				'acTipo':'ajaxAssoc',
+				'id':0,
+				'nombre':$('#nombre','#modalAddDir').val(),
+				'destinatario':$('#destinatario','#modalAddDir').val(),
+				'movil':$('#movil','#modalAddDir').val(),
+				'direccion':$('#direccion','#modalAddDir').val(),
+				'poblacion':$('#poblacion','#modalAddDir').val(),
+				'provincia':$('#provincia','#modalAddDir').val(),
+				'cp':$('#cp','#modalAddDir').val(),
+				'pais':$('#pais','#modalAddDir').val(),
+				'session_name':'<?=$GLOBALS['session_name']?>'
+			},
+			function (response) {
+				console.log(response);
+				if (!response.exito){
+					muestraMsgModal('Error añadiendo dirección',response.msg);
+				} else {
+					$('#modalAddDir').modal('hide');
+					$('#direccionEntregaSelectionControl').replaceWith(response.data);
+					$('[name="idDirEntrega"]').change();
+				}
+			},
+			'json');
+		}
 	});
 
 
