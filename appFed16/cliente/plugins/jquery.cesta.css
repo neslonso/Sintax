@@ -1,10 +1,15 @@
-<?if (false) {?><style><?}?>
-<?="\n/*".get_class()."*/\n"?>
-
 @color-bg-cart: #fff;
-@color-border-cart: : #ff94be;
+@color-border-cart:  #ff94be;
+@color-font-ttlItem:  #000000;
+@color-font-unitItem:  #909090;
+@color-font-priceItem:  #909090;
+@color-bg-separatorItem:  #d3d3d3;
+@color-bg-btnCheckOrder: #ff94be;
+@color-font-btnCheckOrder: #ffffff;
+@color-bd-btnCheckOrder: #ffffff;
 /*********  CESTA **********/
 /*  CESTA */
+
 .content-cart{
     position: absolute;
     right: 0;
@@ -16,34 +21,85 @@
 }
 
 .content-cart{
-    margin-top: 43px ;
+    margin-top: 44px ;
     right: -300px !important;
     width: 300px !important;
     height: auto !important;
-    border-top: 2px solid #ff94be;
+    border-top: 4px solid #ff94be;
+    box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.23);
 }
-.content-cart-items{
-     max-height: 400px;
-}
+
 .link-cart{
     text-align: left;
     margin-top: 0px !important;
     clear: both;
 }
 
+.list-item-cart{
+  max-height: 380px !important;
+  overflow-y: auto;
+}
 
+.separator-item{
+  background-color: @color-bg-separatorItem;
+  height: 1px;
+  margin-bottom: 7px;
+}
+
+.btn-check-order{
+  background-color: @color-bg-btnCheckOrder;
+  color: @color-font-btnCheckOrder !important;
+  border: 1px solid  @color-bd-btnCheckOrder;
+}
+/*estilos lineas producto*/
+
+.ttl-item-cart{
+  font-size: small;
+  color: @color-font-ttlItem;
+}
+
+.unit-item-cart{
+  font-size: x-small;
+  color: @color-font-unitItem;
+}
+
+.price-item-cart{
+  font-size: x-small;
+  color: color-font-priceItem;
+}
+.total-cart{
+  padding: 18px;
+  margin-bottom: 10px;
+}
+.info-total{
+   background: #f2f2f2 none repeat scroll 0 0 !important;
+}
+.pull-xs-right{
+  float: right !important;
+}
+
+.p-a-1 {
+    padding: 1rem !important;
+}
+.m-b-1 {
+    margin-bottom: 1rem !important;
+}
+
+/*estilos desplazamiento cesta*/
 .content-cart-inside {
-  animation: lateralMove 3s;
+  animation: lateralMoveIn 0.5s;
   animation-direction: alternate;
   animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
 }
 
 .content-cart-outside {
-  animation: lateralMove2 3s;
+  animation: lateralMoveOut 0.5s;
   animation-direction: alternate-reverse;
+  animation-timing-function: ease-in;
 }
 
-@keyframes lateralMove {
+@keyframes lateralMoveIn {
   0% {
     transform: translate(0, 0);
   }
@@ -55,7 +111,7 @@
 }
 
 
-@keyframes lateralMove2 {
+@keyframes lateralMoveOut {
   0% {
     -ms-transform: translateX(0); /* IE 9 */
     -webkit-transform: translateX(0); /* Chrome, Safari, Opera */

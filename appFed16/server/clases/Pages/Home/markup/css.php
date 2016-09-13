@@ -11,7 +11,7 @@
 
 @color-cabecera: #fff;
 @color-cuerpo: #ebeced;
-@color-sidebarMenu: #ccc;
+@color-sidebarMenu: #fff;
 @color-pie: @color-secundario;
 
 @color-borde-items: #fff;
@@ -26,17 +26,29 @@
 @width-menu: 250px;
 @shop-item-container-fluid: 1170 + 17 + @width-menu; /*1170 del container + 17 de scroll*/
 
+
+@zindex-sidebar: 1000;
+@zindex-shop-item-rebote: 900;
+
 /*********** ZONAS GENERALES ************/
 body {
     background-color: @color-body;
     color: @color-txt;
-    margin-top: 115px; /* ajuste de cuerpo debido a navbar fixed */
+    margin-top: 133px; /* ajuste de cuerpo debido a navbar fixed */
+}
+.bandaSuperior{
+    background-color: @color-principal;
+    font-size: 12px;
+    color: #fff;
+    text-align: center;
 }
 #container-cabecera {
     background-color: @color-cabecera;
-    border-top: 5px solid @color-principal;
     box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.25);
     height: 115px;
+}
+.container-cabecera-barraLogo{
+    margin-top: 18px !important;
 }
 #container-banners{
     height: 250px;
@@ -50,6 +62,10 @@ body {
 }
 #container-pie {
     background-color: @color-pie;
+}
+.container-menu{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
 }
 
 /*
@@ -80,6 +96,42 @@ body {
 }
 
 
+/******** buscador ********/
+#custom-search-input {
+    margin:0;
+    padding: 0;
+    width: 100%
+}
+#custom-search-input .search-query {
+    padding-right: 3px;
+    padding-right: 4px \9;
+    padding-left: 3px;
+    padding-left: 4px \9;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+#custom-search-input button {
+    border: 0;
+    background: none;
+    /** belows styles are working good */
+    padding: 2px 5px;
+    margin-top: 2px;
+    position: relative;
+    left: -28px;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    color:@color-principal;
+}
+.search-query:focus + button {
+    z-index: 3;
+}
+
 /*********** WRAPPER MENU ************/
 #wrapper {
     padding-left: @width-menu;
@@ -92,13 +144,14 @@ body {
     padding-left: 0px;
 }
 #sidebar-wrapper {
-    z-index: 1000;
+    z-index: @zindex-sidebar;
     position: fixed;
     left: @width-menu;
     width: @width-menu;
     height: 100%;
     margin-left: -@width-menu;
     overflow-y: auto;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
     background: @color-sidebarMenu;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -117,8 +170,12 @@ body {
     position: relative;
     margin-right: 0px;
 }
-
-
+/*
+.sidebar-top{
+    height: 5px;
+    background-color: @color-principal;
+}
+*/
 /*********  LISTADO DE PRODUCTOS **********/
 .shop-item {
     position: relative;
@@ -190,10 +247,17 @@ body {
     font-size: larger;
     height: 100px;
     position: absolute;
-    right: -40px;
-    top: -40px;
+    right: -20px;
+    top: -34px;
     width: 100px;
-    z-index: 999;
+    z-index: @zindex-shop-item-rebote;
+}
+.shop-item-modal{
+    padding: 5px;
+    text-align: center;
+    border-radius: 4px;
+    border:2px solid @color-borde-items;
+    background-color: @color-bg-items;
 }
 
 @media(min-width:768px) {
@@ -219,6 +283,7 @@ body {
     }
 
 }
+
 /*  CESTA */
 .content-cart{
     position: absolute;
@@ -230,7 +295,6 @@ body {
     /*border: 1px solid @color-btn-items-border;*/
 
 }
-
 .link-cart{
     text-align: left;
     margin-top: 0px !important;
@@ -253,6 +317,21 @@ body {
 @media (max-width: 768px){
 
 }
+
+
+/* XS y SM*/
+@media (max-width: 991px){
+    #container-cabecera {
+        border-top: 5px solid @color-principal;
+    }
+    .container-cabecera-barraLogo{
+        margin-top: 0px !important;
+    }
+body {
+    margin-top: 115px; /* ajuste de cuerpo debido a navbar fixed */
+}
+}
+
 
 @media (max-width: @shop-item-container-fluid){
     .shop-item-container {
