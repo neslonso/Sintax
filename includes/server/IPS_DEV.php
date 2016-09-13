@@ -25,14 +25,18 @@ define ('IPS_DEV', serialize(array_merge(
 		'91.117.107.217',//Coruña oficna
 	),
 	array(
+		'81.35.192.233',//Coruña oficna
+	),
+	array(
 		//'47.62.0.55',//Diego Madrid
 		//'47.62.0.219',//Diego Madrid 20150216
 		//'47.62.161.180',//Diego Madrid 20150831
 		//'47.62.1.138',//Diego Madrid 20160202
 		//'47.62.225.110',//Diego Madrid 20160404
 		//'47.62.94.42',//Diego Madrid 20160419
-		'47.62.161.15',//Diego Madrid 20160817
-		'47.62.94.97',//Diego Madrid 20160830
+		//'47.62.161.15',//Diego Madrid 20160817
+		//'47.62.94.97',//Diego Madrid 20160830
+		'194.220.12.63',//Diego Madrid 20160913
 	),
 	array()
 )));

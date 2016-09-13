@@ -3,7 +3,7 @@ namespace Sintax\Pages;
 use Sintax\Core\IPage;
 use Sintax\Core\User;
 use Sintax\Core\ReturnInfo;
-class Home extends Error implements IPage {
+class prod extends Home implements IPage {
 	public function __construct(User $objUsr) {
 		parent::__construct($objUsr);
 	}
@@ -31,11 +31,8 @@ class Home extends Error implements IPage {
 		parent::css();
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
-	public function markup() {
-		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
-	}
 	public function cuerpo() {
-		require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
 	}
 }
 ?>
