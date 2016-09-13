@@ -16,7 +16,8 @@ define ('IPS_DEV', serialize(array_merge(
 		//'88.14.241.127',//León Carbajal 20160319
 		//'83.35.214.173',//León Carbajal 20160414
 		//'88.9.52.215',//León Carbajal 20160427
-		'88.14.232.57',//León Carbajal 20160822
+		//'88.14.232.57',//León Carbajal 20160822
+		'88.20.87.31',//León Carbajal 20160913
 	),
 	array(
 		'193.146.109.133',//Unileon
@@ -25,14 +26,18 @@ define ('IPS_DEV', serialize(array_merge(
 		'91.117.107.217',//Coruña oficna
 	),
 	array(
+		'81.35.192.233',//Coruña oficna
+	),
+	array(
 		//'47.62.0.55',//Diego Madrid
 		//'47.62.0.219',//Diego Madrid 20150216
 		//'47.62.161.180',//Diego Madrid 20150831
 		//'47.62.1.138',//Diego Madrid 20160202
 		//'47.62.225.110',//Diego Madrid 20160404
 		//'47.62.94.42',//Diego Madrid 20160419
-		'47.62.161.15',//Diego Madrid 20160817
-		'47.62.94.97',//Diego Madrid 20160830
+		//'47.62.161.15',//Diego Madrid 20160817
+		//'47.62.94.97',//Diego Madrid 20160830
+		'194.220.12.63',//Diego Madrid 20160913
 	),
 	array()
 )));

@@ -119,7 +119,7 @@ class ClassEntitySubclaser {
 		$resultCode.=$sg.$sg.'parent::__construct($db,$keyValue);'.$sl;
 		$resultCode.=$sg.$sg.'$this->arrDbData=array('.$sl;
 		foreach ($arrAtributos as $nombreAtributo => $sqlData) {
-			$resultCode.=$sg.$sg.$sg.'"'.$nombreAtributo.'" => NULL'.$sl;
+			$resultCode.=$sg.$sg.$sg.'"'.$nombreAtributo.'" => NULL,'.$sl;
 		}
 		$resultCode.=$sg.$sg.");".$sl;
 		$resultCode.=$sg."}".$sl;
