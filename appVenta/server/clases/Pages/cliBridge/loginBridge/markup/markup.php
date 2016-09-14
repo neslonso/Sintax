@@ -5,8 +5,8 @@
 if (isset($_SESSION['usuario'])) {
 ?>
 	<div class="panel panel-default text-center">
-		<div class="panel-heading">
-			<?=$arrResult->datos->saludo?> <?=$arrResult->datos->nombre?>
+		<div class="panel-heading" style="white-space:nowrap;">
+			<?=$arrResult->datos->saludo?><br /><?=$arrResult->datos->nombre?>
 		</div>
 		<div class="panel-body">
 			<div>

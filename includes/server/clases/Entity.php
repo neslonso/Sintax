@@ -28,8 +28,9 @@ abstract class Entity implements IEntity {
 
 	public function __construct (\MysqliDB $db=NULL, $keyValue=NULL) {
 		$this->db=$db;
+		if (!is_null($keyValue)) {$this->cargar($keyValue);}
 	}
-	private function db() {
+	protected function db() {
 		return $this->db;
 	}
 	public function cargarId ($id) {return $this->cargar($id);}
@@ -110,7 +111,7 @@ abstract class Entity implements IEntity {
 	public static function existeId($id) {return static::existe(cDb::gI(),$id);}
 	public static function existe(\MysqliDB $db, $keyValue) {
 		$sql="SELECT * FROM ".static::$table." WHERE id='".$db->real_escape_string($keyValue)."'";
-		$data=$db()->get_obj($sql);
+		$data=$db->get_obj($sql);
 		if ($data) {$result=true;} else {$result=false;}
 		return $result;
 	}
