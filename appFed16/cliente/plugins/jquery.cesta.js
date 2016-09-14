@@ -19,7 +19,7 @@
  * });
  * 0.2 (20160913)
  * Estructura objetos cesta
- *  arrItems [{ id: -, titulo: -, imagen: -, descripcion: -, cantidad: -, precio: - }, ...]
+ *  arrItems [{ id: -, titulo: -, imagen: -, descripcion: -, quantity: -, precio: - }, ...]
  */
 
 // El punto y coma es por si acaso algo que no esté bien cerrado se concatena con este fichero
@@ -33,11 +33,17 @@
 		//acceso : plugin.settings.PARAM;
 		var defaults = {
 			txtBtnCart: "Cesta", //texto boton principal
-			imgBtnCart: "fa fa-shopping-cart", //icon fa fontawesome, aunque se puede poner una clase y img por css
-			badgeActiveBtnCart: true, //icon fa fontawesome, aunque se puede poner una clase y img por css
+			imgActiveBtnCart: true, /*prioridad sobre ico en caso de estar los dos activos*/
+			icoActiveBtnCart: false,
+			imgBtnCart: "./appFed16/cliente/plugins/jquery.cesta/binaries/imgs/ico_cart1.png", //img src si imgActiveBtnCart esta activo
+			icoBtnCart: "fa fa-shopping-cart", //icon fa fontawesome si icoActiveBtnCart esta activo
+			badgeActiveQuantityBtnCart: true, //boolean para controlar la activacion del badge con unidades en cesta que sale en btn cesta
 			arrItems: [{}],//array objetos
+			quantityItems: 0,
+			maxHeigth: 250,//array objetos
 			speed: 'ease-in',//velocidad del desplazamiento desplegamiento div
 			foo: 'bar',
+			txtQuantityTotal: 'Cantidad',
 			txtBtnOrder: 'Continuar compra',
 			// if your plugin is event-driven, you may provide callback capabilities
 			// for its events. execute these functions before or after events of your
@@ -70,7 +76,8 @@
 			//plugin.loadCesta();
 			plugin.initCart();
 
-
+			//call simulada
+			plugin.addItem("./appFed16/binaries/imgs/shop-item.jpg", "LOREM IPSUM 6", 2, (15.00).toFixed(2), 6);
 		}
 
 		// public methods
@@ -79,14 +86,16 @@
 		// element.data('jqCesta').publicMethod(arg1, arg2, ... argn) from outside
 		// the plugin, where "element" is the element the plugin is attached to;
 
-		// a public method. for demonstration purposes only - remove it!
-		plugin.foo_public_method = function() {
-			// code goes here
-		}
-
 		plugin.initCart = function(){
 			plugin.loadCesta();
-			$element.html('<a class="btn btn-default btnCart" href="#menu-toggle"><i class="' + plugin.settings.imgBtnCart + '"></i>' + plugin.settings.txtBtnCart + ' <span class="badge">0</span></a> <div class="content-cart"></div>').appendTo(element);
+
+			$element.html('<a class="btn btn-default btnCart ico-cart" href="#menu-toggle"></a> <div class="content-cart"></div>').appendTo(element);
+
+			var ico_html = (plugin.settings.icoActiveBtnCart) ? '<i class="' + plugin.settings.icoBtnCart + ' ico-cesta"></i>' : '';
+			var imagen_html = (plugin.settings.imgActiveBtnCart) ? '<img class="img-responsive ico-cesta"  src="' + plugin.settings.imgBtnCart + '" alt="">' : ico_html;
+			var badgeQuantity_html = (plugin.settings.badgeActiveQuantityBtnCart) ? '&nbsp;<sup><span class="badge badgeQuantity">' + plugin.settings.quantityItems + '</span></sup>' : '';
+			$('.btnCart',$element).html( plugin.settings.txtBtnCart /*+ imagen_html*/ + badgeQuantity_html );
+
 			$('.btnCart',$element).click(function(event) {
 				plugin.viewCesta();
 			});
@@ -94,17 +103,21 @@
 		}
 		plugin.loadCesta = function(){
 			plugin.settings.arrItems = simuladorCargaItems();
+			refreshQuantity(countQuantityArrItems());
 		}
 
 		plugin.viewCesta = function(){
 			var html_items = "";
 			var arr = plugin.settings.arrItems;
 			for (var item in arr) {
-				html_items = html_items + renderItem(arr[item].imagen, arr[item].titulo, arr[item].cantidad,  (arr[item].precio).toFixed(2), arr[item].id);
+				html_items = html_items + renderItem(arr[item].imagen, arr[item].titulo, arr[item].quantity,  (arr[item].precio).toFixed(2), arr[item].id);
 			}
 
 			var html_cesta = render(html_items);
 			$('.content-cart',$element).html(html_cesta).appendTo(element);
+
+			//variable tamanho max altura listado items
+			$('.list-item-cart',$element).css("max-height", plugin.settings.maxHeigth);
 
 			if( isHideCesta() ){
 				showCesta();
@@ -118,6 +131,9 @@
 			}
 		}
 
+		plugin.addItem = function(src, ttl, unit, prc, id){
+			addItem(src, ttl, unit, prc, id);
+		}
 
 		// private methods
 		// these methods can be called only from inside the plugin like:
@@ -146,33 +162,66 @@
 		}
 
 		var render = function(htmlItems) {
-			var htmlItems = '<div id="div-item-cart" class="row list-item-cart">' + htmlItems + '</div><div class="col-lg-12 total-cart"><p class="info-total p-a-1 m-y-1">(<span class="unit-total">3</span>)&nbsp;Unidades<span class="pull-xs-right"><b>TOTAL: <span class="total">323.21</span>&nbsp;€</b></span></p><a  class="btn btn-primary btn-lg btn-block btn-check-order" type="button" href="/cart/"><b>' + plugin.settings.txtBtnOrder + '</b></a> </div>';
+			var htmlItems = '<div class="row list-item-cart">' + htmlItems + '</div><div class="col-lg-12 total-cart"><p class="info-total p-a-1 m-y-1">(<span class="quantity-total">' + plugin.settings.quantityItems + '</span>)&nbsp;Unidades<span class="pull-xs-right"><b>TOTAL: <span class="total">323.21</span>&nbsp;€</b></span></p><a  class="btn btn-primary btn-lg btn-block btn-check-order" type="button" href="/cart/"><b>' + plugin.settings.txtBtnOrder + '</b></a> </div>';
 			return htmlItems;
 		}
 
 		var renderItem = function(src, ttl, unit, prc, id) {
-			var htmlItem = '<div class="col-lg-12"><div class="col-sm-4"><img class="img-responsive" src="' + src + '" alt=""></div><div class="col-sm-8"><p class="ttl-item-cart">' + ttl + '</p><p class="unit-item-cart" >Cantidad: <span>' + unit + '</span></p><p class="price-item-cart" >Precio: <span>' + prc + '&euro;</span></p></div></div><div class="col-lg-9 col-lg-push-2 separator-item"></div>';
+			var htmlItem = '<div class="col-lg-12"><div class="col-sm-4"><img class="img-responsive" src="' + src + '" alt=""></div><div class="col-sm-8"><p class="ttl-item-cart">' + ttl + '</p><p class="unit-item-cart" >' + plugin.settings.txtQuantityTotal + ': <span>' + unit + '</span></p><p class="price-item-cart" >Precio: <span>' + prc + '&euro;</span></p></div></div><div class="col-lg-9 col-lg-push-2 separator-item"></div>';
 			return htmlItem;
 		}
 
-		var addItem = function(img, ttl, unit, prc, id) {
-			var html_item = '<div class="col-lg-12"><div class="col-sm-6"><img class="img-responsive" src="./appFed16/binaries/imgs/shop-item.jpg" alt=""></div><div class="col-sm-6"><p id="ttl-item-cart" style="font-size:x-small">LOREM PRODUCT</p><p id="unit-item-cart" style="font-size:x-small; color:grey;">Cantidad: <span>2</span></p></div></div>';
-			$('#div-item-cart').html(html_item).appendTo(element);
+		var addItem = function(src, ttl, unit, prc, id) {
+			//comprobar si existe una clase
+
+			refreshQuantity(unit);
+
+			var html_item = renderItem(src, ttl, unit, prc, id);
+			console.log("publico addItem: cuerpo de new producto");
+			console.log(html_item);
+			//$('.list-item-cart',$element).html(html_item).appendTo(element);
+			var lastItem = $element.find("div[class='separator-item']:last");
+			if (lastItem.length){
+				console.log("Existen items en cesta " + lastItem.length);
+			   	lastItem.after(html_item);
+			}else {
+				console.log("No localizado ultimo separador: cesta vacia " + lastItem.length);
+				$('.list-item-cart').html(html_item);
+			}
+
 		}
 
+		var refreshQuantity = function(quantity) {
+			plugin.settings.quantityItems = plugin.settings.quantityItems + quantity;
+			if(plugin.settings.badgeActiveQuantityBtnCart){
+				$('.badgeQuantity',$element).html(plugin.settings.quantityItems);
+			}
+			$('.quantity-total',$element).html(plugin.settings.quantityItems);
+		}
 
+		var countQuantityArrItems = function(){
+			var quantity = 0;
+			var arr = plugin.settings.arrItems;
+			for (value in arr){
+				quantity = quantity + arr[value].quantity;
+			}
+			return quantity;
+		}
 
 		//borrar
 		var simuladorCargaItems = function() {
 			var src_imagen_default = "./appFed16/binaries/imgs/shop-item.jpg";
 			var items = [
-    		{ id: 1, titulo: "LOREM IPSUM 1", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 1", cantidad: 1, precio: 23.00 },
-   			{ id: 2, titulo: "LOREM IPSUM 2", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 2", cantidad: 2, precio: 23.00 },
-    		{ id: 3, titulo: "LOREM IPSUM 3", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 3", cantidad: 1, precio: 23.00 },
-    		{ id: 4, titulo: "LOREM IPSUM 4", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 4", cantidad: 5, precio: 23.00 }
+    		{ id: 1, titulo: "LOREM IPSUM 1", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 1", quantity: 1, precio: 23.00 },
+   			{ id: 2, titulo: "LOREM IPSUM 2", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 2", quantity: 2, precio: 20.00 },
+    		{ id: 3, titulo: "LOREM IPSUM 3", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 3", quantity: 1, precio: 21.50 },
+    		{ id: 4, titulo: "LOREM IPSUM 4", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 4", quantity: 5, precio: 60.85 },
+    		{ id: 5, titulo: "LOREM IPSUM 5", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 5", quantity: 1, precio: 13.00 }
 			];
 			return items;
 		}
+
+
 		// call the "constructor" method
 		plugin.init();
 	}

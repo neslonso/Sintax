@@ -28,7 +28,12 @@
     border-top: 4px solid #ff94be;
     box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.23);
 }
-
+.btn-cart{
+  width: 120px;
+}
+.ico-cesta{
+  width: 20px;
+}
 .link-cart{
     text-align: left;
     margin-top: 0px !important;
@@ -36,8 +41,9 @@
 }
 
 .list-item-cart{
-  max-height: 380px !important;
-  overflow-y: auto;
+  /*max-height: 380px !important;*/
+  overflow-y: auto;/*scroll;*/
+  margin-right: 0px !important;
 }
 
 .separator-item{
