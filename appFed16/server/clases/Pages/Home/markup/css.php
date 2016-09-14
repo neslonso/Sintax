@@ -42,6 +42,9 @@ body {
     color: #fff;
     text-align: center;
 }
+.btn-menu{
+    font-size: 20px !important;
+}
 #container-cabecera {
     background-color: @color-cabecera;
     box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.25);
@@ -158,6 +161,9 @@ body {
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
 }
+.sidebar-wrapper-scroll{
+    /*clase para lograr hacer scroll*/
+}
 #wrapper.toggled #sidebar-wrapper {
     width: 0px;
 }
@@ -247,8 +253,8 @@ body {
     font-size: larger;
     height: 100px;
     position: absolute;
-    right: -20px;
-    top: -34px;
+    right: -13px;
+    top: -33px;
     width: 100px;
     z-index: @zindex-shop-item-rebote;
 }
@@ -270,9 +276,11 @@ body {
     }
     #sidebar-wrapper {
         width: @width-menu;
+        /*position: inherit;*/
     }
     #wrapper.toggled #sidebar-wrapper {
         width: 0;
+        /*position: fixed !important;*/
     }
     #page-content-wrapper {
         position: relative;
@@ -281,7 +289,6 @@ body {
         position: relative;
         margin-right: 0;
     }
-
 }
 
 /*  CESTA */
@@ -315,7 +322,19 @@ body {
 }
 /* XS */
 @media (max-width: 768px){
-
+    /**** menu****/
+    #wrapper {
+        padding-left: 0px !important;
+    }
+    #sidebar-wrapper {
+        left: 0px !important;
+        width:100%;
+        margin-left: 0px;
+        height: auto;
+    }
+    .sidebar-wrapper-scroll{
+        position: inherit !important;
+    }
 }
 
 
@@ -327,9 +346,9 @@ body {
     .container-cabecera-barraLogo{
         margin-top: 0px !important;
     }
-body {
-    margin-top: 115px; /* ajuste de cuerpo debido a navbar fixed */
-}
+    body {
+        margin-top: 115px; /* ajuste de cuerpo debido a navbar fixed */
+    }
 }
 
 

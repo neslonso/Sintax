@@ -130,3 +130,25 @@
   }
 }
 
+/* LG */
+@media (min-width: 1199px){
+
+}
+/* MD */
+@media (min-width: 992px) and (max-width: 1199px){
+
+}
+/* SM */
+@media (min-width: 768px) and (max-width: 991px){
+
+}
+/* XS */
+@media (max-width: 768px){
+
+}
+
+
+/* XS y SM*/
+@media (max-width: 991px){
+
+}

@@ -33,10 +33,10 @@
 		//acceso : plugin.settings.PARAM;
 		var defaults = {
 			txtBtnCart: "Cesta", //texto boton principal
-			imgActiveBtnCart: true, /*prioridad sobre ico en caso de estar los dos activos*/
-			icoActiveBtnCart: false,
+			imgActiveBtnCart: false, /*prioridad sobre ico en caso de estar los dos activos*/
+			icoActiveBtnCart: true,
 			imgBtnCart: "./appFed16/cliente/plugins/jquery.cesta/binaries/imgs/ico_cart1.png", //img src si imgActiveBtnCart esta activo
-			icoBtnCart: "fa fa-shopping-cart", //icon fa fontawesome si icoActiveBtnCart esta activo
+			icoBtnCart: "glyphicon glyphicon-shopping-cart btn-lg", //icon fa fontawesome si icoActiveBtnCart esta activo
 			badgeActiveQuantityBtnCart: true, //boolean para controlar la activacion del badge con unidades en cesta que sale en btn cesta
 			arrItems: [{}],//array objetos
 			quantityItems: 0,
@@ -45,6 +45,7 @@
 			foo: 'bar',
 			txtQuantityTotal: 'Cantidad',
 			txtBtnOrder: 'Continuar compra',
+			classBtnOrder: 'btnCheckOrder',
 			// if your plugin is event-driven, you may provide callback capabilities
 			// for its events. execute these functions before or after events of your
 			// plugin, so that users may customize those particular events without
@@ -94,7 +95,7 @@
 			var ico_html = (plugin.settings.icoActiveBtnCart) ? '<i class="' + plugin.settings.icoBtnCart + ' ico-cesta"></i>' : '';
 			var imagen_html = (plugin.settings.imgActiveBtnCart) ? '<img class="img-responsive ico-cesta"  src="' + plugin.settings.imgBtnCart + '" alt="">' : ico_html;
 			var badgeQuantity_html = (plugin.settings.badgeActiveQuantityBtnCart) ? '&nbsp;<sup><span class="badge badgeQuantity">' + plugin.settings.quantityItems + '</span></sup>' : '';
-			$('.btnCart',$element).html( plugin.settings.txtBtnCart /*+ imagen_html*/ + badgeQuantity_html );
+			$('.btnCart',$element).html( /*plugin.settings.txtBtnCart +*/ imagen_html + badgeQuantity_html );
 
 			$('.btnCart',$element).click(function(event) {
 				plugin.viewCesta();
