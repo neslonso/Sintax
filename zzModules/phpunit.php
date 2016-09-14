@@ -12,7 +12,8 @@ session_start();
 $arrTests=array();
 $test=(isset($_GET['test']))?$_GET['test']:'';
 if ($test=='') {
-	$fileList=Filesystem::folderSearch(SKEL_ROOT_DIR,'/.*\/clases\/.*\/test[^\/]+\.php$/');
+	//$fileList=Filesystem::folderSearch(SKEL_ROOT_DIR,'/.*\/clases\/.*\/test[^\/]+\.php$/');
+	$fileList=Filesystem::folderSearch(RUTA_APP,'/.*\/clases\/.*\/test[^\/]+\.php$/');
 	usort($fileList, function ($a,$b) {
 		if (filemtime($a) === filemtime($b)) return 0;
 		return filemtime($a) > filemtime($b) ? -1 : 1;

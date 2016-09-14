@@ -67,6 +67,7 @@ class ClassEntitySubclaser {
 			$classCode.=$this->declaraciones($nombreTabla,$nombreKeyField);
 			$classCode.=$this->constructor($arrAtributos);
 			$classCode.=$this->noReferenciado($arrFksTo);
+			$classCode.=$this->setterGetterKeyField();
 			//$classCode.=$this->cargarArray();
 			//$classCode.=$this->cargarObj();
 			$classCode.="/* Getters y Setters **********************************************************/".$sl;
@@ -116,12 +117,14 @@ class ClassEntitySubclaser {
 		$resultCode.=$sg.' * @param string keyValue Valor de la clave primaria que identifica el registro asociado a la instancia a construir'.$sl;
 		$resultCode.=$sg.' */'.$sl;
 		$resultCode.=$sg.'public function __construct (\MysqliDB $db=NULL, $keyValue=NULL) {'.$sl;
-		$resultCode.=$sg.$sg.'parent::__construct($db,$keyValue);'.$sl;
+		$resultCode.='/*'.$sl;
 		$resultCode.=$sg.$sg.'$this->arrDbData=array('.$sl;
 		foreach ($arrAtributos as $nombreAtributo => $sqlData) {
-			$resultCode.=$sg.$sg.$sg.'"'.$nombreAtributo.'" => NULL'.$sl;
+			$resultCode.=$sg.$sg.$sg.'"'.$nombreAtributo.'" => NULL,'.$sl;
 		}
 		$resultCode.=$sg.$sg.");".$sl;
+		$resultCode.='*/'.$sl;
+		$resultCode.=$sg.$sg.'parent::__construct($db,$keyValue);'.$sl;
 		$resultCode.=$sg."}".$sl;
 		$resultCode.=$sl;
 		return $resultCode;
@@ -152,6 +155,24 @@ class ClassEntitySubclaser {
 			$resultCode.=$sg.$sg.'return $result;'.$sl;
 		}
 		$resultCode.=$sg.'}'.$sl;
+		return $resultCode;
+	}
+	private function setterGetterKeyField() {
+		$sl=$this->sl;
+		$sg=$this->sg;
+
+		$resultCode=$sg.'public function GETkeyField () {';
+		$resultCode.='return static::$keyField;';
+		$resultCode.='}'.$sl;
+
+		$resultCode.=$sg.'public function GETkeyValue ($entity_decode=false) {';
+		$resultCode.='return ($entity_decode)?html_entity_decode($this->arrDbData[static::$keyField],ENT_QUOTES,"UTF-8"):$this->arrDbData[static::$keyField];';
+		$resultCode.='}'.$sl;
+
+		$resultCode.=$sg.'public function SETkeyValue ($keyField,$entity_encode=false) {';
+		$resultCode.='$this->arrDbData[static::$keyField]=($entity_encode)?htmlentities($keyField,ENT_QUOTES,"UTF-8"):$keyField;';
+		$resultCode.='}'.$sl;
+		$resultCode.=$sl;
 		return $resultCode;
 	}
 	private function settersGetters($arrAtributos) {
@@ -198,7 +219,7 @@ class ClassEntitySubclaser {
 				$functionName=$fTable.'By'.ucfirst($fField);
 			}
 			$resultCode.=$sg.'public function obj'.ucfirst($functionName).'() {'.$sl;
-			$resultCode.=$sg.$sg.'return new '.ucfirst($fTable).'($this->arrDbData["'.$fField.'"]);'.$sl;
+			$resultCode.=$sg.$sg.'return new '.ucfirst($fTable).'($this->db(),$this->arrDbData["'.$fField.'"]);'.$sl;
 			$resultCode.=$sg.'}'.$sl;
 		}
 		return $resultCode;
@@ -238,13 +259,14 @@ class ClassEntitySubclaser {
 				$functionName.='By'.ucfirst($fField);
 			}
 			$resultCode.=$sg.'public function arr'.ucfirst($functionName).'($where="",$order="",$limit="",$tipo="arrStdObjs") {'.$sl;
-			$resultCode.=$sg.$sg.'$sqlWhere=($where!="")?" WHERE '.$fField.'=\'".$this->db()->real_escape_String($this->arrDBData[static::$keyField])."\' AND ".$where:" WHERE '.$fField.'=\'".$this->db()->real_escape_string($this->arrDBData[static::$keyField])."\'";'.$sl;
+			$resultCode.=$sg.$sg.'$sqlWhere=($where!="")?" WHERE '.$fField.'=\'".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."\' AND ".$where:" WHERE '.$fField.'=\'".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."\'";'.$sl;
 			$resultCode.=$sg.$sg.'$sqlOrder=($order!="")?" ORDER BY ".$order:"";'.$sl;
 			$resultCode.=$sg.$sg.'$sqlLimit=($limit!="")?" LIMIT ".$limit:"";'.$sl;
 			if (!$objFkInfo->manyToMany) {
 				$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$fTable.'".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
 			} else {
 				$resultCode.=$sg.$sg.'//TODO: OJO!, al escrbir esta consulta no conocemos el nombre de la clave primaria en la tabla del otro extremo de la relaccion manyToMany ('.$ffTable.'), se está usando siempre id.'.$sl;
+				$resultCode.=$sg.$sg.'//TODO: 2016-09-13 Podría utilizar un metodo similar a GETkeyField en la clase del otro extremo ('.$ffTable.') que devolviera el nombre del campo en lugar su valor.'.$sl;
 				$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$fTable.' INNER JOIN '.$ffTable.' ON '.$fTable.'.'.$ffField.'='.$ffTable.'.'.('id').'".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
 			}
 			$resultCode.=$sg.$sg.'$arr=array();'.$sl;
@@ -254,9 +276,9 @@ class ClassEntitySubclaser {
 			$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{static::$keyField});break;'.$sl;
 			$resultCode.=$sg.$sg.$sg.$sg.'case "arrClassObjs":'.$sl;
 			if (!$objFkInfo->manyToMany) {
-				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '.ucfirst($fTable).'($data->{static::$keyField});'.$sl;
+				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '.ucfirst($fTable).'($this->db(),$data->{static::$keyField});'.$sl;
 			} else {
-				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '.ucfirst($ffTable).'($data->{static::$keyField});'.$sl;
+				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '.ucfirst($ffTable).'($this->db(),$data->{static::$keyField});'.$sl;
 			}
 			$resultCode.=$sg.$sg.$sg.$sg.$sg.'array_push($arr,$obj);'.$sl;
 			$resultCode.=$sg.$sg.$sg.$sg.$sg.'unset($obj);'.$sl;
