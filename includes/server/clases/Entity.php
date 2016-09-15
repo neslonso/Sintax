@@ -16,7 +16,7 @@ interface IEntity {
 }
 
 //implementar interfaz JsonSerializable (PHP 5.4)
-abstract class Entity implements IEntity {
+abstract class Entity implements IEntity, IteratorAggregate {
 	/**
 	 * Conexión a la BD
 	 * @var \MysqliDB | NULL: instancia de la clase \MysqliDB que representa una conexion a base de datos o NULL si es una entidad desconectada
@@ -25,10 +25,15 @@ abstract class Entity implements IEntity {
 	protected $arrDbData=array();
 	protected static $table;
 	protected static $keyField;
+	protected static $insertField;
+	protected static $updateField;
 
 	public function __construct (\MysqliDB $db=NULL, $keyValue=NULL) {
 		$this->db=$db;
 		if (!is_null($keyValue)) {$this->cargar($keyValue);}
+	}
+	public function getIterator() {
+		return new ArrayIterator($this->arrDbData);
 	}
 	protected function db() {
 		return $this->db;
@@ -56,7 +61,9 @@ abstract class Entity implements IEntity {
 			foreach ($this->arrDbData as $key => $value) {
 				//$this->update=$sqlValue_update=date("YmdHis");
 				if ($key==static::$keyField) {continue;}
-				$sqlValue=(is_null($value))?"NULL":"'".$this->db()->real_escape_string($value)."'";
+				else if ($key==static::$insertField) {continue;}
+				else if ($key==static::$updateField) {$this->arrDbData[static::$updateField]=$sqlValue=date('Ymdhis');}
+				else {$sqlValue=(is_null($value))?"NULL":"'".$this->db()->real_escape_string($value)."'";}
 				$sql.="`".$key."`=".$sqlValue.", ";
 			}
 			$sql=substr($sql,0,-2);
@@ -72,6 +79,10 @@ abstract class Entity implements IEntity {
 				//$this->insert=$sqlValue_insert=$this->update=$sqlValue_update=date("YmdHis");
 				if ($key==static::$keyField) {
 					$this->arrDbData[static::$keyField]=$sqlValue=$this->db()->nextId (static::$table,static::$keyField);
+				} else if ($key==static::$insertField) {
+					$this->arrDbData[static::$insertField]=$sqlValue=date('Ymdhis');
+				} else if ($key==static::$updateField) {
+					$this->arrDbData[static::$updateField]=NULL;
 				} else {
 					$sqlValue=(is_null($value))?"NULL":"'".$this->db()->real_escape_string($value)."'";
 				}

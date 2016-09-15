@@ -49,6 +49,8 @@ class ClassEntitySubclaser {
 		$this->nombreTabla=$nombreTabla;
 		$this->arrFksFrom=$arrFksFrom;
 		$this->arrFksTo=$arrFksTo;
+		$this->insertField='insert';
+		$this->updateField='update';
 
 		$arrNombresAtributos=array_keys($arrAtributos);
 		$this->nombreKeyFIeld=$nombreKeyField=$arrNombresAtributos[0];
@@ -64,7 +66,7 @@ class ClassEntitySubclaser {
 		$classCode.="class ".$nombreClase." extends Entity implements IEntity {".$sl;
 
 		//Main
-			$classCode.=$this->declaraciones($nombreTabla,$nombreKeyField);
+			$classCode.=$this->declaraciones($nombreTabla,$nombreKeyField,$this->insertField,$this->updateField);
 			$classCode.=$this->constructor($arrAtributos);
 			$classCode.=$this->noReferenciado($arrFksTo);
 			$classCode.=$this->setterGetterKeyField();
@@ -98,12 +100,14 @@ class ClassEntitySubclaser {
 		chmod ($file,0777);
 	}
 
-	private function declaraciones($nombreTabla,$nombreKeyField) {
+	private function declaraciones($nombreTabla,$nombreKeyField,$insertField,$updateField) {
 		$sl=$this->sl;
 		$sg=$this->sg;
 		$resultCode='';
 		$resultCode.=$sg.'protected static $table="'.$nombreTabla.'";'.$sl;
 		$resultCode.=$sg.'protected static $keyField="'.$nombreKeyField.'";'.$sl;
+		$resultCode.=$sg.'protected static $insertField="'.$insertField.'";'.$sl;
+		$resultCode.=$sg.'protected static $updateField="'.$updateField.'";'.$sl;
 		$resultCode.=$sl;
 		return $resultCode;
 	}

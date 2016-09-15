@@ -76,8 +76,10 @@ try {
 	$alto=(isset($_GET['alto']) && is_numeric($_GET['alto']))?$_GET['alto']:NULL;
 	$modo=(isset($_GET['modo']) && is_numeric($_GET['modo']))?$_GET['modo']:Imagen::OUTPUT_MODE_SCALE;
 	$formato=(isset($_GET['formato']))?$_GET['formato']:"png";
+	$cabecera=(isset($_GET['cabecera']))?$_GET['cabecera']:false;
+	$calidad=(isset($_GET['calidad']))?$_GET['calidad']:'default';
 
-	$objImg->output($ancho,$alto,$modo,$formato);
+	$objImg->output($ancho,$alto,$modo,$formato,$cabecera,$calidad);
 } catch (Exception $e) {
 	$firephp->info("Excepcion de tipo: ".get_class($e).". Mensaje: ".$e->getMessage()." en fichero ".$e->getFile()." en linea ".$e->getLine());
 	$firephp->info($e->getTraceAsString(),"traceAsString");
