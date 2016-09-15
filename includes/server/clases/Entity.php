@@ -16,7 +16,7 @@ interface IEntity {
 }
 
 //implementar interfaz JsonSerializable (PHP 5.4)
-abstract class Entity implements IEntity, IteratorAggregate {
+abstract class Entity implements IEntity, \IteratorAggregate {
 	/**
 	 * Conexión a la BD
 	 * @var \MysqliDB | NULL: instancia de la clase \MysqliDB que representa una conexion a base de datos o NULL si es una entidad desconectada
@@ -33,7 +33,7 @@ abstract class Entity implements IEntity, IteratorAggregate {
 		if (!is_null($keyValue)) {$this->cargar($keyValue);}
 	}
 	public function getIterator() {
-		return new ArrayIterator($this->arrDbData);
+		return new \ArrayIterator($this->arrDbData);
 	}
 	protected function db() {
 		return $this->db;
@@ -172,7 +172,7 @@ abstract class Entity implements IEntity, IteratorAggregate {
 
 /* Funciones dinamicas ********************************************************/
 	public function noReferenciado() {
-		throw new RuntimeException('El metodo noReferenciado debe ser implementado en la clase '.get_class($this));
+		throw new \RuntimeException('El metodo noReferenciado debe ser implementado en la clase '.get_class($this));
 	}
 }
 ?>
