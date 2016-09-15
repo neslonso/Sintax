@@ -6,6 +6,7 @@
 ?>
 
 <script type="text/javascript" src="./appFed16/cliente/plugins/jquery.cesta.js"></script>
+<link rel='stylesheet' href='./appFed16/cliente/plugins/jquery.cesta.css' type='text/css' media='screen'>
 
 <!-- menu lateral, archivos necesarios -->
 <!-- Expended Search -->
