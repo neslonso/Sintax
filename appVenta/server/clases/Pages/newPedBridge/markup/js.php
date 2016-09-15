@@ -454,9 +454,11 @@ function aplicaDtoVolumen() {
 			tipoDto=objDto.tipo;
 		}
 	}
-	if (tipoDto!=0) {
-		muestraMsgModal('Descuento por volumen aplicado.','Se aplicará un '+tipoDto+'% de descuento por volumen.');
-		ulDtosAdd('dtoVolumen','Descuento por volumen',tipoDto,'');
+	if ($('#newPedWizard').data('tipoDtoCliente')<=0 || $('#newPedWizard').data('dtoClienteCompatibleDtoVolumen')) {
+		if (tipoDto!=0) {
+			muestraMsgModal('Descuento por volumen aplicado.','Se aplicará un '+tipoDto+'% de descuento por volumen.');
+			ulDtosAdd('dtoVolumen','Descuento por volumen',tipoDto,'');
+		}
 	}
 }
 

@@ -7,7 +7,8 @@
 	data-apellidos-cliente="<?=$datosCli->apellidos?>"
 	data-email-cliente="<?=$datosCli->email?>"
 	data-tipo-dto-cliente="<?=$datosCli->tipoDescuento?>"
-	data-arr-dtos-volumen="<?=$jsonArrDtosVolumen?>">
+	data-arr-dtos-volumen="<?=$jsonArrDtosVolumen?>"
+	data-dto-cliente-compatible-dto-volumen="<?=($storeData->DTO_CLIENTE_COMPATIBLE_DTO_VOLUMEN)?'1':'0';?>">
 		<div class="steps-container">
 			<ul class="steps">
 				<li data-step="1" class="active">
@@ -128,6 +129,9 @@ if ( $this->totalLineas($newPedBridgeData->lineas) > $storeData->IMPORTE_MINIMO_
 								<h3 class="panel-title">Cupón descuento</h3>
 							</div>
 							<div class="panel-body">
+<?
+if ($datosCli->tipoDescuento<=0 || $storeData->DTO_CLIENTE_COMPATIBLE_CUPON) {
+?>
 								<div class="col-md-12">
 									<?=$this->cuponSelectionControl($datosCli->arrCupones)?>
 									<div class="form-group">
@@ -138,6 +142,16 @@ if ( $this->totalLineas($newPedBridgeData->lineas) > $storeData->IMPORTE_MINIMO_
 										</div>
 									</div>
 								</div>
+<?
+} else {
+?>
+								<div class="col-md-12">
+									No es posible aplicar cupón de descuento a su pedido. El cupón de descuento no es compatible con el
+									descuento personal del <?=$datosCli->tipoDescuento?>% que tiene asignado.<br />
+								</div>
+<?
+}
+?>
 							</div>
 						</div>
 					</div>
