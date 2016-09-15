@@ -7,32 +7,45 @@
 @color-bg-btnCheckOrder: #ff94be;
 @color-font-btnCheckOrder: #ffffff;
 @color-bd-btnCheckOrder: #ffffff;
+@color-bg-spanBadgeQuantity: #6c94be;
 /*********  CESTA **********/
 /*  CESTA */
-
 .content-cart{
     position: absolute;
-    right: 0;
-    height: auto;
-    width: 300px;
-    background-color: @color-bg-cart;
-    overflow: hidden;
-    /*overflow: hidden;*/
-}
-
-.content-cart{
-    margin-top: 44px ;
+    top: 116px ;
     right: -300px !important;
     width: 300px !important;
     height: auto !important;
-    border-top: 4px solid #ff94be;
+    border-top: 3px solid #ff94be;
+    overflow: hidden;
     box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.23);
+    background-color: @color-bg-cart;
 }
-.btn-cart{
-  width: 120px;
-}
-.ico-cesta{
+
+.ico-cart{
   width: 20px;
+
+}
+.btn-lg, .btn-group-lg > .btn {
+  font-size: 20px !important;
+  padding: 0px;
+}
+
+.badgeQuantity {
+  cursor: pointer;
+  height: 18px;
+  position: relative !important;
+  width: 18px;
+  z-index: 900;
+  padding: 4px 0px 0px;
+  font-size: 11px;
+  top: -13px !important;
+  right: -1px ;
+  box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.23);
+}
+
+span.badge.badgeQuantity{
+  background-color: @color-bg-spanBadgeQuantity !important;
 }
 .link-cart{
     text-align: left;
@@ -140,10 +153,15 @@
 }
 /* SM */
 @media (min-width: 768px) and (max-width: 991px){
-
+  .content-cart{
+      top: 112px !important;
+  }
 }
 /* XS */
 @media (max-width: 768px){
+  .content-cart{
+      top: 111px  !important;
+  }
 
 }
 

@@ -32,25 +32,29 @@
 		// this is private property and is  accessible only from inside the plugin
 		//acceso : plugin.settings.PARAM;
 		var defaults = {
-			txtBtnCart: "Cesta", //texto boton principal
-			imgActiveBtnCart: false, /*prioridad sobre ico en caso de estar los dos activos*/
-			icoActiveBtnCart: true,
-			imgBtnCart: "./appFed16/cliente/plugins/jquery.cesta/binaries/imgs/ico_cart1.png", //img src si imgActiveBtnCart esta activo
-			icoBtnCart: "glyphicon glyphicon-shopping-cart btn-lg", //icon fa fontawesome si icoActiveBtnCart esta activo
-			badgeActiveQuantityBtnCart: true, //boolean para controlar la activacion del badge con unidades en cesta que sale en btn cesta
+			linkCart: [{
+				txtBtnCart: "",
+				imgActiveBtnCart: false,
+				imgBtnCart: "./appFed16/cliente/plugins/jquery.cesta/binaries/imgs/ico_cart1.png",
+				icoActiveBtnCart: true,
+				icoBtnCart: "glyphicon glyphicon-shopping-cart btn-lg",
+				badgeActiveQuantityBtnCart: true,
+				quantityItems: 0
+			}],
 			arrItems: [{}],//array objetos
-			quantityItems: 0,
-			maxHeigth: 250,//array objetos
-			speed: 'ease-in',//velocidad del desplazamiento desplegamiento div
-			foo: 'bar',
-			txtQuantityTotal: 'Cantidad',
-			txtBtnOrder: 'Continuar compra',
-			classBtnOrder: 'btnCheckOrder',
+			cart: [{maxHeigth: 250, speed: "ease-in", txtQuantityTotal: "Cantidad", txtBtnOrder: "Continuar compra", classBtnOrder: "btnCheckOrder"}],
+			/*speed: 'ease-in',//velocidad del desplazamiento desplegamiento div
+			classBtnOrder: 'btnCheckOrder',*/
 			// if your plugin is event-driven, you may provide callback capabilities
 			// for its events. execute these functions before or after events of your
 			// plugin, so that users may customize those particular events without
 			// changing the plugin's code
-			onFoo: function() {}
+			onFoo: function() {},
+
+			jquerycesta_something: function( event ) {
+			 console.log("AQUI ESTAMOS");
+			}
+			/*onclick del btn despegar*/
 
 		}
 
@@ -77,8 +81,7 @@
 			//plugin.loadCesta();
 			plugin.initCart();
 
-			//call simulada
-			plugin.addItem("./appFed16/binaries/imgs/shop-item.jpg", "LOREM IPSUM 6", 2, (15.00).toFixed(2), 6);
+
 		}
 
 		// public methods
@@ -89,16 +92,24 @@
 
 		plugin.initCart = function(){
 			plugin.loadCesta();
+			var ST_linkCart = plugin.settings.linkCart[0];
 
-			$element.html('<a class="btn btn-default btnCart ico-cart" href="#menu-toggle"></a> <div class="content-cart"></div>').appendTo(element);
+			$element.html('<a class="btn btn-default btnCart" href="#menu-toggle"></a> <div class="content-cart"></div>').appendTo(element);
 
-			var ico_html = (plugin.settings.icoActiveBtnCart) ? '<i class="' + plugin.settings.icoBtnCart + ' ico-cesta"></i>' : '';
-			var imagen_html = (plugin.settings.imgActiveBtnCart) ? '<img class="img-responsive ico-cesta"  src="' + plugin.settings.imgBtnCart + '" alt="">' : ico_html;
-			var badgeQuantity_html = (plugin.settings.badgeActiveQuantityBtnCart) ? '&nbsp;<sup><span class="badge badgeQuantity">' + plugin.settings.quantityItems + '</span></sup>' : '';
-			$('.btnCart',$element).html( /*plugin.settings.txtBtnCart +*/ imagen_html + badgeQuantity_html );
+			var ico_html = (ST_linkCart.icoActiveBtnCart) ? '<i class="' + ST_linkCart.icoBtnCart + ' ico-cart"></i>' : '';
+			var imagen_html = (ST_linkCart.imgActiveBtnCart) ? '<img class="img-responsive ico-cart"  src="' + ST_linkCart.imgBtnCart + '" alt="">' : ico_html;
+			var badgeQuantity_html = (ST_linkCart.badgeActiveQuantityBtnCart) ? '<span class="badge badgeQuantity">' + ST_linkCart.quantityItems + '</span>' : '';
+			$('.btnCart',$element).html( ST_linkCart.txtBtnCart + imagen_html + badgeQuantity_html );
 
 			$('.btnCart',$element).click(function(event) {
+
 				plugin.viewCesta();
+				var $this=$('.btnCart',$element);
+				//manejador del foo de settings(por si alguien define eventos de fuera) //this.trigger nombre evento, parametros [documentacion trigger por espacionombres] ej: jqcesta.funcion... para evita sobreescritura funciones  https://api.jquery.com/event.namespace/ obj sobre el que use trigger es  el que sera this
+				$this.trigger( "jquerycesta_something" );
+
+				//call simulada
+				plugin.addItem("./appFed16/binaries/imgs/shop-item.jpg", "LOREM IPSUM 6", 2, (15.00).toFixed(2), 6);
 			});
 
 		}
@@ -110,6 +121,7 @@
 		plugin.viewCesta = function(){
 			var html_items = "";
 			var arr = plugin.settings.arrItems;
+			var ST_cart = plugin.settings.cart[0];
 			for (var item in arr) {
 				html_items = html_items + renderItem(arr[item].imagen, arr[item].titulo, arr[item].quantity,  (arr[item].precio).toFixed(2), arr[item].id);
 			}
@@ -118,7 +130,7 @@
 			$('.content-cart',$element).html(html_cesta).appendTo(element);
 
 			//variable tamanho max altura listado items
-			$('.list-item-cart',$element).css("max-height", plugin.settings.maxHeigth);
+			$('.list-item-cart',$element).css("max-height", ST_cart.maxHeigth);
 
 			if( isHideCesta() ){
 				showCesta();
@@ -163,12 +175,16 @@
 		}
 
 		var render = function(htmlItems) {
-			var htmlItems = '<div class="row list-item-cart">' + htmlItems + '</div><div class="col-lg-12 total-cart"><p class="info-total p-a-1 m-y-1">(<span class="quantity-total">' + plugin.settings.quantityItems + '</span>)&nbsp;Unidades<span class="pull-xs-right"><b>TOTAL: <span class="total">323.21</span>&nbsp;€</b></span></p><a  class="btn btn-primary btn-lg btn-block btn-check-order" type="button" href="/cart/"><b>' + plugin.settings.txtBtnOrder + '</b></a> </div>';
+			var ST_cart = plugin.settings.cart[0];
+			var ST_linkCart = plugin.settings.linkCart[0];
+			var htmlItems = '<div class="row list-item-cart">' + htmlItems + '</div><div class="col-lg-12 total-cart"><p class="info-total p-a-1 m-y-1">(<span class="quantity-total">' + ST_linkCart.quantityItems + '</span>)&nbsp;Unidades<span class="pull-xs-right"><b>TOTAL: <span class="total">323.21</span>&nbsp;€</b></span></p><a  class="btn btn-primary btn-lg btn-block btn-check-order" type="button" href="/cart/"><b>' + ST_cart.txtBtnOrder + '</b></a> </div>';
 			return htmlItems;
 		}
 
 		var renderItem = function(src, ttl, unit, prc, id) {
-			var htmlItem = '<div class="col-lg-12"><div class="col-sm-4"><img class="img-responsive" src="' + src + '" alt=""></div><div class="col-sm-8"><p class="ttl-item-cart">' + ttl + '</p><p class="unit-item-cart" >' + plugin.settings.txtQuantityTotal + ': <span>' + unit + '</span></p><p class="price-item-cart" >Precio: <span>' + prc + '&euro;</span></p></div></div><div class="col-lg-9 col-lg-push-2 separator-item"></div>';
+			var ST_cart = plugin.settings.cart[0];
+			//var htmlItem = '<div class="col-lg-12"><div class="col-xs-6 col-sm-4 col-md-3"><img class="img-responsive" src="' + src + '" alt=""></div><div class="col-xs-6 col-sm-8 col-md-9"><p class="ttl-item-cart">' + ttl + '</p><p class="unit-item-cart" >' + plugin.settings.txtQuantityTotal + ': <span>' + unit + '</span></p><p class="price-item-cart" >Precio: <span>' + prc + '&euro;</span></p></div></div><div class="col-lg-2 col-md-3 col-sm-6 separator-item"></div>';
+			var htmlItem = '<div class="col-lg-12 col-xs-12 col-sm-12 col-md-12"><div class="col-xs-6 col-sm-5 col-md-5 col-lg-5"><img class="img-responsive" src="' + src + '" alt=""></div><div class="col-xs-6 col-sm-7 col-md-7 col-lg-7"><p class="ttl-item-cart">' + ttl + '</p><p class="unit-item-cart" >' + ST_cart.txtQuantityTotal + ': <span>' + unit + '</span></p><p class="price-item-cart" >Precio: <span>' + prc + '&euro;</span></p></div></div><div class="col-lg-12 col-xs-12 col-sm-12 col-md-12 separator-item"></div>';
 			return htmlItem;
 		}
 
@@ -178,26 +194,29 @@
 			refreshQuantity(unit);
 
 			var html_item = renderItem(src, ttl, unit, prc, id);
-			console.log("publico addItem: cuerpo de new producto");
-			console.log(html_item);
-			//$('.list-item-cart',$element).html(html_item).appendTo(element);
-			var lastItem = $element.find("div[class='separator-item']:last");
+
+			var lastItem = $(element).find("div[class='separator-item']:last");
 			if (lastItem.length){
 				console.log("Existen items en cesta " + lastItem.length);
 			   	lastItem.after(html_item);
 			}else {
 				console.log("No localizado ultimo separador: cesta vacia " + lastItem.length);
-				$('.list-item-cart').html(html_item);
+				$('.list-item-cart', $(element)).append(html_item);
 			}
 
 		}
 
 		var refreshQuantity = function(quantity) {
-			plugin.settings.quantityItems = plugin.settings.quantityItems + quantity;
-			if(plugin.settings.badgeActiveQuantityBtnCart){
-				$('.badgeQuantity',$element).html(plugin.settings.quantityItems);
+			var ST_linkCart = plugin.settings.linkCart[0];
+
+			ST_linkCart.quantityItems = ST_linkCart.quantityItems + quantity;
+
+			if(ST_linkCart.badgeActiveQuantityBtnCart){
+				$('.badgeQuantity',$element).html(ST_linkCart.quantityItems);
 			}
-			$('.quantity-total',$element).html(plugin.settings.quantityItems);
+			$('.quantity-total',$element).html(ST_linkCart.quantityItems);
+			//SET quantityItems
+			plugin.settings.linkCart[0].quantityItems = ST_linkCart.quantityItems;
 		}
 
 		var countQuantityArrItems = function(){
