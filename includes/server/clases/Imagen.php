@@ -83,9 +83,9 @@ class Imagen {
 	 * @param  string $format formato de salida de la imagen (gif | jpeg | jpg | png | wbmp)
 	 * @return string Datos de la imagen
 	 */
-	public function toString ($width=NULL, $height=NULL, $outputMode=self::OUTPUT_MODE_SCALE, $format="png") {
+	public function toString ($width=NULL, $height=NULL, $outputMode=self::OUTPUT_MODE_SCALE, $format="png", $quality="default") {
 		ob_start();
-		$this->output($width,$height,$outputMode,$format,true);
+		$this->output($width,$height,$outputMode,$format,true,$quality);
 		$result=ob_get_contents();
 		ob_end_clean();
 		return $result;
@@ -99,8 +99,13 @@ class Imagen {
 	 * @param  string $format formato de salida de la imagen (gif | jpeg | jpg | png | wbmp)
 	 * @param  boolean $withoutHeader Si es true solo se vuelcan los datos de la imagen,
 	 *  si es false se añade una cabecera Content-Type acorde al parametro formato
+	 * @param  integer $quality compresion de la imagen de salida
+	 *  JPG: desde 0 (peor calidad, archivo pequeño) a 100 (mejor calidad, archivo grande).
+	 *  	El valor por defecto es el valor de calidad predeterminada de IJG (sobre 75)
+	 *  PNG: desde 0 (NO COMPRESSION at all), 1 (FASTEST but produces larger files)...hasta 9 (best compression)
+	 *  	El valor por defecto es 6.
 	 */
-	public function output ($width=NULL, $height=NULL, $outputMode=self::OUTPUT_MODE_SCALE, $format="png",$withoutHeader=false) {
+	public function output ($width=NULL, $height=NULL, $outputMode=self::OUTPUT_MODE_SCALE, $format="png", $withoutHeader=false, $quality="default") {
 		$this->ensureAlpha();
 		$puntear=false;
 		if($outputMode & self::OUTPUT_MODE_ROTATE_H) {
@@ -177,11 +182,16 @@ class Imagen {
 		switch ($format) {
 			case "gif":imagegif($outputData);break;
 			case "jpeg":
-			case "jpg":imagejpeg($outputData);break;
+			case "jpg":
+				$quality=($quality=="default")?75:$quality;
+				imagejpeg($outputData,NULL,$quality);
+				break;
 			case "png":
 				imagealphablending($this->imgData, false);
 				imagesavealpha($this->imgData, true);
-				imagepng($outputData);
+				$quality=($quality=="default")?6:$quality;
+				error_log("quality ".$quality);
+				imagepng($outputData,NULL,$quality);
 				//imagepng($outputData,NULL,9,PNG_ALL_FILTERS);
 			break;
 			case "wbmp":imagewbmp($outputData);break;

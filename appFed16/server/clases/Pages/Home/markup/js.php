@@ -11,12 +11,16 @@ $(document).ready(function() {
 			$(this).delay(600).queue(function() {
 				//ajustamos para que quite el overflow cuando ya termine la animacion
 				$("#sidebar-wrapper").css("overflow-y","visible");
+				$("#sidebar-wrapper").addClass('sidebar-wrapper-scroll');
+				//$("#sidebar-wrapper").css("position","relative");
 				$(this).dequeue();
 			});
 
 		} else {
 			//está abierto y lo vamos a cerrar
 			$("#sidebar-wrapper").css("overflow-y","auto");
+			$("#sidebar-wrapper").removeClass('sidebar-wrapper-scroll');
+			//$("#sidebar-wrapper").css("position","fixed");
 			$("#wrapper").toggleClass("toggled");
 		}
     });

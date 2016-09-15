@@ -1,3 +1,9 @@
 <?="\n<!-- ".get_class()." -->\n"?>
 <?="\n<!-- /".get_class()." -->\n"?>
-cuerpo prods
+<div class="container">
+	<div class="row">
+		<div class="col-xs-4">
+		</div>
+		<div>
+	</div>
+</div>

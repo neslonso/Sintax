@@ -60,12 +60,12 @@
 									<div class="col-xs-12 col-sm-6 col-md-6"> <!-- Grid -->
 										<div class="rbm_sldr_sc_content rbm_sldr_sc_content_col shop-item-modal">
 											<!-- Image -->
-											<img src="./appFed16/binaries/imgs/shop-item.jpg" alt="rbm_slider_showcase_01">
+											<a href="http://fed16.farmaciacelorrio.com/index.php?page=prod"><img src="./appFed16/binaries/imgs/shop-item.jpg" alt="rbm_slider_showcase_01"></a>
 											<p>
 												Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris porttitor erat ac quam commodo, vitae ornare libero malesuada. Nam ultricies, felis sit amet faucibus facilisis, metus tellus dictum sem, id auctor eros risus sed tellus. Nullam iaculis lacus a ultricies gravida. Curabitur enim enim, elementum sit amet felis quis, lobortis pharetra mi. Phasellus id sem vehicula, iaculis neque id, ullamcorper magna. Mauris efficitur ullamcorper massa id cursus. Nunc sed egestas tortor. Integer lacus magna, tempor et fringilla ac, sodales non nunc.
 											</p>
 											<!-- Button -->
-											<a href="#" class="rbm_btn_x_out_shtr rbm_sldr_sc_btn rbm_sldr_sc_btn">view more</a>
+											<a href="http://fed16.farmaciacelorrio.com/index.php?page=prod" class="rbm_btn_x_out_shtr rbm_sldr_sc_btn rbm_sldr_sc_btn">view more</a>
 										</div> <!-- /.rbm_sldr_sc_content -->
 									</div> <!-- /Grid -->
 								</div> <!-- /item -->

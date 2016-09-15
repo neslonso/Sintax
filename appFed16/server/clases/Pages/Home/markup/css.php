@@ -6,7 +6,7 @@
 @color-principal: #6c94be;
 @color-secundario: #ff94be;
 
-@color-body: #ebeced;
+@color-body: #fff;
 @color-txt: #333333;
 
 @color-cabecera: #fff;
@@ -154,12 +154,15 @@ body {
     height: 100%;
     margin-left: -@width-menu;
     overflow-y: auto;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 -16px 10px 0 rgba(0, 0, 0, 0.15); /*-16 para quitar el borde inferior*/
     background: @color-sidebarMenu;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
+}
+.sidebar-wrapper-scroll{
+    /*clase para lograr hacer scroll*/
 }
 #wrapper.toggled #sidebar-wrapper {
     width: 0px;
@@ -173,12 +176,13 @@ body {
     position: relative;
     margin-right: 0px;
 }
-/*
 .sidebar-top{
+    /*
     height: 5px;
     background-color: @color-principal;
+    */
 }
-*/
+
 /*********  LISTADO DE PRODUCTOS **********/
 .shop-item {
     position: relative;
@@ -273,9 +277,11 @@ body {
     }
     #sidebar-wrapper {
         width: @width-menu;
+        position: absolute;
     }
     #wrapper.toggled #sidebar-wrapper {
         width: 0;
+        /*position: fixed !important;*/
     }
     #page-content-wrapper {
         position: relative;
@@ -284,7 +290,6 @@ body {
         position: relative;
         margin-right: 0;
     }
-
 }
 
 /*  CESTA */
@@ -317,7 +322,7 @@ body {
 
 }
 /* XS */
-@media (max-width: 768px){
+@media (max-width: 767px){
     /**** menu****/
     #wrapper {
         padding-left: 0px !important;
@@ -328,7 +333,11 @@ body {
         margin-left: 0px;
         height: auto;
     }
+    .sidebar-wrapper-scroll{
+        position: inherit !important;
+    }
 }
+
 
 
 /* XS y SM*/

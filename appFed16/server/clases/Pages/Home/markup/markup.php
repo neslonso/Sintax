@@ -123,7 +123,7 @@
 		<div class="container-fluid" id="container-pie">
 			<div class="row">
 				<div class="col-lg-12">
-					footer
+					 <img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&fichero=cofinanciado.xunta.png" alt="" class="img-responsive">
 				</div>
 			</div>
 		</div>
