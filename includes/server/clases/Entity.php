@@ -32,10 +32,11 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 		$this->db=$db;
 		if (!is_null($keyValue)) {$this->cargar($keyValue);}
 	}
-		return $this->db;
-	}
 	public function getIterator() {
 		return new \ArrayIterator($this->arrDbData);
+	}
+	protected function db() {
+		return $this->db;
 	}
 	public function cargarId ($id) {return $this->cargar($id);}
 	public function cargar ($keyValue) {
