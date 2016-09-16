@@ -121,13 +121,11 @@ class ClassEntitySubclaser {
 		$resultCode.=$sg.' * @param string keyValue Valor de la clave primaria que identifica el registro asociado a la instancia a construir'.$sl;
 		$resultCode.=$sg.' */'.$sl;
 		$resultCode.=$sg.'public function __construct (\MysqliDB $db=NULL, $keyValue=NULL) {'.$sl;
-		$resultCode.='/*'.$sl;
 		$resultCode.=$sg.$sg.'$this->arrDbData=array('.$sl;
 		foreach ($arrAtributos as $nombreAtributo => $sqlData) {
 			$resultCode.=$sg.$sg.$sg.'"'.$nombreAtributo.'" => NULL,'.$sl;
 		}
 		$resultCode.=$sg.$sg.");".$sl;
-		$resultCode.='*/'.$sl;
 		$resultCode.=$sg.$sg.'parent::__construct($db,$keyValue);'.$sl;
 		$resultCode.=$sg."}".$sl;
 		$resultCode.=$sl;
