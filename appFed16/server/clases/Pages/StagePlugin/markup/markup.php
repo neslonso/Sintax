@@ -6,6 +6,7 @@
 </header>
 </nav>
 <div id="wrapper" class="toggled">
+	<a onclick="addProducto();">Add Producto&nbsp;</a>
 
 </div>
 <footer>
