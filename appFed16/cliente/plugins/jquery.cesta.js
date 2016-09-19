@@ -32,6 +32,8 @@
 		// this is private property and is  accessible only from inside the plugin
 		//acceso : plugin.settings.PARAM;
 		var defaults = {
+			arrItems: [{}],//array objetos
+			total: 0,
 			linkCart: [{
 				txtBtnCart: "",
 				imgActiveBtnCart: false,
@@ -41,8 +43,22 @@
 				badgeActiveQuantityBtnCart: true,
 				quantityItems: 0
 			}],
-			arrItems: [{}],//array objetos
-			cart: [{maxHeigth: 250, speed: "ease-in", txtQuantityTotal: "Cantidad", txtBtnOrder: "Continuar compra", classBtnOrder: "btnCheckOrder"}],
+			cart: [{
+				maxHeigth: 250,
+				speed: "ease-in",
+				txtQuantityTotal: "Cantidad",
+				txtBtnOrder: "Continuar compra",
+				classBtnOrder: "btnCheckOrder"
+			}],
+			notifications:  [{
+				ntfActiveAddItem: true,
+				ntfClass: "",
+				ttlNtf: "Muy Bien",
+				txtNtf: "Has Añadido el producto <span id='itemNtfCart'></span> a tu carrito",
+				ntfTime: "20sg",
+				imgActiveNtf: true,
+				imgNtf:"glyphicon glyphicon-shopping-cart btn-lg"
+			}],
 			/*speed: 'ease-in',//velocidad del desplazamiento desplegamiento div
 			classBtnOrder: 'btnCheckOrder',*/
 			// if your plugin is event-driven, you may provide callback capabilities
@@ -101,6 +117,15 @@
 			var badgeQuantity_html = (ST_linkCart.badgeActiveQuantityBtnCart) ? '<span class="badge badgeQuantity">' + ST_linkCart.quantityItems + '</span>' : '';
 			$('.btnCart',$element).html( ST_linkCart.txtBtnCart + imagen_html + badgeQuantity_html );
 
+			/*borrar SOLO PARA PROBAR ADD SIN TOCAR CUERPO HOME*/
+			var htmlPrevPrueba = $(element).find("div[class='content-cart']:last");
+
+			var callAddItem = '<a onclick="$(\'#divJqCesta\').data(\'jqCesta\').addItem(\'./appFed16/binaries/imgs/shop-item.jpg\', \'LOREM IPSUM 6\', 2, 15.00, 6);$(\'#divJqCesta\').data(\'jqCesta\').refreshTotal(0);">Add [2] Producto&nbsp;</a>';
+			if (htmlPrevPrueba.length){
+				htmlPrevPrueba.after(callAddItem);
+			}
+			/*FIN CODIGO A BORRAR*/
+
 			$('.btnCart',$element).click(function(event) {
 
 				plugin.viewCesta();
@@ -108,8 +133,7 @@
 				//manejador del foo de settings(por si alguien define eventos de fuera) //this.trigger nombre evento, parametros [documentacion trigger por espacionombres] ej: jqcesta.funcion... para evita sobreescritura funciones  https://api.jquery.com/event.namespace/ obj sobre el que use trigger es  el que sera this
 				$this.trigger( "jquerycesta_something" );
 
-				//call simulada
-				plugin.addItem("./appFed16/binaries/imgs/shop-item.jpg", "LOREM IPSUM 6", 2, (15.00).toFixed(2), 6);
+
 			});
 
 		}
@@ -145,7 +169,29 @@
 		}
 
 		plugin.addItem = function(src, ttl, unit, prc, id){
-			addItem(src, ttl, unit, prc, id);
+			var exito = 0;
+			exito = addItem(src, ttl, unit, prc, id);
+			return exito;
+		}
+
+		plugin.refreshTotal = function(total){
+			/*borrar*/
+			//calculo desde fuera
+			console.log("**********************************");
+			console.log("**********************************");
+			console.log(plugin.settings.arrItems);
+			var ultimoProductoAdd = (plugin.settings.arrItems)[plugin.settings.arrItems.length-1];
+			console.log(ultimoProductoAdd);
+			var importeAdd = ultimoProductoAdd.precio * ultimoProductoAdd.quantity;
+			console.log("Add el importe " + importeAdd);
+			var totalActual = plugin.settings.total + importeAdd;
+			console.log("Nuevo importe " + totalActual);
+			//call desde fuera, desde dentro para simularlar lo tenemos que hacer como la linea de codigo no comentada
+			//$('#divJqCesta').data('jqCesta').refreshTotal(totalActual);
+			refreshTotal(totalActual);
+			/*fin borrar*/
+
+			//refreshTotal(total);
 		}
 
 		// private methods
@@ -175,9 +221,10 @@
 		}
 
 		var render = function(htmlItems) {
+			var ST_setting = plugin.settings;
 			var ST_cart = plugin.settings.cart[0];
 			var ST_linkCart = plugin.settings.linkCart[0];
-			var htmlItems = '<div class="row list-item-cart">' + htmlItems + '</div><div class="col-lg-12 total-cart"><p class="info-total p-a-1 m-y-1">(<span class="quantity-total">' + ST_linkCart.quantityItems + '</span>)&nbsp;Unidades<span class="pull-xs-right"><b>TOTAL: <span class="total">323.21</span>&nbsp;€</b></span></p><a  class="btn btn-primary btn-lg btn-block btn-check-order" type="button" href="/cart/"><b>' + ST_cart.txtBtnOrder + '</b></a> </div>';
+			var htmlItems = '<div class="row list-item-cart">' + htmlItems + '</div><div class="col-lg-12 total-cart"><p class="info-total p-a-1 m-y-1">(<span class="quantity-total">' + ST_linkCart.quantityItems + '</span>)&nbsp;Unidades<span class="pull-xs-right"><b>TOTAL: <span class="total">' + ST_setting.total + '</span>&nbsp;€</b></span></p><a  class="btn btn-primary btn-lg btn-block btn-check-order" type="button" href="/cart/"><b>' + ST_cart.txtBtnOrder + '</b></a> </div>';
 			return htmlItems;
 		}
 
@@ -203,7 +250,26 @@
 				console.log("No localizado ultimo separador: cesta vacia " + lastItem.length);
 				$('.list-item-cart', $(element)).append(html_item);
 			}
+			addArrItem(src, ttl, unit, prc, id);
+			return true;
 
+		}
+
+		var refreshTotal = function(total) {
+			console.log("Private refreshTotal " + total);
+			plugin.settings.total = total;
+			$('.total',$element).html((plugin.settings.total).toFixed(2));
+
+		}
+
+		var addArrItem = function(src, ttl, unit, prc, id) {
+			var obj_item = new Object();
+			obj_item.id = id;
+			obj_item.imagen = src;
+			obj_item.descripcion = ttl;
+			obj_item.quantity = unit;
+			obj_item.precio = prc;
+			plugin.settings.arrItems[(plugin.settings.arrItems).length] = obj_item;
 		}
 
 		var refreshQuantity = function(quantity) {
