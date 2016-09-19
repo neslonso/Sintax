@@ -30,14 +30,22 @@
 		var defaults = {
 			foo: 'bar',
 
-			name: 'divJqNotifications',
-			notification: [{
-				icoClass: "fa fa-cart-plus",
-				icoClose: "fa fa-times",
-				icoClassExt : "icoClassExt",
-				icoCloseExt : "icoCloseExt",
-				color : "yellow",/*green, red, blue, yellow, white*/
-			}],
+			notification: {
+				add: {
+					icoClass: "fa fa-cart-plus",
+					icoClose: "fa fa-times",
+					icoClassExt : "icoClassExt",
+					icoCloseExt : "icoCloseExt",
+					color : "yellow",/*green, red, blue, yellow, white*/
+					lifeTime: 4000,
+				},
+				del: {
+
+				},
+				login: {
+
+				}
+			},
 			// if your plugin is event-driven, you may provide callback capabilities
 			// for its events. execute these functions before or after events of your
 			// plugin, so that users may customize those particular events without
@@ -68,10 +76,10 @@
 			// code goes here
 			console.log("Init plugin jQueryNotificactions");
 			//$('#divJqNotifications').html('Hola plugin').appendTo(element);
-			plugin.render("Prueba", "Esto es una prueba", plugin.settings.notification[0].color, '123');
+			plugin.render("Prueba", "Esto es una prueba", plugin.settings.notification.color, '123');
 
 			setTimeout(function() {
-        		plugin.render("Prueba 2", "Esto es una prueba", plugin.settings.notification[0].color, '456');
+        		plugin.render("Prueba 2", "Esto es una prueba", plugin.settings.notification.color, '456');
 			}, 3000);
 
 			/*por defecto*/
@@ -94,16 +102,16 @@
 		plugin.addNotification = function (ttl, txt, color, infoExtra){
 			//registramos notification en arrNotification con idAleatorio
 			//renderizamos notification
-			/*var color = (color != 0) ? color : plugin.settings.notification[0].color ;
+			/*var color = (color != 0) ? color : plugin.settings.notification.color ;
 			var id = generationId(); //id aletarorio que no esta en pila
 			plugin.render(ttl, txt, color, id);
-			plugin.render(, "Esto es una prueba", plugin.settings.notification[0].color, '456');*/
+			plugin.render(, "Esto es una prueba", plugin.settings.notification.color, '456');*/
 		}
 
 		plugin.render = function(ttl, txt, color, id){
-			cuerpo_notf = render(ttl, txt, color, id);
-			$('#' + plugin.settings.name).append(cuerpo_notf).appendTo(element);
-			registerCloseNotification(id);
+			$cuerpo_notf = render(ttl, txt, color, id);
+			$element.append($cuerpo_notf);
+			registerCloseNotification($cuerpo_notf);
 			$('.closeNotification',$element).click(function(event) {
 				$(this).parent().parent().removeClass('fadeInRight').addClass('fadeOutRight').delay(100).hide(400, function () {
                     $(this).remove();
@@ -121,23 +129,33 @@
 
 		var render = function(ttl, txt, color, id){
 			var _txt = txt + "<span class='articleName'><b> Belmil </b></span>";
- 			var ST_notification = plugin.settings.notification[0];
+ 			var ST_notification = plugin.settings.notification;
 
 			//var cuerpo = "<div class='row mensaje verde basket animated fadeInRight' ><div class='col-xs-4 icon-holder'><i class=' " + ST_notification.icoClass + " " + ST_notification.icoClassExt + " '></i></div><div class='col-xs-7 m-y-1'><p class='h5'><b>" + ttl + "</b></p><p>" + txt + "</p></div><div class='col-xs-1 closeMensajeLateral'><i class='notification-icon " + ST_notification.icoClose + " " + ST_notification.icoCloseExt + " closeNotification'></i></div></div>";
-			var cuerpo = "<div class='row message basket animated " + color + "' id='" + id + "'><div class='col-xs-4 icon-holder'><i class=' notification-icon " + ST_notification.icoClass + " " + ST_notification.icoClassExt + " '></i></div><div class='col-xs-7 m-y-1'><p class='h5'><b>" + ttl + "</b></p><p>" + _txt + "</p></div><div class='col-xs-1 closeSideMessage'><i class='notification-icon " + ST_notification.icoClose + " " + ST_notification.icoCloseExt + " closeNotification'></i></div></div>";
+			var cuerpo = [
+				"<div class='row message basket animated " + color + "' id='" + id + "'>",
+					"<div class='col-xs-4 icon-holder'>",
+						"<i class=' notification-icon " + ST_notification.icoClass + " " + ST_notification.icoClassExt + " '></i>",
+					"</div>",
+					"<div class='col-xs-7 m-y-1'>",
+						"<p class='h5'><b>" + ttl + "</b></p><p>" + _txt + "</p>",
+					"</div>",
+					"<div class='col-xs-1 closeSideMessage'>",
+						"<i class='notification-icon " + ST_notification.icoClose + " " + ST_notification.icoCloseExt + " closeNotification'></i>",
+					"</div>",
+				"</div>"
+			].join('');
+			var $cuerpo=$(cuerpo);
 
-
-			return cuerpo;
+			return $cuerpo;
 		}
 
-		var registerCloseNotification = function (id){
-			$(function() {
-    			setTimeout(function() {
-	        		$("#"+id).removeClass('fadeInRight').addClass('fadeOutRight').delay(100).hide(400, function () {
-	                    $("#"+id).remove();
-	                });
-    			}, 4000);
-    		});
+		var registerCloseNotification = function ($obj){
+			setTimeout(function() {
+				$obj.removeClass('fadeInRight').addClass('fadeOutRight').delay(100).hide(400, function () {
+					$obj.remove();
+				});
+			}, plugin.settings.notification.lifeTime);
 		}
 
 		// call the "constructor" method
