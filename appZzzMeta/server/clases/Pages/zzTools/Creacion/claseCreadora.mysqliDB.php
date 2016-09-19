@@ -121,13 +121,11 @@ class ClassEntitySubclaser {
 		$resultCode.=$sg.' * @param string keyValue Valor de la clave primaria que identifica el registro asociado a la instancia a construir'.$sl;
 		$resultCode.=$sg.' */'.$sl;
 		$resultCode.=$sg.'public function __construct (\MysqliDB $db=NULL, $keyValue=NULL) {'.$sl;
-		$resultCode.='/*'.$sl;
 		$resultCode.=$sg.$sg.'$this->arrDbData=array('.$sl;
 		foreach ($arrAtributos as $nombreAtributo => $sqlData) {
 			$resultCode.=$sg.$sg.$sg.'"'.$nombreAtributo.'" => NULL,'.$sl;
 		}
 		$resultCode.=$sg.$sg.");".$sl;
-		$resultCode.='*/'.$sl;
 		$resultCode.=$sg.$sg.'parent::__construct($db,$keyValue);'.$sl;
 		$resultCode.=$sg."}".$sl;
 		$resultCode.=$sl;
@@ -277,12 +275,12 @@ class ClassEntitySubclaser {
 			$resultCode.=$sg.$sg.'$rsl=$this->db()->query($sql);'.$sl;
 			$resultCode.=$sg.$sg.'while ($data=$rsl->fetch_object()) {'.$sl;
 			$resultCode.=$sg.$sg.$sg.'switch ($tipo) {'.$sl;
-			$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{static::$keyField});break;'.$sl;
+			$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{'."\\".ucfirst($fTable).'::$keyField});break;'.$sl;
 			$resultCode.=$sg.$sg.$sg.$sg.'case "arrClassObjs":'.$sl;
 			if (!$objFkInfo->manyToMany) {
-				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($fTable).'($this->db(),$data->{static::$keyField});'.$sl;
+				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($fTable).'($this->db(),$data->{'."\\".ucfirst($fTable).'::$keyField});'.$sl;
 			} else {
-				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($ffTable).'($this->db(),$data->{static::$keyField});'.$sl;
+				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($ffTable).'($this->db(),$data->{'."\\".ucfirst($ffTable).'::$keyField});'.$sl;
 			}
 			$resultCode.=$sg.$sg.$sg.$sg.$sg.'array_push($arr,$obj);'.$sl;
 			$resultCode.=$sg.$sg.$sg.$sg.$sg.'unset($obj);'.$sl;
