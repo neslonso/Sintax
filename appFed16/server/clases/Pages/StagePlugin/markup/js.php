@@ -1,6 +1,7 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
-	//$('#divJqCesta').jqNotification({'foo': 'bar'});
+	//$('#divJqNotifications').html("Esto es una prueba");
+	$('#divJqCesta').jqCesta({'foo': 'bar'});
 	$('#divJqNotifications').jqNotifications({'foo': 'bar'});
 });

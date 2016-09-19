@@ -1,0 +1,108 @@
+/*Cuerpo notification*/
+@color-boxshadow-menssage: rgba(0,0,0,0.23);
+@color-bg-icon_p: #fff;
+@color-bd-iconHolder: #fff;
+/*colores*/
+@color-bg-notificationGreen: #89be6f;
+@color-bg-notificationBlue: #8dcaca;
+@color-bg-notificationRed: #f66064;
+@color-bg-notificationYellow: #e5b463;
+@color-bg-notificationWhite: #fff;
+
+
+
+/*clase a extender para ico left notification*/
+.icoClassExt {
+    font-size: 47px;
+    left: -6px;
+    position: relative;
+    top: 9px;
+}
+
+
+
+/**/
+#divJqNotifications {
+    position: fixed;
+    right: 0;
+    top: 100px;
+    width: 415px;
+    z-index: 30;
+}
+#divJqNotifications .message {
+    box-shadow: 0 5px 15px -3px @color-boxshadow-menssage;
+    margin-bottom: 7px;
+    z-index: 30;
+}
+#divJqNotifications .message .notification-icon, #divJqNotifications .message p {
+    color: @color-bg-icon_p;
+}
+#divJqNotifications .message .notification-icon {
+    font-size: 50px;
+}
+#divJqNotifications .message .icon-holder {
+    border: 3px solid @color-bd-iconHolder;
+    border-radius: 150px;
+    height: 70px;
+    margin: 15px;
+    width: 70px;
+}
+
+#divJqNotifications .message .closeSideMessage > .notification-icon {
+    cursor: pointer;
+    font-size: 18px;
+    position: absolute;
+    right: -27px;
+    top: 10px;
+}
+
+/*options color notifications*/
+#divJqNotifications .green {
+    background: @color-bg-notificationGreen none repeat scroll 0 0;
+}
+#divJqNotifications .blue {
+    background: @color-bg-notificationBlue none repeat scroll 0 0;
+}
+#divJqNotifications .red {
+    background: @color-bg-notificationRed none repeat scroll 0 0;
+}
+#divJqNotifications .yellow {
+    background: @color-bg-notificationYellow none repeat scroll 0 0;
+}
+
+#divJqNotifications .white {
+    background: @color-bg-notificationWhite none repeat scroll 0 0;
+}
+
+.animated {
+    animation-duration: 0.32s;
+    animation-fill-mode: both;
+}
+.fadeInRight {
+    animation-name: fadeInRight;
+}
+.fadeOutRight {
+    animation-name: fadeOutRight;
+}
+
+
+
+/*#divJqNotifications .message a {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    color: #fff;
+    font-weight: 100;
+}
+#divJqNotifications .last-units p {
+    color: #444;
+}
+#divJqNotifications .last-units .icon-holder {
+    border: 3px solid #c2c2c2;
+}
+#divJqNotifications .last-units .icon-holder p.icon {
+    color: #ff6000;
+    font-size: 41px;
+    font-weight: bold;
+    margin-left: 19px;
+}
+
+*/
