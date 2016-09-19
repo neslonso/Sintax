@@ -267,20 +267,18 @@ class ClassEntitySubclaser {
 			if (!$objFkInfo->manyToMany) {
 				$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$fTable.'".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
 			} else {
-				$resultCode.=$sg.$sg.'//TODO: OJO!, al escrbir esta consulta no conocemos el nombre de la clave primaria en la tabla del otro extremo de la relaccion manyToMany ('.$ffTable.'), se está usando siempre id.'.$sl;
-				$resultCode.=$sg.$sg.'//TODO: 2016-09-13 Podría utilizar un metodo similar a GETkeyField en la clase del otro extremo ('.$ffTable.') que devolviera el nombre del campo en lugar su valor.'.$sl;
-				$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$fTable.' INNER JOIN '.$ffTable.' ON '.$fTable.'.'.$ffField.'='.$ffTable.'.'.('id').'".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
+				$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$fTable.' f INNER JOIN '.$ffTable.' ff ON f.'.$ffField.'=ff.".'."\\".ucfirst($fTable).'::$keyField." ".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
 			}
 			$resultCode.=$sg.$sg.'$arr=array();'.$sl;
 			$resultCode.=$sg.$sg.'$rsl=$this->db()->query($sql);'.$sl;
 			$resultCode.=$sg.$sg.'while ($data=$rsl->fetch_object()) {'.$sl;
 			$resultCode.=$sg.$sg.$sg.'switch ($tipo) {'.$sl;
-			$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{static::$keyField});break;'.$sl;
+			$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{'."\\".ucfirst($fTable).'::$keyField});break;'.$sl;
 			$resultCode.=$sg.$sg.$sg.$sg.'case "arrClassObjs":'.$sl;
 			if (!$objFkInfo->manyToMany) {
-				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($fTable).'($this->db(),$data->{static::$keyField});'.$sl;
+				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($fTable).'($this->db(),$data->{'."\\".ucfirst($fTable).'::$keyField});'.$sl;
 			} else {
-				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($ffTable).'($this->db(),$data->{static::$keyField});'.$sl;
+				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($ffTable).'($this->db(),$data->{'."\\".ucfirst($ffTable).'::$keyField});'.$sl;
 			}
 			$resultCode.=$sg.$sg.$sg.$sg.$sg.'array_push($arr,$obj);'.$sl;
 			$resultCode.=$sg.$sg.$sg.$sg.$sg.'unset($obj);'.$sl;

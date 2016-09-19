@@ -62,7 +62,7 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 				//$this->update=$sqlValue_update=date("YmdHis");
 				if ($key==static::$keyField) {continue;}
 				else if ($key==static::$insertField) {continue;}
-				else if ($key==static::$updateField) {$this->arrDbData[static::$updateField]=$sqlValue=date('Ymdhis');}
+				else if ($key==static::$updateField) {$this->arrDbData[static::$updateField]=$sqlValue=date('YmdHis');}
 				else {$sqlValue=(is_null($value))?"NULL":"'".$this->db()->real_escape_string($value)."'";}
 				$sql.="`".$key."`=".$sqlValue.", ";
 			}
@@ -80,9 +80,9 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 				if ($key==static::$keyField) {
 					$this->arrDbData[static::$keyField]=$sqlValue=$this->db()->nextId (static::$table,static::$keyField);
 				} else if ($key==static::$insertField) {
-					$this->arrDbData[static::$insertField]=$sqlValue=date('Ymdhis');
+					$this->arrDbData[static::$insertField]=$sqlValue=date('YmdHis');
 				} else if ($key==static::$updateField) {
-					$this->arrDbData[static::$updateField]=NULL;
+					$this->arrDbData[static::$updateField]=$sqlValue="NULL";
 				} else {
 					$sqlValue=(is_null($value))?"NULL":"'".$this->db()->real_escape_string($value)."'";
 				}
@@ -115,7 +115,10 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 		});
 		return $arrVars;
 	}
-	public function toJson(){
+	public function toStdObj() {
+		return (object)$this->arrDbData;
+	}
+	public function toJson() {
 		return json_encode($this->toArray());
 	}
 /* Funciones estaticas ********************************************************/
@@ -138,7 +141,7 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 			switch ($tipo) {
 				case "arrKeys": array_push($arr,$data->{static::$keyField});break;
 				case "arrClassObjs":
-					$obj=new static($data->{static::$keyField});
+					$obj=new static($db,$data->{static::$keyField});
 					array_push($arr,$obj);
 					unset ($obj);
 				break;
