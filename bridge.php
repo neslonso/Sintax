@@ -11,10 +11,10 @@ $session_name=(isset($_REQUEST['session_name']))?$_REQUEST['session_name']:'';
 sess_name ($session_name);
 ?>
 <?
-error_log("Cookies: ".count($_COOKIE));
+//error_log("Cookies: ".count($_COOKIE));
 if (isset($_GET['SafariCookie'])) {
 	setcookie("SafariCookie", '1', time()+3600);  /* expira en una hora */
-	error_log('setcookie hecho');
+	//error_log('setcookie hecho');
 ?>
 <script type="text/javascript">
 	//window.history.back();
@@ -24,7 +24,7 @@ if (isset($_GET['SafariCookie'])) {
 	die();
 } else {
 	if ( ! count($_COOKIE) > 0 && strpos($_SERVER['HTTP_USER_AGENT'], 'Safari')) {
-		error_log('ES SAFARI SIN COOKIE');
+		//error_log('ES SAFARI SIN COOKIE');
 ?>
 <script type="text/javascript">
 		var objMsg= {

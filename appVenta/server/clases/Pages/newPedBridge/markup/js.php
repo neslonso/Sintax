@@ -8,7 +8,7 @@ $(document).ready(function() {
 		//var _docWidth = (document.width !== undefined) ? document.width : document.body.offsetWidth;
 		var objMsg= {
 			service: "newPedBridgeIframeHeight",
-			parameters: _docHeight
+			parameters: _docHeight +20
 		}
 		parent.postMessage(objMsg, '*');
 	}

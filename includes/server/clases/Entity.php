@@ -141,7 +141,7 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 			switch ($tipo) {
 				case "arrKeys": array_push($arr,$data->{static::$keyField});break;
 				case "arrClassObjs":
-					$obj=new static($data->{static::$keyField});
+					$obj=new static($db,$data->{static::$keyField});
 					array_push($arr,$obj);
 					unset ($obj);
 				break;
