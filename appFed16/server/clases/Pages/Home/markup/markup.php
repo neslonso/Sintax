@@ -8,7 +8,7 @@
 	<div class="container-fluid container-cabecera-barraLogo">
 		<div class="row vertical-align">
 			<div class="col-xs-6 col-sm-4 col-md-3">
-				<img class="img-responsive logo" src="./appFed16/binaries/imgs/shop-logo.jpg" alt="">
+				<a href="./"><img class="img-responsive logo" src="./appFed16/binaries/imgs/shop-logo.jpg" alt=""></a>
 			</div>
 			<div class="col-xs-3 col-sm-2 col-md-1">
 				<a href="#menu-toggle" class="btn btn-default btn-menu" id="menu-toggle"><span class="glyphicon glyphicon-align-justify"></span></a>
@@ -121,10 +121,16 @@
         <?=$this->cuerpo()?>
 
 		<div class="container-fluid" id="container-pie">
-			<div class="row">
-				<div class="col-lg-12">
-					 <img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&fichero=cofinanciado.xunta.png" alt="" class="img-responsive">
+			<div class="row vertical-align">
+				<div class="col-md-2">
+					<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&fichero=cofinanciado.xunta.png" alt="" class="img-responsive">
 				</div>
+                <div class="col-md-2">
+                    <img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&filtro=grayscale&fichero=visaMasterLogo.png" alt="" class="img-responsive">
+                </div>
+                <div class="col-md-1">
+                    <img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&filtro=grayscale&fichero=html5Logo.png" alt="" class="img-responsive">
+                </div>
 			</div>
 		</div>
 	</div>

@@ -83,9 +83,9 @@ class Imagen {
 	 * @param  string $format formato de salida de la imagen (gif | jpeg | jpg | png | wbmp)
 	 * @return string Datos de la imagen
 	 */
-	public function toString ($width=NULL, $height=NULL, $outputMode=self::OUTPUT_MODE_SCALE, $format="png", $quality="default") {
+	public function toString ($width=NULL, $height=NULL, $outputMode=self::OUTPUT_MODE_SCALE, $format="png", $quality="default", $filter=NULL) {
 		ob_start();
-		$this->output($width,$height,$outputMode,$format,true,$quality);
+		$this->output($width,$height,$outputMode,$format,true,$quality,$filter);
 		$result=ob_get_contents();
 		ob_end_clean();
 		return $result;
@@ -105,7 +105,7 @@ class Imagen {
 	 *  PNG: desde 0 (NO COMPRESSION at all), 1 (FASTEST but produces larger files)...hasta 9 (best compression)
 	 *  	El valor por defecto es 6.
 	 */
-	public function output ($width=NULL, $height=NULL, $outputMode=self::OUTPUT_MODE_SCALE, $format="png", $withoutHeader=false, $quality="default") {
+	public function output ($width=NULL, $height=NULL, $outputMode=self::OUTPUT_MODE_SCALE, $format="png", $withoutHeader=false, $quality="default", $filter=NULL) {
 		$this->ensureAlpha();
 		$puntear=false;
 		if($outputMode & self::OUTPUT_MODE_ROTATE_H) {
@@ -157,6 +157,12 @@ class Imagen {
 
 		if ($puntear) {
 			$this->fillPattern(self::pattern4x1());
+		}
+
+		if (!is_null($filter)){
+			switch ($filter) {
+				case 'grayscale': $this->grayscale(); break;
+			}
 		}
 
 		if (count($this->marcasAgua)>0) {
@@ -479,6 +485,16 @@ class Imagen {
 			}
 		}
 		$this->imgData=$img;
+	}
+
+	public function grayscale(){
+		$im=$this->imgData;
+		if($im && imagefilter($im, IMG_FILTER_GRAYSCALE)){
+		    imagepng($im, 'dave.png');
+		} else {
+		    return false;
+		}
+		$this->imgData=$im;
 	}
 
 /* Estaticas ******************************************************************/

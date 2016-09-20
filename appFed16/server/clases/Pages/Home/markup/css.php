@@ -5,6 +5,8 @@
 /*********** DEFINICION DE VARIABLES ************/
 @color-principal: #6c94be;
 @color-secundario: #ff94be;
+@color-links: #304c71;
+@color-links-hover: #6c94be;
 
 @color-body: #fff;
 @color-txt: #333333;
@@ -12,7 +14,7 @@
 @color-cabecera: #fff;
 @color-cuerpo: #ebeced;
 @color-sidebarMenu: #fff;
-@color-pie: @color-secundario;
+@color-pie: #fff;
 
 @color-borde-items: #fff;
 @color-bg-items: #fff;
@@ -35,6 +37,14 @@ body {
     background-color: @color-body;
     color: @color-txt;
     margin-top: 133px; /* ajuste de cuerpo debido a navbar fixed */
+}
+a{
+    color: @color-links !important;
+    text-decoration: none;
+}
+a:hover, a:focus {
+    color: @color-links-hover !important;
+    text-decoration: dotted;
 }
 .bandaSuperior{
     background-color: @color-principal;
@@ -65,6 +75,9 @@ body {
 }
 #container-pie {
     background-color: @color-pie;
+}
+#container-pie img{
+    margin: 10px;
 }
 .container-menu{
     padding-left: 0px !important;
@@ -171,6 +184,7 @@ body {
     width: 100%;
     position: realtive;
     /*padding: 15px;*/
+    background-color: @color-cuerpo !important;
 }
 #wrapper.toggled #page-content-wrapper {
     position: relative;
@@ -266,6 +280,13 @@ body {
     border:2px solid @color-borde-items;
     background-color: @color-bg-items;
 }
+.shop-item-modal h1{
+    font-size: 24px;
+}
+.shop-item-modal-price{
+    color: @color-items-precio;
+    font-size: 16px;
+}
 
 @media(min-width:768px) {
 
@@ -335,6 +356,10 @@ body {
     }
     .sidebar-wrapper-scroll{
         position: inherit !important;
+    }
+    .shop-item {
+        position: relative;
+        max-width: 100% !important;
     }
 }
 
