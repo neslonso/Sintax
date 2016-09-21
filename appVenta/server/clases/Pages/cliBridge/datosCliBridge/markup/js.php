@@ -15,8 +15,8 @@ function grabarDireccion(id){
 	var isoPais=$('#frmCliDir'+id+' #pais').data('iso');
 	*/
 	var pais=$('#frmCliDir'+id+' #pais').val();
-	var movil=$('#frmCliDir'+id+' #nmovil').val();
-	if (destinatario=="" || direccion=="" || poblacion=="" || provincia=="" || cp=="" || movil==""){
+	var movil=$('#frmCliDir'+id+' #movil').val();
+	if (destinatario.trim()=="" || direccion.trim()=="" || poblacion.trim()=="" || provincia.trim()=="" || cp.trim()=="" || movil.trim()==""){
 		muestraMsgModal('Error en el formulario','Por favor, rellene todos los campos de la dirección');
 	} else {
 		//comprobamos si el cp es válido para la tienda
@@ -90,7 +90,15 @@ $(document).ready(function() {
 
 	window.addEventListener('message', function(event) {
 		// IMPORTANT: Check the origin of the data!
-		if (~event.origin.indexOf('celorriofarma')) {
+		if (
+			~event.origin.indexOf('celorriofarma') ||
+			~event.origin.indexOf('parafarmaciasolobebes') ||
+			~event.origin.indexOf('parafarmaciasolocosmetica') ||
+			~event.origin.indexOf('bebefarma') ||
+			~event.origin.indexOf('farmadis') ||
+			~event.origin.indexOf('farmaciacelorrio') ||
+			~event.origin.indexOf('parafarmaciasolobebes')
+		) {
 			// The data has been sent from your site. The data sent with postMessage is stored in event.data
 			switch (event.data.service) {
 				case 'scrollInfo':

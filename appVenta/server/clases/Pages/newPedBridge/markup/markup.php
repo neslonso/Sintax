@@ -6,7 +6,9 @@
 	data-nombre-cliente="<?=$datosCli->nombre?>"
 	data-apellidos-cliente="<?=$datosCli->apellidos?>"
 	data-email-cliente="<?=$datosCli->email?>"
-	data-tipo-dto-cliente="<?=$datosCli->tipoDescuento?>">
+	data-tipo-dto-cliente="<?=$datosCli->tipoDescuento?>"
+	data-arr-dtos-volumen="<?=$jsonArrDtosVolumen?>"
+	data-dto-cliente-compatible-dto-volumen="<?=($storeData->DTO_CLIENTE_COMPATIBLE_DTO_VOLUMEN)?'1':'0';?>">
 		<div class="steps-container">
 			<ul class="steps">
 				<li data-step="1" class="active">
@@ -127,6 +129,9 @@ if ( $this->totalLineas($newPedBridgeData->lineas) > $storeData->IMPORTE_MINIMO_
 								<h3 class="panel-title">Cupón descuento</h3>
 							</div>
 							<div class="panel-body">
+<?
+if ($datosCli->tipoDescuento<=0 || $storeData->DTO_CLIENTE_COMPATIBLE_CUPON) {
+?>
 								<div class="col-md-12">
 									<?=$this->cuponSelectionControl($datosCli->arrCupones)?>
 									<div class="form-group">
@@ -137,6 +142,16 @@ if ( $this->totalLineas($newPedBridgeData->lineas) > $storeData->IMPORTE_MINIMO_
 										</div>
 									</div>
 								</div>
+<?
+} else {
+?>
+								<div class="col-md-12">
+									No es posible aplicar cupón de descuento a su pedido. El cupón de descuento no es compatible con el
+									descuento personal del <?=$datosCli->tipoDescuento?>% que tiene asignado.<br />
+								</div>
+<?
+}
+?>
 							</div>
 						</div>
 					</div>
@@ -243,7 +258,7 @@ $totalRebotesDesc.='</table>';
 								Otros descuentos (<span id="spDtoTipo" class="spCalculado"></span>%): <span id="spDtoMonto" class="spCalculado"></span> €
 							</span>
 						</div>
-						<div>Gastos de envío: <span id="spPortes" class="spCalculado" data-portes="<?=$newPedBridgeData->portes?>"><?=$newPedBridgeData->portes?></span> €</div>
+						<div>Gastos de envío: <span id="spPortes" class="spCalculado" data-portes=""></span> €</div>
 						<div>Total Pedido: <span id="spTotal" class="spCalculado"></span> €</div>
 					</div>
 				</div>
@@ -308,15 +323,10 @@ if ($totalRebotes>0) {
 			<div class="modal-body">
 					<input name="id" id="id" type="hidden" value="0"/>
 					<div class="row">
-						<div class="col-sm-6">
+						<input class="form-control" type="hidden" name="nombre" id="nombre" value="" placeholder="Nombre para identificar esta dirección..." />
+						<div class="col-sm-12">
 							<div class="form-group">
-								<label for="nombre" accesskey="">Nombre:</label>
-								<input class="form-control" type="text" name="nombre" id="nombre" value="" placeholder="Nombre para identificar esta dirección..." />
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label for="destinatario" accesskey="">Destinatario:</label>
+								<label for="destinatario" accesskey="">Destinatario*</label>
 								<input class="form-control" type="text" name="destinatario" id="destinatario" value=""  placeholder="Destinatario del envio" />
 							</div>
 						</div>
@@ -324,19 +334,19 @@ if ($totalRebotes>0) {
 					<div class="row">
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label for="direccion" accesskey="">Direccion:</label>
+								<label for="direccion" accesskey="">Direccion*</label>
 								<input class="form-control" type="text" name="direccion" id="direccion" value="" placeholder="Dirección completa" />
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label for="poblacion" accesskey="">Poblacion:</label>
+								<label for="poblacion" accesskey="">Poblacion*</label>
 								<input class="form-control" type="text" name="poblacion" id="poblacion" value="" placeholder="Población"/>
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label for="provincia" accesskey="">Provincia:</label>
+								<label for="provincia" accesskey="">Provincia*</label>
 								<input class="form-control" type="text" name="provincia" id="provincia" value="" placeholder="Provincia" />
 							</div>
 						</div>
@@ -344,13 +354,13 @@ if ($totalRebotes>0) {
 					<div class="row">
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label for="cp" accesskey="">Código postal:</label>
+								<label for="cp" accesskey="">Código postal*</label>
 								<input class="form-control" type="text" name="cp" id="cp" value="" placeholder="Código postal" />
 							</div>
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label for="pais" accesskey="">País:</label>
+								<label for="pais" accesskey="">País*</label>
 								<select name="pais" id="pais" class="form-control">
 <?
 								foreach ($arrPaises->paises as $pais) {
@@ -365,7 +375,7 @@ if ($totalRebotes>0) {
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label for="movil" accesskey="">Teléfono de contacto:</label>
+								<label for="movil" accesskey="">Teléfono de contacto*</label>
 								<input class="form-control" type="text" name="movil" id="movil" value="" placeholder"Teléfono de contacto"/>
 							</div>
 						</div>

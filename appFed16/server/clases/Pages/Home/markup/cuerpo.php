@@ -34,7 +34,7 @@
 		}
 ?>
 			<!-- Responsive Bootstrap Modal Popup -->
-			<div id="rbm_sldr_sc_m_mov_1_col_2" class="modal fade rbm_modal rbm_size_sldr_sc rbm_center rbm_bd_semi_trnsp rbm_bd_black rbm_bg_transp rbm_blue rbm_none_radius rbm_shadow_none rbm_animate rbm_duration_md rbmFadeInDown rbm_easeOutQuint" role="dialog">
+			<div id="rbm_sldr_sc_m_mov_1_col_2" class="modal fade rbm_modal rbm_size_sldr_sc rbm_center rbm_bd_semi_trnsp rbm_bd_black rbm_blue rbm_bg_transp rbm_none_radius rbm_shadow_none  rbm_animate rbm_duration_vl rbmZoomIn rbm_easeOutQuint" role="dialog">
 				<!-- Modal Dialog-->
 				<div class="modal-dialog">
 					<!-- Modal content-->
@@ -77,7 +77,7 @@
 												</div>
 											</div>
 											<!-- Button -->
-											<a href="http://fed16.farmaciacelorrio.com/index.php?page=prod" class="rbm_btn_x_out_shtr rbm_sldr_sc_btn rbm_sldr_sc_btn">más info</a>
+											<a href="<?=BASE_URL.FILE_APP?>?page=prod" class="rbm_btn_x_out_shtr rbm_sldr_sc_btn rbm_sldr_sc_btn">más info</a>
 										</div> <!-- /.rbm_sldr_sc_content -->
 									</div> <!-- /Grid -->
 								</div> <!-- /item -->
@@ -101,6 +101,28 @@
 		    <!-- End Responsive Bootstrap Modal Popup -->
 
 		</div>
+
+<a data-toggle="modal" href="#rbm_banner_box_sm37" class="demo_modal_trigger" data-backdrop="true">ZoomIn</a>
+<div id="rbm_banner_box_sm37" class="modal fade rbm_modal rbm_size_banner_box_sm rbm_center rbm_bd_dark_trnsp rbm_bd_black rbm_bg_black rbm_blue rbm_none_radius rbm_shadow_none rbm_animate rbm_duration_vl rbmZoomIn rbm_easeOutQuint" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<a href="#" class="rbm_btn_x_out_shtr rbm_bnr_close rbm_bnr_cl_btn" data-dismiss="modal"><span class="fa fa-times"></span></a>
+			<div class="rbm_bnr_content">
+
+				<div class="rbm_bnr_img rbm_bnr_box_sm_img">
+					<img src="modal/images/rbm_banner_box_sm_01.jpg" alt="rbm_banner_box_sm_01">
+				</div>
+				<div class="rbm_bnr_txt rbm_bnr_box_sm_txt">
+
+					<img src="modal/images/company_logo.png" alt="company_logo">
+					<h1>main title of the banner</h1><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nam nibh.</p>
+					<a href="#" class="rbm_btn_x_out_shtr rbm_bnr_btn">learn more</a><span>www.envato.com</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 	</div>
 </div>

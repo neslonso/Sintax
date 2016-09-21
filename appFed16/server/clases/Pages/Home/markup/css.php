@@ -3,8 +3,8 @@
 
 
 /*********** DEFINICION DE VARIABLES ************/
-@color-principal: #6c94be;
-@color-secundario: #ff94be;
+@color-principal: #ff94be;
+@color-secundario: #6c94be;
 @color-links: #304c71;
 @color-links-hover: #6c94be;
 
@@ -250,7 +250,7 @@ a:hover, a:focus {
 }
 .shop-item .shop-item-cart  a.btn{
     border:1px solid @color-btn-items-border;
-    color:@color-btn-items-bg-font;
+    color:@color-btn-items-bg-font !important;
     background:@color-btn-items-bg;
     -webkit-transition: all 0.35s ease-in;
     -moz-transition: all 0.35s ease-in;
@@ -259,7 +259,7 @@ a:hover, a:focus {
     transition: all 0.35s ease-in;
 }
 .shop-item .shop-item-cart  a.btn:hover{
-    color:#fff;
+    color:#fff !important;
     background:transparent;
 }
 .shop-item-rebote{
@@ -286,6 +286,23 @@ a:hover, a:focus {
 .shop-item-modal-price{
     color: @color-items-precio;
     font-size: 16px;
+}
+.rbm_form_cmrce_btn > button {
+    background: @color-principal none repeat scroll 0 0 !important;
+}
+.rbm_sldr_sc_content > a{
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+.rbm_sldr_sc_control .carousel-control{
+    -webkit-transform: none !important;
+    -ms-transform:  none !important;
+    transform:  none !important;
+}
+.rbm_sldr_sc_control .carousel-control > span{
+    -webkit-transform:  none !important;
+    -ms-transform:  none !important;
+    transform:  none !important;
 }
 
 @media(min-width:768px) {

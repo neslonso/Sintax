@@ -8,7 +8,7 @@ $(document).ready(function() {
 		//var _docWidth = (document.width !== undefined) ? document.width : document.body.offsetWidth;
 		var objMsg= {
 			service: "newPedBridgeIframeHeight",
-			parameters: _docHeight
+			parameters: _docHeight +20
 		}
 		parent.postMessage(objMsg, '*');
 	}
@@ -55,6 +55,7 @@ $(document).ready(function() {
 		var ultimoPaso=$(this).find('.steps li').length;
 		if (data.step==ultimoPaso-1) {
 			$('#addCredito').click();
+			aplicaDtoVolumen();
 		}
 		if (data.step==ultimoPaso) {
 			var totalLineas=$('#spTotalLineas').data('totalLineas');
@@ -130,8 +131,8 @@ $(document).ready(function() {
 		var pais=$dirRadioChecked.data('pais');
 		var telefono=$dirRadioChecked.data('movil');
 
-		var nombre=$('#newPedWizard').data('nombreCliente');;
-		var apellidos=$('#newPedWizard').data('apellidosCliente');;
+		var nombre=$('#newPedWizard').data('nombreCliente');
+		var apellidos=$('#newPedWizard').data('apellidosCliente');
 		var email=$('#newPedWizard').data('emailCliente');
 		var idMulti_cliente=$('#newPedWizard').data('idMulti_cliente');
 
@@ -188,7 +189,7 @@ $(document).ready(function() {
 		//if (confirm("¿Realizar el POST?")) {
 			Post ('action','<?=BASE_DIR.FILE_APP?>',
 				'MODULE','actions','acClase','newPedBridge','acMetodo','acGrabar','acTipo','stdAssoc',
-				'pedData',pedData,'session_name','<?=$_REQUEST['session_name']?>'
+				'pedData',pedData,'session_name','<?=$GLOBALS['session_name']?>'
 			);
 		//}
 	});
@@ -237,7 +238,7 @@ $(document).ready(function() {
 				'acMetodo':'acValidaCupon',
 				'acTipo':'ajaxAssoc',
 				'codigo':codigoCupon,
-				'session_name':'<?=$_REQUEST['session_name']?>'
+				'session_name':'<?=$GLOBALS['session_name']?>'
 			},
 			function (response) {
 				console.log('Response cupon');
@@ -279,33 +280,43 @@ $(document).ready(function() {
 	});
 
 	$('#btnAddDir').on('click', function () {
-		$.post('<?=BASE_DIR.FILE_APP?>',{
-			'MODULE':'actions',
-			'acClase':'newPedBridge',
-			'acMetodo':'acAddDireccion',
-			'acTipo':'ajaxAssoc',
-			'id':0,
-			'nombre':$('#nombre','#modalAddDir').val(),
-			'destinatario':$('#destinatario','#modalAddDir').val(),
-			'movil':$('#movil','#modalAddDir').val(),
-			'direccion':$('#direccion','#modalAddDir').val(),
-			'poblacion':$('#poblacion','#modalAddDir').val(),
-			'provincia':$('#provincia','#modalAddDir').val(),
-			'cp':$('#cp','#modalAddDir').val(),
-			'pais':$('#pais','#modalAddDir').val(),
-			'session_name':'<?=$_REQUEST['session_name']?>'
-		},
-		function (response) {
-			console.log(response);
-			if (!response.exito){
-				muestraMsgModal('Error añadiendo dirección',response.msg);
-			} else {
-				$('#modalAddDir').modal('hide');
-				$('#direccionEntregaSelectionControl').replaceWith(response.data);
-				$('[name="idDirEntrega"]').change();
-			}
-		},
-		'json');
+		var destinatario=$('#destinatario','#modalAddDir').val();
+		var direccion=$('#direccion','#modalAddDir').val();
+		var poblacion=$('#poblacion','#modalAddDir').val();
+		var provincia=$('#provincia','#modalAddDir').val();
+		var cp=$('#cp','#modalAddDir').val();
+		var movil=$('#movil','#modalAddDir').val();
+		if (destinatario.trim()=="" || direccion.trim()=="" || poblacion.trim()=="" || provincia.trim()=="" || cp.trim()=="" || movil.trim()==""){
+			muestraMsgModal('Error en el formulario','Por favor, rellene todos los campos marcados como obligatorios (<b>*</b>) de la dirección');
+		} else {
+			$.post('<?=BASE_DIR.FILE_APP?>',{
+				'MODULE':'actions',
+				'acClase':'newPedBridge',
+				'acMetodo':'acAddDireccion',
+				'acTipo':'ajaxAssoc',
+				'id':0,
+				'nombre':$('#nombre','#modalAddDir').val(),
+				'destinatario':$('#destinatario','#modalAddDir').val(),
+				'movil':$('#movil','#modalAddDir').val(),
+				'direccion':$('#direccion','#modalAddDir').val(),
+				'poblacion':$('#poblacion','#modalAddDir').val(),
+				'provincia':$('#provincia','#modalAddDir').val(),
+				'cp':$('#cp','#modalAddDir').val(),
+				'pais':$('#pais','#modalAddDir').val(),
+				'session_name':'<?=$GLOBALS['session_name']?>'
+			},
+			function (response) {
+				console.log(response);
+				if (!response.exito){
+					muestraMsgModal('Error añadiendo dirección',response.msg);
+				} else {
+					$('#modalAddDir').modal('hide');
+					$('#direccionEntregaSelectionControl').replaceWith(response.data);
+					$('[name="idDirEntrega"]').change();
+				}
+			},
+			'json');
+		}
 	});
 
 
@@ -391,6 +402,7 @@ function ulDtosDescImporte() {
 	if (descImporte!="") {result='<ul>'+descImporte+'</ul>'}
 	return result;
 }
+/*****************************************************************************/
 
 function btnNextAdjust(wizard,paso) {
 	var ultimoPaso=$(wizard).find('.steps li').length;
@@ -409,7 +421,7 @@ function calculaPortes(importe,idDireccion,callback) {
 		'acTipo':'ajaxAssoc',
 		'importe':importe,
 		'idDireccion':idDireccion,
-		'session_name':'<?=$_REQUEST['session_name']?>'
+		'session_name':'<?=$GLOBALS['session_name']?>'
 	},
 	function (response) {
 		if (!response.exito){
@@ -424,6 +436,30 @@ function calculaPortes(importe,idDireccion,callback) {
 		}
 	},
 	'json');
+}
+
+function aplicaDtoVolumen() {
+	ulDtosDel('dtoVolumen');
+
+	var arrDtos=$('#newPedWizard').data('arrDtosVolumen');
+	var volumen=$('#spTotalLineas').data('totalLineas');
+	var tipoDto=0;
+
+	console.log(arrDtos);
+	console.log(volumen);
+
+	for (i = 0; i < arrDtos.length; i++) {
+		objDto=arrDtos[i];
+		if (objDto.volumen <= volumen) {
+			tipoDto=objDto.tipo;
+		}
+	}
+	if ($('#newPedWizard').data('tipoDtoCliente')<=0 || $('#newPedWizard').data('dtoClienteCompatibleDtoVolumen')) {
+		if (tipoDto!=0) {
+			muestraMsgModal('Descuento por volumen aplicado.','Se aplicará un '+tipoDto+'% de descuento por volumen.');
+			ulDtosAdd('dtoVolumen','Descuento por volumen',tipoDto,'');
+		}
+	}
 }
 
 function msgRedirect() {

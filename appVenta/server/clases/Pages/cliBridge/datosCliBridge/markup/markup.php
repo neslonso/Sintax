@@ -356,14 +356,9 @@
 					<input name="acReturnURI" id="acReturnURI" type="hidden" value="<?=$_SERVER["REQUEST_URI"]?>"/>
 					<input name="id" id="id" type="hidden" value="0"/>
 					<input name="idMulti_cliente" id="idMulti_cliente" type="hidden" value="<?=$arrCliente->cliente->id?>"/>
+					<input  type="hidden" name="nombre" id="nombre" value="" placeholder="Nombre para identificar esta dirección..." />
 					<div class="row">
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label for="nombre" accesskey="">Nombre:</label>
-								<input class="form-control" type="text" name="nombre" id="nombre" value="" placeholder="Nombre para identificar esta dirección..." />
-							</div>
-						</div>
-						<div class="col-sm-6">
+						<div class="col-sm-12">
 							<div class="form-group">
 								<label for="destinatario" accesskey="">Destinatario:</label>
 								<input class="form-control" type="text" name="destinatario" id="destinatario" value="<?=$arrCliente->cliente->nombre?> <?=$arrCliente->cliente->apellidos?>"  placeholder="Destinatario del envio" />
