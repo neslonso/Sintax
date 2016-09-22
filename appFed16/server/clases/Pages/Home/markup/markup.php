@@ -119,7 +119,6 @@
 	<!-- /#sidebar-wrapper -->
 	<!-- Page Content -->
 	<div id="page-content-wrapper">
-
         <?=$this->cuerpo()?>
 
 		<div class="container-fluid" id="container-pie">
