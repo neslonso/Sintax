@@ -86,9 +86,9 @@
 			// code goes here
 			console.log("Init plugin jQueryNotificactions");
 			//$('#divJqNotifications').html('Hola plugin').appendTo(element);
-			plugin.addNotification("Prueba", "Esto es una prueba", 'add');
+			plugin.addNotification("Prueba", "Esto es una prueba <span class='articleName'><b> Belmil </b></span>", 'add');
 			setTimeout(function() {
-        		plugin.addNotification("Prueba 2", "Esto es una prueba", 'del');
+        		plugin.addNotification("Prueba 2", "Esto es una prueba <span class='articleName'><b> Belmil </b></span>", 'del');
 			}, 3000);
 
 			/*por defecto*/
@@ -127,7 +127,7 @@
 		var render = function(ttl, txt, tipo){
 			//var ST_notification = plugin.settings.notification;
  			var ST_notification = configurationByKind(tipo);
- 			var _txt = txt + "<span class='articleName'><b> Belmil </b></span>";
+ 			var _txt = txt;
 
 			//var cuerpo = "<div class='row mensaje verde basket animated fadeInRight' ><div class='col-xs-4 icon-holder'><i class=' " + ST_notification.icoClass + " " + ST_notification.icoClassExt + " '></i></div><div class='col-xs-7 m-y-1'><p class='h5'><b>" + ttl + "</b></p><p>" + txt + "</p></div><div class='col-xs-1 closeMensajeLateral'><i class='notification-icon " + ST_notification.icoClose + " " + ST_notification.icoCloseExt + " closeNotification'></i></div></div>";
 			var cuerpo = [
