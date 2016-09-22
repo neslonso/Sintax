@@ -302,5 +302,16 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 	}
 	/*************/
 
+	public static function arrCatsRootsMenu($db, $keyTienda="") {
+		$arr=array();
+		$arrCatsRoot=Multi_categoria::getRoots($db,"keyTienda='".$keyTienda."'","","","arrClassObjs");
+		foreach ($arrCatsRoot as $objCat) {
+			$obj['nombre']=$objCat->GETnombre();
+			array_push($arr,$obj);
+		}
+		error_log(print_r($arr,true));
+		return $arr;
+	}
+
 }
 ?>

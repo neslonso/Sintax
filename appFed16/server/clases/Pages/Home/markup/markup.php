@@ -45,9 +45,11 @@
                         <div class="navbar-collapse collapse in">
                             <ul class="nav navbar-nav">
 <?
-                        for ($i=0; $i < 8; $i++) {
+                        foreach ($arrCatsRoots as $cat) {
 ?>
-                                <li class="dropdown ttmenu-full"><a href="#" data-toggle="dropdown" class="dropdown-toggle">Tabbed <b class="dropme"></b></a>
+                                <li class="dropdown ttmenu-full">
+                                    <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?=$cat->nombre?> <b class="dropme"></b>
+                                    </a>
                                     <ul id="first-menu" class="dropdown-menu vertical-menu">
                                         <li>
                                             <div class="ttmenu-content">
@@ -117,7 +119,6 @@
 	<!-- /#sidebar-wrapper -->
 	<!-- Page Content -->
 	<div id="page-content-wrapper">
-
         <?=$this->cuerpo()?>
 
 		<div class="container-fluid" id="container-pie">
