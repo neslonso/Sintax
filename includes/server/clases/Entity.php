@@ -16,7 +16,7 @@ interface IEntity {
 }
 
 //implementar interfaz JsonSerializable (PHP 5.4)
-abstract class Entity implements IEntity {
+abstract class Entity implements IEntity, \IteratorAggregate {
 	/**
 	 * Conexión a la BD
 	 * @var \MysqliDB | NULL: instancia de la clase \MysqliDB que representa una conexion a base de datos o NULL si es una entidad desconectada
@@ -25,11 +25,17 @@ abstract class Entity implements IEntity {
 	protected $arrDbData=array();
 	protected static $table;
 	protected static $keyField;
+	protected static $insertField;
+	protected static $updateField;
 
 	public function __construct (\MysqliDB $db=NULL, $keyValue=NULL) {
 		$this->db=$db;
+		if (!is_null($keyValue)) {$this->cargar($keyValue);}
 	}
-	private function db() {
+	public function getIterator() {
+		return new \ArrayIterator($this->arrDbData);
+	}
+	protected function db() {
 		return $this->db;
 	}
 	public function cargarId ($id) {return $this->cargar($id);}
@@ -55,12 +61,16 @@ abstract class Entity implements IEntity {
 			foreach ($this->arrDbData as $key => $value) {
 				//$this->update=$sqlValue_update=date("YmdHis");
 				if ($key==static::$keyField) {continue;}
-				$sqlValue=(is_null($value))?"NULL":"'".$this->db()->real_escape_string($value)."'";
+				else if ($key==static::$insertField) {continue;}
+				else if ($key==static::$updateField) {$this->arrDbData[static::$updateField]=$sqlValue=date('YmdHis');}
+				else {$sqlValue=(is_null($value))?"NULL":"'".$this->db()->real_escape_string($value)."'";}
 				$sql.="`".$key."`=".$sqlValue.", ";
 			}
 			$sql=substr($sql,0,-2);
 			$sql.=" WHERE ".static::$keyField."='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		} else {
+			$sqlLock="LOCK TABLES ".static::$table." WRITE, contador WRITE";
+			$this->db()->query ($sqlLock);
 			$sql="INSERT INTO ".static::$table." ( ";
 			foreach ($this->arrDbData as $key => $value) {
 				$sql.="`".$key."`, ";
@@ -71,6 +81,10 @@ abstract class Entity implements IEntity {
 				//$this->insert=$sqlValue_insert=$this->update=$sqlValue_update=date("YmdHis");
 				if ($key==static::$keyField) {
 					$this->arrDbData[static::$keyField]=$sqlValue=$this->db()->nextId (static::$table,static::$keyField);
+				} else if ($key==static::$insertField) {
+					$this->arrDbData[static::$insertField]=$sqlValue=date('YmdHis');
+				} else if ($key==static::$updateField) {
+					$this->arrDbData[static::$updateField]=$sqlValue="NULL";
 				} else {
 					$sqlValue=(is_null($value))?"NULL":"'".$this->db()->real_escape_string($value)."'";
 				}
@@ -80,7 +94,15 @@ abstract class Entity implements IEntity {
 			$sql.=")";
 		}
 		error_log(__FILE__."::".__LINE__."::sql: ".$sql);
-		$result=$this->db()->query ($sql);
+		try {
+			$result=$this->db()->query ($sql);
+			$sqlUnlock="UNLOCK TABLES";
+			$this->db()->query ($sqlUnlock);
+		} catch (Exception $e) {
+			$sqlUnlock="UNLOCK TABLES";
+			$this->db()->query ($sqlUnlock);
+			throw $e;
+		}
 		return $result;
 	}
 
@@ -89,7 +111,7 @@ abstract class Entity implements IEntity {
 		if ($this->noReferenciado()) {
 			$sql="DELETE FROM ".static::$table." WHERE ".static::$keyField."='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 			error_log(__FILE__."::".__LINE__."::sql: ".$sql);
-			//$this->db()->query($sql);
+			$this->db()->query($sql);
 			$result=true;
 		}
 		return $result;
@@ -103,14 +125,17 @@ abstract class Entity implements IEntity {
 		});
 		return $arrVars;
 	}
-	public function toJson(){
+	public function toStdObj() {
+		return (object)$this->arrDbData;
+	}
+	public function toJson() {
 		return json_encode($this->toArray());
 	}
 /* Funciones estaticas ********************************************************/
 	public static function existeId($id) {return static::existe(cDb::gI(),$id);}
 	public static function existe(\MysqliDB $db, $keyValue) {
 		$sql="SELECT * FROM ".static::$table." WHERE id='".$db->real_escape_string($keyValue)."'";
-		$data=$db()->get_obj($sql);
+		$data=$db->get_obj($sql);
 		if ($data) {$result=true;} else {$result=false;}
 		return $result;
 	}
@@ -126,7 +151,7 @@ abstract class Entity implements IEntity {
 			switch ($tipo) {
 				case "arrKeys": array_push($arr,$data->{static::$keyField});break;
 				case "arrClassObjs":
-					$obj=new static($data->{static::$keyField});
+					$obj=new static($db,$data->{static::$keyField});
 					array_push($arr,$obj);
 					unset ($obj);
 				break;
@@ -160,7 +185,7 @@ abstract class Entity implements IEntity {
 
 /* Funciones dinamicas ********************************************************/
 	public function noReferenciado() {
-		throw new RuntimeException('El metodo noReferenciado debe ser implementado en la clase '.get_class($this));
+		throw new \RuntimeException('El metodo noReferenciado debe ser implementado en la clase '.get_class($this));
 	}
 }
 ?>

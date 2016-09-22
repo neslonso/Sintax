@@ -35,6 +35,9 @@ class Home extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
 	}
 	public function cuerpo() {
+		$arrParam['keyTienda']=$GLOBALS['config']->keyTienda;
+		$arrParam['results']="12";
+		$arrProds=cLA("arrRandomProds",$arrParam);
 		require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
 	}
 }

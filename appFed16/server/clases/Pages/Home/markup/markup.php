@@ -137,3 +137,4 @@
 	<!-- /#page-content-wrapper -->
 </div>
 <!-- /#wrapper -->
+<div id="divJqNotifications"></div>

@@ -2,6 +2,7 @@
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
 	$('#divJqCesta').jqCesta({'foo': 'bar'});
+	$('#divJqNotifications').jqNotifications({'foo': 'bar'});
 	$("#menu-toggle").click(function(e) {
         e.preventDefault();
         if ($("#wrapper").hasClass("toggled")) {
@@ -27,4 +28,5 @@ $(document).ready(function() {
 			$("#wrapper").toggleClass("toggled");
 		}
     });
+
 });

@@ -5,31 +5,50 @@
 	<div class="row">
 		<div class="col-lg-12">
 <?
-		for ($i=0; $i < 12; $i++) {
+		$i=1;
+		foreach ($arrProds as $prod) {
 			$rebote="";
-			if ($i % 3 == 0) {$rebote = '<div class="shop-item-rebote"></div>';}
+			//$rebote = '<div class="shop-item-rebote"></div>';
+			if(($i==1)){
 ?>
-			<div class="col-lg-2 col-md-3 col-sm-6">
-				<div class="shop-item-wrapper">
-					<!--Item -->
-					<div class="shop-item">
-						<!-- Item's image -->
-						<img class="img-responsive" src="./appFed16/binaries/imgs/shop-item.jpg" alt="" data-toggle="modal" data-target="#rbm_sldr_sc_m_mov_1_col_2"/>
-						<!-- Item details -->
-						<div class="shop-item-dtls">
-							<!-- product title -->
-							<h4><a data-toggle="modal" href="#rbm_sldr_sc_m_mov_1_col_2">Lorem product above focused on using variables</a></h4>
-							<!-- price -->
-							<span class="shop-item-price">23.00€</span>
-						</div>
-						<!-- add to cart btn -->
-						<div class="shop-item-cart">
-							<a class="btn" href="#">Comprar</a>
+				<div class='row row-eq-height'>
+<?
+			}
+?>
+					<div class="col-lg-2 col-md-3 col-sm-6">
+						<div class="shop-item-wrapper">
+							<!--Item -->
+							<div class="shop-item">
+								<!-- Item's image -->
+								<img class="img-responsive" src="<?=$prod->urlFotoPpal?>" alt="" data-toggle="modal" data-target="#rbm_sldr_sc_m_mov_1_col_2"/>
+								<!-- Item details -->
+								<div class="shop-item-dtls">
+									<!-- product title -->
+									<h4><a data-toggle="modal" href="#rbm_sldr_sc_m_mov_1_col_2"><?=$prod->nombre?></a></h4>
+									<!-- price -->
+									<span class="shop-item-price"><?=$prod->precio?>€</span>
+								</div>
+								<!-- add to cart btn -->
+								<div class="shop-item-cart">
+									<a class="btn" href="#">Comprar</a>
+								</div>
+							</div>
+							<?=$rebote?>
 						</div>
 					</div>
-					<?=$rebote?>
+<?
+			if(($i==6)){
+?>
 				</div>
-			</div>
+<?
+				$i=1;
+			} else {
+				$i++;
+			}
+		}
+		if ($i!=1){
+?>
+				</div>
 <?
 		}
 ?>

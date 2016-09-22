@@ -29,7 +29,17 @@ try {
 						$granted=true;
 					}
 					if ($granted) {
-						eval ($arrServiceData['comando']);
+						$phpSentence='$resultSentence=';
+						$phpSentence.=$arrServiceData['comando'].';';
+						$phpSentence.='return true;';
+						$resultEval=eval ($phpSentence);
+						if ($resultEval===false) {
+							$result="ERROR_EN_SENTENCIA";
+							//throw new Exception($result);
+						} else {
+							$result=$resultSentence;
+							echo json_encode($resultSentence);
+						}
 					} else {
 						throw new ApiException("Service key not valid");
 					}
