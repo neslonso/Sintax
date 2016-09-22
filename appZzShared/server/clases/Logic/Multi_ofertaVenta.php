@@ -276,26 +276,5 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		}
 	}
 /******************************************************************************/
-	public static function arrRandomOfertasVenta($db,$cuantos=10, $keyTienda="", $asObjectArray=true) {
-		$sql="SELECT id FROM multi_ofertaVenta where keyTienda='".$keyTienda."' ORDER BY RAND() LIMIT 0,".$cuantos;
-		error_log($sql);
-		$arr=array();
-		$rsl=$db->query($sql);
-		while ($data=$rsl->fetch_object()) {
-			if ($asObjectArray) {
-				//$obj=new Multi_ofertaVenta($db,$data->id);
-				$objOferta=new Multi_ofertaVenta($db,$data->id);
-				$obj['nombre']=$objOferta->GETnombre();
-				$obj['precio']=$objOferta->pvp();
-				$obj['urlFotoPpal']=$objOferta->urlFotoPpal();
-				array_push($arr,$obj);
-			} else {
-				array_push($arr,$data->id);
-			}
-		}
-		error_log(print_r($arr,true));
-		return $arr;
-	}
-
 }
 ?>

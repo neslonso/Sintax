@@ -241,11 +241,11 @@ function sitemap($file="./sitemap.xml") {
 	unlink($file);
 }
 
-function cLA($service,$data=NULL) {
-	return callLocalApi($service,$data);
+function cLA($apiClase,$apiMetodo,$data=NULL) {
+	return callLocalApi($apiClase,$apiMetodo,$data);
 }
-function callLocalApi($service,$data=NULL) {
-	$url=BASE_URL.FILE_APP.'?MODULE=api&service='.$service;
+function callLocalApi($apiClase,$apiMetodo,$data=NULL) {
+	$url=BASE_URL.FILE_APP.'?MODULE=api&apiClase='.$apiClase.'&apiMetodo='.$apiMetodo;
 	$data=(is_null($data))?array():$data;
 	// use key 'http' even if you send the request to https://...
 	$options = array(
