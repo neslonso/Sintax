@@ -275,7 +275,11 @@ class ClassEntitySubclaser {
 			$resultCode.=$sg.$sg.'$rsl=$this->db()->query($sql);'.$sl;
 			$resultCode.=$sg.$sg.'while ($data=$rsl->fetch_object()) {'.$sl;
 			$resultCode.=$sg.$sg.$sg.'switch ($tipo) {'.$sl;
-			$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{'."\\".ucfirst($fTable).'::$keyField});break;'.$sl;
+			if (!$objFkInfo->manyToMany) {
+				$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{'."\\".ucfirst($fTable).'::$keyField});break;'.$sl;
+			} else {
+				$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{'."\\".ucfirst($ffTable).'::$keyField});break;'.$sl;
+			}
 			$resultCode.=$sg.$sg.$sg.$sg.'case "arrClassObjs":'.$sl;
 			if (!$objFkInfo->manyToMany) {
 				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($fTable).'($this->db(),$data->{'."\\".ucfirst($fTable).'::$keyField});'.$sl;
