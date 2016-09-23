@@ -10,38 +10,45 @@ class Categorias extends ApiService implements IApiService {
 		parent::__construct($objUsr);
 	}
 
-	public function arrCatsRootsMenu($arrParams) {
-		$keyTienda=$arrParams['keyTienda'];
+	public function arrCatsRootsMenu($keyTienda) {
 		$db=\cDb::confByKey("celorriov3");
 		$arr=array();
 		$arrCatsRoot=\Multi_categoria::getRoots($db,"keyTienda='".$keyTienda."'","","","arrClassObjs");
 		foreach ($arrCatsRoot as $objCat) {
 			$obj=new \stdClass();
+			$obj->id=$objCat->GETid();
 			$obj->nombre=$objCat->GETnombre();
+			$obj->ico=$objCat->icoSrc();
+			$obj->img=$objCat->imgSrc();
 			array_push($arr,$obj);
 		}
 		return $arr;
 	}
 
-	public function arrRandomOfertasVenta($cuantos=10, $keyTienda="", $asObjectArray=true) {
+
+	public function arrCatsRootsSubMenu($idPadre){
 		$db=\cDb::confByKey("celorriov3");
-		$sql="SELECT id FROM multi_ofertaVenta where keyTienda='".$keyTienda."' ORDER BY RAND() LIMIT 0,".$cuantos;
+		$objMCat=new \Multi_categoria($db,$idPadre);
+		$arrCatsHijas=$objMCat->arrMultiCategoriaHija("","","","arrClassObjs");
 		$arr=array();
-		$rsl=$db->query($sql);
-		while ($data=$rsl->fetch_object()) {
-			if ($asObjectArray) {
-				$obj=new \stdClass();
-				$objOferta=new \Multi_ofertaVenta($db,$data->id);
-				$obj->nombre=$objOferta->GETnombre();
-				$obj->precio=$objOferta->pvp();
-				$obj->urlFotoPpal=$objOferta->urlFotoPpal();
-				array_push($arr,$obj);
-			} else {
-				array_push($arr,$data->id);
+		foreach ($arrCatsHijas as $objCat) {
+			$obj=new \stdClass();
+			$obj->id=$objCat->GETid();
+			$obj->nombre=$objCat->GETnombre();
+			$obj->img=$objCat->imgSrc();
+			$arrCatsNietas=$objCat->arrMultiCategoriaHija("","","","arrClassObjs");
+			$arrNietos=array();
+			foreach ($arrCatsNietas as $objCatNieto) {
+				$objNieto=new \stdClass();
+				$objNieto->id=$objCatNieto->GETid();
+				$objNieto->nombre=$objCatNieto->GETnombre();
+				array_push($arrNietos,$objNieto);
 			}
+			$obj->arrNietos=$arrNietos;
+			array_push($arr,$obj);
 		}
-		//error_log(print_r($arr,true));
 		return $arr;
 	}
+
 }
 ?>

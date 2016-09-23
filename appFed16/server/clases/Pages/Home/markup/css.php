@@ -83,6 +83,34 @@ a:hover, a:focus {
     padding-left: 0px !important;
     padding-right: 0px !important;
 }
+.rootMenu{
+    background-repeat: no-repeat !important;
+    background-position: -1px center !important;
+}
+.nav > li > a{
+    padding-left: 30px !important;
+}
+.navbar-default .navbar-nav > li > a {
+    padding-top: 15px !important;
+}
+.txtMenuRoot{
+    display: inline-block;
+    vertical-align: middle;
+    vertical-align: -moz-middle-with-baseline;
+    line-height: normal;
+}
+.col-subMenu{
+    -moz-column-count: 3;
+    -webkit-column-count: 3;
+    column-count: 3;
+}
+.img-cat-subMenu{
+    width: 30px;
+    display: inline-block;
+}
+.ttmenu-content .box li {
+    padding: 5px 5px 5px 0 !important;
+}
 
 /*
  * Row with equal height columns
@@ -353,11 +381,20 @@ a:hover, a:focus {
 }
 /* MD */
 @media (min-width: 992px) and (max-width: 1199px){
-
+    .col-subMenu{
+        -moz-column-count: 2;
+        -webkit-column-count: 2;
+        column-count: 2;
+    }
+    #vertical .navbar-default .navbar-nav li .vertical-menu {
+        max-width: 700px !important;
+    }
 }
 /* SM */
 @media (min-width: 768px) and (max-width: 991px){
-
+    #vertical .navbar-default .navbar-nav li .vertical-menu {
+        max-width: 500px !important;
+    }
 }
 /* XS */
 @media (max-width: 767px){
@@ -392,6 +429,11 @@ a:hover, a:focus {
     }
     body {
         margin-top: 115px; /* ajuste de cuerpo debido a navbar fixed */
+    }
+    .col-subMenu{
+        -moz-column-count: 1;
+        -webkit-column-count: 1;
+        column-count: 1;
     }
 }
 
