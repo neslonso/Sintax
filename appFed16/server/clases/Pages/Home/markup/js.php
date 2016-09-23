@@ -28,5 +28,14 @@ $(document).ready(function() {
 			$("#wrapper").toggleClass("toggled");
 		}
     });
-
 });
+function openItem(id){
+	alert("abriendo");
+	$("#popupItemActive").val(id);
+	$("#itemPopup"+id).addClass('active');
+}
+function closePopup(){
+	var itemActive= $("#popupItemActive").val();
+	$("#itemPopup"+itemActive).removeClass('active');
+	$("#popupItemActive").val("");
+}

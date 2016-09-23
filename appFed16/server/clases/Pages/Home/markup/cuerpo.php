@@ -4,14 +4,16 @@
 <div class="container shop-item-container" id="container-cuerpo">
 	<div class="row">
 		<div class="col-lg-12">
+			<input type="hidden" id="popupItemActive" value="">
 <?
 		$i=1;
+		$htmlPopup="";
 		foreach ($arrProds as $prod) {
 			$rebote="";
 			//$rebote = '<div class="shop-item-rebote"></div>';
 			if(($i==1)){
 ?>
-				<div class='row row-eq-height'>
+				<div class='row'>
 <?
 			}
 ?>
@@ -20,7 +22,7 @@
 							<!--Item -->
 							<div class="shop-item">
 								<!-- Item's image -->
-								<img class="img-responsive" src="<?=$prod->urlFotoPpal?>" alt="" data-toggle="modal" data-target="#rbm_sldr_sc_m_mov_1_col_2"/>
+								<img class="img-responsive" onclick="openItem(<?=$prod->id?>);" src="<?=$prod->urlFotoPpal?>" alt="" data-toggle="modal" data-target="#rbm_sldr_sc_m_mov_1_col_2"/>
 								<!-- Item details -->
 								<div class="shop-item-dtls">
 									<!-- product title -->
@@ -45,6 +47,8 @@
 			} else {
 				$i++;
 			}
+			//html popup
+			$htmlPopup.=$prod->popupProd;
 		}
 		if ($i!=1){
 ?>
@@ -59,7 +63,7 @@
 					<!-- Modal content-->
 					<div class="modal-content">
 						<!-- Close Button -->
-						<a href="#" class="rbm_btn_x_out_shtr rbm_sq_txt_close rbm_sldr_sc_cl_btn" data-dismiss="modal">Cerrar</a>
+						<a href="#" onclick="closePopup();" class="rbm_btn_x_out_shtr rbm_sq_txt_close rbm_sldr_sc_cl_btn" data-dismiss="modal">Cerrar</a>
 						<!-- Slider -->
 						<div id="rbm_sldr_sc_mov_1_col_2" class="carousel slide rbm_sldr_sc_gen rbm_sldr_sc_control two_columns swipe_x rbms_easeOutCirc" data-ride="carousel" data-pause="hover" data-interval="false" data-duration="1000">
 							<!-- Header of Slider -->
@@ -71,39 +75,7 @@
 							<!-- /Header of Slider -->
 							<!-- Wrapper For Slides -->
 							<div class="carousel-inner" role="listbox">
-<?
-					for ($j=0; $j < 12; $j++) {
-						$activo="";
-						if ($j==0) {$activo = 'active';}
-?>
-								<!-- 1st Box -->
-								<div class="item <?=$activo?> vertical-align">
-									<div class="col-xs-12 col-sm-6 col-md-6"> <!-- Grid -->
-										<div class="rbm_sldr_sc_content rbm_sldr_sc_content_col_2">
-											<div class="row shop-item-modal">
-												<div class="col-xs-12 col-sm-6">
-													<img src="./appFed16/binaries/imgs/shop-item.jpg" class="img-responsive" alt="rbm_slider_showcase_01">
-												</div>
-												<div class="col-xs-12 col-sm-6">
-													<h1>Lorem product above focused on using variables</h1>
-													<span class="shop-item-modal-price">23.00€</span>
-													<div>
-														<a class="btn btn-default" href="#">Comprar</a>
-													</div>
-												</div>
-												<div class="col-xs-12">
-													<?=file_get_contents('http://loripsum.net/api/3/short/');?>
-												</div>
-											</div>
-											<!-- Button -->
-											<a href="<?=BASE_URL.FILE_APP?>?page=prod" class="rbm_btn_x_out_shtr rbm_sldr_sc_btn rbm_sldr_sc_btn">más info</a>
-										</div> <!-- /.rbm_sldr_sc_content -->
-									</div> <!-- /Grid -->
-								</div> <!-- /item -->
-								<!-- End of 1st Box -->
-<?
-					}
-?>
+								<?=$htmlPopup?>
 							</div> <!-- End of Wrapper For Slides -->
 							<!-- Left Control -->
 							<a class="left carousel-control" href="#rbm_sldr_sc_mov_1_col_2" role="button" data-slide="prev">
