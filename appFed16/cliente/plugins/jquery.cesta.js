@@ -29,6 +29,8 @@
 			arrItems: [{}],//array objetos
 			total: 0,
 			classBtnAdd: 'jqCst',
+			classBtnRemove: 'jqCstRm', /*clase remove item cart*/
+			classRef: 'itemRef_', /*class id item -> + id*/
 			linkCart: [{
 				txtBtnCart: "",
 				imgActiveBtnCart: false,
@@ -84,6 +86,13 @@
 				event.preventDefault();
 			});
 
+			/*$('.jqCstRm').click(function(event) {
+				alert(" R E M O V E");
+				//manejador del foo de settings(por si alguien define eventos de fuera) //this.trigger nombre evento, parametros [documentacion trigger por espacionombres] ej: jqcesta.funcion... para evita sobreescritura funciones  https://api.jquery.com/event.namespace/ obj sobre el que use trigger es  el que sera this
+			});*/
+
+
+
 
 			plugin.loadCesta();
 			var ST_linkCart = plugin.settings.linkCart[0];
@@ -123,13 +132,10 @@
 			for (var item in arr) {
 				html_items = html_items + renderItem(arr[item].imagen, arr[item].titulo, arr[item].quantity,  (arr[item].precio).toFixed(2), arr[item].id);
 			}
-
-			var html_cesta = render(html_items);
-			$('.content-cart',$element).html(html_cesta).appendTo(element);
-
+			$cuerpo_cesta = render(html_items);
+			$('.content-cart',$element).html($cuerpo_cesta);
 			//variable tamanho max altura listado items
 			$('.list-item-cart',$element).css("max-height", ST_cart.maxHeigth);
-
 			if( isHideCesta() ){
 				showCesta();
 			}else{
@@ -140,6 +146,13 @@
  					showCesta();
  				}
 			}
+
+			//UNIFICAR EN UN SOLO SITIO, NO AQUI Y DPS DE CADA ADDITEM
+			$('.'+plugin.settings.classBtnRemove,$element).click( function(event) {
+				alert("Borrar");
+				event.preventDefault();
+			});
+
 		}
 
 		plugin.addItem = function(src, ttl, unit, prc, id){
@@ -149,7 +162,7 @@
 			return exito;
 		}
 
-		plugin.removeItem = function(src, ttl, unit, prc, id){
+		plugin.removeItem = function(id, unit){
 			var exito = 0;
 			exito = removeItem(id, unit);
 			if(exito){
@@ -203,16 +216,57 @@
 			var ST_setting = plugin.settings;
 			var ST_cart = plugin.settings.cart[0];
 			var ST_linkCart = plugin.settings.linkCart[0];
-			var htmlItems = '<div class="row list-item-cart">' + htmlItems + '</div><div class="col-lg-12 total-cart"><p class="info-total p-a-1 m-y-1">(<span class="quantity-total">' + ST_linkCart.quantityItems + '</span>)&nbsp;Unidades<span class="pull-xs-right"><b>TOTAL: <span class="total">' + ST_setting.total + '</span>&nbsp;€</b></span></p><a  class="btn btn-primary btn-lg btn-block btn-check-order" type="button" href="/cart/"><b>' + ST_cart.txtBtnOrder + '</b></a> </div>';
-			return htmlItems;
+
+			//var htmlItems = '<div class="row list-item-cart">' + htmlItems + '</div><div class="col-lg-12 total-cart"><p class="info-total p-a-1 m-y-1">(<span class="quantity-total">' + ST_linkCart.quantityItems + '</span>)&nbsp;Unidades<span class="pull-xs-right"><b>TOTAL: <span class="total">' + ST_setting.total + '</span>&nbsp;€</b></span></p><a  class="btn btn-primary btn-lg btn-block btn-check-order" type="button" href="/cart/"><b>' + ST_cart.txtBtnOrder + '</b></a> </div>';
+			/*var htmlItems = "<div class='row list-item-cart'>
+								" + htmlItems + "
+							</div>
+							<div class='col-lg-12 total-cart'>
+								<p class='info-total p-a-1 m-y-1'>
+									(<span class='quantity-total'>" + ST_linkCart.quantityItems + "</span>)&nbsp;Unidades
+									<span class='pull-xs-right'><b>TOTAL: <span class='total'>" + ST_setting.total + "</span>&nbsp;€</b></span>
+								</p>
+								<a  class='btn btn-primary btn-lg btn-block btn-check-order' type='button' href='/cart/'><b>" + ST_cart.txtBtnOrder + "</b></a>
+							</div>";
+			return htmlItems;*/
+			var cuerpo = [
+				"<div class='row list-item-cart'>",
+					htmlItems,
+				"</div>",
+				"<div class='col-lg-12 total-cart'>",
+					"<p class='info-total p-a-1 m-y-1'>",
+						"(<span class='quantity-total'>" + ST_linkCart.quantityItems + "</span>)&nbsp;Unidades",
+						"<span class='pull-xs-right'><b>TOTAL: <span class='total'>" + ST_setting.total + "</span>&nbsp;€</b></span>",
+					"</p>",
+					"<a  class='btn btn-primary btn-lg btn-block btn-check-order' type='button' href='/cart/'><b>" + ST_cart.txtBtnOrder + "</b></a>",
+				"</div>"
+			].join('');
+			var $cuerpo=$(cuerpo);
+			return $cuerpo;
 		}
 
 		var renderItem = function(src, ttl, unit, prc, id) {
+			var ST_setting = plugin.settings;
 			var ST_cart = plugin.settings.cart[0];
-			var classRef = 'itemRef_' + id;
-			//var htmlItem = '<div class="col-lg-12"><div class="col-xs-6 col-sm-4 col-md-3"><img class="img-responsive" src="' + src + '" alt=""></div><div class="col-xs-6 col-sm-8 col-md-9"><p class="ttl-item-cart">' + ttl + '</p><p class="unit-item-cart" >' + plugin.settings.txtQuantityTotal + ': <span>' + unit + '</span></p><p class="price-item-cart" >Precio: <span>' + prc + '&euro;</span></p></div></div><div class="col-lg-2 col-md-3 col-sm-6 separator-item"></div>';
-			var htmlItem = '<div class="col-lg-12 col-xs-12 col-sm-12 col-md-12 ' + classRef  + ' "><div class="col-xs-6 col-sm-5 col-md-5 col-lg-5"><img class="img-responsive" src="' + src + '" alt=""></div><div class="col-xs-6 col-sm-7 col-md-7 col-lg-7"><p class="ttl-item-cart">' + ttl + '</p><p class="unit-item-cart" >' + ST_cart.txtQuantityTotal + ': <span>' + unit + '</span></p><p class="price-item-cart" >Precio: <span>' + prc + '&euro;</span></p></div></div><div class="col-lg-12 col-xs-12 col-sm-12 col-md-12 separator-item"></div>';
-			return htmlItem;
+			var classRefId = ST_setting.classRef + id;
+			var cuerpoItem = [
+				"<div class='col-lg-12 " + classRefId + "'>",
+					"<div class='col-xs-6 col-sm-4 col-md-3'>",
+						"<img class='img-responsive' src='" + src + "' alt=''>",
+					"</div>",
+					"<div class='col-xs-6 col-sm-8 col-md-9'>",
+						"<p class='ttl-item-cart'>" + ttl + "</p>",
+						"<p class='unit-item-cart' >" + ST_cart.txtQuantityTotal + ": <span>" + unit + "</span></p>",
+						"<p class='price-item-cart' >Precio: <span>" + prc + "&euro;</span></p>",
+						"<a class='btn " + ST_setting.classBtnRemove + "  glyphicon glyphicon-remove-sign ico-cart' data-item='" + id + "'></a>",
+					"</div>",
+				"</div>",
+				"<div class='col-lg-12 col-md-3 col-sm-6 separator-item'>",
+				"</div>"
+			].join('');
+			//var $cuerpoItem=$(cuerpoItem);
+			return cuerpoItem;
+
 		}
 
 		var addItem = function(src, ttl, unit, prc, id) {
@@ -234,6 +288,7 @@
 		}
 
 		var removeItem = function (id, unit){
+			alert('remove');
 			var classRef = 'itemRef_' + id;
 			var exito = 0;
 			if ( $(".classRef").length ) {
