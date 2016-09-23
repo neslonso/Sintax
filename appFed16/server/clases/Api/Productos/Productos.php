@@ -40,6 +40,11 @@ class Productos extends ApiService implements IApiService {
 		return $arr;
 	}
 
+	/**
+	 * [popupProd description]
+	 * @param  [type] $obj [description]
+	 * @return [type]      [description]
+	 */
 	public function popupProd($obj){
 		$html='
 			<div id="itemPopup'.$obj->GETid().'" class="item vertical-align">

@@ -10,6 +10,11 @@ class Categorias extends ApiService implements IApiService {
 		parent::__construct($objUsr);
 	}
 
+	/**
+	 * [arrCatsRootsMenu description]
+	 * @param  [type] $keyTienda [description]
+	 * @return [type]            [description]
+	 */
 	public function arrCatsRootsMenu($keyTienda) {
 		$db=\cDb::confByKey("celorriov3");
 		$arr=array();
@@ -25,7 +30,11 @@ class Categorias extends ApiService implements IApiService {
 		return $arr;
 	}
 
-
+	/**
+	 * [arrCatsRootsSubMenu description]
+	 * @param  [type] $idPadre [description]
+	 * @return [type]          [description]
+	 */
 	public function arrCatsRootsSubMenu($idPadre){
 		$db=\cDb::confByKey("celorriov3");
 		$objMCat=new \Multi_categoria($db,$idPadre);
