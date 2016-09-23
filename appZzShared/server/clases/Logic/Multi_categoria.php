@@ -302,5 +302,85 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 	}
 	/*************/
 
+	/**
+	 * [arrRefsMasVendidas description]
+	 * @param  string $tipo "PorPedidos" o "PorUnidades"
+	 * @return array       [description]
+	 */
+	/**
+	 * [arrRefsMasVendidas description]
+	 * @param  string $tipo "PorPedidos" o "PorUnidades"
+	 * @param  boolean $refresh Si se desea refrescar la cache y recalcular las referencias mas vendias
+	 * @return [type]           [description]
+	 */
+	public function arrRefsMasVendidas($tipo="PorPedidos",$refresh=false) {
+		$filePath=CACHE_DIR.__CLASS__.DIRECTORY_SEPARATOR.__FUNCTION__.DIRECTORY_SEPARATOR.'refsMasVendidas'.$tipo.'-'.$this->GETid();
+		$usarCache=!$refresh && file_exists($filePath) && filemtime($filePath)>time()-(60*60*24);
+		if ($usarCache) {
+			$str=file_get_contents($filePath);
+			$arrRefs=explode('\n',$str);
+		} else {
+			switch ($tipo) {
+				case 'PorPedidos':
+					$calculo="count(*)";
+					break;
+				case 'PorUnidades':
+					$calculo="sum(cantidad)";
+					break;
+			}
+			$listaIdsCats='';
+			$arrDescendientes=$this->arrDescendientes();
+			foreach ($arrDescendientes as $objCatDescendiente) {
+				$listaIdsCats.=$objCatDescendiente->GETid().',';
+			}
+			$listaIdsCats.=$this->GETid();
+			$arrRefs=array();
+			$sql="
+				SELECT referencia, ".$calculo." AS calculo FROM multi_pedidoLinea
+				GROUP BY referencia
+				HAVING referencia IN (
+					SELECT referencia FROM multi_ofertaVenta mov INNER JOIN
+						multi_categoriaVARIOSmulti_ofertaVenta mcVmov ON mov.id=mcVmov.idMulti_ofertaVenta
+					WHERE idMulti_categoria IN (".$listaIdsCats.")
+				)
+				ORDER BY calculo DESC;
+			";
+			$GLOBALS['firephp']->info($sql);
+			$arrRefs=$this->db()->get_arrVars($sql);
+
+			if (!is_dir(dirname($filePath))) {
+				mkdir(dirname($filePath),0700,true);
+			}
+			$str=implode('\n', $arrRefs);
+			file_put_contents($filePath, $str);
+		}
+		return $arrRefs;
+	}
+
+	public function imgSrc($ancho=150,$alto=150) {
+		$arrRefs=array();
+	$tArrRefsMasVendidas=microtime(true);
+		$arrRefs=$this->arrRefsMasVendidas();
+	$tArrRefsMasVendidas=microtime(true)-$tArrRefsMasVendidas;
+	//error_log("Tiempo mas vendidas [".$this->GETid()."]: ".$tArrRefsMasVendidas);
+		$arrFotos=array();
+		if (count($arrRefs)>0) {
+			$i=0;
+			do {
+				$refProd=$arrRefs[$i];
+				$i++;
+				$id=Multi_producto::refToId($this->db(),$refProd);
+				$objMProd=new Multi_producto($this->db(),$id);
+				$arrFotos=$objMProd->arrMulti_productoAdjunto("(mimeType LIKE 'image/%')","orden","","arrKeys");
+			} while (count($arrFotos)==0 && isset($arrRefs[$i]));
+		}
+		$idMPA=(isset($arrFotos[0]))?$arrFotos[0]:false;
+		$src=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB&fichero=multi_productoAdjunto.id.'.$idMPA.'.data&ancho='.$ancho.'&alto='.$alto.'&modo='.Imagen::OUTPUT_MODE_FILL;
+		return $src;
+	}
+
+	public function icoSrc() {
+		return $this->imgSrc(30,30);
+	}
 }
 ?>

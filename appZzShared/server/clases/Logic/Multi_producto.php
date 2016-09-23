@@ -122,8 +122,6 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 		$sqlWhere=($where!="")?" WHERE idMulti_producto='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_producto='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
-		//TODO: OJO!, al escrbir esta consulta no conocemos el nombre de la clave primaria en la tabla del otro extremo de la relaccion manyToMany (multi_ofertaVenta), se está usando siempre id.
-		//TODO: 2016-09-13 Podría utilizar un metodo similar a GETkeyField en la clase del otro extremo (multi_ofertaVenta) que devolviera el nombre del campo en lugar su valor.
 		$sql="SELECT * FROM multi_productoVARIOSmulti_ofertaVenta INNER JOIN multi_ofertaVenta ON multi_productoVARIOSmulti_ofertaVenta.idMulti_ofertaVenta=multi_ofertaVenta.id".$sqlWhere.$sqlOrder.$sqlLimit;
 		$arr=array();
 		$rsl=$this->db()->query($sql);
@@ -375,5 +373,9 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 		return $arr;
 	}
 
+	public static function refToId($db,$refProd) {
+		$sql="SELECT id FROM multi_producto WHERE referencia='".$db->real_escape_string($refProd)."'";
+		return $db->get_var($sql);
+	}
 }
 ?>

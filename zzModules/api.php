@@ -21,7 +21,7 @@ try {
 	$apiClase=$_REQUEST['apiClase'];
 	$apiClase="Sintax\\ApiService\\".$_REQUEST['apiClase'];
 	$apiMetodo=$_REQUEST['apiMetodo'];
-	$apiTipo=(isset($_REQUEST['apiTipo']))?$_REQUEST['apiTipo']:"assoc";
+	$apiTipo=(isset($_REQUEST['apiTipo']))?$_REQUEST['apiTipo']:"noAssoc";
 	unset ($_REQUEST['apiClase']);
 	unset ($_REQUEST['apiMetodo']);
 

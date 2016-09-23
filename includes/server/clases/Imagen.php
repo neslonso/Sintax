@@ -196,7 +196,6 @@ class Imagen {
 				imagealphablending($this->imgData, false);
 				imagesavealpha($this->imgData, true);
 				$quality=($quality=="default")?6:$quality;
-				error_log("quality ".$quality);
 				imagepng($outputData,NULL,$quality);
 				//imagepng($outputData,NULL,9,PNG_ALL_FILTERS);
 			break;

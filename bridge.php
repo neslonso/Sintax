@@ -2,12 +2,43 @@
 $tInicial=microtime(true);
 ?>
 <?
-if (isset($_REQUEST['session_name'])) {
-	session_name ($_REQUEST['session_name']);
-} else {
-	$_REQUEST['session_name']='';
+function sess_name ($name) {
+	if (!empty($name)) {
+		session_name ($name);
+	}
 }
-
+$session_name=(isset($_REQUEST['session_name']))?$_REQUEST['session_name']:'';
+sess_name ($session_name);
+?>
+<?
+//error_log("Cookies: ".count($_COOKIE));
+if (isset($_GET['SafariCookie'])) {
+	setcookie("SafariCookie", '1', time()+3600);  /* expira en una hora */
+	//error_log('setcookie hecho');
+?>
+<script type="text/javascript">
+	//window.history.back();
+	window.location = '<?=$_GET['url']?>';
+</script>
+<?
+	die();
+} else {
+	if ( ! count($_COOKIE) > 0 && strpos($_SERVER['HTTP_USER_AGENT'], 'Safari')) {
+		//error_log('ES SAFARI SIN COOKIE');
+?>
+<script type="text/javascript">
+		var objMsg= {
+			service: "redirect",
+			parameters: "fed16cookie"
+		}
+		parent.postMessage(objMsg, '*');
+</script>
+<?
+		die();
+	}
+}
+?>
+<?
 define ('SKEL_ROOT_DIR',realpath(__DIR__.'/'.'./').'/');
 $module='';
 try {

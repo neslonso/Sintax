@@ -145,12 +145,21 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 	public function pvp(){
 		return $this->GETprecio();
 	}
-	public function idFotoPpal(){
-		return 100;
-	}
-	public function urlFotoPpal(){
-		$idFoto=$this->idFotoPpal();
-		return "./appFed16/binaries/imgs/shop-item.jpg";
+	/**
+	 * Devuelve la url de la imagen de indice $i de un array compuesto por la primera imagen de cada producto de la foto
+	 * @param  int $i indice
+	 * @return string url de la imagen
+	 */
+	public function imgSrc($i=0) {
+		$arrFotosPpalesOferta=array();
+		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
+		foreach ($arrProds as $objMProd) {
+			$arrFotos=$objMProd->arrMulti_productoAdjunto("(mimeType LIKE 'image/%')","orden","","arrKeys");
+			array_push($arrFotosPpalesOferta,$arrFotos[0]);
+		}
+		$idMPA=$arrFotosPpalesOferta[$i];
+		$src=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB&fichero=multi_productoAdjunto.id.'.$idMPA.'.data&ancho=150&alto=150&modo='.Imagen::OUTPUT_MODE_FILL;
+		return $src;
 	}
 /******************************************************************************/
 	public function lsAsignacionesProds($where="",$order="",$limit="") {

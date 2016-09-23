@@ -32,8 +32,11 @@ try {
 		break;
 		case "DB";
 			try {
-				\cDb::conf(_DB_HOST_, _DB_USER_, _DB_PASSWD_, _DB_NAME_);
+				\cDb::confByKey('celorriov3');
 				$db=cDb::getInstance();
+				//TODO: Poder recibir una lista de ids y combinarlas en un collage. 2 Modos
+					//A) collage entero en el tamaño pedido
+					//B) collage en que cada imagen tiene el tamaño pedido (con el fin de usar como mapa css)
 				list($tabla,$campoId,$valorId,$campoData)=explode('.',$_GET["fichero"]);
 				$sql="SELECT ".$campoId.", ".$campoData." FROM ".$tabla." WHERE id='".$db->real_Escape_String($valorId)."'";
 				//$GLOBALS['firephp']->info($sql);
@@ -41,12 +44,14 @@ try {
 				if ($rslSet->num_rows>0) {
 					$data=$rslSet->fetch_object();
 					$data=$data->$campoData;
+					$objImg=Imagen::fromString($data);
+					//$objImg->marcaAgua("");
+					//$objImg->marcaAgua("",1,1,"center");
+				} else {
+					throw new Exception("No encontrado registro con ID [".$valorId."]", 1);
 				}
-				$objImg=Imagen::fromString($data);
-				//$objImg->marcaAgua("");
-				//$objImg->marcaAgua("",1,1,"center");
 			} catch (Exception $e) {
-				error_log(print_r($e,true));
+				error_log(str_replace('\n', '', print_r($e,true)));
 				$file=BASE_IMGS_DIR.'imgErr.png';
 				$objImg=Imagen::fromFile($file);
 			}
