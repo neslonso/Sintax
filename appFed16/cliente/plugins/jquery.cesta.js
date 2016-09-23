@@ -2,6 +2,10 @@
 /* History
 /**
  * History
+ * 0.2 (20160913)
+ * Estructura objetos cesta
+ *  arrItems [{ id: -, titulo: -, imagen: -, descripcion: -, quantity: -, precio: - }, ...]
+ *
  * 0.1 (20160907)
  * Template sin funcionalidad, basada en http://stefangabos.ro/jquery/jquery-plugin-boilerplate-revisited/
  * Interfaz con el exterior:
@@ -17,23 +21,14 @@
  *    $('#element').data('jqCesta').settings.foo;
  *
  * });
- * 0.2 (20160913)
- * Estructura objetos cesta
- *  arrItems [{ id: -, titulo: -, imagen: -, descripcion: -, quantity: -, precio: - }, ...]
  */
 
-// El punto y coma es por si acaso algo que no esté bien cerrado se concatena con este fichero
-// Window y document se pasan para convertirlas en varialbes locales y que el acceso sea un poco mas rápido
-// undefined no se pasa para que sea de verdad undefined, por si acaso algo lo ha modificado (en ECMAScript
-// 3 es posible modificar el valor de undefined, en ECMAScript 5 ya no).
 ;(function($) {
 	$.jqCesta = function(element, options) {
-		// plugin's default options
-		// this is private property and is  accessible only from inside the plugin
-		//acceso : plugin.settings.PARAM;
 		var defaults = {
 			arrItems: [{}],//array objetos
 			total: 0,
+			classBtnAdd: 'jqCst',
 			linkCart: [{
 				txtBtnCart: "",
 				imgActiveBtnCart: false,
@@ -61,52 +56,35 @@
 			}],
 			/*speed: 'ease-in',//velocidad del desplazamiento desplegamiento div
 			classBtnOrder: 'btnCheckOrder',*/
-			// if your plugin is event-driven, you may provide callback capabilities
-			// for its events. execute these functions before or after events of your
-			// plugin, so that users may customize those particular events without
-			// changing the plugin's code
-			onFoo: function() {},
-
 			jquerycesta_something: function( event ) {
-			 console.log("AQUI ESTAMOS");
+				console.log("AQUI ESTAMOS");
 			}
 			/*onclick del btn despegar*/
-
 		}
 
-		// to avoid confusions, use "plugin" to reference the
-		// current instance of the object
 		var plugin = this;
 
-		// this will hold the merged default, and user-provided options
-		// plugin's properties will be available through this object like:
-		// plugin.settings.propertyName from inside the plugin or
-		// element.data('jqCesta').settings.propertyName from outside the plugin,
-		// where "element" is the element the plugin is attached to;
 		plugin.settings = {}
 
 		var $element = $(element), // reference to the jQuery version of DOM element
 			 element = element;    // reference to the actual DOM element
 
-		// the "constructor" method that gets called when the object is created
 		plugin.init = function() {
-			// the plugin's final properties are the merged default and
-			// user-provided options (if any)
 			plugin.settings = $.extend({}, defaults, options);
 			//borrar. Simula carga items en variable
 			//plugin.loadCesta();
 			plugin.initCart();
-
-
 		}
 
 		// public methods
-		// these methods can be called like:
-		// plugin.methodName(arg1, arg2, ... argn) from inside the plugin or
-		// element.data('jqCesta').publicMethod(arg1, arg2, ... argn) from outside
-		// the plugin, where "element" is the element the plugin is attached to;
-
 		plugin.initCart = function(){
+			$('.'+plugin.settings.classBtnAdd).on('click.jqCesta', 'document', function(event) {
+				console.log(this);
+				//llamar a addItem
+				event.preventDefault();
+			});
+
+
 			plugin.loadCesta();
 			var ST_linkCart = plugin.settings.linkCart[0];
 
@@ -127,18 +105,14 @@
 			/*FIN CODIGO A BORRAR*/
 
 			$('.btnCart',$element).click(function(event) {
-
+				var $btn=$(this);
 				plugin.viewCesta();
-				var $this=$('.btnCart',$element);
 				//manejador del foo de settings(por si alguien define eventos de fuera) //this.trigger nombre evento, parametros [documentacion trigger por espacionombres] ej: jqcesta.funcion... para evita sobreescritura funciones  https://api.jquery.com/event.namespace/ obj sobre el que use trigger es  el que sera this
-				$this.trigger( "jquerycesta_something" );
-
-
 			});
 
 		}
 		plugin.loadCesta = function(){
-			plugin.settings.arrItems = simuladorCargaItems();
+			//plugin.settings.arrItems = simuladorCargaItems();
 			refreshQuantity(countQuantityArrItems());
 		}
 
@@ -171,6 +145,7 @@
 		plugin.addItem = function(src, ttl, unit, prc, id){
 			var exito = 0;
 			exito = addItem(src, ttl, unit, prc, id);
+			$element.trigger("afterAdd");
 			return exito;
 		}
 
@@ -195,26 +170,19 @@
 		}
 
 		// private methods
-		// these methods can be called only from inside the plugin like:
-		// methodName(arg1, arg2, ... argn)
-
-		//mostrar cesta
 		var isHideCesta = function() {
 			return ($('.content-cart',$element).hasClass('content-cart-outside'));
 		}
 
-		//mostrar cesta
 		var isShowCesta = function() {
 			return ($('.content-cart',$element).hasClass('content-cart-inside'));
 		}
 
-		//mostrar cesta
 		var hideCesta = function() {
 			$('.content-cart',$element).removeClass('content-cart-inside');
  			$('.content-cart',$element).addClass('content-cart-outside');
 		}
 
-		//ocultar cesta
 		var showCesta = function() {
 			$('.content-cart',$element).removeClass('content-cart-outside');
  			$('.content-cart',$element).addClass('content-cart-inside');
@@ -236,8 +204,6 @@
 		}
 
 		var addItem = function(src, ttl, unit, prc, id) {
-			//comprobar si existe una clase
-
 			refreshQuantity(unit);
 
 			var html_item = renderItem(src, ttl, unit, prc, id);
@@ -314,18 +280,9 @@
 
 	// add the plugin to the jQuery.fn object
 	$.fn.jqCesta = function(options) {
-		// iterate through the DOM elements we are attaching the plugin to
 		return this.each(function() {
-			// if plugin has not already been attached to the element
 			if (undefined == $(this).data('jqCesta')) {
-				// create a new instance of the plugin
-				// pass the DOM element and the user-provided options as arguments
 				var plugin = new $.jqCesta(this, options);
-				// in the jQuery version of the element
-				// store a reference to the plugin object
-				// you can later access the plugin and its methods and properties like
-				// element.data('jqCesta').publicMethod(arg1, arg2, ... argn) or
-				// element.data('jqCesta').settings.propertyName
 				$(this).data('jqCesta', plugin);
 			}
 		});
