@@ -48,7 +48,7 @@ class pedBridge extends Bridge implements IPage {
 			$store='';
 			$idMulti_pedido=$_REQUEST['id'];
 			$idUserOrigen='';
-			if (get_class($this->objUsr)=="Multi_cliente") {
+			if (get_class($this->objUsr)=="Bridge_Multi_cliente") {
 				$idMulti_cliente=$this->objUsr->id;
 			} else {
 				$idMulti_cliente='';

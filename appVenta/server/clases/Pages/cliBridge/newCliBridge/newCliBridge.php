@@ -52,7 +52,7 @@ class newCliBridge extends Bridge implements IPage {
 		$responseApi = file_get_contents($url, false, $context);
 		$result=json_decode($responseApi);
 		if ($result->resultado->valor){
-			$objCli=new \Multi_cliente();
+			$objCli=new \Bridge_Multi_cliente();
 			$objCli->id=$result->datos->id;
 			$_SESSION['usuario']=$objCli;
 		}

@@ -9,7 +9,7 @@ class datosCliBridge extends Bridge implements IPage {
 	}
 	public function pageValida () {
 		$usrClass=get_class($this->objUsr);
-		if ($usrClass=="Multi_cliente") {
+		if ($usrClass=="Bridge_Multi_cliente") {
 			return $this->objUsr->pagePermitida($this);
 		} else {
 			return "\\Sintax\\Pages\\newCliBridge";

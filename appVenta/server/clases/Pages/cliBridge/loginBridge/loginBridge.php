@@ -67,7 +67,7 @@ class loginBridge extends Bridge implements IPage {
 		$envioMulti = file_get_contents($url, false, $context);
 		$result=json_decode($envioMulti);
 		if ($result->resultado->valor){
-			$objCli=new \Multi_cliente();
+			$objCli=new \Bridge_Multi_cliente();
 			$objCli->id=$result->datos->id;
 			$_SESSION['usuario']=$objCli;
 		}

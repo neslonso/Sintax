@@ -17,7 +17,7 @@ class lsPedsBridge extends Bridge implements IPage {
 		$idUser=$arrHash[0];
 		$store=$arrHash[1];
 		$usrClass=get_class($this->objUsr);
-		if ($usrClass=="Multi_cliente") {
+		if ($usrClass=="Bridge_Multi_cliente") {
 			//esta identificado en fed16
 			$_SESSION['datosCli']=$this->getDatosCli("",$this->objUsr->id,$hash);
 			return $this->objUsr->pagePermitida($this);

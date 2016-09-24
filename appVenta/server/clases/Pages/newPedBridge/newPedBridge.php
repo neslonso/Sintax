@@ -19,7 +19,7 @@ class newPedBridge extends Bridge implements IPage {
 	}
 	public function pageValida () {
 		$usrClass=get_class($this->objUsr);
-		if ($usrClass=="Multi_cliente") {
+		if ($usrClass=="Bridge_Multi_cliente") {
 			$_SESSION['arrModosPago']=$this->getArrModosPago();
 			$_SESSION['datosCli']=$this->getDatosCli();
 			$_SESSION['storeData']=$this->getStoreData();
