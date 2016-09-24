@@ -357,7 +357,7 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 		return $arrRefs;
 	}
 
-	public function imgSrc($ancho=150,$alto=150) {
+	public function imgSrc($ancho=150,$alto=150,$filtro=NULL) {
 		$arrRefs=array();
 	$tArrRefsMasVendidas=microtime(true);
 		$arrRefs=$this->arrRefsMasVendidas();
@@ -375,12 +375,12 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 			} while (count($arrFotos)==0 && isset($arrRefs[$i]));
 		}
 		$idMPA=(isset($arrFotos[0]))?$arrFotos[0]:false;
-		$src=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB&fichero=multi_productoAdjunto.id.'.$idMPA.'.data&ancho='.$ancho.'&alto='.$alto.'&modo='.Imagen::OUTPUT_MODE_FILL;
+		$src=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB&fichero=multi_productoAdjunto.id.'.$idMPA.'.data&ancho='.$ancho.'&alto='.$alto.'&filtro='.$filtro.'&modo='.Imagen::OUTPUT_MODE_FILL;
 		return $src;
 	}
 
 	public function icoSrc() {
-		return $this->imgSrc(30,30);
+		return $this->imgSrc(30,30,"grayscale");
 	}
 }
 ?>

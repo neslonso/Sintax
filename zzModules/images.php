@@ -65,7 +65,7 @@ try {
 					throw new Exception("No encontrado registro con ID [".$valorId."]", 1);
 				}
 			} catch (Exception $e) {
-				error_log(str_replace('\n', '', print_r($e,true)));
+				error_log(print_r($e,true));
 				$file=BASE_IMGS_DIR.'imgErr.png';
 				$objImg=Imagen::fromFile($file);
 			}

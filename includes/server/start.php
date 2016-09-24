@@ -38,7 +38,6 @@ define ('MODULES', serialize(array(
 	'phpunit' => SKEL_ROOT_DIR.'zzModules/phpunit.php',
 )));
 
-
 require_once SKEL_ROOT_DIR."includes/server/IPS_DEV.php";
 
 require_once SKEL_ROOT_DIR."includes/server/APPS.php";

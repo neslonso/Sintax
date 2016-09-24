@@ -489,9 +489,9 @@ class Imagen {
 	public function grayscale(){
 		$im=$this->imgData;
 		if($im && imagefilter($im, IMG_FILTER_GRAYSCALE)){
-		    imagepng($im, 'dave.png');
+			imagepng($im, 'dave.png');
 		} else {
-		    return false;
+			return false;
 		}
 		$this->imgData=$im;
 	}
