@@ -1,0 +1,171 @@
+@color-bg-cart: #fff;
+@color-border-cart:  #ff94be;
+@color-font-ttlItem:  #000000;
+@color-font-unitItem:  #909090;
+@color-font-priceItem:  #909090;
+@color-bg-separatorItem:  #d3d3d3;
+@color-bg-btnCheckOrder: #ff94be;
+@color-font-btnCheckOrder: #ffffff;
+@color-bd-btnCheckOrder: #ffffff;
+@color-bg-spanBadgeQuantity: #6c94be;
+/*********  CESTA **********/
+/*  CESTA */
+.content-cart{
+    position: absolute;
+    top: 116px ;
+    right: -300px !important;
+    width: 300px !important;
+    height: auto !important;
+    border-top: 3px solid #ff94be;
+    overflow: hidden;
+    box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.23);
+    background-color: @color-bg-cart;
+}
+
+.ico-cart{
+  width: 20px;
+}
+.btn-lg, .btn-group-lg > .btn {
+  font-size: 20px !important;
+  padding: 0px;
+}
+
+.badgeQuantity {
+  cursor: pointer;
+  height: 18px;
+  position: relative !important;
+  width: 18px;
+  z-index: 900;
+  padding: 4px 0px 0px;
+  font-size: 11px;
+  top: -13px !important;
+  right: -1px ;
+  box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.23);
+}
+
+span.badge.badgeQuantity{
+  background-color: @color-bg-spanBadgeQuantity !important;
+}
+.link-cart{
+    text-align: left;
+    margin-top: 0px !important;
+    clear: both;
+}
+
+.list-item-cart{
+  /*max-height: 380px !important;*/
+  overflow-y: auto;/*scroll;*/
+  margin-right: 0px !important;
+}
+
+.separator-item{
+  background-color: @color-bg-separatorItem;
+  height: 1px;
+  margin-bottom: 7px;
+}
+
+.btn-check-order{
+  background-color: @color-bg-btnCheckOrder;
+  color: @color-font-btnCheckOrder !important;
+  border: 1px solid  @color-bd-btnCheckOrder;
+}
+/*estilos lineas producto*/
+
+.ttl-item-cart{
+  font-size: small;
+  color: @color-font-ttlItem;
+}
+
+.unit-item-cart{
+  font-size: x-small;
+  color: @color-font-unitItem;
+}
+
+.price-item-cart{
+  font-size: x-small;
+  color: color-font-priceItem;
+}
+.total-cart{
+  padding: 18px;
+  margin-bottom: 10px;
+}
+.info-total{
+   background: #f2f2f2 none repeat scroll 0 0 !important;
+}
+.pull-xs-right{
+  float: right !important;
+}
+
+.p-a-1 {
+    padding: 1rem !important;
+}
+.m-b-1 {
+    margin-bottom: 1rem !important;
+}
+
+/*estilos desplazamiento cesta*/
+.content-cart-inside {
+  animation: lateralMoveIn 0.5s;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+}
+
+.content-cart-outside {
+  animation: lateralMoveOut 0.5s;
+  animation-direction: alternate-reverse;
+  animation-timing-function: ease-in;
+}
+
+@keyframes lateralMoveIn {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    -ms-transform: translateX(-300px); /* IE 9 */
+    -webkit-transform: translateX(-300px); /* Chrome, Safari, Opera */
+    transform: translateX(-300px);
+  }
+}
+
+
+@keyframes lateralMoveOut {
+  0% {
+    -ms-transform: translateX(0); /* IE 9 */
+    -webkit-transform: translateX(0); /* Chrome, Safari, Opera */
+    transform: translateX(0);
+  }
+  100% {
+    -ms-transform: translateX(-300px); /* IE 9 */
+    -webkit-transform: translateX(-300px); /* Chrome, Safari, Opera */
+    transform: translateX(-300px);
+  }
+}
+
+/* LG */
+@media (min-width: 1199px){
+
+}
+/* MD */
+@media (min-width: 992px) and (max-width: 1199px){
+
+}
+/* SM */
+@media (min-width: 768px) and (max-width: 991px){
+  .content-cart{
+      top: 112px !important;
+  }
+}
+/* XS */
+@media (max-width: 768px){
+  .content-cart{
+      top: 111px  !important;
+  }
+
+}
+
+
+/* XS y SM*/
+@media (max-width: 991px){
+
+}
