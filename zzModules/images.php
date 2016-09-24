@@ -32,7 +32,7 @@ try {
 		break;
 		case "DB";
 			try {
-				\cDb::conf(_DB_HOST_, _DB_USER_, _DB_PASSWD_, _DB_NAME_);
+				\cDb::confByKey("");
 				$db=cDb::getInstance();
 				list($tabla,$campoId,$valorId,$campoData)=explode('.',$_GET["fichero"]);
 				$sql="SELECT ".$campoId.", ".$campoData." FROM ".$tabla." WHERE id='".$db->real_Escape_String($valorId)."'";
