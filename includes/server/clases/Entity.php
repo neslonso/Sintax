@@ -69,7 +69,8 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 			$sql=substr($sql,0,-2);
 			$sql.=" WHERE ".static::$keyField."='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		} else {
-			$sqlLock="LOCK TABLES multi_envioProgramadoResultados WRITE, contador WRITE";
+			$sqlLock="LOCK TABLES ".static::$table." WRITE";
+			//$sqlLock="LOCK TABLES ".static::$table." WRITE, contador WRITE";
 			$this->db()->query ($sqlLock);
 			$sql="INSERT INTO ".static::$table." ( ";
 			foreach ($this->arrDbData as $key => $value) {
