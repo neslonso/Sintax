@@ -25,7 +25,7 @@
 #divJqNotifications {
     position: fixed;
     right: 0;
-    top: 100px;
+    top: 134px;
     width: 415px;
     z-index: 30;
 }
@@ -78,14 +78,37 @@
     animation-duration: 0.32s;
     animation-fill-mode: both;
 }
-.fadeInRight {
-    animation-name: fadeInRight;
+
+@keyframes fadeOutRight {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
 }
+
 .fadeOutRight {
-    animation-name: fadeOutRight;
+  animation-name: fadeOutRight;
 }
 
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
 
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fadeInRight {
+  animation-name: fadeInRight;
+}
 
 /*#divJqNotifications .message a {
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
