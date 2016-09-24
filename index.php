@@ -6,6 +6,19 @@ define ('SKEL_ROOT_DIR',realpath(__DIR__.'/'.'./').'/');
 $module='';
 try {
 	require_once SKEL_ROOT_DIR."/includes/server/start.php";
+
+
+	$X_FORWARDED_HOST=(isset($_SERVER['HTTP_X_FORWARDED_HOST']))?$_SERVER['HTTP_X_FORWARDED_HOST']:'bebefarma.com';
+	//$X_FORWARDED_FOR=(isset($_SERVER['X_FORWARDED_FOR']))?$_SERVER['X_FORWARDED_FOR']:NULL;
+	//$X_FORWARDED_SERVER=(isset($_SERVER['X_FORWARDED_SERVER']))?$_SERVER['X_FORWARDED_SERVER']:NULL;
+
+	$arrDomains=unserialize(ARR_DOMAINS);
+	$GLOBALS['config']=new \stdClass();
+	$GLOBALS['config']->keyTienda=$arrDomains[$X_FORWARDED_HOST]->keyTienda;
+	session_name ($arrDomains[$X_FORWARDED_HOST]->session_name);
+	$_REQUEST['session_name']=$arrDomains[$X_FORWARDED_HOST]->session_name;
+
+
 	$module=(isset($_REQUEST['MODULE']))?strtolower($_REQUEST['MODULE']):"render";
 	if (isset($_REQUEST['MODULE'])) {unset ($_REQUEST['MODULE']);}
 	if (isset($_POST['MODULE'])) {unset ($_POST['MODULE']);}

@@ -32,7 +32,20 @@ class Home extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
 	public function markup() {
+		$obj=new \Sintax\ApiService\Categorias ();
+		$arrCatsRoots=$obj->arrCatsRootsMenu($GLOBALS['config']->keyTienda);
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
+	}
+	public function cuerpo() {
+		$obj=new \Sintax\ApiService\Productos ();
+		$arrProds=$obj->arrRandomOfertasVenta(18,$GLOBALS['config']->keyTienda);
+		//$arrProds=cLA("OfertasVenta","arrRandomProds",$arrParam);
+		require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
+	}
+	public function subMenu($idPadre){
+		$obj=new \Sintax\ApiService\Categorias ();
+		$arrCatsSubMenu=$obj->arrCatsRootsSubMenu($idPadre);
+		return $arrCatsSubMenu;
 	}
 }
 ?>

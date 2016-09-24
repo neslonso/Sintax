@@ -25,7 +25,7 @@ define('CACHE_DIR',SKEL_ROOT_DIR.'zCache/');
 define('TMP_UPLOAD_DIR',SKEL_ROOT_DIR.'zCache/tmpUpload/');
 define('BASE_IMGS_DIR',SKEL_ROOT_DIR.'binaries/imgs/');
 
-define ('DEBUG_EMAIL','nestor@parqueweb.com');
+define ('DEBUG_EMAIL','paco.correos.debug@gmail.com');
 
 define ('MODULES', serialize(array(
 	'actions' => SKEL_ROOT_DIR.'zzModules/actions.php',

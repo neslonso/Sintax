@@ -87,6 +87,11 @@ class newPedBridge extends Bridge implements IPage {
 
 		$jsonArrDtosVolumen=htmlspecialchars(json_encode($storeData->DTOS_VOLUMEN_PEDIDO),ENT_QUOTES,'UTF-8');
 
+		$safariIpadStyle='';
+		if (strpos($_SERVER['HTTP_USER_AGENT'], 'Safari')) {
+			$safariIpadStyle="width:768px;";
+		}
+
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
 	}
 

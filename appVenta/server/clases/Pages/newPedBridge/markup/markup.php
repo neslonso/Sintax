@@ -1,6 +1,6 @@
 <?="\n<!-- ".get_class()." -->\n"?>
 <div class="fuelux">
-	<div class="wizard" data-initialize="wizard" id="newPedWizard"
+	<div class="wizard" data-initialize="wizard" id="newPedWizard" style="<?=$safariIpadStyle?>"
 	data-store="<?=$store?>"
 	data-id-multi_cliente="<?=$datosCli->id?>"
 	data-nombre-cliente="<?=$datosCli->nombre?>"
@@ -323,13 +323,8 @@ if ($totalRebotes>0) {
 			<div class="modal-body">
 					<input name="id" id="id" type="hidden" value="0"/>
 					<div class="row">
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label for="nombre" accesskey="">Nombre</label>
-								<input class="form-control" type="text" name="nombre" id="nombre" value="" placeholder="Nombre para identificar esta dirección..." />
-							</div>
-						</div>
-						<div class="col-sm-6">
+						<input class="form-control" type="hidden" name="nombre" id="nombre" value="" placeholder="Nombre para identificar esta dirección..." />
+						<div class="col-sm-12">
 							<div class="form-group">
 								<label for="destinatario" accesskey="">Destinatario*</label>
 								<input class="form-control" type="text" name="destinatario" id="destinatario" value=""  placeholder="Destinatario del envio" />

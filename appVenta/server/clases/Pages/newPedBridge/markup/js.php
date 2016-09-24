@@ -286,7 +286,7 @@ $(document).ready(function() {
 		var provincia=$('#provincia','#modalAddDir').val();
 		var cp=$('#cp','#modalAddDir').val();
 		var movil=$('#movil','#modalAddDir').val();
-		if (destinatario=="" || direccion=="" || poblacion=="" || provincia=="" || cp=="" || movil==""){
+		if (destinatario.trim()=="" || direccion.trim()=="" || poblacion.trim()=="" || provincia.trim()=="" || cp.trim()=="" || movil.trim()==""){
 			muestraMsgModal('Error en el formulario','Por favor, rellene todos los campos marcados como obligatorios (<b>*</b>) de la dirección');
 		} else {
 			$.post('<?=BASE_DIR.FILE_APP?>',{

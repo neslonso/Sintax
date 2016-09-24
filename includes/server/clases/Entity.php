@@ -69,6 +69,8 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 			$sql=substr($sql,0,-2);
 			$sql.=" WHERE ".static::$keyField."='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		} else {
+			$sqlLock="LOCK TABLES ".static::$table." WRITE, contador WRITE";
+			$this->db()->query ($sqlLock);
 			$sql="INSERT INTO ".static::$table." ( ";
 			foreach ($this->arrDbData as $key => $value) {
 				$sql.="`".$key."`, ";
@@ -92,7 +94,15 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 			$sql.=")";
 		}
 		error_log(__FILE__."::".__LINE__."::sql: ".$sql);
-		$result=$this->db()->query ($sql);
+		try {
+			$result=$this->db()->query ($sql);
+			$sqlUnlock="UNLOCK TABLES";
+			$this->db()->query ($sqlUnlock);
+		} catch (Exception $e) {
+			$sqlUnlock="UNLOCK TABLES";
+			$this->db()->query ($sqlUnlock);
+			throw $e;
+		}
 		return $result;
 	}
 
@@ -101,7 +111,7 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 		if ($this->noReferenciado()) {
 			$sql="DELETE FROM ".static::$table." WHERE ".static::$keyField."='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 			error_log(__FILE__."::".__LINE__."::sql: ".$sql);
-			//$this->db()->query($sql);
+			$this->db()->query($sql);
 			$result=true;
 		}
 		return $result;

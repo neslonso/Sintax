@@ -240,4 +240,25 @@ function sitemap($file="./sitemap.xml") {
 	chmod ($gzfile,0666);
 	unlink($file);
 }
+
+function cLA($apiClase,$apiMetodo,$data=NULL) {
+	return callLocalApi($apiClase,$apiMetodo,$data);
+}
+function callLocalApi($apiClase,$apiMetodo,$data=NULL) {
+	$url=BASE_URL.FILE_APP.'?MODULE=api&apiClase='.$apiClase.'&apiMetodo='.$apiMetodo;
+	$data=(is_null($data))?array():$data;
+	// use key 'http' even if you send the request to https://...
+	$options = array(
+		'http' => array(
+			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+			'method'  => 'POST',
+			'content' => http_build_query($data),
+		),
+	);
+	$context=stream_context_create($options);
+	$responseApi=file_get_contents($url, false, $context);
+	$result=json_decode($responseApi);
+	return $result;
+}
+
 ?>

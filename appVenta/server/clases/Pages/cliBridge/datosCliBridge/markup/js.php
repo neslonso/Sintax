@@ -15,8 +15,8 @@ function grabarDireccion(id){
 	var isoPais=$('#frmCliDir'+id+' #pais').data('iso');
 	*/
 	var pais=$('#frmCliDir'+id+' #pais').val();
-	var movil=$('#frmCliDir'+id+' #nmovil').val();
-	if (destinatario=="" || direccion=="" || poblacion=="" || provincia=="" || cp=="" || movil==""){
+	var movil=$('#frmCliDir'+id+' #movil').val();
+	if (destinatario.trim()=="" || direccion.trim()=="" || poblacion.trim()=="" || provincia.trim()=="" || cp.trim()=="" || movil.trim()==""){
 		muestraMsgModal('Error en el formulario','Por favor, rellene todos los campos de la dirección');
 	} else {
 		//comprobamos si el cp es válido para la tienda
