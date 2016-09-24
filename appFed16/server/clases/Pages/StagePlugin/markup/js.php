@@ -12,7 +12,7 @@ $(document).ready(function() {
 			{ id: 5, titulo: "PARAMETRO IPSUM 5", imagen: src_imagen_default, descripcion: "PARAMETRO PRODUCT ABOVE FOCUSED ON USING VARIABLES 5", quantity: 1, precio: 13.00 }
 		]
 	}).on('afterAdd', function () {
-		$('#divJqNotifications').data('jqNotifications').addNotification('Muy bien', 'Se ha aÃ±adido a cesta el producto <strong>LOREM IPSUM 6</strong>', 'add');
+		$('#divJqNotifications').data('jqNotifications').addNotification('Muy bien', 'Se ha añadido a cesta el producto <strong>LOREM IPSUM 6</strong>', 'add');
 	})
 	$('#divJqNotifications').jqNotifications({'foo': 'bar'});
 });
@@ -21,8 +21,8 @@ function addProducto(){
 	var exito = $('#divJqCesta').data('jqCesta').addItem('./appFed16/binaries/imgs/shop-item.jpg', 'LOREM IPSUM 6', 2, 15.00, 6);
 	$('#divJqCesta').data('jqCesta').refreshTotal(0);
 	if (exito){
-		$('#divJqNotifications').data('jqNotifications').addNotification('Muy bien', 'Se ha aÃ±adido a cesta el producto <strong>LOREM IPSUM 6</strong>', 'add');
+		$('#divJqNotifications').data('jqNotifications').addNotification('Muy bien', 'Se ha añadido a cesta el producto <strong>LOREM IPSUM 6</strong>', 'add');
 	}else{
-		$('#divJqNotifications').data('jqNotifications').addNotification('Proceso incompleto', 'Se ha aÃ±adido a cesta el producto <strong>LOREM IPSUM 6</strong>', 'del');
+		$('#divJqNotifications').data('jqNotifications').addNotification('Proceso incompleto', 'Se ha añadido a cesta el producto <strong>LOREM IPSUM 6</strong>', 'del');
 	}
 }
