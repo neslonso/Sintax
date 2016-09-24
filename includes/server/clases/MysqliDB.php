@@ -177,7 +177,7 @@ class MysqliDB extends \mysqli {
 				break;
 			case "arrVars":
 				$result=array();
-				while ($row=$qResult->fetch_array(MYSQLI_ASSOC)) {
+				while ($row=$qResult->fetch_array(MYSQLI_NUM)) {
 					array_push($result,$row[0]);
 				}
 				break;
