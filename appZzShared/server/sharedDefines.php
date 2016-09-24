@@ -34,8 +34,9 @@ define ('ARR_TIENDAS',serialize(array (
 		'FROM_EMAIL' => '',
 	),
 	'BF' => array (
-		'SITE_NAME' => '',
-		'FROM_EMAIL' => '',
+		'SITE_NAME' => 'Bebefarma',
+		'FROM_EMAIL' => 'atcioncliente@bebefarma.com',
+		'REPLY_TO_EMAIL' => 'pedidos@bebefarma.com',
 	),
 	'FC' => array (
 		'SITE_NAME' => '',

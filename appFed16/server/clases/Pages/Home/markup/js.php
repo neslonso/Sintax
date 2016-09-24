@@ -1,15 +1,15 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
-	$('#divJqCesta').jqCesta({'foo': 'bar'});
+	$('#divJqCesta').jqCesta();
 	$('#divJqNotifications').jqNotifications({'foo': 'bar'});
 	$("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        if ($("#wrapper").hasClass("toggled")) {
-        	//está cerrado y lo vamos a abrir
-        	$("#sidebar-wrapper").css("overflow-y","auto");
-        	$("#sidebar-wrapper").css("overflow-x","hidden");
-        	$("#wrapper").toggleClass("toggled");
+		e.preventDefault();
+		if ($("#wrapper").hasClass("toggled")) {
+			//está cerrado y lo vamos a abrir
+			$("#sidebar-wrapper").css("overflow-y","auto");
+			$("#sidebar-wrapper").css("overflow-x","hidden");
+			$("#wrapper").toggleClass("toggled");
 			$(this).delay(600).queue(function() {
 				//ajustamos para que quite el overflow cuando ya termine la animacion
 				$("#sidebar-wrapper").css("overflow-y","visible");
@@ -27,7 +27,7 @@ $(document).ready(function() {
 			//$("#sidebar-wrapper").css("position","fixed");
 			$("#wrapper").toggleClass("toggled");
 		}
-    });
+	});
 });
 function openItem(id){
 	alert("abriendo");

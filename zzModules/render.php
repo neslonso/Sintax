@@ -31,22 +31,26 @@ try {
 			$arrSustitucion=(isset($_SESSION['arrSustitucion']))?$_SESSION['arrSustitucion']:array();
 			$Page=new $page($objUsr);
 			$page=$Page->pageValida();
-			if (class_exists($page)) {//pageValida devuelve una clase existente, hacemos la sustitucion
-				$url=(count($arrSustitucion))?BASE_DIR.FILE_APP.'?page='.get_class($Page):$_SERVER['REQUEST_URI'];
-				array_push($arrSustitucion,array('page' => get_class($Page), 'url' => $url));
-				$_SESSION['arrSustitucion']=$arrSustitucion;
-				$firephp->info('Page "'.get_class($Page).'" no valida, sustuticion: '.get_class($Page).' por '.$page.'. url sustituida: '.$url);
-				unset($Page);
-			} else {//no hay sustitucion
-				$Page->arrSustitucion=$arrSustitucion;
-				if (isset($_SESSION['arrSustitucion'])) {unset($_SESSION['arrSustitucion']);}
+			if ($page!==false) {
+				if (class_exists($page)) {//pageValida devuelve una clase existente, hacemos la sustitucion
+					$url=(count($arrSustitucion))?BASE_DIR.FILE_APP.'?page='.get_class($Page):$_SERVER['REQUEST_URI'];
+					array_push($arrSustitucion,array('page' => get_class($Page), 'url' => $url));
+					$_SESSION['arrSustitucion']=$arrSustitucion;
+					$firephp->info('Page "'.get_class($Page).'" no valida, sustuticion: '.get_class($Page).' por '.$page.'. url sustituida: '.$url);
+					unset($Page);
+				} else {//no hay sustitucion
+					$Page->arrSustitucion=$arrSustitucion;
+					if (isset($_SESSION['arrSustitucion'])) {unset($_SESSION['arrSustitucion']);}
+				}
+			} else {
+				throw new Exception('No dispone de autorización para la clase de página solicitada.');
 			}
 		}
 		while (class_exists($page));
 		$page=get_class($Page);
 		$firephp->info($arrSustitucion,'arrSustitucion');
 	} else {
-		throw new Exception('La clase de página solicitada "'.$page.'" no existe.');
+		throw new Exception('La clase de página solicitada ["'.$page.'"] no existe.');
 	}
 
 	markup ($Page);

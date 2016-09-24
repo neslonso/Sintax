@@ -31,11 +31,6 @@ interface IUser {
 }
 
 abstract class User implements IUser {
-	/**
-	 * Valor que identifica univocamente al usuario de la aplicacion
-	 * @var mixed
-	 */
-	protected $userId;
 	public function pagePermitida (Page $objPage) {return true;}
 	public function accionPermitida (Page $objPage,$metodo) {return true;}
 	public function apiServicePermitido (ApiService $objApiService) {return false;}
@@ -43,7 +38,6 @@ abstract class User implements IUser {
 }
 
 class AnonymousUser extends User implements IUser {
-	protected $userId='Anonimo';
 	public function pagePermitida (Page $objPage) {return true;}
 	public function accionPermitida (Page $objPage,$metodo) {
 		$result=true;
@@ -64,7 +58,5 @@ class AnonymousUser extends User implements IUser {
 		}
 		return $result;
 	}
-	public function apiServicePermitido (ApiService $objApiService) {return false;}
-	public function metodoPermitido (ApiService $objApiService,$metodo) {return false;}
 }
 ?>

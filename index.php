@@ -13,8 +13,12 @@ try {
 	//$X_FORWARDED_SERVER=(isset($_SERVER['X_FORWARDED_SERVER']))?$_SERVER['X_FORWARDED_SERVER']:NULL;
 
 	$arrDomains=unserialize(ARR_DOMAINS);
+	$arrTiendas=unserialize(ARR_TIENDAS);
+	$keyTienda=$arrDomains[$X_FORWARDED_HOST]->keyTienda;
 	$GLOBALS['config']=new \stdClass();
-	$GLOBALS['config']->keyTienda=$arrDomains[$X_FORWARDED_HOST]->keyTienda;
+	$GLOBALS['config']->tienda=new \stdClass();
+	$GLOBALS['config']->tienda=(object) $arrTiendas[$keyTienda];
+	$GLOBALS['config']->tienda->key=$keyTienda;
 	session_name ($arrDomains[$X_FORWARDED_HOST]->session_name);
 	$_REQUEST['session_name']=$arrDomains[$X_FORWARDED_HOST]->session_name;
 

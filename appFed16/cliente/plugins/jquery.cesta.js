@@ -26,7 +26,7 @@
 ;(function($) {
 	$.jqCesta = function(element, options) {
 		var defaults = {
-			arrItems: [{}],//array objetos
+			arrItems: [],//array objetos
 			total: 0,
 			classBtnAdd: 'jqCst',
 			classBtnRemove: 'jqCstRm', /*clase remove item cart*/
@@ -129,6 +129,7 @@
 			var html_items = "";
 			var arr = plugin.settings.arrItems;
 			var ST_cart = plugin.settings.cart[0];
+			console.log(arr);
 			for (var item in arr) {
 				html_items = html_items + renderItem(arr[item].imagen, arr[item].titulo, arr[item].quantity,  (arr[item].precio).toFixed(2), arr[item].id);
 			}
@@ -347,11 +348,11 @@
 		var simuladorCargaItems = function() {
 			var src_imagen_default = "./appFed16/binaries/imgs/shop-item.jpg";
 			var items = [
-    		{ id: 1, titulo: "LOREM IPSUM 1", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 1", quantity: 1, precio: 23.00 },
-   			{ id: 2, titulo: "LOREM IPSUM 2", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 2", quantity: 2, precio: 20.00 },
-    		{ id: 3, titulo: "LOREM IPSUM 3", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 3", quantity: 1, precio: 21.50 },
-    		{ id: 4, titulo: "LOREM IPSUM 4", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 4", quantity: 5, precio: 60.85 },
-    		{ id: 5, titulo: "LOREM IPSUM 5", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 5", quantity: 1, precio: 13.00 }
+				{ id: 1, titulo: "LOREM IPSUM 1", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 1", quantity: 1, precio: 23.00 },
+				{ id: 2, titulo: "LOREM IPSUM 2", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 2", quantity: 2, precio: 20.00 },
+				{ id: 3, titulo: "LOREM IPSUM 3", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 3", quantity: 1, precio: 21.50 },
+				{ id: 4, titulo: "LOREM IPSUM 4", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 4", quantity: 5, precio: 60.85 },
+				{ id: 5, titulo: "LOREM IPSUM 5", imagen: src_imagen_default, descripcion: "LOREM PRODUCT ABOVE FOCUSED ON USING VARIABLES 5", quantity: 1, precio: 13.00 }
 			];
 			return items;
 		}

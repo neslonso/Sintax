@@ -9,6 +9,21 @@ ob_start();
 //formato
 try {
 	switch ($_GET["almacen"]) {
+		case "PLACEHOLD.IT":
+			/*
+			http://placehold.it/120x120
+			*/
+			try {
+				$ancho=(isset($_GET["ancho"]))?$_GET["ancho"]:640;
+				$alto=(isset($_GET["alto"]))?$_GET["alto"]:480;
+				$url="http://placehold.it/".$ancho."x".$alto;
+				$objImg=Imagen::fromString(file_get_contents($url));
+			} catch (Exception $e) {
+				error_log ($e->getMessage());
+				$file=BASE_IMGS_DIR.'imgErr.png';
+				$objImg=Imagen::fromFile($file);
+			}
+		break;
 		case "LOREMPIXEL":
 			/*
 			http://lorempixel.com/400/200 to get a random picture of 400 x 200 pixels
@@ -22,7 +37,6 @@ try {
 				$alto=(isset($_GET["alto"]))?$_GET["alto"]:480;
 				$categoria=(isset($_GET["fichero"]))?"/".$_GET["fichero"]:"";
 				$url="http://lorempixel.com/".$ancho."/".$alto.$categoria;
-				//$firephp->info($url,"URL: ");
 				$objImg=Imagen::fromString(file_get_contents($url));
 			} catch (Exception $e) {
 				error_log ($e->getMessage());

@@ -9,7 +9,7 @@ date_default_timezone_set('Europe/Madrid');
 //setlocale(LC_ALL,'es_ES');
 
 /**/
-define('PHP_MIN_VERSION','5.3.0');
+define('PHP_MIN_VERSION','5.4.0');
 define('SKEL_VERSION','1.0.0');
 
 define('PROTOCOL',((isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS']))?'https':'http'));
