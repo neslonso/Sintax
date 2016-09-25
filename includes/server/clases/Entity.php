@@ -35,9 +35,18 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 	public function getIterator() {
 		return new \ArrayIterator($this->arrDbData);
 	}
+	public function SETdb(\MysqliDB $db) {
+		$this->db=$db;
+	}
 	protected function db() {
 		return $this->db;
 	}
+
+	public static function GETtable() {return static::$table;}
+	public static function GETkeyField () {return static::$keyField;}
+	public static function GETinsertField() {return static::$insertField;}
+	public static function GETupdateField() {return static::$updateField;}
+
 	public function cargarId ($id) {return $this->cargar($id);}
 	public function cargar ($keyValue) {
 		$result=false;
@@ -187,38 +196,5 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 	public function noReferenciado() {
 		throw new \RuntimeException('El metodo noReferenciado debe ser implementado en la clase '.get_class($this));
 	}
-}
-?>
-<?
-/******************************************************************************/
-/* Ejemplo de clase que hereda de Entity **************************************/
-/******************************************************************************/
-class EntidadConcreta extends Entity implements IEntity {
-	protected static $table="tipoUsuario";
-	protected static $keyField="id";
-
-	public function __construct (\MysqliDB $db=NULL, $keyValue=NULL) {
-		parent::__construct($db,$keyValue);
-		$this->arrDbData=array(
-			'id' =>NULL,
-			'insert' =>NULL,
-			'update' =>NULL,
-			'nombre' =>NULL,
-		);
-	}
-
-	public function GETid ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData['id'],ENT_QUOTES,"UTF-8"):$this->arrDbData['id'];}
-	public function SETid ($id,$entity_encode=false) {$this->arrDbData['id']=($entity_encode)?htmlentities($id,ENT_QUOTES,"UTF-8"):$id;}
-
-	public function GETinsert ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData['insert'],ENT_QUOTES,"UTF-8"):$this->arrDbData['insert'];}
-	public function SETinsert ($insert,$entity_encode=false) {$this->arrDbData['insert']=($entity_encode)?htmlentities($insert,ENT_QUOTES,"UTF-8"):$insert;}
-
-	public function GETupdate ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData['update'],ENT_QUOTES,"UTF-8"):$this->arrDbData['update'];}
-	public function SETupdate ($update,$entity_encode=false) {$this->arrDbData['update']=($entity_encode)?htmlentities($update,ENT_QUOTES,"UTF-8"):$update;}
-
-	public function GETnombre ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData['nombre'],ENT_QUOTES,"UTF-8"):$this->arrDbData['nombre'];}
-	public function SETnombre ($nombre,$entity_encode=false) {$this->arrDbData['nombre']=($entity_encode)?htmlentities($nombre,ENT_QUOTES,"UTF-8"):$nombre;}
-
-	public function noReferenciado() {return true;}
 }
 ?>

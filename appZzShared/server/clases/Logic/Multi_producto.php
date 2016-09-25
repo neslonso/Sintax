@@ -37,7 +37,6 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 		$result=($noReferenciadoEnMulti_productoAdjunto && $noReferenciadoEnMulti_productoVARIOSmulti_ofertaVenta)?true:false;
 		return $result;
 	}
-	public function GETkeyField () {return static::$keyField;}
 	public function GETkeyValue ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData[static::$keyField],ENT_QUOTES,"UTF-8"):$this->arrDbData[static::$keyField];}
 	public function SETkeyValue ($keyField,$entity_encode=false) {$this->arrDbData[static::$keyField]=($entity_encode)?htmlentities($keyField,ENT_QUOTES,"UTF-8"):$keyField;}
 
@@ -100,9 +99,9 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 		$rsl=$this->db()->query($sql);
 		while ($data=$rsl->fetch_object()) {
 			switch ($tipo) {
-				case "arrKeys": array_push($arr,$data->{static::$keyField});break;
+				case "arrKeys": array_push($arr,$data->{\Multi_productoAdjunto::GETkeyField()});break;
 				case "arrClassObjs":
-					$obj=new \Multi_productoAdjunto($this->db(),$data->{static::$keyField});
+					$obj=new \Multi_productoAdjunto($this->db(),$data->{\Multi_productoAdjunto::GETkeyField()});
 					array_push($arr,$obj);
 					unset($obj);
 				break;
@@ -122,14 +121,14 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 		$sqlWhere=($where!="")?" WHERE idMulti_producto='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_producto='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
-		$sql="SELECT * FROM multi_productoVARIOSmulti_ofertaVenta INNER JOIN multi_ofertaVenta ON multi_productoVARIOSmulti_ofertaVenta.idMulti_ofertaVenta=multi_ofertaVenta.id".$sqlWhere.$sqlOrder.$sqlLimit;
+		$sql="SELECT * FROM multi_productoVARIOSmulti_ofertaVenta f INNER JOIN multi_ofertaVenta ff ON f.idMulti_ofertaVenta=ff.".\Multi_ofertaVenta::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;
 		$arr=array();
 		$rsl=$this->db()->query($sql);
 		while ($data=$rsl->fetch_object()) {
 			switch ($tipo) {
-				case "arrKeys": array_push($arr,$data->{static::$keyField});break;
+				case "arrKeys": array_push($arr,$data->{\Multi_ofertaVenta::GETkeyField()});break;
 				case "arrClassObjs":
-					$obj=new \Multi_ofertaVenta($this->db(),$data->{static::$keyField});
+					$obj=new \Multi_ofertaVenta($this->db(),$data->{\Multi_ofertaVenta::GETkeyField()});
 					array_push($arr,$obj);
 					unset($obj);
 				break;

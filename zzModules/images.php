@@ -19,7 +19,7 @@ try {
 				$url="http://placehold.it/".$ancho."x".$alto;
 				$objImg=Imagen::fromString(file_get_contents($url));
 			} catch (Exception $e) {
-				error_log ($e->getMessage());
+				$firephp->error($e);
 				$file=BASE_IMGS_DIR.'imgErr.png';
 				$objImg=Imagen::fromFile($file);
 			}
@@ -39,7 +39,7 @@ try {
 				$url="http://lorempixel.com/".$ancho."/".$alto.$categoria;
 				$objImg=Imagen::fromString(file_get_contents($url));
 			} catch (Exception $e) {
-				error_log ($e->getMessage());
+				$firephp->error($e);
 				$file=BASE_IMGS_DIR.'imgErr.png';
 				$objImg=Imagen::fromFile($file);
 			}
@@ -65,7 +65,7 @@ try {
 					throw new Exception("No encontrado registro con ID [".$valorId."]", 1);
 				}
 			} catch (Exception $e) {
-				error_log(print_r($e,true));
+				$firephp->error($e);
 				$file=BASE_IMGS_DIR.'imgErr.png';
 				$objImg=Imagen::fromFile($file);
 			}
@@ -79,8 +79,7 @@ try {
 				}
 				$objImg=Imagen::fromFile($file);
 			} catch (Exception $e) {
-				//error_log(print_r($e,true));
-				error_log($e->getMessage());
+				$firephp->error($e);
 				$file=BASE_IMGS_DIR.'imgErr.png';
 				$objImg=Imagen::fromFile($file);
 			}

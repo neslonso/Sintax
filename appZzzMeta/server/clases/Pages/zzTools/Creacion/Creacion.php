@@ -392,13 +392,16 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 	}
 
 	public function acCrearClase() {
-		list($db,$class)=split(self::DB_NAME_TABLE_NAME_SEPARATOR,$_REQUEST['class']);
+		$arrClasses=$_REQUEST['class'];
 		$chkTestClass=$_REQUEST['chkTestClass'];
-		\cDb::confByKey($db);
 		$rutaLogic=SKEL_ROOT_DIR.$_POST['rutaLogic'];
-		$this->CrearClase($db,$class,$rutaLogic);
-		if ($chkTestClass) {
-			$this->CrearTest($class,$rutaLogic);
+		foreach ($arrClasses as $class) {
+			list($db,$class)=split(self::DB_NAME_TABLE_NAME_SEPARATOR,$class);
+			\cDb::confByKey($db);
+			$this->CrearClase($db,$class,$rutaLogic);
+			if ($chkTestClass) {
+				$this->CrearTest($class,$rutaLogic);
+			}
 		}
 	}
 

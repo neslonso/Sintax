@@ -76,7 +76,7 @@ try {
 			$firephp->info($infoExc);
 		}
 
-		$cssFile=CACHE_DIR.str_replace('/', '-',dirname($_SERVER['SCRIPT_NAME']))."-css.".md5(serialize($arrFilesModTime)).".css";
+		$cssFile=CACHE_DIR.str_replace('/', '-',KEY_APP)."-css.".md5(serialize($arrFilesModTime)).".css";
 		$firephp->info($cssFile,'cssFile:');
 		$firephp->group('Fechas de ficheros', array('Collapsed' => true, 'Color' => '#FF9933'));
 		foreach ($arrFilesModTime as $filePath => $modTimeStamp) {
@@ -127,9 +127,15 @@ try {
 					$firephp->info($href,'Cargando HREF y reescribiendo URLs css:');
 					$fileContent=file_get_contents($href)."\n\n";
 					if ($lessParse) {//TODO: Mejora: solo parsear ficheros .less, no todos.
-						$lessParser = new Less_Parser($arrLessParserOptions);
-						$lessParser->parseFile( $href, '');
-						$fileContent = $lessParser->getCss();
+						try {
+							$lessParser = new Less_Parser($arrLessParserOptions);
+							$lessParser->parseFile( $href, '');
+							$fileContent = $lessParser->getCss();
+						} catch (Exception $e) {
+							error_log("Error en Less_Parser para href [".$href."]");
+							$infoExc="Excepcion de tipo: ".get_class($e).". Mensaje: ".$e->getMessage()." en fichero ".$e->getFile()." en linea ".$e->getLine();
+							$firephp->error($infoExc,"Error en Less_Parser de [".$href."]");
+						}
 					}
 					$patron="/(url ?\( ?['\"]?)(?!['\"]?data:)(?!['\"]?https?:)([^'\")]+)/";
 					$fileContent=preg_replace($patron,'$1'.$baseURI.'$2', $fileContent);
@@ -150,11 +156,19 @@ try {
 			ob_start();
 				echo $cssLibs;
 			$cssLibs=ob_get_clean();
+			/* Las libs ya se parsean de una en una, no hace falta volver a parsearlas cuando estan concatenadas
 			if ($lessParse) {
-				$lessParser = new Less_Parser($arrLessParserOptions);
-				$lessParser->parse($cssLibs);
-				$cssLibs=$lessParser->getCss();
+				try {
+					$lessParser = new Less_Parser($arrLessParserOptions);
+					$lessParser->parse($cssLibs);
+					$cssLibs=$lessParser->getCss();
+				} catch (Exception $e) {
+					error_log("Error en Less_Parser para cssLibs");
+					$infoExc="Excepcion de tipo: ".get_class($e).". Mensaje: ".$e->getMessage()." en fichero ".$e->getFile()." en linea ".$e->getLine();
+					$firephp->error($infoExc,"Error en Less_Parser de cssLibs");
+				}
 			}
+			*/
 			file_put_contents($cssFile, $cssLibs);
 			echo $cssLibs;
 		}
@@ -167,13 +181,27 @@ try {
 		require SKEL_ROOT_DIR."includes/cliente/base.css";
 		require RUTA_APP."cliente/appCss.php";
 
+		if (!class_exists($page)) {
+			mail (DEBUG_EMAIL,"FED16. CSS.PHP no existe la clase [".$page."]: ".$_SERVER['REMOTE_ADDR'],
+				"\n\n--------------------------------------------------------\n\n".
+				var_export($_POST,true)
+				."\n\n--------------------------------------------------------\n\n".
+				print_r($GLOBALS,true)
+			);
+		}
 		$Page=new $page($objUsr);
 		$Page->css();
 	$cssLocal=ob_get_clean();
 	if ($lessParse) {
-		$lessParser = new Less_Parser($arrLessParserOptions);
-		$lessParser->parse($cssLocal);
-		$cssLocal=$lessParser->getCss();
+		try {
+			$lessParser = new Less_Parser($arrLessParserOptions);
+			$lessParser->parse($cssLocal);
+			$cssLocal=$lessParser->getCss();
+		} catch (Exception $e) {
+			error_log("Error en Less_Parser para cssLocal");
+			$infoExc="Excepcion de tipo: ".get_class($e).". Mensaje: ".$e->getMessage()." en fichero ".$e->getFile()." en linea ".$e->getLine();
+			$firephp->error($infoExc,"Error en Less_Parser de cssLocal");
+		}
 	}
 	echo "/*CSS LOCAL*/\n".$cssLocal;
 	/******************************************************************************/

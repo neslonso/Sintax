@@ -163,11 +163,7 @@ class ClassEntitySubclaser {
 		$sl=$this->sl;
 		$sg=$this->sg;
 
-		$resultCode=$sg.'public function GETkeyField () {';
-		$resultCode.='return static::$keyField;';
-		$resultCode.='}'.$sl;
-
-		$resultCode.=$sg.'public function GETkeyValue ($entity_decode=false) {';
+		$resultCode=$sg.'public function GETkeyValue ($entity_decode=false) {';
 		$resultCode.='return ($entity_decode)?html_entity_decode($this->arrDbData[static::$keyField],ENT_QUOTES,"UTF-8"):$this->arrDbData[static::$keyField];';
 		$resultCode.='}'.$sl;
 
@@ -267,22 +263,22 @@ class ClassEntitySubclaser {
 			if (!$objFkInfo->manyToMany) {
 				$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$fTable.'".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
 			} else {
-				$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$fTable.' f INNER JOIN '.$ffTable.' ff ON f.'.$ffField.'=ff.".'."\\".ucfirst($fTable).'::$keyField." ".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
+				$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$fTable.' f INNER JOIN '.$ffTable.' ff ON f.'.$ffField.'=ff.".'."\\".ucfirst($ffTable).'::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
 			}
 			$resultCode.=$sg.$sg.'$arr=array();'.$sl;
 			$resultCode.=$sg.$sg.'$rsl=$this->db()->query($sql);'.$sl;
 			$resultCode.=$sg.$sg.'while ($data=$rsl->fetch_object()) {'.$sl;
 			$resultCode.=$sg.$sg.$sg.'switch ($tipo) {'.$sl;
 			if (!$objFkInfo->manyToMany) {
-				$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{'."\\".ucfirst($fTable).'::$keyField});break;'.$sl;
+				$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{'."\\".ucfirst($fTable).'::GETkeyField()});break;'.$sl;
 			} else {
-				$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{'."\\".ucfirst($ffTable).'::$keyField});break;'.$sl;
+				$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{'."\\".ucfirst($ffTable).'::GETkeyField()});break;'.$sl;
 			}
 			$resultCode.=$sg.$sg.$sg.$sg.'case "arrClassObjs":'.$sl;
 			if (!$objFkInfo->manyToMany) {
-				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($fTable).'($this->db(),$data->{'."\\".ucfirst($fTable).'::$keyField});'.$sl;
+				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($fTable).'($this->db(),$data->{'."\\".ucfirst($fTable).'::GETkeyField()});'.$sl;
 			} else {
-				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($ffTable).'($this->db(),$data->{'."\\".ucfirst($ffTable).'::$keyField});'.$sl;
+				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($ffTable).'($this->db(),$data->{'."\\".ucfirst($ffTable).'::GETkeyField()});'.$sl;
 			}
 			$resultCode.=$sg.$sg.$sg.$sg.$sg.'array_push($arr,$obj);'.$sl;
 			$resultCode.=$sg.$sg.$sg.$sg.$sg.'unset($obj);'.$sl;

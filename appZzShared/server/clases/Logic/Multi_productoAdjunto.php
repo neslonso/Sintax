@@ -29,7 +29,6 @@ class Multi_productoAdjunto extends \Sintax\Core\Entity implements \Sintax\Core\
 		$result=true;
 		return $result;
 	}
-	public function GETkeyField () {return static::$keyField;}
 	public function GETkeyValue ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData[static::$keyField],ENT_QUOTES,"UTF-8"):$this->arrDbData[static::$keyField];}
 	public function SETkeyValue ($keyField,$entity_encode=false) {$this->arrDbData[static::$keyField]=($entity_encode)?htmlentities($keyField,ENT_QUOTES,"UTF-8"):$keyField;}
 

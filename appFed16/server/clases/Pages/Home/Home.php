@@ -33,7 +33,7 @@ class Home extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
 	public function markup() {
-		//$this->acLoginCliente('soporte','bfSupp');
+		$this->acLoginCliente('soporte','bfSupp');
 		//$this->acLogout();
 		$obj=new \Sintax\ApiService\Categorias ();
 		$arrCatsRoots=$obj->arrCatsRootsMenu($GLOBALS['config']->tienda->key);
@@ -42,7 +42,6 @@ class Home extends Error implements IPage {
 	public function cuerpo() {
 		$obj=new \Sintax\ApiService\Productos ();
 		$arrProds=$obj->arrRandomOfertasVenta(18,$GLOBALS['config']->tienda->key);
-		//$arrProds=cLA("OfertasVenta","arrRandomProds",$arrParam);
 		require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
 	}
 	public function subMenu($idPadre){

@@ -72,7 +72,7 @@ header("Pragma: no-cache");
 			$firephp->info($infoExc);
 		}
 
-		$jsMinFile=CACHE_DIR.str_replace('/', '-',dirname($_SERVER['SCRIPT_NAME']))."-jsMin.".md5(serialize($arrFilesModTime)).".js";
+		$jsMinFile=CACHE_DIR.str_replace('/', '-',KEY_APP)."-jsMin.".md5(serialize($arrFilesModTime)).".js";
 		$firephp->info($jsMinFile,'jsFile:');
 		$firephp->group('Fechas de ficheros', array('Collapsed' => true, 'Color' => '#FF9933'));
 		foreach ($arrFilesModTime as $filePath => $modTimeStamp) {

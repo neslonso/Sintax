@@ -33,12 +33,15 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 	}
 
 	public function noReferenciado() {
+		$sql="SELECT idMulti_ofertaVenta FROM multi_categoriaVARIOSmulti_ofertaVenta WHERE idMulti_ofertaVenta='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$noReferenciadoEnMulti_categoriaVARIOSmulti_ofertaVenta=($this->db()->get_num_rows($sql)==0)?true:false;
+		$sql="SELECT idMulti_ofertaVenta FROM multi_cestaLinea WHERE idMulti_ofertaVenta='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$noReferenciadoEnMulti_cestaLinea=($this->db()->get_num_rows($sql)==0)?true:false;
 		$sql="SELECT idMulti_ofertaVenta FROM multi_productoVARIOSmulti_ofertaVenta WHERE idMulti_ofertaVenta='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$noReferenciadoEnMulti_productoVARIOSmulti_ofertaVenta=($this->db()->get_num_rows($sql)==0)?true:false;
-		$result=($noReferenciadoEnMulti_productoVARIOSmulti_ofertaVenta)?true:false;
+		$result=($noReferenciadoEnMulti_categoriaVARIOSmulti_ofertaVenta && $noReferenciadoEnMulti_cestaLinea && $noReferenciadoEnMulti_productoVARIOSmulti_ofertaVenta)?true:false;
 		return $result;
 	}
-	public function GETkeyField () {return static::$keyField;}
 	public function GETkeyValue ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData[static::$keyField],ENT_QUOTES,"UTF-8"):$this->arrDbData[static::$keyField];}
 	public function SETkeyValue ($keyField,$entity_encode=false) {$this->arrDbData[static::$keyField]=($entity_encode)?htmlentities($keyField,ENT_QUOTES,"UTF-8"):$keyField;}
 
@@ -98,20 +101,72 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 
 /* Funciones FkTo *************************************************************/
 
-	public function arrMulti_producto($where="",$order="",$limit="",$tipo="arrStdObjs") {
+	public function arrMulti_categoria($where="",$order="",$limit="",$tipo="arrStdObjs") {
 		$sqlWhere=($where!="")?" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
-		//TODO: OJO!, al escrbir esta consulta no conocemos el nombre de la clave primaria en la tabla del otro extremo de la relaccion manyToMany (multi_producto), se está usando siempre id.
-		//TODO: 2016-09-13 Podría utilizar un metodo similar a GETkeyField en la clase del otro extremo (multi_producto) que devolviera el nombre del campo en lugar su valor.
-		$sql="SELECT * FROM multi_productoVARIOSmulti_ofertaVenta INNER JOIN multi_producto ON multi_productoVARIOSmulti_ofertaVenta.idMulti_producto=multi_producto.id".$sqlWhere.$sqlOrder.$sqlLimit;
+		$sql="SELECT * FROM multi_categoriaVARIOSmulti_ofertaVenta f INNER JOIN multi_categoria ff ON f.idMulti_categoria=ff.".\Multi_categoria::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;
 		$arr=array();
 		$rsl=$this->db()->query($sql);
 		while ($data=$rsl->fetch_object()) {
 			switch ($tipo) {
-				case "arrKeys": array_push($arr,$data->{static::$keyField});break;
+				case "arrKeys": array_push($arr,$data->{\Multi_categoria::GETkeyField()});break;
 				case "arrClassObjs":
-					$obj=new \Multi_producto($this->db(),$data->{static::$keyField});
+					$obj=new \Multi_categoria($this->db(),$data->{\Multi_categoria::GETkeyField()});
+					array_push($arr,$obj);
+					unset($obj);
+				break;
+				case "arrStdObjs":
+					$obj=new \stdClass();
+					foreach ($data as $field => $value) {
+						$obj->$field=$value;
+					}
+					array_push($arr,$obj);
+					unset ($obj);
+				break;
+			}
+		}
+		return $arr;
+	}
+	public function arrMulti_cestaLinea($where="",$order="",$limit="",$tipo="arrStdObjs") {
+		$sqlWhere=($where!="")?" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
+		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
+		$sql="SELECT * FROM multi_cestaLinea".$sqlWhere.$sqlOrder.$sqlLimit;
+		$arr=array();
+		$rsl=$this->db()->query($sql);
+		while ($data=$rsl->fetch_object()) {
+			switch ($tipo) {
+				case "arrKeys": array_push($arr,$data->{\Multi_cestaLinea::GETkeyField()});break;
+				case "arrClassObjs":
+					$obj=new \Multi_cestaLinea($this->db(),$data->{\Multi_cestaLinea::GETkeyField()});
+					array_push($arr,$obj);
+					unset($obj);
+				break;
+				case "arrStdObjs":
+					$obj=new \stdClass();
+					foreach ($data as $field => $value) {
+						$obj->$field=$value;
+					}
+					array_push($arr,$obj);
+					unset ($obj);
+				break;
+			}
+		}
+		return $arr;
+	}
+	public function arrMulti_producto($where="",$order="",$limit="",$tipo="arrStdObjs") {
+		$sqlWhere=($where!="")?" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
+		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
+		$sql="SELECT * FROM multi_productoVARIOSmulti_ofertaVenta f INNER JOIN multi_producto ff ON f.idMulti_producto=ff.".\Multi_producto::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;
+		$arr=array();
+		$rsl=$this->db()->query($sql);
+		while ($data=$rsl->fetch_object()) {
+			switch ($tipo) {
+				case "arrKeys": array_push($arr,$data->{\Multi_producto::GETkeyField()});break;
+				case "arrClassObjs":
+					$obj=new \Multi_producto($this->db(),$data->{\Multi_producto::GETkeyField()});
 					array_push($arr,$obj);
 					unset($obj);
 				break;

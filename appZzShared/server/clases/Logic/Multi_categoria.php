@@ -18,7 +18,6 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 			"nombre" => NULL,
 			"descripcion" => NULL,
 			"visible" => NULL,
-			"orden" => NULL,
 			"abierto" => NULL,
 			"title" => NULL,
 			"metaDescription" => NULL,
@@ -29,16 +28,15 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 	}
 
 	public function noReferenciado() {
-		$sql="SELECT idMulti_categoriaContenedora FROM multi_categoriaVARIOSmulti_categoria WHERE idMulti_categoriaContenedora='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
-		$noReferenciadoEnMulti_categoriaVARIOSmulti_categoria=($this->db()->get_num_rows($sql)==0)?true:false;
 		$sql="SELECT idMulti_categoriaContenida FROM multi_categoriaVARIOSmulti_categoria WHERE idMulti_categoriaContenida='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$noReferenciadoEnMulti_categoriaVARIOSmulti_categoria=($this->db()->get_num_rows($sql)==0)?true:false;
+		$sql="SELECT idMulti_categoriaContenedora FROM multi_categoriaVARIOSmulti_categoria WHERE idMulti_categoriaContenedora='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$noReferenciadoEnMulti_categoriaVARIOSmulti_categoria=($this->db()->get_num_rows($sql)==0)?true:false;
 		$sql="SELECT idMulti_categoria FROM multi_categoriaVARIOSmulti_ofertaVenta WHERE idMulti_categoria='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$noReferenciadoEnMulti_categoriaVARIOSmulti_ofertaVenta=($this->db()->get_num_rows($sql)==0)?true:false;
 		$result=($noReferenciadoEnMulti_categoriaVARIOSmulti_categoria && $noReferenciadoEnMulti_categoriaVARIOSmulti_categoria && $noReferenciadoEnMulti_categoriaVARIOSmulti_ofertaVenta)?true:false;
 		return $result;
 	}
-	public function GETkeyField () {return static::$keyField;}
 	public function GETkeyValue ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData[static::$keyField],ENT_QUOTES,"UTF-8"):$this->arrDbData[static::$keyField];}
 	public function SETkeyValue ($keyField,$entity_encode=false) {$this->arrDbData[static::$keyField]=($entity_encode)?htmlentities($keyField,ENT_QUOTES,"UTF-8"):$keyField;}
 
@@ -60,9 +58,6 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 
 	public function GETvisible ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["visible"],ENT_QUOTES,"UTF-8"):$this->arrDbData["visible"];}
 	public function SETvisible ($visible,$entity_encode=false) {$this->arrDbData["visible"]=($entity_encode)?htmlentities($visible,ENT_QUOTES,"UTF-8"):$visible;}
-
-	public function GETorden ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["orden"],ENT_QUOTES,"UTF-8"):$this->arrDbData["orden"];}
-	public function SETorden ($orden,$entity_encode=false) {$this->arrDbData["orden"]=($entity_encode)?htmlentities($orden,ENT_QUOTES,"UTF-8"):$orden;}
 
 	public function GETabierto ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["abierto"],ENT_QUOTES,"UTF-8"):$this->arrDbData["abierto"];}
 	public function SETabierto ($abierto,$entity_encode=false) {$this->arrDbData["abierto"]=($entity_encode)?htmlentities($abierto,ENT_QUOTES,"UTF-8"):$abierto;}
@@ -86,41 +81,14 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 
 /* Funciones FkTo *************************************************************/
 
-	public function arrMultiCategoriaHija($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		return $this->arrMultiCategoriaByIdMulti_categoriaContenedora($where,$order,$limit,$tipo);
+	public function arrMulti_categoriaPadre($where="",$order="",$limit="",$tipo="arrStdObjs") {
+		return $this->arrMulti_categoriaByIdMulti_categoriaContenida($where,$order,$limit,$tipo);
 	}
-	public function arrMultiCategoriaByIdMulti_categoriaContenedora($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_categoriaContenedora='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_categoriaContenedora='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
-		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
-		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
-		$sql="SELECT * FROM multi_categoriaVARIOSmulti_categoria INNER JOIN multi_categoria ON multi_categoriaVARIOSmulti_categoria.idMulti_categoriaContenedora=multi_categoria.id".$sqlWhere.$sqlOrder.$sqlLimit;
-		$arr=array();
-		$rsl=$this->db()->query($sql);
-		while ($data=$rsl->fetch_object()) {
-			switch ($tipo) {
-				case "arrKeys": array_push($arr,$data->idMulti_categoriaContenida);break;
-				case "arrClassObjs":
-					$obj=new \Multi_categoria($this->db(),$data->idMulti_categoriaContenida);
-					array_push($arr,$obj);
-					unset($obj);
-				break;
-				case "arrStdObjs":
-					$obj=new \Multi_categoria($this->db(),$data->idMulti_categoriaContenida);
-					array_push($arr,$obj->toStdObj());
-					unset($obj);
-				break;
-			}
-		}
-		return $arr;
-	}
-	public function arrMultiCategoriaPadre($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		return $this->arrMultiCategoriaByIdMulti_categoriaContenida($where,$order,$limit,$tipo);
-	}
-	public function arrMultiCategoriaByIdMulti_categoriaContenida($where="",$order="",$limit="",$tipo="arrStdObjs") {
+	public function arrMulti_categoriaByIdMulti_categoriaContenida($where="",$order="",$limit="",$tipo="arrStdObjs") {
 		$sqlWhere=($where!="")?" WHERE idMulti_categoriaContenida='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_categoriaContenida='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
-		$sql="SELECT * FROM multi_categoriaVARIOSmulti_categoria INNER JOIN multi_categoria ON multi_categoriaVARIOSmulti_categoria.idMulti_categoriaContenedora=multi_categoria.id".$sqlWhere.$sqlOrder.$sqlLimit;
+		$sql="SELECT * FROM multi_categoriaVARIOSmulti_categoria f INNER JOIN multi_categoria ff ON f.idMulti_categoriaContenedora=ff.".\Multi_categoria::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;
 		$arr=array();
 		$rsl=$this->db()->query($sql);
 		while ($data=$rsl->fetch_object()) {
@@ -132,9 +100,42 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 					unset($obj);
 				break;
 				case "arrStdObjs":
-					$obj=new \Multi_categoria($this->db(),$data->idMulti_categoriaContenedora);
-					array_push($arr,$obj->toStdObj());
+					$obj=new \stdClass();
+					foreach ($data as $field => $value) {
+						$obj->$field=$value;
+					}
+					array_push($arr,$obj);
+					unset ($obj);
+				break;
+			}
+		}
+		return $arr;
+	}
+	public function arrMulti_categoriaHija($where="",$order="",$limit="",$tipo="arrStdObjs") {
+		return $this->arrMulti_categoriaByIdMulti_categoriaContenedora($where,$order,$limit,$tipo);
+	}
+	public function arrMulti_categoriaByIdMulti_categoriaContenedora($where="",$order="",$limit="",$tipo="arrStdObjs") {
+		$sqlWhere=($where!="")?" WHERE idMulti_categoriaContenedora='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_categoriaContenedora='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
+		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
+		$sql="SELECT * FROM multi_categoriaVARIOSmulti_categoria f INNER JOIN multi_categoria ff ON f.idMulti_categoriaContenedora=ff.".\Multi_categoria::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;
+		$arr=array();
+		$rsl=$this->db()->query($sql);
+		while ($data=$rsl->fetch_object()) {
+			switch ($tipo) {
+				case "arrKeys": array_push($arr,$data->idMulti_categoriaContenida);break;
+				case "arrClassObjs":
+					$obj=new \Multi_categoria($this->db(),$data->idMulti_categoriaContenida);
+					array_push($arr,$obj);
 					unset($obj);
+				break;
+				case "arrStdObjs":
+					$obj=new \stdClass();
+					foreach ($data as $field => $value) {
+						$obj->$field=$value;
+					}
+					array_push($arr,$obj);
+					unset ($obj);
 				break;
 			}
 		}
@@ -144,16 +145,14 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 		$sqlWhere=($where!="")?" WHERE idMulti_categoria='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_categoria='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
-		//TODO: OJO!, al escrbir esta consulta no conocemos el nombre de la clave primaria en la tabla del otro extremo de la relaccion manyToMany (multi_ofertaVenta), se está usando siempre id.
-		//TODO: 2016-09-13 Podría utilizar un metodo similar a GETkeyField en la clase del otro extremo (multi_ofertaVenta) que devolviera el nombre del campo en lugar su valor.
-		$sql="SELECT * FROM multi_categoriaVARIOSmulti_ofertaVenta INNER JOIN multi_ofertaVenta ON multi_categoriaVARIOSmulti_ofertaVenta.idMulti_ofertaVenta=multi_ofertaVenta.id".$sqlWhere.$sqlOrder.$sqlLimit;
+		$sql="SELECT * FROM multi_categoriaVARIOSmulti_ofertaVenta f INNER JOIN multi_ofertaVenta ff ON f.idMulti_ofertaVenta=ff.".\Multi_ofertaVenta::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;
 		$arr=array();
 		$rsl=$this->db()->query($sql);
 		while ($data=$rsl->fetch_object()) {
 			switch ($tipo) {
-				case "arrKeys": array_push($arr,$data->{\Multi_ofertaVenta::$keyField});break;
+				case "arrKeys": array_push($arr,$data->{\Multi_ofertaVenta::GETkeyField()});break;
 				case "arrClassObjs":
-					$obj=new \Multi_ofertaVenta($this->db(),$data->{\Multi_ofertaVenta::$keyField});
+					$obj=new \Multi_ofertaVenta($this->db(),$data->{\Multi_ofertaVenta::GETkeyField()});
 					array_push($arr,$obj);
 					unset($obj);
 				break;
@@ -172,7 +171,7 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 
 /******************************************************************************/
 	public static function getRoots(\MysqliDB $db,$where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_categoriaContenida IS NULL AND ".$where:" WHERE idMulti_categoriaContenedora IS NULL";
+		$sqlWhere=($where!="")?" WHERE idMulti_categoriaContenedora IS NULL AND ".$where:" WHERE idMulti_categoriaContenedora IS NULL";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_categoria mc LEFT JOIN multi_categoriaVARIOSmulti_categoria mcVmc ON mc.id=mcVmc.idMulti_categoriaContenida ".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -225,10 +224,10 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 		}
 		return $arr;
 	}
-
+	/*
 	public function arrDescendientes($where="",$order="",$limit="") {
 		$arr=array();
-		foreach ($this->arrMultiCategoriaHija($where,$order,$limit,"arrClassObjs") as $objContenida) {
+		foreach ($this->arrMulti_categoriaHija($where,$order,$limit,"arrClassObjs") as $objContenida) {
 			array_push($arr,$objContenida);
 			foreach ($objContenida->arrDescendientes($where,$order,$limit,"arrClassObjs") as $objContenidaEnContenida) {
 				array_push($arr,$objContenidaEnContenida);
@@ -236,11 +235,22 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 		}
 		return $arr;
 	}
+	*/
+	public function arrDescendientes($where="",$order="",$limit="") {
+		$arr=array();
+		foreach ($this->arrMulti_categoriaHija($where,$order,$limit,"arrClassObjs") as $objContenida) {
+			array_push($arr,$objContenida);
+			array_merge($arr,$objContenida->arrDescendientes($where,$order,$limit,"arrClassObjs"));
+		}
+		return $arr;
+	}
+
+
 	public function distancia($objCatTo) {
 		if ($this->GETid()==$objCatTo->GETid()) {
 			$distancia=0;
 		} else {
-			$arrHijas=$this->arrMultiCategoriaHija("","","","arrClassObjs");
+			$arrHijas=$this->arrMulti_categoriaHija("","","","arrClassObjs");
 			$distancia=false;
 			foreach ($arrHijas as $objContenida) {
 				$distanciaDesdeHija=$objContenida->distancia($objCatTo);
@@ -286,7 +296,7 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 		}
 		$result='<option '.$selected.' value="'.$this->GETid().'" style="padding-left:'.($actDepth*10).'px;">'.$this->GETnombre().'</option>';
 		$where=($soloVisibles)?"visible=1":"";
-		$arrHijos=$this->arrMultiCategoriaHija($where,"","","arrClassObjs");
+		$arrHijos=$this->arrMulti_categoriaHija($where,"","","arrClassObjs");
 		if (count($arrHijos)>0) {
 			//$result.='<ul>';
 			foreach ($arrHijos as $objCat) {

@@ -28,7 +28,6 @@ class Multi_tipoIva extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		$result=($noReferenciadoEnMulti_producto)?true:false;
 		return $result;
 	}
-	public function GETkeyField () {return static::$keyField;}
 	public function GETkeyValue ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData[static::$keyField],ENT_QUOTES,"UTF-8"):$this->arrDbData[static::$keyField];}
 	public function SETkeyValue ($keyField,$entity_encode=false) {$this->arrDbData[static::$keyField]=($entity_encode)?htmlentities($keyField,ENT_QUOTES,"UTF-8"):$keyField;}
 
@@ -67,9 +66,9 @@ class Multi_tipoIva extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		$rsl=$this->db()->query($sql);
 		while ($data=$rsl->fetch_object()) {
 			switch ($tipo) {
-				case "arrKeys": array_push($arr,$data->{static::$keyField});break;
+				case "arrKeys": array_push($arr,$data->{\Multi_producto::GETkeyField()});break;
 				case "arrClassObjs":
-					$obj=new \Multi_producto($this->db(),$data->{static::$keyField});
+					$obj=new \Multi_producto($this->db(),$data->{\Multi_producto::GETkeyField()});
 					array_push($arr,$obj);
 					unset($obj);
 				break;

@@ -42,16 +42,17 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 	public function noReferenciado() {
 		$sql="SELECT idMulti_cliente FROM multi_apunteCredito WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$noReferenciadoEnMulti_apunteCredito=($this->db()->get_num_rows($sql)==0)?true:false;
+		$sql="SELECT idMulti_cliente FROM multi_cesta WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$noReferenciadoEnMulti_cesta=($this->db()->get_num_rows($sql)==0)?true:false;
 		$sql="SELECT idMulti_cliente FROM multi_clienteDireccion WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$noReferenciadoEnMulti_clienteDireccion=($this->db()->get_num_rows($sql)==0)?true:false;
 		$sql="SELECT idMulti_cliente FROM multi_cupon WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$noReferenciadoEnMulti_cupon=($this->db()->get_num_rows($sql)==0)?true:false;
 		$sql="SELECT idMulti_cliente FROM multi_pedido WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$noReferenciadoEnMulti_pedido=($this->db()->get_num_rows($sql)==0)?true:false;
-		$result=($noReferenciadoEnMulti_apunteCredito && $noReferenciadoEnMulti_clienteDireccion && $noReferenciadoEnMulti_cupon && $noReferenciadoEnMulti_pedido)?true:false;
+		$result=($noReferenciadoEnMulti_apunteCredito && $noReferenciadoEnMulti_cesta && $noReferenciadoEnMulti_clienteDireccion && $noReferenciadoEnMulti_cupon && $noReferenciadoEnMulti_pedido)?true:false;
 		return $result;
 	}
-	public function GETkeyField () {return static::$keyField;}
 	public function GETkeyValue ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData[static::$keyField],ENT_QUOTES,"UTF-8"):$this->arrDbData[static::$keyField];}
 	public function SETkeyValue ($keyField,$entity_encode=false) {$this->arrDbData[static::$keyField]=($entity_encode)?htmlentities($keyField,ENT_QUOTES,"UTF-8"):$keyField;}
 
@@ -114,7 +115,10 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 	public function SETavisosSms ($avisosSms,$entity_encode=false) {$this->arrDbData["avisosSms"]=($entity_encode)?htmlentities($avisosSms,ENT_QUOTES,"UTF-8"):$avisosSms;}
 
 	public function GETultimoLogin ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["ultimoLogin"],ENT_QUOTES,"UTF-8"):$this->arrDbData["ultimoLogin"];}
-	public function SETultimoLogin ($ultimoLogin,$entity_encode=false) {$this->arrDbData["ultimoLogin"]=($entity_encode)?htmlentities($ultimoLogin,ENT_QUOTES,"UTF-8"):$ultimoLogin;}
+	public function SETultimoLogin ($ultimoLogin,$entity_encode=false) {
+		$this->arrDbData["ultimoLogin"]=($entity_encode)?htmlentities($ultimoLogin,ENT_QUOTES,"UTF-8"):$ultimoLogin;
+		$this->arrDbData["ultimaActividad"]=($entity_encode)?htmlentities($ultimoLogin,ENT_QUOTES,"UTF-8"):$ultimoLogin;
+	}
 
 	public function GETultimaActividad ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["ultimaActividad"],ENT_QUOTES,"UTF-8"):$this->arrDbData["ultimaActividad"];}
 	public function SETultimaActividad ($ultimaActividad,$entity_encode=false) {$this->arrDbData["ultimaActividad"]=($entity_encode)?htmlentities($ultimaActividad,ENT_QUOTES,"UTF-8"):$ultimaActividad;}
@@ -141,9 +145,36 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		$rsl=$this->db()->query($sql);
 		while ($data=$rsl->fetch_object()) {
 			switch ($tipo) {
-				case "arrKeys": array_push($arr,$data->{\Multi_apunteCredito::$keyField});break;
+				case "arrKeys": array_push($arr,$data->{\Multi_apunteCredito::GETkeyField()});break;
 				case "arrClassObjs":
-					$obj=new \Multi_apunteCredito($this->db(),$data->{\Multi_apunteCredito::$keyField});
+					$obj=new \Multi_apunteCredito($this->db(),$data->{\Multi_apunteCredito::GETkeyField()});
+					array_push($arr,$obj);
+					unset($obj);
+				break;
+				case "arrStdObjs":
+					$obj=new \stdClass();
+					foreach ($data as $field => $value) {
+						$obj->$field=$value;
+					}
+					array_push($arr,$obj);
+					unset ($obj);
+				break;
+			}
+		}
+		return $arr;
+	}
+	public function arrMulti_cesta($where="",$order="",$limit="",$tipo="arrStdObjs") {
+		$sqlWhere=($where!="")?" WHERE idMulti_cliente='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
+		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
+		$sql="SELECT * FROM multi_cesta".$sqlWhere.$sqlOrder.$sqlLimit;
+		$arr=array();
+		$rsl=$this->db()->query($sql);
+		while ($data=$rsl->fetch_object()) {
+			switch ($tipo) {
+				case "arrKeys": array_push($arr,$data->{\Multi_cesta::GETkeyField()});break;
+				case "arrClassObjs":
+					$obj=new \Multi_cesta($this->db(),$data->{\Multi_cesta::GETkeyField()});
 					array_push($arr,$obj);
 					unset($obj);
 				break;
@@ -168,9 +199,9 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		$rsl=$this->db()->query($sql);
 		while ($data=$rsl->fetch_object()) {
 			switch ($tipo) {
-				case "arrKeys": array_push($arr,$data->{\Multi_clienteDireccion::$keyField});break;
+				case "arrKeys": array_push($arr,$data->{\Multi_clienteDireccion::GETkeyField()});break;
 				case "arrClassObjs":
-					$obj=new \Multi_clienteDireccion($this->db(),$data->{\Multi_clienteDireccion::$keyField});
+					$obj=new \Multi_clienteDireccion($this->db(),$data->{\Multi_clienteDireccion::GETkeyField()});
 					array_push($arr,$obj);
 					unset($obj);
 				break;
@@ -195,9 +226,9 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		$rsl=$this->db()->query($sql);
 		while ($data=$rsl->fetch_object()) {
 			switch ($tipo) {
-				case "arrKeys": array_push($arr,$data->{\Multi_cupon::$keyField});break;
+				case "arrKeys": array_push($arr,$data->{\Multi_cupon::GETkeyField()});break;
 				case "arrClassObjs":
-					$obj=new \Multi_cupon($this->db(),$data->{\Multi_cupon::$keyField});
+					$obj=new \Multi_cupon($this->db(),$data->{\Multi_cupon::GETkeyField()});
 					array_push($arr,$obj);
 					unset($obj);
 				break;
@@ -222,9 +253,9 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		$rsl=$this->db()->query($sql);
 		while ($data=$rsl->fetch_object()) {
 			switch ($tipo) {
-				case "arrKeys": array_push($arr,$data->{\Multi_pedido::$keyField});break;
+				case "arrKeys": array_push($arr,$data->{\Multi_pedido::GETkeyField()});break;
 				case "arrClassObjs":
-					$obj=new \Multi_pedido($this->db(),$data->{\Multi_pedido::$keyField});
+					$obj=new \Multi_pedido($this->db(),$data->{\Multi_pedido::GETkeyField()});
 					array_push($arr,$obj);
 					unset($obj);
 				break;
@@ -274,6 +305,24 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 			$result=false;
 		}
 		return $result;
+	}
+	/**
+	 * [saldoCredito description]
+	 * @return float saldo de credito en euros
+	 */
+	public function saldoCredito() {
+		$saldo=0;
+		$sql="SELECT id FROM multi_apunteCredito WHERE idMulti_cliente='".$this->GETid()."'";
+		$rsl=$this->db()->query($sql);
+		while ($data=$rsl->fetch_object()) {
+			$objApunte=new Multi_apunteCredito($data->id);
+			if ($objApunte->caducado()) {
+				$saldo+=$objApunte->GETgasto();
+			} else {
+				$saldo+=$objApunte->GETmonto();
+			}
+		}
+		return $saldo;
 	}
 }
 ?>

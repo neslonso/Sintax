@@ -53,6 +53,7 @@ foreach (unserialize(APPS) as $entryPoint => $arrAppConstants) {
 		<label for="markupFunc">MarkupFunc:</label> <input type="text" name="markupFunc" id="markupFunc" value="cuerpo" /> (Función de marcado, puede usarse para sobreescribir parte del marcado de la Page base y reutilizar el resto)<br />
 		<label for="markupFile">MarkupFile:</label> <input type="text" name="markupFile" id="markupFile" value="" /> (Fichero del que copiar el marcado original, util para convertir un php standalone en una Page)<br />
 
+		<input type="hidden" name="chkTestClass" id="chkTestClass.dummy" value="0">
 		<input type="checkbox" name="chkTestClass" id="chkTestClass" value="1" checked="checked" />
 		<label for="chkTestClass">Crear clases de test</label>
 		(Se crearán en "Ruta Page" (test[NombrePage].php) y en "Ruta Logic" (test[NombreClase].php)
@@ -200,8 +201,9 @@ foreach ($this->arrDbsInfo as $nombreConn => $arrStdObjTableInfo) {
 		<legend>Creación de Clase Logic</legend>
 		<label for="rutaLogic">Ruta Logic:</label> <strong><?=SKEL_ROOT_DIR?></strong><input type="text" name="rutaLogic" id="rutaLogic" value="<?=str_replace(SKEL_ROOT_DIR, '', RUTA_APP)?>server/clases/Logic/" /> (Ruta donde crear la clase de lógica)<br />
 		<label for="class">Tabla (Class):</label>
-		<?=self::selectTables('class')?>
+		<?=self::selectTables('class[]','','multiple="multiple" style="height:150px;"')?>
 		<br />
+		<input type="hidden" name="chkTestClass" id="chkTestClass.dummy" value="0">
 		<input type="checkbox" name="chkTestClass" id="chkTestClass" value="1" checked="checked" />
 		<label for="chkTestClass">Crear clase de test</label>
 		(Se creará en la misma ruta que la Clase, con nombre test[nombreClase].php)

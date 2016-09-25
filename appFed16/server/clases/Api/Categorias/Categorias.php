@@ -38,14 +38,14 @@ class Categorias extends ApiService implements IApiService {
 	public function arrCatsRootsSubMenu($idPadre){
 		$db=\cDb::confByKey("celorriov3");
 		$objMCat=new \Multi_categoria($db,$idPadre);
-		$arrCatsHijas=$objMCat->arrMultiCategoriaHija("","","","arrClassObjs");
+		$arrCatsHijas=$objMCat->arrMulti_categoriaHija("","","","arrClassObjs");
 		$arr=array();
 		foreach ($arrCatsHijas as $objCat) {
 			$obj=new \stdClass();
 			$obj->id=$objCat->GETid();
 			$obj->nombre=$objCat->GETnombre();
 			$obj->img=$objCat->imgSrc();
-			$arrCatsNietas=$objCat->arrMultiCategoriaHija("","","","arrClassObjs");
+			$arrCatsNietas=$objCat->arrMulti_categoriaHija("","","","arrClassObjs");
 			$arrNietos=array();
 			foreach ($arrCatsNietas as $objCatNieto) {
 				$objNieto=new \stdClass();

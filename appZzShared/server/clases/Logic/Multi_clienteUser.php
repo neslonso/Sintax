@@ -10,14 +10,16 @@ class Multi_clienteUser extends User implements IUser {
 	}
 
 	public function pagePermitida (Page $objPage) {
+		$result=false;
 		switch (get_class($objPage)) {
-			case 'value':
+			case 'Sintax\Pages\mis_datos':
+				$result=true;
 				break;
 			default:
 				//almacenar get_class($objPage), get_class($this)
 				break;
 		}
-		return true;
+		return $result;
 	}
 	public function accionPermitida (Page $objPage,$metodo) {
 		$result=true;
