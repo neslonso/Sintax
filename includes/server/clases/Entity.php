@@ -2,7 +2,7 @@
 namespace Sintax\Core;
 
 interface IEntity {
-	public function __construct (\MysqliDB $db, $keyValue=NULL);
+	public function __construct (\MysqliDB $db=NULL, $keyValue=NULL);
 	public function cargar($keyValue);
 	public function grabar();
 	public function borrar();

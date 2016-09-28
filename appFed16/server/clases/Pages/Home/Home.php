@@ -63,6 +63,8 @@ class Home extends Error implements IPage {
 		$objCliUser=\Multi_clienteUser::login($db,$email,$pass,$GLOBALS['config']->tienda->key);
 		if ($objCliUser!==false) {
 			$_SESSION['usuario']=$objCliUser;
+		} else {
+			throw new \Exception("Dirección de email o contraseña incorrecta.", 1);
 		}
 	}
 	/**
@@ -99,5 +101,30 @@ class Home extends Error implements IPage {
 		return $arr;
 	}
 
+	public function acAddToCesta ($idMulti_ofertaVenta) {
+		$db=\cDb::confByKey('celorriov3');
+		$objCesta=new \Multi_cesta($db);
+		if (isset($_SESSION['cesta'])) {
+			$class=get_class($_SESSION['cesta']);
+			if ($class=="Multi_cesta") {
+				$objCesta=$_SESSION['cesta'];
+				$objCesta->SETdb($db);
+			} else {
+				unset ($_SESSION['cesta']);
+			}
+		}
+		if (isset($_SESSION['usuario'])) {
+			$objCli=$_SESSION['usuario']->objEntity;
+			$objCesta->SETidMulti_cliente($objCli->GETid());
+			$objCesta->grabar();
+		}
+		$objLinea=$objCesta->getLineaOfertaOrNew($idMulti_ofertaVenta);
+		$objLinea->SETcantidad($objLinea->GETcantidad()+1);
+		$objLinea->SETidMulti_cesta($objCesta->GETid());
+		$objLinea->SETidMulti_ofertaVenta($idMulti_ofertaVenta);
+		$objLinea->grabar();
+		$_SESSION['cesta']=$objCesta;
+		return true;
+	}
 }
 ?>

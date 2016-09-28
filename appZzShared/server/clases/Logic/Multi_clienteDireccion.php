@@ -98,6 +98,101 @@ class Multi_clienteDireccion extends \Sintax\Core\Entity implements \Sintax\Core
 		return $result;
 	}
 
+	public function paisToIsoCode() {
+		$sql=static::sqlComprobacionPais($this->db(),$this->GETpais());
+		$data=$this->db()->get_row($sql);
+		if ($data) {$result=$data->alpha2;}
+		else {throw new Exception("País desconocido (".$this->GETpais().") en direccion ID: [".$this->GETid()."]", 1);}
+		return $result;
+	}
+
+	public function esSpainPeninsular() {
+		if (!$this->paisToIsoCode()=='ES') {
+			$result=false;
+		} else {
+			if (
+				substr($this->GETcp(), 0,2)=="07" || //Illes Baleares
+				substr($this->GETcp(), 0,2)=="35" || //Las Palmas
+				substr($this->GETcp(), 0,2)=="38" || //S.C. Tenerife
+				substr($this->GETcp(), 0,2)=="51" || //Ceuta
+				substr($this->GETcp(), 0,2)=="52" //Melilla
+			) {
+				$result=false;
+			} else {
+				$result=true;
+			}
+		}
+		return $result;
+	}
+
+	public function esPortugalPenisular() {
+		//Consideramos todo portugal peninsular
+		if ($this->paisToIsoCode()=='PT') {
+			if (substr($this->GETcp(), 0,1)=="9") { //Azores y Madeira
+				$result=false;
+			} else {
+				$result=true;
+			}
+		} else {
+			$result=false;
+		}
+		return $result;
+	}
+
+	public function esPeninsulaIberica() {
+		if ($this->esSpainPeninsular() || $this->esPortugalPenisular()) {
+			$result=true;
+		} else {
+			$result=false;
+		}
+		return $result;
+	}
+
+	public function esCanarias() {
+		if (!$this->paisToIsoCode()=='ES') {
+			if (
+				substr($this->GETcp(), 0,2)=="35" || //Las Palmas
+				substr($this->GETcp(), 0,2)=="38" //S.C. Tenerife
+			) {
+				$result=true;
+			} else {
+				$result=false;
+			}
+		} else {
+			$result=false;
+		}
+		return $result;
+	}
+
+	public function esBaleares() {
+		if (!$this->paisToIsoCode()=='ES') {
+			$result=false;
+		} else {
+			if (substr($this->GETcp(), 0,2)=="07") {
+				$result=true;
+			} else {
+				$result=false;
+			}
+		}
+		return $result;
+	}
+
+	public function esCeutaMelilla() {
+		if (!$this->paisToIsoCode()=='ES') {
+			$result=false;
+		} else {
+			if (
+				substr($this->GETcp(), 0,2)=="51" || //Ceuta
+				substr($this->GETcp(), 0,2)=="52" //Melilla
+			) {
+				$result=true;
+			} else {
+				$result=false;
+			}
+		}
+		return $result;
+	}
+
 
 }
 ?>

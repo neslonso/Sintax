@@ -158,8 +158,34 @@ $(document).ready(function() {
 		autoplayDisableOnInteraction: false,
 	})
 
-	$('#divJqCesta').jqCesta();
-	$('#divJqNotifications').jqNotifications({'foo': 'bar'});
+	$('#divJqCesta').jqCesta()
+	.on('afterAdd.jqCesta', function(event,item) {
+		$.ajax({
+			url: '<?=BASE_URL.FILE_APP?>',
+			type: 'post',
+			data: {
+				'MODULE':'actions',
+				'acClase':'Home',
+				'acMetodo':'acAddToCesta',
+				'acTipo':'ajax',
+				'id': item.id
+			},
+			success: function (data) {
+				console.log(data);
+				if (data.exito) {
+					$('#divJqNotifications').data('jqNotifications')
+						.addNotification('Producto añadido', 'Se ha añadido a cesta el producto <strong>'+item.descripcion+'</strong>', 'add');
+				} else {
+					muestraMsgModal('No fue posible añadir el producto a su pedido',data.msg);
+				}
+			}
+		});
+	})
+	.on('checkOrder', function(event,arrItems) {
+
+	});
+
+	$('#divJqNotifications').jqNotifications();
 	$("#menu-toggle").click(function(e) {
 		e.preventDefault();
 		if ($("#wrapper").hasClass("toggled")) {

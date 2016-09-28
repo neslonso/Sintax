@@ -6,6 +6,16 @@ use Sintax\Core\ReturnInfo;
 class comprar_pedido extends Home implements IPage {
 	public function __construct(User $objUsr) {
 		parent::__construct($objUsr);
+		if (isset($_REQUEST['newPedBridgeDataValue'])) {
+			$newPedBridgeData=json_decode(base64_decode($_REQUEST['newPedBridgeDataValue']));
+			$_SESSION['newPedBridgeDataOrigData']=$newPedBridgeData;
+		} else {
+			if (isset($_SESSION['newPedBridgeDataOrigData'])) {
+				$newPedBridgeData=$_SESSION['newPedBridgeDataOrigData'];
+			} else {
+				throw new \Exception("No es posible procesar el pedido, datos no recibidos.", 1);
+			}
+		}
 	}
 	public function pageValida () {
 		return $this->objUsr->pagePermitida($this);

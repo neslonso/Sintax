@@ -32,16 +32,18 @@ function Post() {
 
 function createInputsFor(form, name, arrayOrObject) {
 	for (var indexOrProperty in arrayOrObject) {
-		var value=arrayOrObject[indexOrProperty];
-		if (value instanceof Array ||
-			value instanceof Object) {
-			createInputsFor(form, name+'['+indexOrProperty+']', value);
-		} else {
-			input=document.createElement("input");
-			input.setAttribute("type","hidden");
-			input.setAttribute("name",name+"["+indexOrProperty+"]");
-			input.setAttribute("value",value);
-			form.appendChild(input);
+		if (arrayOrObject.hasOwnProperty(indexOrProperty)) {
+			var value=arrayOrObject[indexOrProperty];
+			if (value instanceof Array ||
+				value instanceof Object) {
+				createInputsFor(form, name+'['+indexOrProperty+']', value);
+			} else {
+				input=document.createElement("input");
+				input.setAttribute("type","hidden");
+				input.setAttribute("name",name+"["+indexOrProperty+"]");
+				input.setAttribute("value",value);
+				form.appendChild(input);
+			}
 		}
 	}
 }

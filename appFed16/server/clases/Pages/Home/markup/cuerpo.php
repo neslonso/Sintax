@@ -67,19 +67,19 @@
 							<!--Item -->
 							<div class="shop-item">
 								<!-- Item's image -->
-								<a data-item="<?=$prod->id?>" data-toggle="modal" data-target="#modalItems">
+								<a class="shop-item-link" data-item="<?=$prod->id?>" data-toggle="modal" data-target="#modalItems">
 									<img class="img-responsive"  src="<?=$prod->urlFotoPpal?>" alt="" />
 								</a>
 								<!-- Item details -->
 								<div class="shop-item-dtls">
 									<!-- product title -->
-									<h4><a data-item="<?=$prod->id?>" data-toggle="modal" data-target="#modalItems"><?=$prod->nombre?></a></h4>
+									<h4><a class="shop-item-link" data-item="<?=$prod->id?>" data-toggle="modal" data-target="#modalItems"><?=$prod->nombre?></a></h4>
 									<!-- price -->
 									<span class="shop-item-price"><?=$prod->precio?>€</span>
 								</div>
 								<!-- add to cart btn -->
 								<div class="shop-item-cart">
-									<a class="btn" href="#">Comprar</a>
+									<a class="btn jqCst" data-id="<?=$prod->id?>" data-ttl="<?=$prod->nombre?>" data-unit="1" data-prc="<?=$prod->precio?>" data-src="<?=$prod->urlFotoPpal?>" href="#">Comprar</a>
 								</div>
 							</div>
 							<?=$rebote?>
@@ -110,7 +110,7 @@
 					<!-- Modal content-->
 					<div class="modal-content">
 						<!-- Close Button -->
-						<a href="#" onclick="closePopup();" class="rbm_btn_x_out_shtr rbm_sq_txt_close rbm_sldr_sc_cl_btn" data-dismiss="modal">Cerrar</a>
+						<a href="#" class="rbm_btn_x_out_shtr rbm_sq_txt_close rbm_sldr_sc_cl_btn" data-dismiss="modal">Cerrar</a>
 						<!-- Slider -->
 						<div id="rbm_sldr_sc_mov_1_col_2" class="carousel slide rbm_sldr_sc_gen rbm_sldr_sc_control three_columns swipe_x rbms_easeOutCirc" data-ride="carousel" data-pause="hover" data-interval="false" data-duration="1000">
 							<!-- Header of Slider -->

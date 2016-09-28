@@ -12,6 +12,8 @@ class Multi_clienteUser extends User implements IUser {
 	public function pagePermitida (Page $objPage) {
 		$result=false;
 		switch (get_class($objPage)) {
+			case 'Sintax\Pages\mi_pedido':
+			case 'Sintax\Pages\mis_pedidos':
 			case 'Sintax\Pages\comprar_pedido':
 			case 'Sintax\Pages\mis_datos':
 				$result=true;

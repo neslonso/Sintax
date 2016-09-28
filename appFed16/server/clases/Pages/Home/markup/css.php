@@ -182,6 +182,8 @@ a:hover, a:focus {
 	height: 30px;
 	display: inline-block;
 	float: left;
+	border: solid @color-secundario 1px;
+	border-radius: 3px;
 }
 .col-subMenu{
 	-moz-column-count: 3;
@@ -322,7 +324,7 @@ a:hover, a:focus {
 	width: 100%;
 	height: 100%;
 	padding: 25px 0;
-	/*background-color: #FFF;*/
+	background-color: #FFF;
 	box-shadow: inset 0 -7px 3px rgba(0, 0, 0, 0.3);
 }
 .swiper-slide {
@@ -340,7 +342,6 @@ a:hover, a:focus {
 .swiper-slide-1 div {
 	height: 100%;
 	border: solid #000 1px;
-	padding: 7px;
 }
 /*********  LISTADO DE PRODUCTOS **********/
 .shop-item {
@@ -484,23 +485,6 @@ a:hover, a:focus {
 	}
 }
 
-/*  CESTA */
-.content-cart{
-	position: absolute;
-	right: 0;
-	height: 400px;
-	width: 60%;
-	background-color: @color-bg-items;
-	/*opacity: 1;*/
-	/*border: 1px solid @color-btn-items-border;*/
-
-}
-.link-cart{
-	text-align: left;
-	margin-top: 0px !important;
-	clear: both;
-}
-
 /* LG */
 @media (min-width: 1199px){
 
@@ -572,5 +556,3 @@ a:hover, a:focus {
 		width:auto !important;
 	}
 }
-
-

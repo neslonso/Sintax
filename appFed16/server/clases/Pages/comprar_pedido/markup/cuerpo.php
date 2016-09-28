@@ -1,6 +1,6 @@
 <?="\n<!-- ".get_class()." -->\n"?>
 <div class="fuelux">
-	<div class="wizard" data-initialize="wizard" id="newPedWizard" style="<?=$safariIpadStyle?>"
+	<div class="wizard" data-initialize="wizard" id="newPedWizard"
 	data-store="<?=$store?>"
 	data-id-multi_cliente="<?=$datosCli->id?>"
 	data-nombre-cliente="<?=$datosCli->nombre?>"

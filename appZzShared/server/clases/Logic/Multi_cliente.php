@@ -76,7 +76,14 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 	public function SETpassMd5 ($passMd5,$entity_encode=false) {$this->arrDbData["passMd5"]=($entity_encode)?htmlentities($passMd5,ENT_QUOTES,"UTF-8"):$passMd5;}
 
 	public function GETpassSha256 ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["passSha256"],ENT_QUOTES,"UTF-8"):$this->arrDbData["passSha256"];}
-	public function SETpassSha256 ($passSha256,$entity_encode=false) {$this->arrDbData["passSha256"]=($entity_encode)?htmlentities($passSha256,ENT_QUOTES,"UTF-8"):$passSha256;}
+	public function SETpassSha256 ($passSha256,$entity_encode=false) {
+		$salt=hash('sha256', uniqid(mt_rand(), true));
+		$hash=$salt.hash('sha256',$salt.$passSha256);
+		$this->passSha256=$hash;
+		$this->arrDbData["passSha256"]=($entity_encode)?htmlentities($this->arrDbData["passSha256"],ENT_QUOTES,"UTF-8"):$this->arrDbData["passSha256"];
+		//los primeros 64 caracteres del hash son el salt usado para este pass
+		//que deberemos recuperar para juntar con el pass introducido y comprobar
+	}
 
 	public function GETfactura ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["factura"],ENT_QUOTES,"UTF-8"):$this->arrDbData["factura"];}
 	public function SETfactura ($factura,$entity_encode=false) {$this->arrDbData["factura"]=($entity_encode)?htmlentities($factura,ENT_QUOTES,"UTF-8"):$factura;}
