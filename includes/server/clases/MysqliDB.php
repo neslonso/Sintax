@@ -409,5 +409,12 @@ final class cDb extends MysqliDB {
 	public static function gI() {
 		return self::getInstance();
 	}
+	/**
+	 * Destructor
+	 */
+	public function __destruct() {
+		//$GLOBALS['firephp']->error(debug_backtrace(),"Destructor de cDb");
+	}
+
 }
 ?>

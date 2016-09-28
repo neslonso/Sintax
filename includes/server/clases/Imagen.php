@@ -279,7 +279,7 @@ class Imagen {
 		}
 	}
 	/**
-	 * Fit la imagen en $width*$height y rellena lo que sobre con transparente para generar una imagen de exactamente el mismo tamaño que el hueco
+	 * Fill la imagen en $width*$height y rellena lo que sobre con transparente para generar una imagen de exactamente el mismo tamaño que el hueco
 	 * @param  integer  $width   anchura del hueco que debe rellenar la imagen
 	 * @param  integer  $height  altura del hueco que debe rellenar la imagen
 	 */
@@ -494,6 +494,29 @@ class Imagen {
 			return false;
 		}
 		$this->imgData=$im;
+	}
+
+	/**
+	 * [join description]
+	 * @param  \self  $objImg   objeto de esta misma clase con el que se unirá $this
+	 * @param  string $position Dos palabras que indican alineación horizontal (left | right | center) y vertical (top | bottom | center)
+	 * @return [type]           [description]
+	 */
+	public function join(\Imagen $objImg,$position="right"){
+		switch ($position) {
+			case 'right':
+				$objImg->fill($this->height(),$this->height());
+				$newWidth = $this->width() + $objImg->width();
+				$newHeight = $this->height();
+				$new_image = imagecreatetruecolor($newWidth, $newHeight);
+				$col=imagecolorallocatealpha($new_image,0,0,0,127);
+				imagefill($new_image, 0, 0, $col);
+
+				imagecopyresampled($new_image, $this->imgData, 0, 0, 0, 0, $this->width(), $this->height(), $this->width(), $this->height());
+				imagecopyresampled($new_image, $objImg->imgData, $this->width(), 0, 0, 0, $objImg->width(), $objImg->height(), $objImg->width(), $objImg->height());
+				$this->imgData=$new_image;
+			break;
+		}
 	}
 
 /* Estaticas ******************************************************************/

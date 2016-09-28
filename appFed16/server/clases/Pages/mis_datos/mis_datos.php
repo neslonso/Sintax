@@ -45,45 +45,21 @@ class mis_datos extends Home implements IPage {
 	}
 	public function cuerpo() {
 		$db=\cDb::confByKey('celorriov3');
-		$objCli=$_SESSION['usuario']->objCli;
+		$objCli=$_SESSION['usuario']->objEntity;
 		$objCli->SETdb($db);
 
 		$cliente=$objCli->toStdObj();
 		$cliente->saldo=$objCli->saldoCredito();
 		$cliente->saludo=($objCli->GETsexo()=="HOMBRE")?"Bienvenido":"Bienvenida";
-		/*
-		cliente->id
-		cliente->email
-		cliente->nombre
-		cliente->apellidos
-		cliente->movil
-		cliente->tipoDescuento
-		cliente->publicidad
-		cliente->nif
-		cliente->razonSocial
-		cliente->factura
-		cliente->avisosSms
-		*/
 
-		$direciones=$objCli->arrMulti_clienteDireccion();
-		/*
-		direccion->id
-		direccion->nombre
-		direccion->destinatario
-		direccion->direccion
-		direccion->poblacion
-		direccion->provincia
-		direccion->cp
-		direccion->idPais
-		direccion->pais
-		direccion->movil
-		*/
+		$direcciones=array();
+		foreach ($objCli->arrMulti_clienteDireccion("","","","arrClassObjs") as $objDir) {
+			$soDirecion=$objDir->toStdObj();
+			$soDirecion->idPais=($objDir->esPaisConocido()>0)?$objDir->esPaisConocido():0;
+			array_push($direcciones,$soDirecion);
+		}
+
 		$paises=\Multi_pais::getArray($db);
-		/*
-		pais->id
-		pais->iso <- renombrado a alpha2
-		pais->nombre
-		*/
 
 		$paisDefecto=199;
 
@@ -99,13 +75,6 @@ class mis_datos extends Home implements IPage {
 		}
 
 		$apuntes=$objCli->arrMulti_apunteCredito();
-		/*
-		apunte->id
-		apunte->insert
-		apunte->monto
-		apunte->descripcion
-		apunte->caducidad
-		*/
 
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
 	}

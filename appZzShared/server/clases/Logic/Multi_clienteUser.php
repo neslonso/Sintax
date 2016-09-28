@@ -3,15 +3,16 @@ use Sintax\Core\IUser;
 use Sintax\Core\User;
 use Sintax\Core\Page;
 class Multi_clienteUser extends User implements IUser {
-	public $objCli;
+	public $objEntity;
 
 	public function __construct (\MysqliDB $db=NULL, $keyValue=NULL) {
-		$this->objCli=new \Multi_cliente($db,$keyValue);
+		$this->objEntity=new \Multi_cliente($db,$keyValue);
 	}
 
 	public function pagePermitida (Page $objPage) {
 		$result=false;
 		switch (get_class($objPage)) {
+			case 'Sintax\Pages\comprar_pedido':
 			case 'Sintax\Pages\mis_datos':
 				$result=true;
 				break;
@@ -52,8 +53,8 @@ class Multi_clienteUser extends User implements IUser {
 	public static function login(\MysqliDB $db,$email,$pass,$keyTienda) {
 		$result=false;
 		$objCliUser=new static($db);
-		$objCliUser->objCli=\Multi_cliente::login($db,$email,$pass,$keyTienda);
-		if ($objCliUser->objCli) {
+		$objCliUser->objEntity=\Multi_cliente::login($db,$email,$pass,$keyTienda);
+		if ($objCliUser->objEntity) {
 			$result=$objCliUser;
 		}
 		return $result;

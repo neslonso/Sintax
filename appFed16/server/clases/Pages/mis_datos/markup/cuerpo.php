@@ -141,6 +141,7 @@
 <?
 	if (!empty($direcciones)) {
 		foreach ($direcciones as $direccion) {
+			$GLOBALS['firephp']->info($direccion,"direccion");
 ?>
 			<div id="panelDir<?=$direccion->id?>" class="panel panel-warning">
 				<div onclick="panelClick('<?=$direccion->id?>');" class="panel-heading cursorLink">

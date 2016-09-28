@@ -4,12 +4,17 @@
 # TEAM
 
     <name> -- <role> -- <twitter>
+    Néstor Alonso Otero -- Senior developer
+    Diego Reigosa Casas -- Developer
+    Lucia Rodriguez Pérez -- Junior developer
 
 # THANKS
 
-    <name>
+    ppinto
+    xunta
 
 # TECHNOLOGY COLOPHON
 
     HTML5, CSS3
-    jQuery, Modernizr
+    jQuery, Bootstrap,
+    S!nt@x

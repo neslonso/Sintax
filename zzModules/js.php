@@ -92,18 +92,18 @@ header("Pragma: no-cache");
 			$jsLibs="// Js Libs \n";
 			$firephp->group('Carga de SRCs JS', array('Collapsed' => true, 'Color' => '#FF9933'));
 			foreach ($srcs as $src) {
-				$origSrc=$src;
-				if (substr($src, 0,2)=='./') {
-					$src=realpath(SKEL_ROOT_DIR.$src);
-					if (!$src) {
-						throw new Exception ('realpath ('.SKEL_ROOT_DIR.$origSrc.') devolvió false, ¿existe el fichero?.');
-					}
-				}
-				if (substr($src, 0,2)=='//') {
-					$src=PROTOCOL.":".$src;
-				}
-				$firephp->info($src,'Intentando file_get_contents:');
 				try {
+					$origSrc=$src;
+					if (substr($src, 0,2)=='./') {
+						$src=realpath(SKEL_ROOT_DIR.$src);
+						if (!$src) {
+							throw new Exception ('realpath ('.SKEL_ROOT_DIR.$origSrc.') devolvió false, ¿existe el fichero?.');
+						}
+					}
+					if (substr($src, 0,2)=='//') {
+						$src=PROTOCOL.":".$src;
+					}
+					$firephp->info($src,'Intentando file_get_contents:');
 					$fileContent=file_get_contents($src)."\n\n";
 					$jsLibs.=$fileContent."\n\n";
 					//$jsLibs.=JSMin::minify($fileContent);

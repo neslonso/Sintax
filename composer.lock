@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ce0a79ff3168e4e3779bd279a500e7c2",
+    "hash": "bbd179512c48af0aace22a2e81224b3d",
     "packages": [
         {
             "name": "andrewsville/php-token-reflection",
@@ -371,6 +371,39 @@
             ]
         },
         {
+            "name": "bower-asset/jquery-typeahead",
+            "version": "2.7.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:running-coder/jquery-typeahead.git",
+                "reference": "c35f5a264144fdabe5a5c3878349d524194722ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/running-coder/jquery-typeahead/zipball/c35f5a264144fdabe5a5c3878349d524194722ae",
+                "reference": "c35f5a264144fdabe5a5c3878349d524194722ae",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "dist/jquery.typeahead.min.js",
+                    "dist/jquery.typeahead.min.css"
+                ],
+                "bower-asset-ignore": []
+            },
+            "description": "jQuery plugin that provides Typeahead (autocomplete) Search preview from Json object(s) via same domain Ajax request or cross domain Jsonp and offers data compression inside Local Storage. The plugin is built with a lot of options and callbacks to allow customization.",
+            "keywords": [
+                "ajax",
+                "autocomplete",
+                "input",
+                "json",
+                "jsonp",
+                "search",
+                "typeahead"
+            ]
+        },
+        {
             "name": "bower-asset/moment",
             "version": "2.13.0",
             "source": {
@@ -432,6 +465,55 @@
             "description": "A file and module loader for JavaScript",
             "keywords": [
                 "AMD"
+            ]
+        },
+        {
+            "name": "bower-asset/swiper",
+            "version": "v3.3.1",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:nolimits4web/Swiper.git",
+                "reference": "33101a659e579146f5462e4a9d6a7fdfd7436c35"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nolimits4web/Swiper/zipball/33101a659e579146f5462e4a9d6a7fdfd7436c35",
+                "reference": "33101a659e579146f5462e4a9d6a7fdfd7436c35",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "dist/js/swiper.js",
+                    "dist/css/swiper.css"
+                ],
+                "bower-asset-ignore": [
+                    ".*",
+                    "demos",
+                    "gulpfile",
+                    "build",
+                    "node_modules",
+                    "playground",
+                    "package.json"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Most modern mobile touch slider and framework with hardware accelerated transitions",
+            "keywords": [
+                "app",
+                "carousel",
+                "cordova",
+                "framework",
+                "gallery",
+                "ios",
+                "mobile",
+                "phonegap",
+                "slider",
+                "swipe",
+                "swiper",
+                "touch"
             ]
         },
         {
@@ -1694,7 +1776,9 @@
         "bower-asset/datatables-bootstrap3": 20,
         "bower-asset/fontawesome": 20,
         "bower-asset/fuelux": 20,
-        "bower-asset/bootbox": 20
+        "bower-asset/bootbox": 20,
+        "bower-asset/swiper": 20,
+        "bower-asset/jquery-typeahead": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
