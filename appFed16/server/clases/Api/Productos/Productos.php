@@ -17,7 +17,7 @@ class Productos extends ApiService implements IApiService {
 	 * @param  boolean $asObjectArray [description]
 	 * @return [type]                 [description]
 	 */
-	public function arrRandomOfertasVenta($cuantos=10, $keyTienda="", $asObjectArray=true) {
+	public static function arrRandomOfertasVenta($cuantos=10, $keyTienda="", $asObjectArray=true) {
 		$db=\cDb::confByKey("celorriov3");
 		$sql="SELECT id FROM multi_ofertaVenta where keyTienda='".$keyTienda."' ORDER BY RAND() LIMIT 0,".$cuantos;
 		$arr=array();
@@ -30,7 +30,7 @@ class Productos extends ApiService implements IApiService {
 				$obj->nombre=$objOferta->GETnombre();
 				$obj->precio=$objOferta->pvp();
 				$obj->urlFotoPpal=$objOferta->imgSrc();
-				$obj->popupProd=$this->popupProd($objOferta);
+				$obj->popupProd=\Sintax\ApiService\Productos::popupProd($objOferta);
 				array_push($arr,$obj);
 			} else {
 				array_push($arr,$data->id);
@@ -45,24 +45,24 @@ class Productos extends ApiService implements IApiService {
 	 * @param  [type] $obj [description]
 	 * @return [type]      [description]
 	 */
-	public function popupProd($obj){
+	public static function popupProd($obj){
 		$html='
 			<div id="itemPopup'.$obj->GETid().'" class="item vertical-align">
-				<div class="col-xs-12 col-sm-6 col-md-6"> <!-- Grid -->
+				<div class="col-xs-12 col-sm-6 col-lg-4"> <!-- Grid -->
 					<div class="rbm_sldr_sc_content rbm_sldr_sc_content_col_2">
-						<div class="row shop-item-modal">
-							<div class="col-xs-12 col-sm-6">
-								<img src="'.$obj->imgSrc().'" class="img-responsive" alt="rbm_slider_showcase_01">
+						<div class="row shop-item-modal ">
+							<div class="col-xs-12 col-sm-12 text-center">
+								<img src="'.$obj->imgSrc().'" class="img-responsive shop-item-modal-img">
 							</div>
-							<div class="col-xs-12 col-sm-6">
+							<div class="col-xs-12 col-sm-12">
 								<h1>'.$obj->GETnombre().'</h1>
-								<span class="shop-item-modal-price">'.$obj->pvp().'€</span>
 								<div>
-									<a class="btn btn-default" href="#">Comprar</a>
+									<span class="shop-item-modal-price">'.$obj->pvp().'€</span>
+									<a class="btn btn-default jqCst" data-id="'.$obj->GETid().'" data-ttl="'.$obj->GETnombre().'" data-unit="1" data-prc="'.$obj->pvp().'" data-src="'.$obj->imgSrc().'" href="#">Comprar</a>
 								</div>
 							</div>
 							<div class="col-xs-12">
-								'.$obj->GETdescripcion().'
+								'.\Cadena::pwParseCorreo($obj->GETdescripcion()).'
 							</div>
 						</div>
 						<!-- Button -->
@@ -71,6 +71,7 @@ class Productos extends ApiService implements IApiService {
 				</div> <!-- /Grid -->
 			</div> <!-- /item -->
 		';
+		return $html;
 	}
 
 

@@ -23,13 +23,14 @@ function grabarDireccion(id){
 		console.log("pais:"+pais);
 		$.post('<?=BASE_DIR.FILE_APP?>',{
 			'MODULE':'actions',
-			'acClase':'datosCliBridge',
+			'acClase':'mis_datos',
 			'acMetodo':'acCheckCP',
 			'acTipo':'ajax',
 			'cp':cp,
 			'pais':pais
 		},
 		function (response) {
+			console.log(response);
 			if (!response.data.resultado.valor){
 				muestraMsgModal('Error',response.data.resultado.msg);
 			} else {
@@ -53,8 +54,8 @@ function borrarDireccion(id){
 					//Post ('action','<?=BASE_DIR.FILE_APP?>','MODULE','actions','acClase','datosCliBridge','acMetodo','borrarDireccion','acTipo','stdAssoc','id',id);
 					$.post('<?=BASE_DIR.FILE_APP?>',{
 						'MODULE':'actions',
-						'acClase':'datosCliBridge',
-						'acMetodo':'borrarDireccion',
+						'acClase':'mis_datos',
+						'acMetodo':'acBorrarDireccion',
 						'acTipo':'ajax',
 						'hash':$('#hash').val(),
 						'id':id

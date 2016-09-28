@@ -61,6 +61,7 @@ body {
 #vertical .navbar-default .navbar-nav li .vertical-menu {
     opacity: 1;
     position: absolute;
+    width: 850px !important;
     left: 250px !important;
     right: 0 !important;
     /*top:auto;*/

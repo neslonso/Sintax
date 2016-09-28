@@ -102,7 +102,7 @@ class Multi_clienteDireccion extends \Sintax\Core\Entity implements \Sintax\Core
 		$sql=static::sqlComprobacionPais($this->db(),$this->GETpais());
 		$data=$this->db()->get_row($sql);
 		if ($data) {$result=$data->alpha2;}
-		else {throw new Exception("País desconocido (".$this->GETpais().") en direccion ID: [".$this->GETid()."]", 1);}
+		else {throw new Exception("PaÃ­s desconocido (".$this->GETpais().") en direccion ID: [".$this->GETid()."]", 1);}
 		return $result;
 	}
 

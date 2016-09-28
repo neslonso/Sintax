@@ -3,7 +3,7 @@ namespace Sintax\Pages;
 use Sintax\Core\IPage;
 use Sintax\Core\User;
 use Sintax\Core\ReturnInfo;
-class mis_datos extends Home implements IPage {
+class mis_pedidos extends Home implements IPage {
 	public function __construct(User $objUsr) {
 		parent::__construct($objUsr);
 	}
@@ -45,37 +45,11 @@ class mis_datos extends Home implements IPage {
 	}
 	public function cuerpo() {
 		$objCli=$_SESSION['usuario']->objEntity;
-		$objDatosRender=\Sintax\ApiService\Clientes::getDatosRenderAreaCliente($objCli);
-		$cliente=$objDatosRender->cliente;
-		$direcciones=$objDatosRender->direcciones;
-		$paises=$objDatosRender->paises;
-		$paisDefecto=$objDatosRender->paisDefecto;
-		$cupones=$objDatosRender->cupones;
-		$apuntes=$objDatosRender->apuntes;
+		$idUser=$objCli->GETid();
+		$store=$objCli->GETkeyTienda();
+		$objDatosRender=\Sintax\ApiService\Clientes::getDatosRenderPedidos($idUser);
+		$pedidos=$objDatosRender->pedidos;
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
 	}
-	public function acGrabarPerfil () {
-		$result=\Sintax\ApiService\Clientes::acGrabaPerfil($_REQUEST);
-		ReturnInfo::add($result->msg,'Perfil de usuario');
-	}
-	public function acGrabarDireccion () {
-		$result=\Sintax\ApiService\Clientes::acGrabaDireccion($_REQUEST);
-		$result=json_decode($result);
-		ReturnInfo::add($result->resultado->msg,'Dirección de entrega');
-	}
-	public function acCheckCP(){
-		$result=\Sintax\ApiService\Clientes::acCheckCP($_REQUEST['cp'],$_REQUEST['pais']);
-		return json_decode($result);
-	}
-	public function acBorrarDireccion(){
-		$result=\Sintax\ApiService\Clientes::acBorraDireccion($_REQUEST['id']);
-		return json_decode($result);
-	}
-	public function acCambiarPass () {
-		$result=\Sintax\ApiService\Clientes::acCambiaPass($_REQUEST);
-		$result=json_decode($result);
-		ReturnInfo::add($result->resultado->msg,'Datos de acceso');
-	}
-
 }
 ?>

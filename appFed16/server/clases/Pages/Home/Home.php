@@ -64,7 +64,7 @@ class Home extends Error implements IPage {
 		if ($objCliUser!==false) {
 			$_SESSION['usuario']=$objCliUser;
 		} else {
-			throw new \Exception("DirecciÃ³n de email o contraseÃ±a incorrecta.", 1);
+			throw new \Exception("Dirección de email o contraseña incorrecta.", 1);
 		}
 	}
 	/**
