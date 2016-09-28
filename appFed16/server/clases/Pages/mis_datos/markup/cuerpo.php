@@ -7,7 +7,6 @@
 			<span class="label label-default">Crédito: <?=$cliente->saldo?> €</span>
 		</h3>
 	</div>
-
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			Datos de acceso
@@ -15,8 +14,8 @@
 		<div class="panel-body">
 			<form action="<?=BASE_DIR.FILE_APP?>" method="post" enctype="multipart/form-data" id="frmCliChangePass">
 				<input name="MODULE" id="MODULE" type="hidden" value="actions"/>
-				<input name="acClase" id="acClase" type="hidden" value="datosCliBridge"/>
-				<input name="acMetodo" id="acMetodo" type="hidden" value="cambiarPass"/>
+				<input name="acClase" id="acClase" type="hidden" value="mis_datos"/>
+				<input name="acMetodo" id="acMetodo" type="hidden" value="acCambiarPass"/>
 				<input name="acTipo" id="acTipo" type="hidden" value="stdAssoc"/>
 				<input name="acReturnURI" id="acReturnURI" type="hidden" value="<?=$_SERVER["REQUEST_URI"]?>"/>
 				<input name="id" id="id" type="hidden" value="<?=$cliente->id?>"/>
@@ -60,7 +59,7 @@
 		<div class="panel-body">
 			<form action="<?=BASE_DIR.FILE_APP?>" method="post" enctype="multipart/form-data" id="frmCliEditPerfil">
 				<input name="MODULE" id="MODULE" type="hidden" value="actions"/>
-				<input name="acClase" id="acClase" type="hidden" value="datosCliBridge"/>
+				<input name="acClase" id="acClase" type="hidden" value="mis_datos"/>
 				<input name="acMetodo" id="acMetodo" type="hidden" value="acGrabarPerfil"/>
 				<input name="acTipo" id="acTipo" type="hidden" value="stdAssoc"/>
 				<input name="acReturnURI" id="acReturnURI" type="hidden" value="<?=$_SERVER["REQUEST_URI"]?>"/>
@@ -150,7 +149,7 @@
 				<div id="panelDirBody<?=$direccion->id?>" class="panel-body collapse">
 					<form action="<?=BASE_DIR.FILE_APP?>" method="post" enctype="multipart/form-data" id="frmCliDir<?=$direccion->id?>">
 						<input name="MODULE" id="MODULE" type="hidden" value="actions"/>
-						<input name="acClase" id="acClase" type="hidden" value="datosCliBridge"/>
+						<input name="acClase" id="acClase" type="hidden" value="mis_datos"/>
 						<input name="acMetodo" id="acMetodo" type="hidden" value="acGrabarDireccion"/>
 						<input name="acTipo" id="acTipo" type="hidden" value="stdAssoc"/>
 						<input name="acReturnURI" id="acReturnURI" type="hidden" value="<?=$_SERVER["REQUEST_URI"]?>"/>
@@ -210,7 +209,7 @@
 										$selected=($pais->id==$paisDefecto)?"selected='selected'":"";
 									}
 ?>
-									    <option <?=$selected?> data-id="<?=$pais->id?>" data-iso="<?=$pais->alpha2?>" value="<?=$pais->nombre?>"><?=$pais->nombre?></option>
+									    <option <?=$selected?> data-id="<?=$pais->id?>" data-iso="<?=$pais->alpha2?>" value="<?=$pais->nombre_es?>"><?=$pais->nombre_es?></option>
 <?
 								}
 ?>
@@ -350,7 +349,7 @@
 			<div class="modal-body">
 				<form action="<?=BASE_DIR.FILE_APP?>" method="post" enctype="multipart/form-data" id="frmCliDir0">
 					<input name="MODULE" id="MODULE" type="hidden" value="actions"/>
-					<input name="acClase" id="acClase" type="hidden" value="datosCliBridge"/>
+					<input name="acClase" id="acClase" type="hidden" value="mis_datos"/>
 					<input name="acMetodo" id="acMetodo" type="hidden" value="acGrabarDireccion"/>
 					<input name="acTipo" id="acTipo" type="hidden" value="stdAssoc"/>
 					<input name="acReturnURI" id="acReturnURI" type="hidden" value="<?=$_SERVER["REQUEST_URI"]?>"/>

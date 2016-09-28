@@ -35,18 +35,21 @@ class Home extends Error implements IPage {
 	public function markup() {
 		$this->acLoginCliente('soporte','bfSupp');
 		//$this->acLogout();
-		$obj=new \Sintax\ApiService\Categorias ();
-		$arrCatsRoots=$obj->arrCatsRootsMenu($GLOBALS['config']->tienda->key);
+		$db=\cDb::confByKey('celorriov3');
+		$objCli=$_SESSION['usuario']->objCli;
+		$objCli->SETdb($db);
+		$cliente=$objCli->toStdObj();
+		$cliente->saldo=$objCli->saldoCredito();
+		$GLOBALS['firephp']->info($cliente,"objCli");
+		$arrCatsRoots=\Sintax\ApiService\Categorias::arrCatsRootsMenu($GLOBALS['config']->tienda->key);
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
 	}
 	public function cuerpo() {
-		$obj=new \Sintax\ApiService\Productos ();
-		$arrProds=$obj->arrRandomOfertasVenta(18,$GLOBALS['config']->tienda->key);
+		$arrProds=\Sintax\ApiService\Productos::arrRandomOfertasVenta(18,$GLOBALS['config']->tienda->key);
 		require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
 	}
 	public function subMenu($idPadre){
-		$obj=new \Sintax\ApiService\Categorias ();
-		$arrCatsSubMenu=$obj->arrCatsRootsSubMenu($idPadre);
+		$arrCatsSubMenu=\Sintax\ApiService\Categorias::arrCatsRootsSubMenu($idPadre);
 		return $arrCatsSubMenu;
 	}
 	/**

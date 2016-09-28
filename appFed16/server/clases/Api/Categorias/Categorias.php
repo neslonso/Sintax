@@ -15,15 +15,18 @@ class Categorias extends ApiService implements IApiService {
 	 * @param  [type] $keyTienda [description]
 	 * @return [type]            [description]
 	 */
-	public function arrCatsRootsMenu($keyTienda) {
+	public static function arrCatsRootsMenu($keyTienda) {
 		$db=\cDb::confByKey("celorriov3");
 		$arr=array();
-		$arrCatsRoot=\Multi_categoria::getRoots($db,"keyTienda='".$keyTienda."'","","","arrClassObjs");
+		$arrCatsRoot=\Multi_categoria::getRoots($db,"keyTienda='".$keyTienda."' AND visible='1'","","","arrClassObjs");
+		$listaIdsFotosMenu=self::listaIdsFotosMenu($GLOBALS['config']->tienda->key);
 		foreach ($arrCatsRoot as $objCat) {
 			$obj=new \stdClass();
 			$obj->id=$objCat->GETid();
 			$obj->nombre=$objCat->GETnombre();
-			$obj->ico=$objCat->icoSrc();
+			//$obj->ico=$objCat->icoSrc();
+			$obj->ico=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB_MPA_JOIN&fichero='.$listaIdsFotosMenu.'&ancho=30&alto=30';
+			$GLOBALS['firephp']->error($objCat->GETnombre());
 			$obj->img=$objCat->imgSrc();
 			array_push($arr,$obj);
 		}
@@ -35,17 +38,17 @@ class Categorias extends ApiService implements IApiService {
 	 * @param  [type] $idPadre [description]
 	 * @return [type]          [description]
 	 */
-	public function arrCatsRootsSubMenu($idPadre){
+	public static function arrCatsRootsSubMenu($idPadre){
 		$db=\cDb::confByKey("celorriov3");
 		$objMCat=new \Multi_categoria($db,$idPadre);
-		$arrCatsHijas=$objMCat->arrMulti_categoriaHija("","","","arrClassObjs");
+		$arrCatsHijas=$objMCat->arrMulti_categoriaHija("visible='1'","","","arrClassObjs");
 		$arr=array();
 		foreach ($arrCatsHijas as $objCat) {
 			$obj=new \stdClass();
 			$obj->id=$objCat->GETid();
 			$obj->nombre=$objCat->GETnombre();
-			$obj->img=$objCat->imgSrc();
-			$arrCatsNietas=$objCat->arrMulti_categoriaHija("","","","arrClassObjs");
+			$obj->img='';
+			$arrCatsNietas=$objCat->arrMulti_categoriaHija("visible='1'","","","arrClassObjs");
 			$arrNietos=array();
 			foreach ($arrCatsNietas as $objCatNieto) {
 				$objNieto=new \stdClass();
@@ -59,5 +62,20 @@ class Categorias extends ApiService implements IApiService {
 		return $arr;
 	}
 
+	public static function listaIdsFotosMenu($keyTienda) {
+		$db=\cDb::confByKey("celorriov3");
+		$arrIdsFotos=array();
+		$arrCatsRoot=\Multi_categoria::getRoots($db,"keyTienda='".$keyTienda."'","","","arrClassObjs");
+		foreach ($arrCatsRoot as $objCat) {
+			$arrCatsHijas=$objCat->arrMulti_categoriaHija("","","","arrClassObjs");
+			$imgId=$objCat->imgId();
+			if (!empty($imgId)) array_push($arrIdsFotos, $imgId);
+			foreach ($arrCatsHijas as $objCatHija) {
+				$imgId=$objCat->imgId();
+				if (!empty($imgId)) array_push($arrIdsFotos, $imgId);
+			}
+		}
+		return implode(",",$arrIdsFotos);
+	}
 }
 ?>
