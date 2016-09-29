@@ -331,5 +331,12 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		}
 		return $saldo;
 	}
+/******************************************************************************/
+	public static function existeEmail ($db, $email, $keyTienda) {
+		$sql="SELECT * FROM multi_cliente WHERE email='".$db->real_escape_string($email)."' AND keyTienda='".$keyTienda."'";
+		$data=$db->get_row($sql);
+		if ($data) {$result=true;} else {$result=false;}
+		return $result;
+	}
 }
 ?>

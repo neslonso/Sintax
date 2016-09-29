@@ -9,7 +9,73 @@ class Clientes extends ApiService implements IApiService {
 	public function __construct (User $objUsr=NULL) {
 		parent::__construct($objUsr);
 	}
-
+	/**
+	 * [acLoginCliente description]
+	 * @param  [type] $email     [description]
+	 * @param  [type] $pass      [description]
+	 * @param  [type] $keyTienda [description]
+	 * @return [type]            [description]
+	 */
+	public static function acLoginCliente($email,$pass,$keyTienda) {
+		$db=\cDb::confByKey("celorriov3");
+		$arrReturn=array();
+		$objCliUser=\Multi_clienteUser::login($db,$email,$pass,$keyTienda);
+		if ($objCliUser!==false) {
+			$_SESSION['usuario']=$objCliUser;
+			$arrAccion=array(
+				"valor" => true,
+				"msg" => "Login correcto"
+			);
+			$arrReturn['resultado']=$arrAccion;
+		} else {
+			//throw new \Exception("Dirección de email o contraseña incorrecta.", 1);
+			$arrAccion=array(
+				"valor" => false,
+				"msg" => "Login incorrecto"
+			);
+			$arrReturn['resultado']=$arrAccion;
+		}
+		return json_encode($arrReturn);
+	}
+	/**
+	 * [acNuevoCliente description]
+	 * @param  [type] $email     [description]
+	 * @param  [type] $pass      [description]
+	 * @param  [type] $keyTienda [description]
+	 * @return [type]            [description]
+	 */
+	public static function acNuevoCliente($email,$pass,$keyTienda){
+		$db=\cDb::confByKey("celorriov3");
+		$arrReturn=array();
+		if (\Multi_cliente::existeEmail($email,$keyTienda)){
+			$arrAccion=array(
+				"valor" => false,
+				"msg" => "El correo electrónico ya existe"
+			);
+		} else {
+			$objCli=new \Multi_cliente($db);
+			$objCli->SETemail($email);
+			$objCli->SETpassSha256($pass);
+			$objCli->SETkeyTienda($keyTienda);
+			$objCli->grabar();
+			$arrDatos=array(
+				"id" => $objCli->GETid()
+			);
+			$arrReturn['datos']=$arrDatos;
+			$arrAccion=array(
+				"valor" => true,
+				"msg" => "Alta de usuario correcta"
+			);
+			\Cliente::acLoginCliente($email,$pass,$keyTienda);
+		}
+		$arrReturn['resultado']=$arrAccion;
+		return json_encode($arrReturn);
+	}
+	/**
+	 * [getDatosRenderAreaCliente description]
+	 * @param  [type] $objCli [description]
+	 * @return [type]         [description]
+	 */
 	public static function getDatosRenderAreaCliente($objCli){
 		$db=\cDb::confByKey('celorriov3');
 		$objDatosRender= new \stdClass();
@@ -42,7 +108,11 @@ class Clientes extends ApiService implements IApiService {
 		$objDatosRender->apuntes=$objCli->arrMulti_apunteCredito();
 		return $objDatosRender;
 	}
-
+	/**
+	 * [getDatosRenderPedidos description]
+	 * @param  [type] $id [description]
+	 * @return [type]     [description]
+	 */
 	public static function getDatosRenderPedidos($id){
 		$db=\cDb::confByKey('celorriov3');
 		$objMulti_cliente=new \Multi_cliente($db,$id);
@@ -50,7 +120,12 @@ class Clientes extends ApiService implements IApiService {
 		$objDatosRender->pedidos=$objMulti_cliente->arrMulti_pedido();
 		return $objDatosRender;
 	}
-
+	/**
+	 * [getDatosRenderPedido description]
+	 * @param  [type] $idPed  [description]
+	 * @param  [type] $idUser [description]
+	 * @return [type]         [description]
+	 */
 	public static function getDatosRenderPedido($idPed,$idUser){
 		$db=\cDb::confByKey('celorriov3');
 		$arrReturn=array();
@@ -156,7 +231,11 @@ class Clientes extends ApiService implements IApiService {
 		$arrReturn['mensajes']=$arrTmpMsgs;
 		return json_encode($arrReturn);
 	}
-
+	/**
+	 * [acGrabaPerfil description]
+	 * @param  [type] $arrRequest [description]
+	 * @return [type]             [description]
+	 */
 	public static function acGrabaPerfil($arrRequest){
 		$db=\cDb::confByKey("celorriov3");
 		$objCli=new \Multi_cliente($db,$arrRequest['id']);
@@ -174,7 +253,11 @@ class Clientes extends ApiService implements IApiService {
 		$objResult->msg="Se han actualizado correctamente los datos";
 		return $objResult;
 	}
-
+	/**
+	 * [acGrabaDireccion description]
+	 * @param  [type] $arrRequest [description]
+	 * @return [type]             [description]
+	 */
 	public static function acGrabaDireccion($arrRequest){
 		$db=\cDb::confByKey("celorriov3");
 		$arrReturn=array();
@@ -211,7 +294,12 @@ class Clientes extends ApiService implements IApiService {
 		$arrReturn['datos']=$arrDatos;
 		return json_encode($arrReturn);
 	}
-
+	/**
+	 * [acCheckCP description]
+	 * @param  [type] $cp   [description]
+	 * @param  [type] $pais [description]
+	 * @return [type]       [description]
+	 */
 	public static function acCheckCP($cp,$pais){
 		$db=\cDb::confByKey("celorriov3");
 		$objDir=new \Multi_clienteDireccion($db);
@@ -232,7 +320,11 @@ class Clientes extends ApiService implements IApiService {
 		$arrReturn['resultado']=$arrAccion;
 		return json_encode($arrReturn);
 	}
-
+	/**
+	 * [acBorraDireccion description]
+	 * @param  [type] $id [description]
+	 * @return [type]     [description]
+	 */
 	public static function acBorraDireccion($id){
 		$db=\cDb::confByKey("celorriov3");
 		$arrReturn=array();
@@ -245,7 +337,11 @@ class Clientes extends ApiService implements IApiService {
 		$arrReturn['resultado']=$arrAccion;
 		return json_encode($arrReturn);
 	}
-
+	/**
+	 * [acCambiaPass description]
+	 * @param  [type] $arrRequest [description]
+	 * @return [type]             [description]
+	 */
 	public static function acCambiaPass($arrRequest){
 		$db=\cDb::confByKey("celorriov3");
 		$arrReturn=array();
