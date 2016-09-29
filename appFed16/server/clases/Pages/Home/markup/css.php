@@ -46,6 +46,9 @@ a:hover, a:focus {
 	color: @color-links-hover !important;
 	text-decoration: dotted;
 }
+a.blanco{
+	color:#fff !important;
+}
 .bandaSuperior{
 	background-color: @color-principal;
 	font-size: 12px;
@@ -110,8 +113,11 @@ a:hover, a:focus {
     background-color: #fff;
     padding: 10px;
 }
+ .nav-user-panel{
+ 	margin-bottom: 0px;
+ }
 .nav-user-avatar{
-    font-size: 87px;
+    font-size: 43px;
 }
 .nav-user-menu-credito{
     background-image: url('<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&filtro=grayscale&fichero=tarjetaAnverso.png&ancho=75');
@@ -131,6 +137,11 @@ a:hover, a:focus {
 .nav-user-menu-descuento span{
     color: green;
 }
+ .nav-user-txt-info{
+ 	font-size: 12px;
+ 	font-weight: normal;
+ 	padding-top: 20px;
+ }
 .nav-user-menu-logunt{
     padding-top: 10px;
 }

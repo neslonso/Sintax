@@ -45,9 +45,9 @@
 					<div id="divJqCesta" data-arr-items="<?=$jsonArrCestaItems?>"></div>
 					<div id="navUserMenu" class="nav-user-menu">
 <?
-
+					if ($logueado){
 ?>
-						<div class="panel panel-default">
+						<div class="panel panel-default nav-user-panel">
 							<div class="panel-body">
 								<div class="row">
 		                            <div class="col-sm-3">
@@ -72,7 +72,7 @@
 		                            </div>
 		                        </div>
 <?
-							if ($cliente->tipoDescuento>0){
+						if ($cliente->tipoDescuento>0){
 ?>
 		  						<div class="row">
 		                            <div class="col-sm-7">
@@ -85,7 +85,7 @@
 		                            </div>
 		                        </div>
 <?
-							}
+						}
 ?>
 							</div>
 							<div class="panel-footer">
@@ -93,38 +93,40 @@
                                 	<div class="col-xs-12 text-right">
                                 		<a href="<?=BASE_URL?>mis_datos" class="btn btn-primary btn-sm blanco"><span class="fa fa-pencil-square-o"></span> Editar</a>
                                 		<a href="<?=BASE_URL?>mis_pedidos" class="btn btn-primary btn-sm blanco"><span class="fa fa-shopping-cart"></span> Pedidos</a>
-										<a title="Cerrar sesión" id="btn-logout" href="#" class="btn btn-danger btn-sm blanco"><span class="glyphicon glyphicon-log-out"></span> Salir</a>
+										<a title="Cerrar sesión" id="btnLogout" href="#" class="btn btn-danger btn-sm blanco"><span class="glyphicon glyphicon-log-out"></span> Salir</a>
                                 	</div>
                                 </div>
                             </div>
 						</div>
-
+<?
+					} else {
+?>
 
 
 						<div class="row">
 							<div class="col-xs-12">
-								<div class="panel panel-default">
+								<div class="panel panel-default nav-user-panel">
 									<form id="frmLogin">
 										<div class="panel-heading">
-											Acceso
+											Acceso a tienda
 										</div>
 										<div class="panel-body">
 											<div class="form-group">
 												<label for="email" accesskey="">Email: </label>
-												<input  class="form-control" type="text" name="email" id="email" value="" />
+												<input  class="form-control" type="text" name="email" id="email" value="" placeholder="tuCorreo@electronico.com" />
 											</div>
 											<div class="form-group">
-												<label for="pass" accesskey="">Clave:</label>
+												<label for="pass" accesskey="">Contraseña:</label>
 												<input class="form-control" type="password" name="pass" id="pass" value="" />
 											</div>
 										</div>
 										<div class="panel-footer text-right">
-												<button id="btnLogin" type="button" class="btn btn-primary btn-sm">
-													<span class="glyphicon glyphicon-ok"></span> Entrar
-												</button>
-												<button id="btnRegistro" type="button" class="btn btn-warning btn-sm">
-													<span class="glyphicon glyphicon-plus"></span> Registrate
-												</button>
+											<a id="btnRegistro" href="<?=BASE_URL?>registro_usuario" class="btn btn-warning btn-sm blanco">
+												<span class="glyphicon glyphicon-plus"></span> Registrate
+											</a>
+											<a id="btnLogin" href="#" class="btn btn-primary btn-sm blanco">
+												<span class="glyphicon glyphicon-ok"></span> Entrar
+											</a>
 										</div>
 									</form>
 								</div>
@@ -132,7 +134,7 @@
 						</div>
 
 <?
-
+					}
 ?>
 					</div>
                     <a id="btnUserNav" href="#" class="btn btn-default btn-menu">
