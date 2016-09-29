@@ -372,8 +372,12 @@ final class cDb extends MysqliDB {
 	 * @return object: instancia de self
 	 */
 	public static function conf($host, $user, $pass, $db) {
-		if(self::$singleton instanceof self) {self::$singleton->close();}
+		//$GLOBALS['firephp']->group('Llamada a conf', array('Collapsed' => true, 'Color' => '#00FFFF'));
+		//$GLOBALS['firephp']->error(debug_backtrace(),'debug_backtrace()');
+		//$GLOBALS['firephp']->error(self::$singleton,'self::$singleton');
+		//if(self::$singleton instanceof self) {self::$singleton->close();}
 		self::$singleton=NULL;
+		//$GLOBALS['firephp']->groupEnd();
 		return self::getInstance($host, $user, $pass, $db);
 	}
 
@@ -384,13 +388,14 @@ final class cDb extends MysqliDB {
 	 * @throws MysqliDB_Exception En caso de que la constante DBS no esté definida, o no contenga un array, ono exista clave arrKey o la clave arrKey no contenga a su vez otro array
 	 */
 	public static function confByKey($arrKey) {
+		//$GLOBALS['firephp']->error(debug_backtrace(),'confByKey');
 		if (!defined('DBS')) {throw new MysqliDB_Exception("DBS no definida", 1);}
 		$arrDbs=unserialize(DBS);
 		if (!is_array($arrDbs)) {throw new MysqliDB_Exception("DBS no contiene un array", 1);}
 		if (!isset($arrDbs[$arrKey])) {throw new MysqliDB_Exception("key [".$arrKey."] no isset", 1);}
 		if (!is_array($arrDbs[$arrKey])) {throw new MysqliDB_Exception("DBS[".$arrKey."] no contiene un array", 1);}
-		self::conf($arrDbs[$arrKey]['_DB_HOST_'],$arrDbs[$arrKey]['_DB_USER_'],$arrDbs[$arrKey]['_DB_PASSWD_'],$arrDbs[$arrKey]['_DB_NAME_']);
-		return self::getInstance();
+		return self::conf($arrDbs[$arrKey]['_DB_HOST_'],$arrDbs[$arrKey]['_DB_USER_'],$arrDbs[$arrKey]['_DB_PASSWD_'],$arrDbs[$arrKey]['_DB_NAME_']);
+		//return self::getInstance();
 	}
 
 	/**
@@ -398,9 +403,16 @@ final class cDb extends MysqliDB {
 	 * @return object: instancia de self
 	 */
 	public static function getInstance($host="localhost", $user="root", $pass="", $db="") {
-		if(!self::$singleton instanceof self) {
+		//$GLOBALS['firephp']->group('Llamada a getinstance', array('Collapsed' => true, 'Color' => '#FF00FF'));
+		//$GLOBALS['firephp']->error(debug_backtrace(),'debug_backtrace()');
+		//$GLOBALS['firephp']->error(self::$singleton,'self::$singleton');
+		//$GLOBALS['firephp']->error(self::$singleton instanceof self,'self::$singleton instanceof self');
+		if(!(self::$singleton instanceof self)) {
 			self::$singleton = new self($host, $user, $pass, $db);
+			//$GLOBALS['firephp']->error(self::$singleton,'getInstance: Nuevo self');
 		}
+		//$GLOBALS['firephp']->error(self::$singleton->ping(),'getInstance: Ping');
+		//$GLOBALS['firephp']->groupEnd();
 		return self::$singleton;
 	}
 	/**
@@ -415,6 +427,5 @@ final class cDb extends MysqliDB {
 	public function __destruct() {
 		//$GLOBALS['firephp']->error(debug_backtrace(),"Destructor de cDb");
 	}
-
 }
 ?>

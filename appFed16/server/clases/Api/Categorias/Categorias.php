@@ -19,10 +19,10 @@ class Categorias extends ApiService implements IApiService {
 		$db=\cDb::confByKey("celorriov3");
 		$arr=array();
 		$arrCatsRoot=\Multi_categoria::getRoots($db,"keyTienda='".$keyTienda."' AND visible='1'","","","arrClassObjs");
-	$GLOBALS['firephp']->error($db->ping(),"Antes de lista");
+	//$GLOBALS['firephp']->error($db->ping(),"Antes de lista");
 		$listaIdsFotosMenu='';
 		$listaIdsFotosMenu=self::listaIdsFotosMenu($GLOBALS['config']->tienda->key);
-	$GLOBALS['firephp']->error($db->ping(),"Tras lista");
+	//$GLOBALS['firephp']->error($db->ping(),"Tras lista");
 		foreach ($arrCatsRoot as $objCat) {
 			$obj=new \stdClass();
 			$obj->id=$objCat->GETid();
@@ -63,7 +63,11 @@ class Categorias extends ApiService implements IApiService {
 		}
 		return $arr;
 	}
-
+	/**
+	 * [listaIdsFotosMenu description]
+	 * @param  [type] $keyTienda [description]
+	 * @return [type]            [description]
+	 */
 	public static function listaIdsFotosMenu($keyTienda) {
 		//$db=\cDb::confByKey("celorriov3");
 		$db=\cDb::gI();
@@ -79,8 +83,8 @@ class Categorias extends ApiService implements IApiService {
 			}
 		}
 		$listaIdsFotosMenu=implode(",",$arrIdsFotos);
-		$GLOBALS['firephp']->error($listaIdsFotosMenu,"listaIdsFotosMenu");
-		$GLOBALS['firephp']->error($db->ping(),"Al final de lista");
+	//$GLOBALS['firephp']->error($listaIdsFotosMenu,"listaIdsFotosMenu");
+	//$GLOBALS['firephp']->error($db->ping(),"Al final de lista");
 		return $listaIdsFotosMenu;
 	}
 }

@@ -36,6 +36,7 @@
 			arrItems: [],//array objetos
 			classBtnAdd: 'jqCst',
 			classBtnRemove: 'jqCstRm', //clase remove item cart
+			classBtnSpinbox: 'jqCstSpnbx', //clase remove item cart
 			linkCart: {
 				txtBtnCart: "",
 				imgActiveBtnCart: false,
@@ -121,11 +122,38 @@
 			$element.trigger("afterAdd.jqCesta",[objItem]);
 		}
 
+		plugin.removeItem = function(id) {
+			idxOfId=plugin.settings.arrItems.getIndexBy("id", id);
+			if (typeof plugin.settings.arrItems[idxOfId] != 'undefined') {
+				var objItem = new Object();
+				objItem = plugin.settings.arrItems[idxOfId];
+				plugin.settings.arrItems.splice(idxOfId, 1);
+			}
+			renderItems();
+			renderTotal();
+			$element.trigger("afterRemove.jqCesta",[objItem]);
+		}
+
+		plugin.editItem = function(id, quantity) {
+			console.log("Refresh item " + id + " con cantidad " + quantity);
+			//quitar del array
+			idxOfId=plugin.settings.arrItems.getIndexBy("id", id);
+			if (typeof plugin.settings.arrItems[idxOfId] != 'undefined') {
+				console.log("Antes " + plugin.settings.arrItems[idxOfId].quantity);
+				plugin.settings.arrItems[idxOfId].quantity = quantity;
+				console.log("Despues " + plugin.settings.arrItems[idxOfId].quantity);
+			}
+			renderItems();
+			renderTotal();
+			$element.trigger("editItem.jqCesta",[objItem]);
+		}
+
+		// private methods
+		// methodName(arg1, arg2, ... argn) from inside
 		var orderItemsBy = function(propertyName) {
 			plugin.settings.arrItems.sort(function(a,b) {return (a[propertyName] > b[propertyName]) ? 1 : ((b[propertyName] > a[propertyName]) ? -1 : 0);} );
 		}
-		// private methods
-		// methodName(arg1, arg2, ... argn) from inside
+
 		var setHandlers = function () {
 			//add handler
 			$('body').on('click.jqCesta', '.'+plugin.settings.classBtnAdd, function(event) {
@@ -142,14 +170,19 @@
 			$('body').on('click.jqCesta', '.'+plugin.settings.classBtnRemove, function(event) {
 				$btn=$(this);
 				var id=$btn.data('id');
-				plugin.delItem(id);
+				plugin.removeItem(id);
 				event.preventDefault();
 			});
+			//spinbox
+			$('body').on('changed.fu.spinbox', '.'+plugin.settings.classBtnSpinbox, function(event) {
+			  	$spin=$(this);
+			  	var id=$spin.closest('.itemCart').data('id');
+				plugin.editItem(id, $spin.spinbox('getValue'));
+			})
 			//btnCart handler
 			$('.btnCart',$element).click(function(event) {
 				plugin.toggleCesta();
 			});
-
 			//btnCheckOrder handler
 			$('.btnCheckOrder',$element).click(function(event) {
 				$element.trigger("checkOrder.jqCesta",[$element.data('jqCesta').settings.arrItems]);
@@ -176,6 +209,7 @@
 					html_items += itemTemplate(arr[i].id);
 				}
 			}
+			$('.badgeCart',element).html(plugin.settings.arrItems.length);
 			$('.itemsCart',$element).html(html_items);
 		}
 		var emptyTemplate = function() {
@@ -197,6 +231,21 @@
 			var ttl=objItem.descripcion;
 			var unit=objItem.quantity;
 			var prc=objItem.precio;
+			var spinbox=[
+				'<div class="fuelux">',
+					'<div class="spinbox ' + plugin.settings.classBtnSpinbox + '" data-initialize="spinbox">',
+						'<input type="text" class="form-control input-mini spinbox-input" value="' + unit + '">',
+						'<div class="spinbox-buttons btn-group btn-group-vertical">',
+							'<button type="button" class="btn btn-default spinbox-up btn-xs">',
+								'<span class="glyphicon glyphicon-chevron-up"></span><span class="sr-only">Increase</span>',
+							'</button>',
+							'<button type="button" class="btn btn-default spinbox-down btn-xs" >',
+								'<span class="glyphicon glyphicon-chevron-down"></span><span class="sr-only">Decrease</span>',
+							'</button>',
+						'</div>',
+					'</div>',
+				'</div>',
+			].join('');
 
 			var cuerpoItem = [
 				'<div class="row itemCart" data-id="'+id+'">',
@@ -205,22 +254,26 @@
 					'</div>',
 					'<div class="col-xs-6 col-sm-8 col-md-9">',
 						'<div class="ttl" data-toggle="tooltip" title="'+ ttl +'">' + ttl + '</div>',
-						'<div class="unit" >Cantidad: <span>' + unit + '</span></div>',
+						'<div class="unit" >Cantidad: ' + spinbox + '</div>',
 						'<div class="price" ><span>' + parseFloat(prc).toFixed(2) + '&euro;</span></div>',
-						//'<a class="btn ' + plugin.settings.classBtnRemove + '  glyphicon glyphicon-remove-sign" data-item="' + id + '"></a>',
+						'<a class="btn ' + plugin.settings.classBtnRemove + '" data-id="' + id + '"><span class="glyphicon glyphicon-trash"></span>&nbsp;Quitar</a>',
 					'</div>',
 				'</div>',
 				'<div class="col-lg-12 col-md-3 col-sm-6 separator-item"></div>',
 			].join('');
+
 			return cuerpoItem;
 		}
 
+		var summarize = function (field) {
+			return 33;
+		}
 		var renderTotal = function () {
 			var arr = plugin.settings.arrItems;
 			cuerpo = '';
 			if (arr.length>0) {
-				var udsCount=7;
-				var total=0;
+				var udsCount=summarize('quantity');
+				var total=summarize('precio');
 
 				cuerpo = [
 					'<div class="col-lg-12">',
@@ -247,6 +300,7 @@
 				// element.data('jqCesta').publicMethod(arg1, arg2, ... argn)
 				// element.data('jqCesta').settings.propertyName
 				$(this).data('jqCesta', plugin);
+
 			}
 		});
 	}

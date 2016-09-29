@@ -47,6 +47,10 @@ class Error extends Page implements IPage {
 					}
 				}
 			}
+			if (in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
+				//$this->msg.='<pre>'.print_r(debug_backtrace(),true).'</pre>';
+			}
+
 		} catch (Exception $e) {
 			$infoExc="Excepcion de tipo: ".get_class($e).". Mensaje: ".$e->getMessage()." en fichero ".$e->getFile()." en linea ".$e->getLine();
 			$this->setMsg('Error mostrando detalles de error:<br />'.$infoExc);

@@ -158,7 +158,9 @@ $(document).ready(function() {
 		autoplayDisableOnInteraction: false,
 	})
 
-	$('#divJqCesta').jqCesta()
+	$('#divJqCesta').jqCesta({
+		arrItems: $('#divJqCesta').data('arrItems')
+	})
 	.on('afterAdd.jqCesta', function(event,item) {
 		$.ajax({
 			url: '<?=BASE_URL.FILE_APP?>',
@@ -176,10 +178,18 @@ $(document).ready(function() {
 					$('#divJqNotifications').data('jqNotifications')
 						.addNotification('Producto añadido', 'Se ha añadido a cesta el producto <strong>'+item.descripcion+'</strong>', 'add');
 				} else {
+					$('#divJqNotifications').data('jqNotifications')
+						.addNotification('Error añadiendo producto', 'No fue psible añadir el producto <strong>'+item.descripcion+'</strong>.<br /><br />'+data.msg, 'other');
 					muestraMsgModal('No fue posible añadir el producto a su pedido',data.msg);
+					$('#divJqCesta').data('jqCesta').removeItem(item.id);
 				}
-			}
+			},
+			dataType: 'json'
 		});
+	})
+	.on('afterRemove.jqCesta', function(event,item) {
+		$('#divJqNotifications').data('jqNotifications')
+			.addNotification('Producto eliminado (implementar llamada ajax)', 'Se ha eliminado a cesta el producto <strong>'+item.descripcion+'</strong>', 'del');
 	})
 	.on('checkOrder', function(event,arrItems) {
 
@@ -235,5 +245,47 @@ $(document).ready(function() {
 			}
 		}
 	});
+	$('#btnLogout').on('click', function () {
+		$.post('<?=BASE_DIR.FILE_APP?>',{
+			'MODULE':'actions',
+			'acClase':'Home',
+			'acMetodo':'acLogout',
+			'acTipo':'ajax'
+		},
+		function (response) {
+			window.location.reload();
+		},
+		'json');
+	});
+	$('#frmLogin').keypress(function(e){
+		if(e.which == 13) {
+			$('#frmLogin #btnLogin').click();
+		}
+	});
+
+	$('#frmLogin #btnLogin').on('click', function () {
+		if ($('#frmLogin #email').val()!="" && $('#frmLogin #pass').val()!=""){
+			$.post('<?=BASE_DIR.FILE_APP?>',{
+				'MODULE':'actions',
+				'acClase':'Home',
+				'acMetodo':'acLogin',
+				'acTipo':'ajax',
+				'email':$('#email').val(),
+				'pass':$('#pass').val()
+			},
+			function (response) {
+				console.log(response);
+				if (!response.data.resultado.valor){
+					muestraMsgModal('Error',response.data.resultado.msg);
+				} else {
+					window.location.reload();
+				}
+			},
+			'json');
+		} else {
+			muestraMsgModal('Error','Escribe tu email y contraseña');
+		}
+	});
+
 });
 

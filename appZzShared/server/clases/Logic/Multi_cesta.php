@@ -91,5 +91,20 @@ class Multi_cesta extends Sintax\Core\Entity implements Sintax\Core\IEntity {
 		}
 		return $objLinea;
 	}
+	public function arrItemsJqCesta() {
+		$arr=array();
+		$arrLineas=$this->arrMulti_cestaLinea("","","","arrClassObjs");
+		foreach ($arrLineas as $objLinea) {
+			$objOferta=new \Multi_ofertaVenta($this->db(),$objLinea->GETidMulti_ofertaVenta());
+			$std=new \stdClass();
+			$std->id = $objLinea->GETidMulti_ofertaVenta();
+			$std->imagen = $objOferta->imgSrc();
+			$std->descripcion = $objOferta->GETnombre();
+			$std->quantity = $objLinea->GETcantidad();
+			$std->precio = $objOferta->pvp();
+			array_push($arr, $std);
+		}
+		return $arr;
+	}
 }
 ?>
