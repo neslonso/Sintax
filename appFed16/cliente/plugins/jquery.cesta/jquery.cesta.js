@@ -172,11 +172,16 @@
 				event.preventDefault();
 			});
 			//spinbox
-			$('body').on('changed.fu.spinbox', '.'+plugin.settings.classBtnSpinbox, function(event) {
+			/*$('body').on('changed.fu.spinbox', '.'+plugin.settings.classBtnSpinbox, function(event) {
 			  	$spin=$(this);
 			  	var id=$spin.closest('.itemCart').data('id');
 				plugin.editItem(id, $spin.spinbox('getValue'));
-			})
+			})*/
+			$('body').on('change.jqCesta', '.'+plugin.settings.classBtnSpinbox, function(event) {
+				$spin=$(this);
+				var id=$(this).closest('.itemCart').data('id');
+				plugin.editItem(id, $spin[0].value);
+			});
 			//btnCart handler
 			$('.btnCart',$element).click(function(event) {
 				plugin.toggleCesta();
@@ -220,7 +225,7 @@
 						'Su pedido no contiene ningún producto',
 					'</div>',
 				'</div>',
-				'<div class="col-lg-12 col-md-3 col-sm-6 separator-item">',
+				'<div class="col-lg-12 col-md-12 col-sm-12 separator-item">',
 				'</div>'
 			].join('');
 			return cuerpoItem;
@@ -234,6 +239,9 @@
 			var prc=objItem.precio;
 			var total = unit * prc;
 			var spinbox=[
+				'<input type="number" class="inputUnit ' + plugin.settings.classBtnSpinbox + '" min="1" max="99" value="' + unit + '">',
+			].join('');
+			/*var spinbox=[
 				'<div class="fuelux" style="display:inline-block">',
 					'<div class="spinbox ' + plugin.settings.classBtnSpinbox + '" data-initialize="spinbox">',
 						'<input type="text" class="form-control input-mini spinbox-input" value="' + unit + '">',
@@ -247,7 +255,7 @@
 						'</div>',
 					'</div>',
 				'</div>',
-			].join('');
+			].join('');*/
 
 			var cuerpoItem = [
 				'<div class="row itemCart" data-id="'+id+'">',
@@ -261,7 +269,7 @@
 						'<a class="btn ' + plugin.settings.classBtnRemove + '" data-id="' + id + '"><span class="glyphicon glyphicon-trash"></span>&nbsp;Quitar</a>',
 					'</div>',
 				'</div>',
-				'<div class="col-lg-12 col-md-3 col-sm-6 separator-item"></div>',
+				'<div class="col-lg-12 col-md-12 col-sm-12 separator-item"></div>',
 			].join('');
 
 			return cuerpoItem;

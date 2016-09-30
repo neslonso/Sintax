@@ -91,8 +91,13 @@
 	color: @color-font-btnRemoveItem !important;
 }
 
-.itemCart .unit .fuelux {
+/*.itemCart .unit .fuelux {
   width: 30%;
+}*/
+/*sustitucion fuelux spinbox*/
+.itemCart .unit .inputUnit {
+  width: 30%;
+  margin: 4px;
 }
 /*estilos desplazamiento cesta*/
 .contentCartInside {
