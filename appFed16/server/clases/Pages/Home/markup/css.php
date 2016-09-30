@@ -356,6 +356,7 @@ a.blanco{
 	border: solid #000 1px;
 }
 /*********  LISTADO DE PRODUCTOS **********/
+
 .shop-item {
 	position: relative;
 	max-width: 360px;

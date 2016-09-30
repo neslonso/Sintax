@@ -36,7 +36,7 @@
 			arrItems: [],//array objetos
 			classBtnAdd: 'jqCst',
 			classBtnRemove: 'jqCstRm', //clase remove item cart
-			classBtnSpinbox: 'jqCstSpnbx', //clase remove item cart
+			classBtnSpinbox: 'jqCstSpnbx', //clase spinner item cart
 			linkCart: {
 				txtBtnCart: "",
 				imgActiveBtnCart: false,
@@ -50,6 +50,8 @@
 			cart:{
 				txtBtnOrder: "Comprar ahora",
 				classBtnOrder: "btnCheckOrder",
+				valMinQuantity : 1,
+				valMaxQuantity : 99,
 			}
 		}
 
@@ -239,7 +241,7 @@
 			var prc=objItem.precio;
 			var total = unit * prc;
 			var spinbox=[
-				'<input type="number" class="inputUnit ' + plugin.settings.classBtnSpinbox + '" min="1" max="99" value="' + unit + '">',
+				'<input type="number" class="inputUnit ' + plugin.settings.classBtnSpinbox + '" min="' + plugin.settings.cart.valMinQuantity + '" max="' + plugin.settings.cart.valMaxQuantity + '" value="' + unit + '">',
 			].join('');
 			/*var spinbox=[
 				'<div class="fuelux" style="display:inline-block">',
