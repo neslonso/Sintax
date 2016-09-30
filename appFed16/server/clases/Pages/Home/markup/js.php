@@ -27,7 +27,7 @@ $(document).ready(function() {
 			$("#wrapper").toggleClass("toggled");
 		}
 	});
-	$('[data-toggle="tooltip"]').tooltip();
+	$('[data-toggle="tooltip.itemShop"]').tooltip({container: 'body'});
 	$('#modalItems').on('show.bs.modal', function (e) {
 		var idItem=$(e.relatedTarget).data('item');
 		$("#popupItemActive").val(idItem);

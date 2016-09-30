@@ -356,6 +356,7 @@ a.blanco{
 	border: solid #000 1px;
 }
 /*********  LISTADO DE PRODUCTOS **********/
+
 .shop-item {
 	position: relative;
 	max-width: 360px;
@@ -418,10 +419,7 @@ a.blanco{
 }
 .shop-item-link{
 	cursor: pointer;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	font-size: smaller;
+
 }
 .shop-item-name{
 	overflow: hidden;
@@ -487,6 +485,8 @@ a.blanco{
 
 	#wrapper {
 		padding-left: @width-menu;
+		position: relative;
+		z-index: 29;
 	}
 	#wrapper.toggled {
 		padding-left: 0;
