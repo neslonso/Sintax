@@ -34,10 +34,22 @@
 					&nbsp;
 <?
 				if ($logueado){
+					if ($cliente->nombre==""){
+						$nombreAvatar=substr($cliente->email, 0, strrpos($cliente->email, '@'));
+						$nombreAvatarMin=strtoupper($nombreAvatar[0]);
+					} else {
+						$stringNombre=explode(" ",$cliente->nombre);
+						$nombreAvatar=$stringNombre[0];
+						$nombreAvatarMin=strtoupper($nombreAvatar[0]);
+					}
 ?>
-                    <button id="btnUserNav" class="btn btn-default btn-menu" type="button" data-toggle="tooltip" title="Área de usuario" data-placement="top" data-container="body">
-                        <span class="glyphicon glyphicon-user"></span>
-                    </button>
+                    <div class="btn-group" role="group" aria-label="...">
+	                    <button id="btnUserNav" class="btn btn-primary btn-menu" type="button" data-toggle="tooltip" title="Área de usuario" data-placement="top" data-container="body">
+	                        <span class="glyphicon glyphicon-user"></span>
+	                        <span class="badge visible-xs visible-sm"><?=$nombreAvatarMin?></span>
+	                        <span class="badge hidden-xs hidden-sm"><?=$nombreAvatar?></span>
+	                    </button>
+	                </div>
 					<div id="navUserMenu" class="nav-user-menu">
 						<div class="panel panel-default nav-user-panel">
 							<div class="panel-body">
@@ -190,6 +202,8 @@
 																						$x+=30;
 																						$imgCat='<span style="background-image:url(\''.$cat->ico.'\'); background-position:'.$x.'px 0px;" class="img-cat-subMenu"></span>';
 																					} else {
+																						$imgProdsCat="<pre>".print_r($catH,true)."</pre>";
+																						/*
 																						$imgProdsCat='
 																							<div class="text-center">
 																								<img src="'.$catH->img.'" alt="" class="img-responsive img-cat-subMenu">
@@ -199,7 +213,7 @@
 																								<img src="'.$catH->img.'" alt="" class="img-responsive img-cat-subMenu">
 																								<img src="'.$catH->img.'" alt="" class="img-responsive img-cat-subMenu">
 																							</div>
-																						';
+																						';*/
 																					}
 ?>
 																						<h4><?=$imgCat?><?=$catH->nombre?></h4>
