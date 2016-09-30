@@ -44,6 +44,7 @@
 				icoActiveBtnCart: true,
 				classBtn: "btn-menu",
 				icoBtnCart: "glyphicon glyphicon-shopping-cart",
+				icoBtnCheckout: "glyphicon glyphicon-ok-circle",
 				badgeActiveQuantityBtnCart: true,
 			},
 			cart:{
@@ -65,17 +66,15 @@
 		// the "constructor" method that gets called when the object is created
 		plugin.init = function() {
 			plugin.settings = $.extend({}, defaults, options);
-			//$element=$element.parent();
-			//element=$element[0];
-
-			//$('[data-toggle="tooltip"]',$element).tooltip();
 			$("body").tooltip({
-				selector: '[data-toggle="tooltip"]',
+				selector: '#'+$element.attr('id')+' [data-toggle="tooltip.jqCesta"]',
 				container: 'body',
 			});
-
 			$element.append([
-				'<a class="btn btn-default '+plugin.settings.linkCart.classBtn+' btnCart" href="javascript:void(null);"></a>',
+				'<div class="btn-group" role="group" aria-label="...">',
+					'<button type="button" class="btn btn-default '+plugin.settings.linkCart.classBtn+' btnCart"></button>',
+					'<button type="button" class="btn btn-default btn-warning '+plugin.settings.linkCart.classBtn+' btnCheckOrder" data-toggle="tooltip.jqCesta" title="Comprar ahora"></button>',
+				'</div>',
 				'<div class="contentCart">',
 					'<div class="itemsCart">',
 					'</div>',
@@ -115,7 +114,8 @@
 				objItem.timestamp = $.now();;
 				plugin.settings.arrItems.push(objItem);
 			} else {
-				plugin.settings.arrItems[idxOfId].quantity+=1;
+				var objItem=plugin.settings.arrItems[idxOfId]
+				objItem.quantity+=1;
 			}
 			renderItems();
 			renderTotal();
@@ -190,11 +190,13 @@
 		var renderButton = function() {
 			var ST_linkCart = plugin.settings.linkCart;
 
+			//var imagen_html ='<img class="img-responsive" src="' + ST_linkCart.imgBtnCart + '" alt="">';
+			//var symbol_html = (ST_linkCart.icoActiveBtnCart)?ico_html:imagen_html;
 			var ico_html = '<i class="' + ST_linkCart.icoBtnCart + '"></i>';
-			var imagen_html ='<img class="img-responsive" src="' + ST_linkCart.imgBtnCart + '" alt="">';
-			var symbol_html = (ST_linkCart.icoActiveBtnCart)?ico_html:imagen_html;
+			var ico_checkout= '<i class="' + ST_linkCart.icoBtnCheckout + '"></i>';
 			var badgeQuantity_html = (ST_linkCart.badgeActiveQuantityBtnCart) ? '<span class="badge badgeCart">' + plugin.settings.arrItems.length + '</span>' : '';
-			$('.btnCart',$element).html(ST_linkCart.txtBtnCart + symbol_html + badgeQuantity_html);
+			$('.btn-group button:first-child',$element).html(ST_linkCart.txtBtnCart + ico_html + badgeQuantity_html);
+			$('.btn-group button:last-child',$element).html(ico_checkout);
 		}
 
 		var renderItems = function () {
@@ -253,7 +255,7 @@
 						'<img class="img-responsive" src="' + src + '" alt="">',
 					'</div>',
 					'<div class="col-xs-6 col-sm-8 col-md-9">',
-						'<div class="ttl" data-toggle="tooltip" title="'+ ttl +'">' + ttl + '</div>',
+						'<div class="ttl" data-toggle="tooltip.jqCesta" title="'+ ttl +'">' + ttl + '</div>',
 						'<div class="unit" style="float:left">' + spinbox + '</div>',
 						'<div class="price" ><span>' + parseFloat(total).toFixed(2) + '&euro;</span></div>',
 						'<a class="btn ' + plugin.settings.classBtnRemove + '" data-id="' + id + '"><span class="glyphicon glyphicon-trash"></span>&nbsp;Quitar</a>',
@@ -269,9 +271,6 @@
 			var sum = 0;
 			for (var i = 0; i < plugin.settings.arrItems.length; i++) {
 				switch(field){
-					case 'quantity' :
-						sum = sum + parseFloat(plugin.settings.arrItems[i][field]);
-						break;
 					case 'precio' :
 						sum = sum + ( parseFloat(plugin.settings.arrItems[i][field]) * parseFloat(plugin.settings.arrItems[i].quantity));
 						break
