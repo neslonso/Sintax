@@ -3,7 +3,13 @@
 	<div class="page-header">
 		<h1><?=$cliente->saludo?> <?=$cliente->nombre?></h1>
 		<h3>
+<?
+		if ($cliente->tipoDescuento>0){
+?>
 			<span class="label label-default">Descuento: <?=$cliente->tipoDescuento?> %</span> &nbsp;
+<?
+		}
+?>
 			<span class="label label-default">Crédito: <?=$cliente->saldo?> €</span>
 		</h3>
 	</div>
@@ -140,7 +146,6 @@
 <?
 	if (!empty($direcciones)) {
 		foreach ($direcciones as $direccion) {
-			$GLOBALS['firephp']->info($direccion,"direccion");
 ?>
 			<div id="panelDir<?=$direccion->id?>" class="panel panel-warning">
 				<div onclick="panelClick('<?=$direccion->id?>');" class="panel-heading cursorLink">
@@ -216,7 +221,7 @@
 ?>
 									</select>
 <?
-								if ($direccion->idPais==0){
+								if ($direccion->esPaisConocido==0){
 ?>
 									<p class="bg-danger" style="padding:5px !important; margin-top:3px !important;">Por favor, guarde nuevamente esta dirección ya que en nuestros sistemas figura como país <b><?=$direccion->pais?></b></p>
 <?

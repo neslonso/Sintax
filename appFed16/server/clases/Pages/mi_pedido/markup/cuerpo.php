@@ -1,5 +1,8 @@
 <?="\n<!-- ".get_class()." -->\n"?>
 <div class="container-fluid">
+	<div class="page-header">
+		<h1>Detalle de pedido</h1>
+	</div>
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			Pedido #<?=sprintf('%06u',$arrPedido->pedido->numero)?> (<?=$arrPedido->pedido->fecha?>)

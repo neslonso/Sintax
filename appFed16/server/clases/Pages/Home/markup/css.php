@@ -1,7 +1,7 @@
 <?if (false) {?><style><?}?>
 <?="\n/*".get_class()."*/\n"?>
 /*********** DEFINICION DE VARIABLES ************/
-@color-principal: #ff94be;
+@color-principal: #CD5A91; /*#ff94be*/
 @color-secundario: #6c94be;
 @color-links: #304c71;
 @color-links-hover: #6c94be;
@@ -107,7 +107,7 @@ a.blanco{
     right: -300px !important;
     width: 300px !important;
     height: auto !important;
-    border-top: 3px solid #ff94be;
+    border-top: 3px solid @color-principal;
     overflow: hidden;
     box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.23);
     background-color: #fff;
@@ -193,8 +193,9 @@ a.blanco{
 	height: 30px;
 	display: inline-block;
 	float: left;
-	border: solid @color-secundario 1px;
+	border: solid @color-principal 1px;
 	border-radius: 3px;
+	background-color: #fff;
 }
 .col-subMenu{
 	-moz-column-count: 3;
@@ -421,6 +422,13 @@ a.blanco{
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	font-size: smaller;
+}
+.shop-item-name{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	font-size: smaller;
+
 }
 .shop-item .shop-item-cart  a.btn:hover{
 	color:#fff !important;

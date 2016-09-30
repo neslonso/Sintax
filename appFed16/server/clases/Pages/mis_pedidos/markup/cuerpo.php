@@ -1,5 +1,8 @@
 <?="\n<!-- ".get_class()." -->\n"?>
 <div class="container-fluid">
+	<div class="page-header">
+		<h1>Historial de pedidos</h1>
+	</div>
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			Listado de Pedidos

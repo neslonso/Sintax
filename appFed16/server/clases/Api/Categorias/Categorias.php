@@ -28,7 +28,6 @@ class Categorias extends ApiService implements IApiService {
 			$obj->nombre=$objCat->GETnombre();
 			//$obj->ico=$objCat->icoSrc();
 			$obj->ico=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB_MPA_JOIN&fichero='.$listaIdsFotosMenu.'&ancho=30&alto=30&formato=jpg';
-			//$obj->img='';
 			$obj->img=$objCat->imgSrc();
 			array_push($arr,$obj);
 		}
@@ -93,6 +92,13 @@ class Categorias extends ApiService implements IApiService {
 					$arrOfersMasVendidas=self::arrOfersMasVendidas($keyTienda, 6, $objCatHija->GETid());
 					foreach ($arrOfersMasVendidas as $ofer) {
 						if (!empty($ofer->imgId)) array_push($arrIdsFotos, base_convert($ofer->imgId,10,36));
+					}
+				}
+				$arrCatsNietas=$objCatHija->arrMulti_categoriaHija("visible='1'","","","arrClassObjs");
+				if (empty($arrCatsNietas)) {
+					$arrOfersMasVendidas=self::arrOfersMasVendidas($keyTienda, 6, $objCatHija->GETid());
+					foreach ($arrOfersMasVendidas as $ofer) {
+						if (!empty($ofer->imgId)) array_push($arrIdsFotos, $ofer->imgId);
 					}
 				}
 			}

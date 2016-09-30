@@ -90,7 +90,7 @@ class Multi_clienteDireccion extends \Sintax\Core\Entity implements \Sintax\Core
 /******************************************************************************/
 	public static function sqlComprobacionPais(\MysqliDB $db,$nombrePais) {
 		return
-			"SELECT * FROM multi_pais mp LEFT JOIN multi_paisSinonimo mps ON mp.id=mps.idMulti_pais
+			"SELECT  mp.id, mp.alpha2 FROM multi_pais mp LEFT JOIN multi_paisSinonimo mps ON mp.id=mps.idMulti_pais
 			WHERE nombre_es='".$db->real_escape_string($nombrePais)."'
 				OR nombre_en='".$db->real_escape_string($nombrePais)."'
 				OR sinonimo='".$db->real_escape_string($nombrePais)."'";
@@ -107,6 +107,14 @@ class Multi_clienteDireccion extends \Sintax\Core\Entity implements \Sintax\Core
 		$sql=static::sqlComprobacionPais($this->db(),$this->GETpais());
 		$data=$this->db()->get_row($sql);
 		if ($data) {$result=$data->alpha2;}
+		else {throw new Exception("País desconocido (".$this->GETpais().") en direccion ID: [".$this->GETid()."]", 1);}
+		return $result;
+	}
+
+	public function paisToIdPais() {
+		$sql=static::sqlComprobacionPais($this->db(),$this->GETpais());
+		$data=$this->db()->get_row($sql);
+		if ($data) {$result=$data->id;}
 		else {throw new Exception("País desconocido (".$this->GETpais().") en direccion ID: [".$this->GETid()."]", 1);}
 		return $result;
 	}

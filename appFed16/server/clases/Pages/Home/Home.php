@@ -155,5 +155,18 @@ class Home extends Error implements IPage {
 			throw new ActionException("Error eliminando producto", 1,$e);
 		}
 	}
+
+	public function acRemoveFromCesta ($idMulti_ofertaVenta) {
+		try {
+			$db=\cDb::confByKey('celorriov3');
+			$objCesta=$this->ensureCesta($db);
+			$objLinea=$objCesta->arrMulti_cestaLinea("idMulti_ofertaVenta='".$idMulti_ofertaVenta."'","","","arrClassObjs");
+			$result=$objLinea[0]->borrar();
+			$_SESSION['cesta']=$objCesta;
+			return $result;
+		} catch (Exception $e) {
+			throw new ActionException("Error eliminando producto", 1,$e);
+		}
+	}
 }
 ?>
