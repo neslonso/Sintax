@@ -86,10 +86,6 @@
 			// code goes here
 			console.log("Init plugin jQueryNotificactions");
 			//$('#divJqNotifications').html('Hola plugin').appendTo(element);
-			plugin.addNotification("Prueba", "Esto es una prueba <span class='articleName'><b> Belmil </b></span>", 'add');
-			setTimeout(function() {
-        		plugin.addNotification("Prueba 2", "Esto es una prueba <span class='articleName'><b> Belmil </b></span>", 'del');
-			}, 3000);
 
 			/*por defecto*/
 
