@@ -36,28 +36,7 @@ class registro_usuario extends Home implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
 	}
 	public function acGrabarCliente(){
-		/*
-		//POST a la API de V3 para modificar los datos
-		$arrayPost=$_REQUEST;
-		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliAdd';
-		// use key 'http' even if you send the request to https://...
-		$options = array(
-		    'http' => array(
-		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-		        'method'  => 'POST',
-		        'content' => http_build_query($arrayPost),
-		    ),
-		);
-		$context  = stream_context_create($options);
-		$responseApi = file_get_contents($url, false, $context);
-		$result=json_decode($responseApi);
-		if ($result->resultado->valor){
-			$objCli=new \Bridge_Multi_cliente();
-			$objCli->id=$result->datos->id;
-			$_SESSION['usuario']=$objCli;
-		}
-		return $result;*/
-		$result=\Sintax\ApiService\Clientes::acNuevoCliente($mail,$pass,$keyTienda);
+		$result=\Sintax\ApiService\Clientes::acNuevoCliente($_REQUEST['email'],$_REQUEST['pass'],$_REQUEST['keyTienda']);
 		$result=json_decode($result);
 		return $result;
 	}

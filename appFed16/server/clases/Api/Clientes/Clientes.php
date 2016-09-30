@@ -47,26 +47,34 @@ class Clientes extends ApiService implements IApiService {
 	public static function acNuevoCliente($email,$pass,$keyTienda){
 		$db=\cDb::confByKey("celorriov3");
 		$arrReturn=array();
-		if (\Multi_cliente::existeEmail($email,$keyTienda)){
+		$email=trim($email);
+		if ($email=""){
 			$arrAccion=array(
 				"valor" => false,
-				"msg" => "El correo electrónico ya existe"
+				"msg" => "El correo electrónico no es correcto"
 			);
 		} else {
-			$objCli=new \Multi_cliente($db);
-			$objCli->SETemail($email);
-			$objCli->SETpassSha256($pass);
-			$objCli->SETkeyTienda($keyTienda);
-			$objCli->grabar();
-			$arrDatos=array(
-				"id" => $objCli->GETid()
-			);
-			$arrReturn['datos']=$arrDatos;
-			$arrAccion=array(
-				"valor" => true,
-				"msg" => "Alta de usuario correcta"
-			);
-			\Cliente::acLoginCliente($email,$pass,$keyTienda);
+			if (\Multi_cliente::existeEmail($db,$email,$keyTienda)){
+				$arrAccion=array(
+					"valor" => false,
+					"msg" => "El correo electrónico ya existe"
+				);
+			} else {
+				$objCli=new \Multi_cliente($db);
+				$objCli->SETemail($email);
+				$objCli->SETpassSha256($pass);
+				$objCli->SETkeyTienda($keyTienda);
+				$objCli->grabar();
+				$arrDatos=array(
+					"id" => $objCli->GETid()
+				);
+				$arrReturn['datos']=$arrDatos;
+				$arrAccion=array(
+					"valor" => true,
+					"msg" => "Alta de usuario correcta"
+				);
+				self::acLoginCliente($email,$pass,$keyTienda);
+			}
 		}
 		$arrReturn['resultado']=$arrAccion;
 		return json_encode($arrReturn);
@@ -87,7 +95,9 @@ class Clientes extends ApiService implements IApiService {
 		$direcciones=array();
 		foreach ($objCli->arrMulti_clienteDireccion("","","","arrClassObjs") as $objDir) {
 			$soDirecion=$objDir->toStdObj();
-			$soDirecion->idPais=($objDir->esPaisConocido()>0)?$objDir->esPaisConocido():0;
+			$soDirecion->esPaisConocido=$objDir->esPaisConocido();
+			$soDirecion->idPais=($objDir->esPaisConocido()>0)?$objDir->paisToIdPais():199;
+			error_log("direccion espaisconocido:".$soDirecion->esPaisConocido." idPais:".$soDirecion->idPais);
 			array_push($direcciones,$soDirecion);
 		}
 		$objDatosRender->direcciones=$direcciones;

@@ -79,7 +79,7 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 	public function SETpassSha256 ($passSha256,$entity_encode=false) {
 		$salt=hash('sha256', uniqid(mt_rand(), true));
 		$hash=$salt.hash('sha256',$salt.$passSha256);
-		$this->passSha256=$hash;
+		$this->arrDbData["passSha256"]=$hash;
 		$this->arrDbData["passSha256"]=($entity_encode)?htmlentities($this->arrDbData["passSha256"],ENT_QUOTES,"UTF-8"):$this->arrDbData["passSha256"];
 		//los primeros 64 caracteres del hash son el salt usado para este pass
 		//que deberemos recuperar para juntar con el pass introducido y comprobar

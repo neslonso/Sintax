@@ -61,7 +61,7 @@
 				<div class="col-lg-2 col-md-3 col-sm-6">
 					<div class="shop-item-wrapper">
 						<!--Item -->
-						<div class="shop-item">
+						<div class="shop-item" data-toggle="tooltip" title="<?=$prod->nombre?>" data-placement="top" data-container="body">
 							<!-- Item's image -->
 							<a class="shop-item-link" data-item="<?=$prod->id?>" data-toggle="modal" data-target="#modalItems">
 								<img class="img-responsive"  src="<?=$prod->urlFotoPpal?>" alt="" />
@@ -69,13 +69,14 @@
 							<!-- Item details -->
 							<div class="shop-item-dtls">
 								<!-- product title -->
-								<h4><a class="shop-item-link" data-item="<?=$prod->id?>" data-toggle="modal" data-target="#modalItems"><?=$prod->nombre?></a></h4>
+								<!--<h4><a class="shop-item-link" data-item="<?=$prod->id?>" data-toggle="modal" data-target="#modalItems"><?=$prod->nombre?></a></h4>-->
+								<h4><a class="shop-item-link" data-item="<?=$prod->id?>" data-toggle="modal" data-target="#modalItems"><div class="shop-item-name"><?=$prod->nombre?></div></a></h4>
 								<!-- price -->
 								<span class="shop-item-price"><?=$prod->precio?>€</span>
 							</div>
 							<!-- add to cart btn -->
 							<div class="shop-item-cart">
-								<a class="btn jqCst" data-id="<?=$prod->id?>" data-ttl="<?=$prod->nombre?>" data-unit="1" data-prc="<?=$prod->precio?>" data-src="<?=$prod->urlFotoPpal?>" href="#">Comprar</a>
+								<a class="btn jqCst" data-id="<?=$prod->id?>" data-ttl="<?=$prod->nombre?>" data-unit="1" data-prc="<?=$prod->precio?>" data-src="<?=$prod->urlFotoPpal?>">Comprar</a>
 							</div>
 						</div>
 						<?=$rebote?>

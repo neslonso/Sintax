@@ -27,6 +27,9 @@ class Home extends Error implements IPage {
 	public function js() {
 		parent::js();
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsCesta.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsBuscador.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsBanner.php");
 	}
 	public function css() {
 		parent::css();
@@ -44,7 +47,7 @@ class Home extends Error implements IPage {
 		}
 	//$GLOBALS['firephp']->error($db->ping(),"pre arrCatsRootsMenu");
 		$arrCatsRoots=\Sintax\ApiService\Categorias::arrCatsRootsMenu($GLOBALS['config']->tienda->key);
-		$db=\cDb::confByKey("celorriov3");
+		//$db=\cDb::confByKey("celorriov3");
 	//$GLOBALS['firephp']->error($db->ping(),"post arrCatsRootsMenu");
 		$objCesta=$this->ensureCesta($db);
 		$arrCestaItems=$objCesta->arrItemsJqCesta();
@@ -54,7 +57,8 @@ class Home extends Error implements IPage {
 	}
 
 	public function cuerpo() {
-		$arrProds=\Sintax\ApiService\Productos::arrRandomOfertasVenta(18,$GLOBALS['config']->tienda->key);
+		//$arrProds=\Sintax\ApiService\Productos::arrRandomOfertasVenta(23,$GLOBALS['config']->tienda->key);
+		$arrProds=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,23);
 		require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
 	}
 	public function subMenu($idPadre){
@@ -93,7 +97,6 @@ class Home extends Error implements IPage {
 				nombre LIKE '%".$like."%'
 			)
 		";
-
 		$arr=\Multi_ofertaVenta::getArray($db,$where,"","","arrStdObjs");
 		return $arr;
 	}
@@ -105,6 +108,9 @@ class Home extends Error implements IPage {
 			if ($class=="Multi_cesta") {
 				$objCesta=$_SESSION['cesta'];
 				$objCesta->SETdb($db);
+				if (!\Multi_cesta::existe($db,$objCesta->GETid())) {
+					$objCesta->SETid(NULL);
+				}
 			} else {
 				unset ($_SESSION['cesta']);
 			}
@@ -112,13 +118,14 @@ class Home extends Error implements IPage {
 		if (isset($_SESSION['usuario'])) {
 			$objCli=$_SESSION['usuario']->objEntity;
 			$objCesta->SETidMulti_cliente($objCli->GETid());
-			$objCesta->grabar();
 		}
+		$objCesta->grabar();
 		$_SESSION['cesta']=$objCesta;
 		return $objCesta;
 	}
 
 	public function acAddToCesta ($idMulti_ofertaVenta) {
+		try {
 		$db=\cDb::confByKey('celorriov3');
 
 		$objCesta=$this->ensureCesta($db);
@@ -127,9 +134,25 @@ class Home extends Error implements IPage {
 		$objLinea->SETcantidad($objLinea->GETcantidad()+1);
 		$objLinea->SETidMulti_cesta($objCesta->GETid());
 		$objLinea->SETidMulti_ofertaVenta($idMulti_ofertaVenta);
-		$objLinea->grabar();
+			$result=$objLinea->grabar();
 		$_SESSION['cesta']=$objCesta;
-		return true;
+			return $result;
+		} catch (Exception $e) {
+			throw new ActionException("Error añadiendo producto", 1,$e);
+		}
+	}
+
+	public function acRemoveFromCesta ($idMulti_ofertaVenta) {
+		try {
+			$db=\cDb::confByKey('celorriov3');
+			$objCesta=$this->ensureCesta($db);
+			$objLinea=$objCesta->arrMulti_cestaLinea("idMulti_ofertaVenta='".$idMulti_ofertaVenta."'","","","arrClassObjs");
+			$result=$objLinea[0]->borrar();
+			$_SESSION['cesta']=$objCesta;
+			return $result;
+		} catch (Exception $e) {
+			throw new ActionException("Error eliminando producto", 1,$e);
+		}
 	}
 }
 ?>

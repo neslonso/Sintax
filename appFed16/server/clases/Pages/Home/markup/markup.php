@@ -8,7 +8,7 @@
 		<div class="container-fluid container-cabecera-barraLogo">
 			<div class="row vertical-align">
 				<div class="col-xs-6 col-sm-4 col-md-3">
-					<a href="./"><img class="img-responsive logo" src="./appFed16/binaries/imgs/shop-logo.jpg" alt=""></a>
+					<a href="<?=BASE_URL?>"><img class="img-responsive logo" src="<?=$GLOBALS['config']->tienda->URL_LOGO?>" alt=""></a>
 				</div>
 				<div class="col-xs-3 col-sm-2 col-md-1">
 					<a href="#menu-toggle" class="btn btn-default btn-menu" id="menu-toggle"><span class="glyphicon glyphicon-align-justify"></span></a>
@@ -28,25 +28,29 @@
 							</div>
 						</div>
 					</form>
-				<!--
-					<div id="custom-search-input">
-						<div class="input-group col-md-12">
-							<input type="text" class="  search-query form-control" placeholder="Busca en nuestra tienda..." />
-							<span class="input-group-btn">
-								<button class="btn btn-danger" type="button">
-									<span class=" glyphicon glyphicon-search"></span>
-								</button>
-							</span>
-						</div>
-					</div>
-				-->
 				</div>
 				<div class="col-xs-3 col-sm-2 col-md-4">
 					<div id="divJqCesta" data-arr-items="<?=$jsonArrCestaItems?>"></div>
-					<div id="navUserMenu" class="nav-user-menu">
+					&nbsp;
 <?
-					if ($logueado){
+				if ($logueado){
+					if ($cliente->nombre==""){
+						$nombreAvatar=substr($cliente->email, 0, strrpos($cliente->email, '@'));
+						$nombreAvatarMin=strtoupper($nombreAvatar[0]);
+					} else {
+						$stringNombre=explode(" ",$cliente->nombre);
+						$nombreAvatar=$stringNombre[0];
+						$nombreAvatarMin=strtoupper($nombreAvatar[0]);
+					}
 ?>
+                    <div class="btn-group" role="group" aria-label="...">
+	                    <button id="btnUserNav" class="btn btn-primary btn-menu" type="button" data-toggle="tooltip" title="Área de usuario" data-placement="top" data-container="body">
+	                        <span class="glyphicon glyphicon-user"></span>
+	                        <span class="badge visible-xs visible-sm"><?=$nombreAvatarMin?></span>
+	                        <span class="badge hidden-xs hidden-sm"><?=$nombreAvatar?></span>
+	                    </button>
+	                </div>
+					<div id="navUserMenu" class="nav-user-menu">
 						<div class="panel panel-default nav-user-panel">
 							<div class="panel-body">
 								<div class="row">
@@ -72,7 +76,7 @@
 		                            </div>
 		                        </div>
 <?
-						if ($cliente->tipoDescuento>0){
+					if ($cliente->tipoDescuento>0){
 ?>
 		  						<div class="row">
 		                            <div class="col-sm-7">
@@ -85,7 +89,7 @@
 		                            </div>
 		                        </div>
 <?
-						}
+					}
 ?>
 							</div>
 							<div class="panel-footer">
@@ -98,11 +102,22 @@
                                 </div>
                             </div>
 						</div>
+					</div>
 <?
-					} else {
+				} else {
 ?>
-
-
+					<div class="btn-group" role="group" aria-label="...">
+	                    <button id="btnUserNav" class="btn btn-success btn-menu" type="button" data-toggle="tooltip" title="Accede / Regístrate" data-placement="top" data-container="body">
+	                        <span class="fa fa-user-plus"></span>
+	                    </button>
+	                    <button id="btnUserFB" class="btn btn-primary btn-menu" type="button" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
+	                        <span class="fa fa-facebook-square"></span>
+	                    </button>
+	                    <button id="btnUserTW" class="btn btn-info btn-menu" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
+	                        <span class="fa fa fa-twitter"></span>
+	                    </button>
+	                </div>
+					<div id="navUserMenu" class="nav-user-menu">
 						<div class="row">
 							<div class="col-xs-12">
 								<div class="panel panel-default nav-user-panel">
@@ -132,14 +147,11 @@
 								</div>
 							</div>
 						</div>
-
-<?
-					}
-?>
 					</div>
-                    <a id="btnUserNav" href="#" class="btn btn-default btn-menu">
-                        <span class="glyphicon glyphicon-user"></span>
-                    </a>
+<?
+				}
+?>
+
 				</div>
 			</div>
 		</div>
@@ -190,16 +202,13 @@
 																						$x+=30;
 																						$imgCat='<span style="background-image:url(\''.$cat->ico.'\'); background-position:'.$x.'px 0px;" class="img-cat-subMenu"></span>';
 																					} else {
-																						$imgProdsCat='
-																							<div class="text-center">
-																								<img src="'.$catH->img.'" alt="" class="img-responsive img-cat-subMenu">
-																								<img src="'.$catH->img.'" alt="" class="img-responsive img-cat-subMenu">
-																								<img src="'.$catH->img.'" alt="" class="img-responsive img-cat-subMenu">
-																								<img src="'.$catH->img.'" alt="" class="img-responsive img-cat-subMenu">
-																								<img src="'.$catH->img.'" alt="" class="img-responsive img-cat-subMenu">
-																								<img src="'.$catH->img.'" alt="" class="img-responsive img-cat-subMenu">
-																							</div>
-																						';
+																						$imgProdsCat='<div class="text-center">';
+																						foreach ($catH->arrImgsMasVendidas as $prodMasVendido) {
+																							$x+=30;
+																							$imgProdsCat.='<span style="background-image:url(\''.$cat->ico.'\'); background-position:'.$x.'px 0px;" data-toggle="tooltip" title="'.$prodMasVendido->imgId.'--'.$prodMasVendido->nombre.'" data-placement="top" data-container="body" class="img-cat-subMenu"></span>';
+																						}
+																						$imgProdsCat.='</div>';
+																						//$imgProdsCat="<pre>".print_r($catH,true)."</pre>";
 																					}
 ?>
 																						<h4><?=$imgCat?><?=$catH->nombre?></h4>
