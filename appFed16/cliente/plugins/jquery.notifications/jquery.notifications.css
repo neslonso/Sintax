@@ -24,7 +24,7 @@
 /**/
 #divJqNotifications {
     position: fixed;
-    right: 0;
+    left: 0;
     top: 134px;
     width: 415px;
     z-index: 30;
@@ -78,7 +78,7 @@
     animation-duration: 0.32s;
     animation-fill-mode: both;
 }
-
+/*Move right*/
 @keyframes fadeOutRight {
   from {
     opacity: 1;
@@ -110,22 +110,3 @@
   animation-name: fadeInRight;
 }
 
-/*#divJqNotifications .message a {
-    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-    color: #fff;
-    font-weight: 100;
-}
-#divJqNotifications .last-units p {
-    color: #444;
-}
-#divJqNotifications .last-units .icon-holder {
-    border: 3px solid #c2c2c2;
-}
-#divJqNotifications .last-units .icon-holder p.icon {
-    color: #ff6000;
-    font-size: 41px;
-    font-weight: bold;
-    margin-left: 19px;
-}
-
-*/
