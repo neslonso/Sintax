@@ -61,7 +61,7 @@
 				<div class="col-lg-2 col-md-3 col-sm-6">
 					<div class="shop-item-wrapper">
 						<!--Item -->
-						<div class="shop-item" data-toggle="tooltip" title="<?=$prod->nombre?>">
+						<div class="shop-item" data-toggle="tooltip.itemShop" title="<?=$prod->nombre?>">
 							<!-- Item's image -->
 							<a class="shop-item-link" data-item="<?=$prod->id?>" data-toggle="modal" data-target="#modalItems">
 								<img class="img-responsive"  src="<?=$prod->urlFotoPpal?>" alt="" />
