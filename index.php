@@ -20,7 +20,7 @@ try {
 	$GLOBALS['config']->tienda=(object) $arrTiendas[$keyTienda];
 	$GLOBALS['config']->tienda->key=$keyTienda;
 	session_name ($arrDomains[$X_FORWARDED_HOST]->session_name);
-	$_REQUEST['session_name']=$arrDomains[$X_FORWARDED_HOST]->session_name;
+	$GLOBALS['session_name']=$_REQUEST['session_name']=$arrDomains[$X_FORWARDED_HOST]->session_name;
 
 
 	$module=(isset($_REQUEST['MODULE']))?strtolower($_REQUEST['MODULE']):"render";

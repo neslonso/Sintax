@@ -102,7 +102,7 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 			$sql=substr($sql,0,-2);
 			$sql.=")";
 		}
-		error_log(__FILE__."::".__LINE__."::sql: ".$sql);
+		//error_log(__FILE__."::".__LINE__."::sql: ".$sql);
 		try {
 			$result=$this->db()->query ($sql);
 			$sqlUnlock="UNLOCK TABLES";
@@ -119,7 +119,7 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 		$result=false;
 		if ($this->noReferenciado()) {
 			$sql="DELETE FROM ".static::$table." WHERE ".static::$keyField."='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
-			error_log(__FILE__."::".__LINE__."::sql: ".$sql);
+			//error_log(__FILE__."::".__LINE__."::sql: ".$sql);
 			$this->db()->query($sql);
 			$result=true;
 		}

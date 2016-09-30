@@ -65,7 +65,7 @@ class Multi_cupon extends \Sintax\Core\Entity implements \Sintax\Core\IEntity {
 /* Funciones FkTo *************************************************************/
 
 	public function arrMulti_pedido($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_cupon='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_cupon='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_cupon='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_cupon='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_pedido".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -91,6 +91,16 @@ class Multi_cupon extends \Sintax\Core\Entity implements \Sintax\Core\IEntity {
 		}
 		return $arr;
 	}
+/******************************************************************************/
+	public function caducado() {
+		$caducidadUnix=Fecha::fromMysql($this->GETcaducidad())->GETdate();
+		if ($caducidadUnix<time()) {
+			$result=true;
+		} else {
+			$result=false;
+		}
+		return $result;
+	}
 
 	public function getlistaPedidos() {
 		$glue=', ';
@@ -101,5 +111,32 @@ class Multi_cupon extends \Sintax\Core\Entity implements \Sintax\Core\IEntity {
 		$lista=substr($lista,0,strlen($glue));
 		return $lista;
 	}
+
+	public static function cargarPorCodigo($db,$codigo) {
+		$result=false;
+		$codigo=strtoupper($codigo);
+		$sql="SELECT * FROM multi_cupon WHERE codigo='".$db->real_escape_string($codigo)."'";
+		$data=$db->get_row($sql);
+		if ($data) {
+			$result=new self($db,$data->id);
+		}
+		return $result;
+	}
+
+	public function yaUtilizadoPor($idMulti_cliente) {
+		$sql="SELECT id FROM multi_pedido WHERE idMulti_cupon='".$this->db()->real_escape_string($this->GETid())."' AND idMulti_cliente='".$this->db()->real_escape_string($idMulti_cliente)."'";
+		$rsl=$this->db()->query($sql);
+		$result=false;
+		while ($data=$rsl->fetch_object()) {
+			$objPed=new Multi_pedido($this->db(),$data->id);
+			$objPedidoEstado=new Multi_pedidoEstado($this->db(),$objPed->estadoPasoProcesoActual());
+			if ($objPedidoEstado->GETpagado() || $objPedidoEstado->GETpreparado() || $objPedidoEstado->GETenviado()) {
+				$result=true;
+			}
+		}
+		return $result;
+	}
+
+
 }
 ?>

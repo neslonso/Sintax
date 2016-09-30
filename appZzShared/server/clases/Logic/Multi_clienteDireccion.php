@@ -46,7 +46,12 @@ class Multi_clienteDireccion extends \Sintax\Core\Entity implements \Sintax\Core
 	public function SETupdate ($update,$entity_encode=false) {$this->arrDbData["update"]=($entity_encode)?htmlentities($update,ENT_QUOTES,"UTF-8"):$update;}
 
 	public function GETnombre ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["nombre"],ENT_QUOTES,"UTF-8"):$this->arrDbData["nombre"];}
-	public function SETnombre ($nombre,$entity_encode=false) {$this->arrDbData["nombre"]=($entity_encode)?htmlentities($nombre,ENT_QUOTES,"UTF-8"):$nombre;}
+	public function SETnombre ($nombre,$entity_encode=false) {
+		if (trim($nombre)=="") {
+			$nombre="Dirección ".$this->numeroDireccion();
+		}
+		$this->arrDbData["nombre"]=($entity_encode)?htmlentities($nombre,ENT_QUOTES,"UTF-8"):$nombre;
+	}
 
 	public function GETdestinatario ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["destinatario"],ENT_QUOTES,"UTF-8"):$this->arrDbData["destinatario"];}
 	public function SETdestinatario ($destinatario,$entity_encode=false) {$this->arrDbData["destinatario"]=($entity_encode)?htmlentities($destinatario,ENT_QUOTES,"UTF-8"):$destinatario;}
@@ -192,7 +197,18 @@ class Multi_clienteDireccion extends \Sintax\Core\Entity implements \Sintax\Core
 		}
 		return $result;
 	}
-
-
+	private function numeroDireccion() {
+		$result=1;
+		$sql="SELECT id FROM multi_clienteDireccion WHERE idMulti_cliente='".$this->db()->real_escape_string($this->GETidMulti_cliente())."' ORDER BY id ASC";
+		$rsl=$this->db()->query($sql);
+		while ($data=$rsl->fetch_object()) {
+			if ($data->id!=$this->GETid()) {
+				$result++;
+			} else {
+				break;
+			}
+		}
+		return $result;
+	}
 }
 ?>

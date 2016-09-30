@@ -58,7 +58,7 @@ class Multi_tipoIva extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 /* Funciones FkTo *************************************************************/
 
 	public function arrMulti_producto($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_tipoIva='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_tipoIva='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_tipoIva='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_tipoIva='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_producto".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -86,7 +86,7 @@ class Multi_tipoIva extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 	}
 /******************************************************************************/
 	public static function idTipo($db, $tipo) {
-		$sql='SELECT id FROM multi_tipoIva WHERE tipoIva="'.$db->real_escape_String($tipo).'"';
+		$sql='SELECT id FROM multi_tipoIva WHERE tipoIva="'.$db->real_escape_string($tipo).'"';
 		$rsl=$db->query($sql);
 		if ($rsl->num_rows>0) {
 			$data=$rsl->fetch_object();

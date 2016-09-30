@@ -252,7 +252,7 @@ $(document).ready(function() {
 							}
 						}
 					} else {
-						muestraMsgModal('El cupón introducido no es válido.','No se ha encontrado el cupón "'+response.data.codigo+'".');
+						muestraMsgModal('El cupón introducido no es válido.','No se ha encontrado el cupón "'+codigoCupon+'".');
 					}
 				}
 			},

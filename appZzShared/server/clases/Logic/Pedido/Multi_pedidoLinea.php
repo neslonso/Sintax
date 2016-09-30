@@ -83,7 +83,7 @@ class Multi_pedidoLinea extends Sintax\Core\Entity implements Sintax\Core\IEntit
 /* Funciones FkTo *************************************************************/
 
 	public function arrMulti_pedidoLineaCredito($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idPedidoLinea='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idPedidoLinea='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idPedidoLinea='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idPedidoLinea='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_pedidoLineaCredito".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -110,7 +110,7 @@ class Multi_pedidoLinea extends Sintax\Core\Entity implements Sintax\Core\IEntit
 		return $arr;
 	}
 	public function arrMulti_pedidoLineaDescuento($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idPedidoLinea='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idPedidoLinea='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idPedidoLinea='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idPedidoLinea='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_pedidoLineaDescuento".$sqlWhere.$sqlOrder.$sqlLimit;

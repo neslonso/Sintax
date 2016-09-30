@@ -460,7 +460,7 @@ class Creadora {
 				$functionName.='By'.ucfirst($fField);
 			}
 			$resultCode.=$sg.'public function arr'.ucfirst($functionName).'($where="",$order="",$limit="",$tipo="arrStdObjs") {'.$sl;
-			$resultCode.=$sg.$sg.'$sqlWhere=($where!="")?" WHERE '.$fField.'=\'".\$this->db()->real_escape_String($this->id)."\' AND ".$where:" WHERE '.$fField.'=\'".\$this->db()->real_escape_string($this->id)."\'";'.$sl;
+			$resultCode.=$sg.$sg.'$sqlWhere=($where!="")?" WHERE '.$fField.'=\'".\$this->db()->real_escape_string($this->id)."\' AND ".$where:" WHERE '.$fField.'=\'".\$this->db()->real_escape_string($this->id)."\'";'.$sl;
 			$resultCode.=$sg.$sg.'$sqlOrder=($order!="")?" ORDER BY ".$order:"";'.$sl;
 			$resultCode.=$sg.$sg.'$sqlLimit=($limit!="")?" LIMIT ".$limit:"";'.$sl;
 			if (!$objFkInfo->manyToMany) {

@@ -102,7 +102,7 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 /* Funciones FkTo *************************************************************/
 
 	public function arrMulti_categoria($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_categoriaVARIOSmulti_ofertaVenta f INNER JOIN multi_categoria ff ON f.idMulti_categoria=ff.".\Multi_categoria::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -129,7 +129,7 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		return $arr;
 	}
 	public function arrMulti_cestaLinea($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_cestaLinea".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -156,7 +156,7 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		return $arr;
 	}
 	public function arrMulti_producto($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_ofertaVenta='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_productoVARIOSmulti_ofertaVenta f INNER JOIN multi_producto ff ON f.idMulti_producto=ff.".\Multi_producto::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -183,6 +183,15 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		return $arr;
 	}
 /******************************************************************************/
+	public static function cargarPorRef($db,$ref) {
+		$result=false;
+		$sql="SELECT id FROM multi_ofertaVenta WHERE referencia='".$db->real_escape_string($ref)."'";
+		$data=$db->get_row($sql);
+		if ($data) {
+			$result=new self($db,$data->id);
+		}
+		return $result;
+	}
 	public function SETfluctuacion($precioMin,$precioMax) {
 		$this->SETprecioMin($precioMin);
 		$this->SETprecioMax($precioMax);
@@ -197,8 +206,38 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		}
 		return $arr;
 	}
+	public function tipoIva() {
+		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
+		$tipoIva=0;
+		if (count($arrProds)==1) {
+			$tipoIva=$arrProds[0]->tipoIva();
+		} else {
+			//TODO: Imprescindible, saber que hacer aquí
+			throw new Exception("No sabemos que hacer con los packs de productos", 1);
+			$tipoIva=$arrProds[0]->tipoIva();
+		}
+		return $tipoIva;
+	}
+	public function pai(){
+		return round($this->GETprecio(),2);
+	}
 	public function pvp(){
-		return $this->GETprecio();
+		return round($this->GETprecio()*(1+$this->tipoIVa()/100),2);
+	}
+	/**
+	 * [imgSrc description]
+	 * @param  integer $i [description]
+	 * @return [type]     [description]
+	 */
+	public function imgId($i=0) {
+		$arrFotosPpalesOferta=array();
+		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
+		foreach ($arrProds as $objMProd) {
+			$arrFotos=$objMProd->arrMulti_productoAdjunto("(mimeType LIKE 'image/%')","orden","0,1","arrKeys");
+			array_push($arrFotosPpalesOferta,$arrFotos[$i]);
+		}
+		$idMPA=$arrFotosPpalesOferta[$i];
+		return $idMPA;
 	}
 	/**
 	 * Devuelve la url de la imagen de indice $i de un array compuesto por la primera imagen de cada producto de la foto
@@ -206,138 +245,9 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 	 * @return string url de la imagen
 	 */
 	public function imgSrc($i=0) {
-		$arrFotosPpalesOferta=array();
-		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
-		foreach ($arrProds as $objMProd) {
-			$arrFotos=$objMProd->arrMulti_productoAdjunto("(mimeType LIKE 'image/%')","orden","","arrKeys");
-			array_push($arrFotosPpalesOferta,$arrFotos[0]);
-		}
-		$idMPA=$arrFotosPpalesOferta[$i];
+		$idMPA=$this->imgId($i);
 		$src=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB&fichero=multi_productoAdjunto.id.'.$idMPA.'.data&ancho=150&alto=150&modo='.Imagen::OUTPUT_MODE_FILL;
 		return $src;
-	}
-/******************************************************************************/
-	public function lsAsignacionesProds($where="",$order="",$limit="") {
-		$tInicial=microtime(true);
-		$rsl=$this->lsAsignacionesProdsQuery($where,$order,$limit);
-		$arr=$this->lsAsignacionesProdsBucle($rsl);
-		$tTotal=microtime(true)-$tInicial;
-		error_log ("/* lsAsignacionesProds ejecutado en: ".round($tTotal,3)." segundos.");
-		return $arr;
-	}
-
-	public function lsAsignacionesProdsQuery($where="",$order="",$limit="") {
-		$whereProd="idMulti_ofertaVenta='".$this->GETkeyValue()."'";
-		$sqlWhere=($where!="")?" WHERE ".$where.' AND '.$whereProd:' WHERE '.$whereProd;
-		$sqlOrder=($order!="")?" ORDER BY ".$order:'';
-		$sqlLimit=($limit!="")?" LIMIT ".$limit:'';
-		$sql="
-			SELECT CONCAT(idMulti_producto,':',idMulti_ofertaVenta) as id, idMulti_producto, idMulti_ofertaVenta, referencia,
-				nombre, cantidad, mp.precio as precioCatalogo, mpVmov.precio
-			FROM multi_producto mp INNER JOIN multi_productoVARIOSmulti_ofertaVenta mpVmov ON mp.id=mpVmov.idMulti_producto
-		".$sqlWhere.$sqlOrder.$sqlLimit;
-		$tQuery=microtime(true);
-		//error_log ("/*** lsAsignacionesProdsQuery SQL: ".$sql);
-		$rsl=$GLOBALS['db']->query($sql);
-		$tTotalQuery=microtime(true)-$tQuery;
-		error_log ("/*** lsAsignacionesProdsQuery ejecutado en: ".round($tTotalQuery,3)." segundos.");
-		return $rsl;
-	}
-
-	public function lsAsignacionesProdsBucle($rsl) {
-		$tBucle=microtime(true);
-		$arr=array();
-		while ($data=$rsl->fetch_object()) {
-			$obj=new stdClass();
-			foreach ($data as $field => $value) {
-				$obj->$field=$value;
-			}
-			array_push($arr,$obj);
-			unset ($obj);
-		}
-		$tTotalBucle=microtime(true)-$tBucle;
-		error_log ("/*** lsAsignacionesProdsBucle ejecutado en: ".round($tTotalBucle,3)." segundos.");
-		return $arr;
-	}
-
-/******************************************************************************/
-	public function eliminarCategorias() {
-		$sql="DELETE FROM multi_categoriaVARIOSmulti_ofertaVenta WHERE idMulti_ofertaVenta='".$this->GETid()."'";
-		$result=$GLOBALS['db']->query($sql);
-		return $result;
-	}
-
-	public function asignarCategoria($idMulti_categoria,$principal=0,$orden=0) {
-		$sqlValue_idMulti_categoria="'".$GLOBALS['db']->real_escape_string($idMulti_categoria)."'";
-		$sqlValue_idMulti_ofertaVenta="'".$GLOBALS['db']->real_escape_string($this->GETid())."'";
-		$sqlValue_principal="'".$GLOBALS['db']->real_escape_string($principal)."'";
-		$sqlValue_orden="'".$GLOBALS['db']->real_escape_string($orden)."'";
-		$sqlValue_insert=date("YmdHis");
-		$sqlValue_update="NULL";
-		$sql="INSERT INTO multi_categoriaVARIOSmulti_ofertaVenta (".
-			"`idMulti_categoria`, ".
-			"`idMulti_ofertaVenta`, ".
-			"`insert`, ".
-			"`update`, ".
-			"`principal`, ".
-			"`orden`".
-			") VALUES (".
-			$sqlValue_idMulti_categoria.", ".
-			$sqlValue_idMulti_ofertaVenta.", ".
-			$sqlValue_insert.", ".
-			$sqlValue_update.", ".
-			$sqlValue_principal.", ".
-			$sqlValue_orden.
-			")";
-		$GLOBALS['db']->query($sql);
-	}
-/******************************************************************************/
-	public function deletePackData($idMulti_producto) {
-		$sql="DELETE FROM multi_productoVARIOSmulti_ofertaVenta WHERE idMulti_producto='".$idMulti_producto."' AND idMulti_ofertaVenta='".$this->GETid()."'";
-		$GLOBALS['db']->query($sql);
-	}
-
-	public function setPackData($idMulti_producto,$attr,$value) {
-		$sql="UPDATE multi_productoVARIOSmulti_ofertaVenta SET `".$attr."`='".$value."' WHERE idMulti_producto='".$idMulti_producto."' AND idMulti_ofertaVenta='".$this->GETid()."'";
-		$GLOBALS['db']->query($sql);
-	}
-	public function insertPackData($idMulti_producto,$cantidad,$precio) {
-		$sql="
-			INSERT INTO `multi_productoVARIOSmulti_ofertaVenta` (
-				`idMulti_producto`,
-				`idMulti_ofertaVenta`,
-				`insert`,
-				`update`,
-				`cantidad`,
-				`precio`
-			) VALUES (
-				'".$idMulti_producto."',
-				'".$this->GETid()."',
-				'".date('YmdHis')."',
-				NULL,
-				'".$cantidad."',
-				'".$precio."'
-			);
-		";
-		$GLOBALS['db']->query($sql);
-	}
-
-	public function calculaArrImputacionesPrecio() {
-		$result=array();
-		$arrAsignacionesProds=$this->lsAsignacionesProds();
-		$totalPreciosCatalogo=0;
-		$totalProdsEnPack=0;
-		foreach ($arrAsignacionesProds as $stdObj) {
-			$totalProdsEnPack++;
-			$totalPreciosCatalogo+=$stdObj->precioCatalogo;
-		}
-		$ratioOferta=$this->GETprecio()/$totalPreciosCatalogo;
-		error_log("ratioOferta: ".$ratioOferta."=".$this->GETprecio()."/".$totalPreciosCatalogo);
-
-		foreach ($arrAsignacionesProds as $stdObj) {
-			$result[$stdObj->idMulti_producto]=$stdObj->precio*$ratioOferta;
-			error_log($stdObj->referencia."=".$stdObj->precio."*".$ratioOferta);
-		}
 	}
 /******************************************************************************/
 }

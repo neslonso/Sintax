@@ -91,10 +91,14 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 /* Funciones FkTo *************************************************************/
 
 	public function arrMulti_productoAdjunto($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_producto='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_producto='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_producto='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_producto='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
-		$sql="SELECT * FROM multi_productoAdjunto".$sqlWhere.$sqlOrder.$sqlLimit;
+		switch ($tipo) {
+			case "arrKeys":
+			case "arrClassObjs": $sql="SELECT id FROM multi_productoAdjunto".$sqlWhere.$sqlOrder.$sqlLimit;break;
+			case "arrStdObjs": $sql="SELECT * FROM multi_productoAdjunto".$sqlWhere.$sqlOrder.$sqlLimit;break;
+		}
 		$arr=array();
 		$rsl=$this->db()->query($sql);
 		while ($data=$rsl->fetch_object()) {
@@ -118,7 +122,7 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 		return $arr;
 	}
 	public function arrMulti_ofertaVenta($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_producto='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_producto='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_producto='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_producto='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_productoVARIOSmulti_ofertaVenta f INNER JOIN multi_ofertaVenta ff ON f.idMulti_ofertaVenta=ff.".\Multi_ofertaVenta::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -375,6 +379,9 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 	public static function refToId($db,$refProd) {
 		$sql="SELECT id FROM multi_producto WHERE referencia='".$db->real_escape_string($refProd)."'";
 		return $db->get_var($sql);
+	}
+	public function tipoIva() {
+		return $this->objMulti_tipoIva()->GETtipoIva();
 	}
 }
 ?>

@@ -27,6 +27,9 @@ class Home extends Error implements IPage {
 	public function js() {
 		parent::js();
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsCesta.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsBuscador.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsBanner.php");
 	}
 	public function css() {
 		parent::css();
@@ -43,7 +46,10 @@ class Home extends Error implements IPage {
 			$cliente->saldo=$objCli->saldoCredito();
 		}
 	//$GLOBALS['firephp']->error($db->ping(),"pre arrCatsRootsMenu");
+	$tInicial=microtime(true);
 		$arrCatsRoots=\Sintax\ApiService\Categorias::arrCatsRootsMenu($GLOBALS['config']->tienda->key);
+	$tTotal=microtime(true)-$tInicial;
+	error_log('/** Excep. arrCatsRootsMenu: '.round($tTotal,4));
 		//$db=\cDb::confByKey("celorriov3");
 	//$GLOBALS['firephp']->error($db->ping(),"post arrCatsRootsMenu");
 		$objCesta=$this->ensureCesta($db);
@@ -54,7 +60,8 @@ class Home extends Error implements IPage {
 	}
 
 	public function cuerpo() {
-		$arrProds=\Sintax\ApiService\Productos::arrRandomOfertasVenta(18,$GLOBALS['config']->tienda->key);
+		//$arrProds=\Sintax\ApiService\Productos::arrRandomOfertasVenta(23,$GLOBALS['config']->tienda->key);
+		$arrProds=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,23);
 		require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
 	}
 	public function subMenu($idPadre){
@@ -121,17 +128,32 @@ class Home extends Error implements IPage {
 	}
 
 	public function acAddToCesta ($idMulti_ofertaVenta) {
-		$db=\cDb::confByKey('celorriov3');
+		try {
+			$db=\cDb::confByKey('celorriov3');
+			$objCesta=$this->ensureCesta($db);
+			$objLinea=$objCesta->getLineaOfertaOrNew($idMulti_ofertaVenta);
+			$objLinea->SETcantidad($objLinea->GETcantidad()+1);
+			$objLinea->SETidMulti_cesta($objCesta->GETid());
+			$objLinea->SETidMulti_ofertaVenta($idMulti_ofertaVenta);
+			$result=$objLinea->grabar();
+			$_SESSION['cesta']=$objCesta;
+			return $result;
+		} catch (Exception $e) {
+			throw new ActionException("Error añadiendo producto", 1,$e);
+		}
+	}
 
-		$objCesta=$this->ensureCesta($db);
-
-		$objLinea=$objCesta->getLineaOfertaOrNew($idMulti_ofertaVenta);
-		$objLinea->SETcantidad($objLinea->GETcantidad()+1);
-		$objLinea->SETidMulti_cesta($objCesta->GETid());
-		$objLinea->SETidMulti_ofertaVenta($idMulti_ofertaVenta);
-		$objLinea->grabar();
-		$_SESSION['cesta']=$objCesta;
-		return true;
+	public function acRemoveFromCesta ($idMulti_ofertaVenta) {
+		try {
+			$db=\cDb::confByKey('celorriov3');
+			$objCesta=$this->ensureCesta($db);
+			$objLinea=$objCesta->arrMulti_cestaLinea("idMulti_ofertaVenta='".$idMulti_ofertaVenta."'","","","arrClassObjs");
+			$result=$objLinea[0]->borrar();
+			$_SESSION['cesta']=$objCesta;
+			return $result;
+		} catch (Exception $e) {
+			throw new ActionException("Error eliminando producto", 1,$e);
+		}
 	}
 }
 ?>

@@ -37,6 +37,7 @@ define ('ARR_TIENDAS',serialize(array (
 		'SITE_NAME' => 'Bebefarma',
 		'FROM_EMAIL' => 'atcioncliente@bebefarma.com',
 		'REPLY_TO_EMAIL' => 'pedidos@bebefarma.com',
+		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/shop-logo.jpg',
 	),
 	'FC' => array (
 		'SITE_NAME' => '',

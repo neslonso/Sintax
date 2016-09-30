@@ -79,7 +79,7 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 	public function SETpassSha256 ($passSha256,$entity_encode=false) {
 		$salt=hash('sha256', uniqid(mt_rand(), true));
 		$hash=$salt.hash('sha256',$salt.$passSha256);
-		$this->passSha256=$hash;
+		$this->arrDbData["passSha256"]=$hash;
 		$this->arrDbData["passSha256"]=($entity_encode)?htmlentities($this->arrDbData["passSha256"],ENT_QUOTES,"UTF-8"):$this->arrDbData["passSha256"];
 		//los primeros 64 caracteres del hash son el salt usado para este pass
 		//que deberemos recuperar para juntar con el pass introducido y comprobar
@@ -144,7 +144,7 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 /* Funciones FkTo *************************************************************/
 
 	public function arrMulti_apunteCredito($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_cliente='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_apunteCredito".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -171,7 +171,7 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		return $arr;
 	}
 	public function arrMulti_cesta($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_cliente='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_cesta".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -198,7 +198,7 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		return $arr;
 	}
 	public function arrMulti_clienteDireccion($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_cliente='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_clienteDireccion".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -225,7 +225,7 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		return $arr;
 	}
 	public function arrMulti_cupon($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_cliente='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_cupon".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -252,7 +252,7 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		return $arr;
 	}
 	public function arrMulti_pedido($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_cliente='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_cliente='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_pedido".$sqlWhere.$sqlOrder.$sqlLimit;

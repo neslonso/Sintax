@@ -6,6 +6,9 @@
 @color-font-btnCheckOrder: #ffffff;
 @color-bd-btnCheckOrder: #ffffff;
 
+@color-font-btnRemoveItem :#ffffff;
+@color-bg-btnRemoveItem: #ff94be;
+
 @width-cesta: 400px;
 @color-bg-itemsCart: #f0f0f0;
 
@@ -49,7 +52,7 @@
 	margin: 3px 0px 7px 0px;
 }
 
-.btnCheckOrder{
+.contentCart .btnCheckOrder{
 	background-color: @color-principal;
 	color: @color-font-btnCheckOrder !important;
 	border: 1px solid  @color-bd-btnCheckOrder;
@@ -82,6 +85,15 @@
 	color: color-font-priceItem;
 }
 
+.itemCart .btn{
+	border: 1px solid;
+	background-color: @color-bg-btnRemoveItem;
+	color: @color-font-btnRemoveItem !important;
+}
+
+.itemCart .unit .fuelux {
+	width: 30%;
+}
 /*estilos desplazamiento cesta*/
 .contentCartInside {
 	animation: lateralMoveIn 0.5s;

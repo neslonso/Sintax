@@ -188,7 +188,7 @@ class Multi_pedido extends Sintax\Core\Entity implements Sintax\Core\IEntity {
 /* Funciones FkTo *************************************************************/
 
 	public function arrMulti_pedidoCredito($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idPedido='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idPedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idPedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idPedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_pedidoCredito".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -215,7 +215,7 @@ class Multi_pedido extends Sintax\Core\Entity implements Sintax\Core\IEntity {
 		return $arr;
 	}
 	public function arrMulti_pedidoDescuento($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idPedido='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idPedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idPedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idPedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_pedidoDescuento".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -242,7 +242,7 @@ class Multi_pedido extends Sintax\Core\Entity implements Sintax\Core\IEntity {
 		return $arr;
 	}
 	public function arrMulti_pedidoLinea($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idPedido='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idPedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idPedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idPedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_pedidoLinea".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -269,7 +269,7 @@ class Multi_pedido extends Sintax\Core\Entity implements Sintax\Core\IEntity {
 		return $arr;
 	}
 	public function arrMulti_pedidoMensaje($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idPedido='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idPedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idPedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idPedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_pedidoMensaje".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -296,7 +296,7 @@ class Multi_pedido extends Sintax\Core\Entity implements Sintax\Core\IEntity {
 		return $arr;
 	}
 	public function arrMulti_pedidoPasoProceso($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_pedido='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_pedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_pedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_pedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_pedidoPasoProceso".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -323,7 +323,7 @@ class Multi_pedido extends Sintax\Core\Entity implements Sintax\Core\IEntity {
 		return $arr;
 	}
 	public function arrMulti_transporteNotificacion($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idPedido='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idPedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idPedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idPedido='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_transporteNotificacionVARIOSpedido f INNER JOIN multi_transporteNotificacion ff ON f.idTransporteNotificacion=ff.".\Multi_transporteNotificacion::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -348,6 +348,16 @@ class Multi_pedido extends Sintax\Core\Entity implements Sintax\Core\IEntity {
 			}
 		}
 		return $arr;
+	}
+/******************************************************************************/
+	public function estadoPasoProcesoActual(){
+		$sql="SELECT idMulti_pedidoEstado from multi_pedidoPasoProceso where idMulti_pedido='".$this->GETid()."' ORDER BY momento DESC, id DESC LIMIT 1";
+		$data=$this->db()->get_row($sql);
+		if (is_object($data)) {
+			return $data->idMulti_pedidoEstado;
+		} else {
+			return NULL;
+		}
 	}
 }
 ?>

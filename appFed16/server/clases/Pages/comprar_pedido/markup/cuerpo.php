@@ -73,7 +73,7 @@
 							<div class="panel-body">
 <?
 if ( $this->totalLineas($newPedBridgeData->lineas) > $storeData->IMPORTE_MINIMO_APLICACION_CREDITO) {
-								$creditoMaximoAplicable=($this->totalLineas($newPedBridgeData->lineas)>$datosCli->saldoCredito)?$datosCli->saldoCredito:$this->totalLineas($newPedBridgeData->lineas);
+	$creditoMaximoAplicable=($this->totalLineas($newPedBridgeData->lineas)>$datosCli->saldoCredito)?$datosCli->saldoCredito:$this->totalLineas($newPedBridgeData->lineas);
 ?>
 								<div class="row">
 									<div class="col-md-2">
@@ -360,17 +360,18 @@ if ($totalRebotes>0) {
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label for="pais" accesskey="">País*</label>
-								<select name="pais" id="pais" class="form-control">
+									<label for="pais" accesskey="">País:</label>
+
+									<select name="pais" id="pais" class="form-control">
 <?
-								foreach ($arrPaises->paises as $pais) {
-									$selected=($pais->id==$arrPaises->paisDefecto)?"selected='selected'":"";
+								foreach ($paises as $pais) {
+									$selected=($pais->id==$paisDefecto)?"selected='selected'":"";
 ?>
-										<option <?=$selected?> data-id="<?=$pais->id?>" data-iso="<?=$pais->iso?>" value="<?=$pais->nombre?>"><?=$pais->nombre?></option>
+									    <option <?=$selected?> data-id="<?=$pais->id?>" data-iso="<?=$pais->alpha2?>" value="<?=$pais->nombre_es?>"><?=$pais->nombre_es?></option>
 <?
 								}
 ?>
-								</select>
+									</select>
 							</div>
 						</div>
 						<div class="col-sm-4">

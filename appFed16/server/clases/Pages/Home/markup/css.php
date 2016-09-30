@@ -417,6 +417,10 @@ a.blanco{
 }
 .shop-item-link{
 	cursor: pointer;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	font-size: smaller;
 }
 .shop-item .shop-item-cart  a.btn:hover{
 	color:#fff !important;

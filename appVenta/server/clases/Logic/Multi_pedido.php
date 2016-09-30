@@ -410,7 +410,7 @@ class Multi_pedido {
 /* Funciones FkTo *************************************************************/
 
 	public function arrMulti_pedidoCredito($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idPedido='".self::db()->real_escape_String($this->id)."' AND ".$where:" WHERE idPedido='".self::db()->real_escape_string($this->id)."'";
+		$sqlWhere=($where!="")?" WHERE idPedido='".self::db()->real_escape_string($this->id)."' AND ".$where:" WHERE idPedido='".self::db()->real_escape_string($this->id)."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_pedidoCredito".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -436,7 +436,7 @@ class Multi_pedido {
 		return $arr;
 	}
 	public function arrMulti_pedidoDescuento($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idPedido='".self::db()->real_escape_String($this->id)."' AND ".$where:" WHERE idPedido='".self::db()->real_escape_string($this->id)."'";
+		$sqlWhere=($where!="")?" WHERE idPedido='".self::db()->real_escape_string($this->id)."' AND ".$where:" WHERE idPedido='".self::db()->real_escape_string($this->id)."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_pedidoDescuento".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -462,7 +462,7 @@ class Multi_pedido {
 		return $arr;
 	}
 	public function arrMulti_pedidoLinea($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idPedido='".self::db()->real_escape_String($this->id)."' AND ".$where:" WHERE idPedido='".self::db()->real_escape_string($this->id)."'";
+		$sqlWhere=($where!="")?" WHERE idPedido='".self::db()->real_escape_string($this->id)."' AND ".$where:" WHERE idPedido='".self::db()->real_escape_string($this->id)."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_pedidoLinea".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -488,7 +488,7 @@ class Multi_pedido {
 		return $arr;
 	}
 	public function arrMulti_pedidoMensaje($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idPedido='".self::db()->real_escape_String($this->id)."' AND ".$where:" WHERE idPedido='".self::db()->real_escape_string($this->id)."'";
+		$sqlWhere=($where!="")?" WHERE idPedido='".self::db()->real_escape_string($this->id)."' AND ".$where:" WHERE idPedido='".self::db()->real_escape_string($this->id)."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_pedidoMensaje".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -514,7 +514,7 @@ class Multi_pedido {
 		return $arr;
 	}
 	public function arrMulti_pedidoPasoProceso($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_pedido='".self::db()->real_escape_String($this->id)."' AND ".$where:" WHERE idMulti_pedido='".self::db()->real_escape_string($this->id)."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_pedido='".self::db()->real_escape_string($this->id)."' AND ".$where:" WHERE idMulti_pedido='".self::db()->real_escape_string($this->id)."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_pedidoPasoProceso".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -540,7 +540,7 @@ class Multi_pedido {
 		return $arr;
 	}
 	public function arrMulti_transporteNotificacion($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idPedido='".self::db()->real_escape_String($this->id)."' AND ".$where:" WHERE idPedido='".self::db()->real_escape_string($this->id)."'";
+		$sqlWhere=($where!="")?" WHERE idPedido='".self::db()->real_escape_string($this->id)."' AND ".$where:" WHERE idPedido='".self::db()->real_escape_string($this->id)."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_transporteNotificacionVARIOSpedido INNER JOIN multi_transporteNotificacion ON multi_transporteNotificacionVARIOSpedido.idTransporteNotificacion=multi_transporteNotificacion.id".$sqlWhere.$sqlOrder.$sqlLimit;

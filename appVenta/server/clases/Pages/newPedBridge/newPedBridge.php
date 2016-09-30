@@ -83,7 +83,7 @@ class newPedBridge extends Bridge implements IPage {
 		);
 		$context  = stream_context_create($options);
 		$responseApi = file_get_contents($url, false, $context);
-		$arrPaises=json_decode($responseApi);
+		$arrPaises=\Multijson_decode($responseApi);
 
 		$jsonArrDtosVolumen=htmlspecialchars(json_encode($storeData->DTOS_VOLUMEN_PEDIDO),ENT_QUOTES,'UTF-8');
 

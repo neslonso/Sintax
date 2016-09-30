@@ -85,7 +85,7 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 		return $this->arrMulti_categoriaByIdMulti_categoriaContenida($where,$order,$limit,$tipo);
 	}
 	public function arrMulti_categoriaByIdMulti_categoriaContenida($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_categoriaContenida='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_categoriaContenida='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_categoriaContenida='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_categoriaContenida='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_categoriaVARIOSmulti_categoria f INNER JOIN multi_categoria ff ON f.idMulti_categoriaContenedora=ff.".\Multi_categoria::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -115,7 +115,7 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 		return $this->arrMulti_categoriaByIdMulti_categoriaContenedora($where,$order,$limit,$tipo);
 	}
 	public function arrMulti_categoriaByIdMulti_categoriaContenedora($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_categoriaContenedora='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_categoriaContenedora='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_categoriaContenedora='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_categoriaContenedora='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_categoriaVARIOSmulti_categoria f INNER JOIN multi_categoria ff ON f.idMulti_categoriaContenedora=ff.".\Multi_categoria::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -142,7 +142,7 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 		return $arr;
 	}
 	public function arrMulti_ofertaVenta($where="",$order="",$limit="",$tipo="arrStdObjs") {
-		$sqlWhere=($where!="")?" WHERE idMulti_categoria='".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_categoria='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlWhere=($where!="")?" WHERE idMulti_categoria='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_categoria='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
 		$sql="SELECT * FROM multi_categoriaVARIOSmulti_ofertaVenta f INNER JOIN multi_ofertaVenta ff ON f.idMulti_ofertaVenta=ff.".\Multi_ofertaVenta::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;
@@ -224,18 +224,20 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 		}
 		return $arr;
 	}
-	/*
-	public function arrDescendientes($where="",$order="",$limit="") {
-		$arr=array();
-		foreach ($this->arrMulti_categoriaHija($where,$order,$limit,"arrClassObjs") as $objContenida) {
-			array_push($arr,$objContenida);
-			foreach ($objContenida->arrDescendientes($where,$order,$limit,"arrClassObjs") as $objContenidaEnContenida) {
-				array_push($arr,$objContenidaEnContenida);
-			}
+	public function arrAncestros($where="",$order="",$limit="") {
+		$ancestros=array();
+		if ($incluyeThis) {
+			array_push($ancestros,$this);
 		}
-		return $arr;
+		foreach ($this->arrMulti_categoriaPadre($where,$order,$limit,"arrClassObjs") as $objContenida) {
+
+		}
+		if (self::existeId($this->idPadre)) {
+			$objCatPadre=new Categoria($this->idPadre);
+			$ancestros=array_merge($ancestros,$objCatPadre->arrAncestros(true));
+		}
+		return $ancestros;
 	}
-	*/
 	public function arrDescendientes($where="",$order="",$limit="") {
 		$arr=array();
 		foreach ($this->arrMulti_categoriaHija($where,$order,$limit,"arrClassObjs") as $objContenida) {
@@ -244,8 +246,6 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 		}
 		return $arr;
 	}
-
-
 	public function distancia($objCatTo) {
 		if ($this->GETid()==$objCatTo->GETid()) {
 			$distancia=0;
@@ -384,6 +384,56 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 	}
 	public function icoSrc() {
 		return $this->imgSrc(30,30,"grayscale");
+	}
+	public function ruta($separador, $incluyeThis=false, $conEnlace=false, $claseCssEnlace="") {
+		$ancestros=$this->arrAncestros();
+		$ancestros=array_reverse($ancestros,true);
+		$ruta="";
+		foreach ($ancestros as $objCat) {
+				if ($conEnlace) {
+					$href=$objCat->url();
+					$ruta.="<h1 style='display:inline; white-space:nowrap;'><a href='".$href."' class='".$claseCssEnlace."'>".$objCat->GETnombre()."</a></h1>".$separador;
+				} else {
+					$ruta.=$objCat->GETnombre().$separador;
+				}
+		}
+		if ($incluyeThis) {
+			$thisRuta="";
+			if ($conEnlace) {
+				$href=$this->url();
+				$thisRuta.="<h1 style='display:inline; white-space:nowrap;'><a href='".$href."' class='".$claseCssEnlace."'>".$this->GETnombre()."</a></h1>";
+			} else {
+				$thisRuta.=$this->GETnombre();
+			}
+			$result=$ruta.$thisRuta;
+		} else {
+			$result=$ruta;
+		}
+		return $result;
+	}
+	public function url($relative=false,$seoFriendly=true) {
+		if ($relative) {
+			if ($seoFriendly) {
+				return BASE_DIR."cat/".Cadena::toUrlString($this->ruta("/",true))."/".$this->GETid()."/";
+			} else {
+				return BASE_DIR.FILE_APP."?page=cat&id=".$this->GETid();
+			}
+		} else {
+			if ($seoFriendly) {
+				//return BASE_URL.Cadena::toUrlString($this->ruta("/",true))."/cat/".$this->GETid()."/";
+				return BASE_URL.Cadena::toUrlString($this->GETnombre())."/cat/".$this->GETid()."/";
+			} else {
+				return BASE_URL.FILE_APP."?page=cat&id=".$this->GETid();
+			}
+		}
+	}
+	/**
+	 * [contieneCategorias description]
+	 * @return boolean [description]
+	 */
+	public function contieneCategorias() {
+		$sql="SELECT * FROM multi_categoriaVARIOSmulti_categoria WHERE idMulti_categoriaContenedora='".$this->db()->real_escape_string($this->GETid())."'";
+		return ($this->db()->get_num_rows($sql)>0)?true:false;
 	}
 }
 ?>

@@ -21,7 +21,7 @@ try {
 			try {
 				$db=\cDb::confByKey('celorriov3');
 				list($tabla,$campoId,$valorId,$campoData)=explode('.',$_GET["fichero"]);
-				$sql="SELECT ".$campoId.", ".$campoData." FROM ".$tabla." WHERE id='".$db->real_escape_String($valorId)."'";
+				$sql="SELECT ".$campoId.", ".$campoData." FROM ".$tabla." WHERE id='".$db->real_escape_string($valorId)."'";
 				$rslSet=$db->query($sql);
 				if ($rslSet->num_rows>0) {
 					$data=$rslSet->fetch_object();
@@ -40,21 +40,37 @@ try {
 		break;
 		case "DB_MPA_JOIN";
 			try {
-				$db=\cDb::confByKey('celorriov3');
+//$tInicial=microtime(true);
 				$listaIds=$_GET["fichero"];
-				$sql="SELECT id, data FROM multi_productoAdjunto WHERE id IN (".$db->real_escape_String($listaIds).") ORDER BY FIELD(id,".$db->real_escape_String($listaIds).")";
-				$rslSet=$db->query($sql);
-				$objImg=NULL;
-				while ($data=$rslSet->fetch_object()) {
-					$data=$data->data;
-					if (is_null($objImg)) {
-						$objImg=Imagen::fromString($data);
-						$objImg->fill($ancho,$alto);
-					} else {
-						$objImg->join(Imagen::fromString($data),"right");
-						$ancho=$objImg->width();
+				$filePath=CACHE_DIR.'imgMenu.'.md5($listaIds.$ancho.$alto.$modo.$formato.$calidad.$filtro).'.'.$formato;
+				$usarCache=file_exists($filePath) && filemtime($filePath)>time()-(60*60*240);
+				if ($usarCache) {
+					$objImg=Imagen::fromFile($filePath);
+					$ancho=$objImg->width();
+				} else {
+					$db=\cDb::confByKey('celorriov3');
+					$arrIds=explode(',',$listaIds);
+					$objImg=NULL;
+					foreach ($arrIds as $id) {
+						$sql="SELECT id, data FROM multi_productoAdjunto WHERE id='".$db->real_escape_string(base_convert($id,36,10))."'";
+						$rslSet=$db->query($sql);
+						$data=$rslSet->fetch_object();
+						$data=$data->data;
+						if (is_null($objImg)) {
+							$objImg=Imagen::fromString($data);
+							$objImg->fill($ancho,$alto);
+						} else {
+							$objImg->join(Imagen::fromString($data),"right");
+							$ancho=$objImg->width();
+						}
 					}
+					if (!is_dir(dirname($filePath))) {
+						mkdir(dirname($filePath),0700,true);
+					}
+					file_put_contents($filePath, $objImg->toString($ancho,$alto,$modo,$formato,$calidad,$filtro));
 				}
+//$tTotal=microtime(true)-$tInicial;
+//error_log('/** Excep. Timepo de JOIN de images: '.round($tTotal,4));
 			} catch (Exception $e) {
 				$firephp->error($e);
 				$file=BASE_IMGS_DIR.'imgErr.png';
