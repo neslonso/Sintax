@@ -356,6 +356,9 @@ a.blanco{
 	border: solid #000 1px;
 }
 /*********  LISTADO DE PRODUCTOS **********/
+.tooltip {
+    z-index: 1029;
+}
 .shop-item {
 	position: relative;
 	max-width: 360px;
