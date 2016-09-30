@@ -52,7 +52,7 @@
 	margin: 3px 0px 7px 0px;
 }
 
-.btnCheckOrder{
+.contentCart .btnCheckOrder{
 	background-color: @color-principal;
 	color: @color-font-btnCheckOrder !important;
 	border: 1px solid  @color-bd-btnCheckOrder;
