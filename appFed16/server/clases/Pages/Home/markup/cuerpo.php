@@ -1,71 +1,107 @@
 <div id="container-banners">
+	<div class="swiper-container">
+		<div class="swiper-wrapper">
+<?
+		$i=0;
+		foreach ($arrProds as $prod) {
+			$i++;
+			if ($i>13) {break;}
+			$urlFondo='';
+			//$urlProd=$objProd->url();
+			$urlProd='';
+			$idFotoProd=rand(1,33);//$objProd->idFoto0();
+			$imgSrc=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB&fichero=multi_productoAdjunto.id.'.$idFotoProd.'.data&alto=200&filtro=&modo='.(Imagen::OUTPUT_MODE_SCALE | Imagen::OUTPUT_MODE_ROTATE_H | Imagen::OUTPUT_MODE_ROTATE_V);
+			//$precioCatalogo=Cadena::toLocalNumber($objProd->GETprecioAntes(),2);
+			$precioCatalogo=33;
+			//$precioOferta=Cadena::toLocalNumber($objProd->pvp(),2);
+			$precioOferta=22;
+			//$tipoDtoRespectoCatalogo=$objProd->dto();
+			$tipoDtoRespectoCatalogo=64.2;
+			//$nombreOferta=$objProd->GETnombre();
+			$nombreOferta='Prueba '.rand(1,23);
 
+?>
+				<div class="swiper-slide">
+					<div class="swiper-slide-1">
+						<div style="background:center no-repeat url(<?=$imgSrc?>);">
+							<div>
+								<span style="font-size:x-large;"><?=$i?></span>
+							</div>
+						</div>
+					</div>
+				</div>
+<?
+		}
+?>
+		</div>
+		<!-- If we need pagination -->
+		<div class="swiper-pagination"></div>
+
+		<!-- If we need navigation buttons -->
+		<!--<div class="swiper-button-prev"></div>
+		<div class="swiper-button-next"></div>-->
+
+		<!-- If we need scrollbar -->
+		<!--<div class="swiper-scrollbar"></div>-->
+	</div>
 </div>
 <div class="container shop-item-container" id="container-cuerpo">
 	<div class="row">
 		<div class="col-lg-12">
 			<input type="hidden" id="popupItemActive" value="">
+			<div class='row'>
 <?
 		$i=1;
 		$htmlPopup="";
 		foreach ($arrProds as $prod) {
+			//echo "<pre>".print_r($prod,true)."</pre>";
 			$rebote="";
 			//$rebote = '<div class="shop-item-rebote"></div>';
-			if(($i==1)){
 ?>
-				<div class='row'>
-<?
-			}
-?>
-					<div class="col-lg-2 col-md-3 col-sm-6">
-						<div class="shop-item-wrapper">
-							<!--Item -->
-							<div class="shop-item">
-								<!-- Item's image -->
-								<img class="img-responsive" onclick="openItem(<?=$prod->id?>);" src="<?=$prod->urlFotoPpal?>" alt="" data-toggle="modal" data-target="#rbm_sldr_sc_m_mov_1_col_2"/>
-								<!-- Item details -->
-								<div class="shop-item-dtls">
-									<!-- product title -->
-									<h4><a data-toggle="modal" href="#rbm_sldr_sc_m_mov_1_col_2"><?=$prod->nombre?></a></h4>
-									<!-- price -->
-									<span class="shop-item-price"><?=$prod->precio?>€</span>
-								</div>
-								<!-- add to cart btn -->
-								<div class="shop-item-cart">
-									<a class="btn" href="#">Comprar</a>
-								</div>
+				<div class="col-lg-2 col-md-3 col-sm-6">
+					<div class="shop-item-wrapper">
+						<!--Item -->
+						<div class="shop-item" data-toggle="tooltip" title="<?=$prod->nombre?>" data-placement="auto left" data-container="body">
+							<!-- Item's image -->
+							<a class="shop-item-link" data-item="<?=$prod->id?>" data-toggle="modal" data-target="#modalItems">
+								<img class="img-responsive"  src="<?=$prod->urlFotoPpal?>" alt="" />
+							</a>
+							<!-- Item details -->
+							<div class="shop-item-dtls">
+								<!-- product title -->
+								<!--<h4><a class="shop-item-link" data-item="<?=$prod->id?>" data-toggle="modal" data-target="#modalItems"><?=$prod->nombre?></a></h4>-->
+								<h4><a class="shop-item-link" data-item="<?=$prod->id?>" data-toggle="modal" data-target="#modalItems"><div class="shop-item-name"><?=$prod->nombre?></div></a></h4>
+								<!-- price -->
+								<span class="shop-item-price"><?=$prod->precio?>€</span>
 							</div>
-							<?=$rebote?>
+							<!-- add to cart btn -->
+							<div class="shop-item-cart">
+								<a class="btn jqCst" data-id="<?=$prod->id?>" data-ttl="<?=$prod->nombre?>" data-unit="1" data-prc="<?=$prod->precio?>" data-src="<?=$prod->urlFotoPpal?>">Comprar</a>
+							</div>
 						</div>
+						<?=$rebote?>
 					</div>
-<?
-			if(($i==6)){
-?>
 				</div>
 <?
-				$i=1;
-			} else {
-				$i++;
-			}
+			if ($i%6==0){echo '<div class="clearfix visible-lg"></div>';}
+			if ($i%4==0){echo '<div class="clearfix visible-md"></div>';}
+			if ($i%2==0){echo '<div class="clearfix visible-sm"></div>';}
+			$i++;
 			//html popup
 			$htmlPopup.=$prod->popupProd;
 		}
-		if ($i!=1){
 ?>
-				</div>
-<?
-		}
-?>
+			</div>
 			<!-- Responsive Bootstrap Modal Popup -->
-			<div id="rbm_sldr_sc_m_mov_1_col_2" class="modal fade rbm_modal rbm_size_sldr_sc rbm_center rbm_bd_semi_trnsp rbm_bd_black rbm_blue rbm_bg_transp rbm_none_radius rbm_shadow_none  rbm_animate rbm_duration_vl rbmZoomIn rbm_easeOutQuint" role="dialog">
+			<div id="modalItems" class="modal fade rbm_modal rbm_size_sldr_sc rbm_center rbm_bd_semi_trnsp rbm_bd_black rbm_blue rbm_bg_transp rbm_none_radius rbm_shadow_none  rbm_animate rbm_duration_vl rbmZoomIn rbm_easeOutQuint" role="dialog">
 				<!-- Modal Dialog-->
 				<div class="modal-dialog">
 					<!-- Modal content-->
 					<div class="modal-content">
 						<!-- Close Button -->
-						<a href="#" onclick="closePopup();" class="rbm_btn_x_out_shtr rbm_sq_txt_close rbm_sldr_sc_cl_btn" data-dismiss="modal">Cerrar</a>
+						<a href="#" class="rbm_btn_x_out_shtr rbm_sq_txt_close rbm_sldr_sc_cl_btn" data-dismiss="modal">Cerrar</a>
 						<!-- Slider -->
-						<div id="rbm_sldr_sc_mov_1_col_2" class="carousel slide rbm_sldr_sc_gen rbm_sldr_sc_control two_columns swipe_x rbms_easeOutCirc" data-ride="carousel" data-pause="hover" data-interval="false" data-duration="1000">
+						<div id="rbm_sldr_sc_mov_1_col_2" class="carousel slide rbm_sldr_sc_gen rbm_sldr_sc_control three_columns swipe_x rbms_easeOutCirc" data-ride="carousel" data-pause="hover" data-interval="false" data-duration="1000">
 							<!-- Header of Slider -->
 							<!--
 							<div class="rbm_sldr_sc_header">
@@ -92,28 +128,6 @@
 		    <!-- End Responsive Bootstrap Modal Popup -->
 
 		</div>
-
-<a data-toggle="modal" href="#rbm_banner_box_sm37" class="demo_modal_trigger" data-backdrop="true">ZoomIn</a>
-<div id="rbm_banner_box_sm37" class="modal fade rbm_modal rbm_size_banner_box_sm rbm_center rbm_bd_dark_trnsp rbm_bd_black rbm_bg_black rbm_blue rbm_none_radius rbm_shadow_none rbm_animate rbm_duration_vl rbmZoomIn rbm_easeOutQuint" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<a href="#" class="rbm_btn_x_out_shtr rbm_bnr_close rbm_bnr_cl_btn" data-dismiss="modal"><span class="fa fa-times"></span></a>
-			<div class="rbm_bnr_content">
-
-				<div class="rbm_bnr_img rbm_bnr_box_sm_img">
-					<img src="modal/images/rbm_banner_box_sm_01.jpg" alt="rbm_banner_box_sm_01">
-				</div>
-				<div class="rbm_bnr_txt rbm_bnr_box_sm_txt">
-
-					<img src="modal/images/company_logo.png" alt="company_logo">
-					<h1>main title of the banner</h1><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nam nibh.</p>
-					<a href="#" class="rbm_btn_x_out_shtr rbm_bnr_btn">learn more</a><span>www.envato.com</span>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
 
 	</div>
 </div>
