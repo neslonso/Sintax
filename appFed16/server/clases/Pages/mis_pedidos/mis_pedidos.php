@@ -44,11 +44,21 @@ class mis_pedidos extends Home implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
 	public function cuerpo() {
+		/*
 		$objCli=$_SESSION['usuario']->objEntity;
 		$idUser=$objCli->GETid();
 		$store=$objCli->GETkeyTienda();
 		$objDatosRender=\Sintax\ApiService\Clientes::getDatosRenderPedidos($idUser);
 		$pedidos=$objDatosRender->pedidos;
+		*/
+		$objCli=$_SESSION['usuario']->objEntity;
+		$campo="id";
+		$idUser=$objCli->GETid();
+		$store=$objCli->GETkeyTienda();
+
+		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=storeUserPeds&store='.$store.'&campo='.$campo.'&value='.$idUser;
+		$result=file_get_contents($urlAPI);
+		$pedidos=json_decode($result);
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
 	}
 }

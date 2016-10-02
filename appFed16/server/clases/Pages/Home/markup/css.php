@@ -14,7 +14,7 @@
 @color-sidebarMenu: #fff;
 @color-pie: #fff;
 
-@color-borde-items: #fff;
+@color-borde-items: #a0a0a0;
 @color-bg-items: #fff;
 @color-borde-items-over:@color-principal;
 @color-btn-items:@color-principal;
@@ -384,15 +384,17 @@ a.blanco{
 .ofersPageSwiperContainer .swiper-slide {
 	width:300px;
 	height:100%;
-	background-color: #FFF;
+	/*background-color: #fff;
 	border: solid #a0a0a0 1px;
-	border-radius: 7px;
+	border-radius: 7px;*/
 }
+/*
 .imgAnimatedToSlider {
 	background-color: #fff;
 	border: solid #a0a0a0 1px;
 	border-radius:7%;
 }
+*/
 /******************************************/
 /*********  LISTADO DE PRODUCTOS **********/
 
@@ -407,6 +409,13 @@ a.blanco{
 	border:2px solid @color-borde-items;
 	background-color: @color-bg-items;
 	/*max-width: 200px;*/
+}
+.swiper-slide .shop-item-wrapper {
+	height: 100%;
+}
+.swiper-slide .shop-item {
+	margin:0px;
+	height: 100%;
 }
 .shop-item:hover{
 	border:2px solid @color-borde-items-over;

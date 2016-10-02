@@ -224,6 +224,7 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 		}
 		return $arr;
 	}
+	/* Adaptarla de arbol a grafo con relacción princiapl
 	public function arrAncestros($where="",$order="",$limit="") {
 		$ancestros=array();
 		if ($incluyeThis) {
@@ -238,6 +239,7 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 		}
 		return $ancestros;
 	}
+	*/
 	public function arrDescendientes($where="",$order="",$limit="") {
 		$arr=array();
 		foreach ($this->arrMulti_categoriaHija($where,$order,$limit,"arrClassObjs") as $objContenida) {
@@ -385,7 +387,10 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 	public function icoSrc() {
 		return $this->imgSrc(30,30,"grayscale");
 	}
+
 	public function ruta($separador, $incluyeThis=false, $conEnlace=false, $claseCssEnlace="") {
+		$result=$this->GETnombre();
+		/* Terminar cuando esté adaptada arrAncestros
 		$ancestros=$this->arrAncestros();
 		$ancestros=array_reverse($ancestros,true);
 		$ruta="";
@@ -409,21 +414,22 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 		} else {
 			$result=$ruta;
 		}
+		*/
 		return $result;
 	}
+
 	public function url($relative=false,$seoFriendly=true) {
 		if ($relative) {
 			if ($seoFriendly) {
-				return BASE_DIR."cat/".Cadena::toUrlString($this->ruta("/",true))."/".$this->GETid()."/";
+				return BASE_DIR.Cadena::toUrlString($this->ruta("/",true))."/categoria/".$this->GETid()."/";
 			} else {
-				return BASE_DIR.FILE_APP."?page=cat&id=".$this->GETid();
+				return BASE_DIR.FILE_APP."?page=categoria&id=".$this->GETid();
 			}
 		} else {
 			if ($seoFriendly) {
-				//return BASE_URL.Cadena::toUrlString($this->ruta("/",true))."/cat/".$this->GETid()."/";
-				return BASE_URL.Cadena::toUrlString($this->GETnombre())."/cat/".$this->GETid()."/";
+				return BASE_URL.Cadena::toUrlString($this->ruta("/",true))."/categoria/".$this->GETid()."/";
 			} else {
-				return BASE_URL.FILE_APP."?page=cat&id=".$this->GETid();
+				return BASE_URL.FILE_APP."?page=categoria&id=".$this->GETid();
 			}
 		}
 	}

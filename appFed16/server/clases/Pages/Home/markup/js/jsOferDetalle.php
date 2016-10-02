@@ -1,28 +1,34 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
-	$('.shop-item-link').on('click',function(event) {
-		$thisShopItemWrapper=$(this).closest('.shop-item-wrapper');
-		var resultInitSwiper=initOfersSwiper($thisShopItemWrapper.data('index'));
+	$('#container-cuerpo .shop-item-link').on('click',function(event) {
+		$thisShopItemElto=$(this).closest('.shop-item');
+		var resultInitSwiper=initOfersSwiper($thisShopItemElto.data('index'));
 		event.preventDefault();
-		var $imgOfer=$thisShopItemWrapper.find('.imgOfer');
-		var $imgOferClone=$imgOfer.clone().appendTo(document.body)
-		.addClass('imgAnimatedToSlider')
+		var $animationElement=$thisShopItemElto;//.find('.imgOfer');
+		var $animationElementClone=$animationElement.clone().appendTo(document.body).off('click')
+		//.addClass('imgAnimatedToSlider')
 		.css({
-			"position"        : 'fixed',
-			"left"            : $imgOfer.offset().left-$(window).scrollLeft(),
-			"top"             : $imgOfer.offset().top-$(window).scrollTop(),
-			"z-index"         : 999999999999,
+			"position" : 'fixed',
+			"left"     : $animationElement.offset().left-$(window).scrollLeft(),
+			"top"      : $animationElement.offset().top-$(window).scrollTop(),
+			"width"    : $animationElement.width(),
+			"height"   : $animationElement.height(),
+			"z-index"  : 999999999999,
+			"margin"   : '0px',
 		})
 		.animate({
-			"left":resultInitSwiper.offset.left,
-			"top":resultInitSwiper.offset.top,
+			"left"   : resultInitSwiper.offset.left,
+			"top"    : resultInitSwiper.offset.top,
+			"width"  : resultInitSwiper.size.width,
+			"height" : resultInitSwiper.size.height,
 		},{
+			duration: 370,
 			complete: function() {
 				resultInitSwiper.$swiperTemplateClone.fadeIn('400', function() {
-					$imgOferClone.fadeOut('400', function() {
-						$imgOferClone.remove();
-					});
+				});
+				$animationElementClone.fadeOut('400', function() {
+					$animationElementClone.remove();
 				});
 			}
 		});
@@ -63,30 +69,59 @@ function initOfersSwiper (initialSlide) {
 					//scrollbar: '.swiper-scrollbar',
 
 					initialSlide:initialSlide,
-					loop: true,
-					//slidesPerView: '3',
-					slidesPerView: 'auto',
-					loopedSlides:33,
 					spaceBetween: 30,
-
+					mousewheelControl: true,
 					grabCursor: true,
 					centeredSlides: true,
+
+
+					loop: true,
+					slidesPerView: 'auto',
+					//slidesPerView: '5',
+					loopedSlides:0,
 					effect: 'coverflow',
 					coverflow: {
 						rotate: 50,
 						stretch: 0,
-						depth: 100,
+						depth: 300,
 						modifier: 1,
 						slideShadows : false
 					},
 					slideToClickedSlide:true,
+					/*
+					breakpoints: {
+						1024: {
+							slidesPerView: 4,
+							spaceBetween: 40
+						},
+						768: {
+							slidesPerView: 3,
+							spaceBetween: 30
+						},
+						640: {
+							slidesPerView: 2,
+							spaceBetween: 20
+						},
+						320: {
+							slidesPerView: 1,
+							spaceBetween: 10
+						}
+					},
+					*/
 				});
 				var result=new Object;
 				var offset=new Object;
-				offset.left=$('.swiper-slide-active',$swiperTemplateClone).find('img').offset().left-$(window).scrollLeft();
-				offset.top=$('.swiper-slide-active',$swiperTemplateClone).find('img').offset().top-$(window).scrollTop();
+				var size=new Object;
+				var $measuredElement=$('.swiper-slide-active',$swiperTemplateClone)//.find('img');
+				offset.left=$measuredElement.offset().left-$(window).scrollLeft();
+				offset.top=$measuredElement.offset().top-$(window).scrollTop();
+				size.width=$measuredElement.outerWidth();
+				size.height=$measuredElement.outerHeight();
+
 				result.offset=offset;
+				result.size=size;
 				result.$swiperTemplateClone=$swiperTemplateClone;
+
 				$swiperTemplateClone.hide();
 				console.log(result);
 				return result;

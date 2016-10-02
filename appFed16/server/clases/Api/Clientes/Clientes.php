@@ -122,7 +122,7 @@ class Clientes extends ApiService implements IApiService {
 	 * [getDatosRenderPedidos description]
 	 * @param  [type] $id [description]
 	 * @return [type]     [description]
-	 */
+	 *
 	public static function getDatosRenderPedidos($id){
 		$db=\cDb::confByKey('celorriov3');
 		$objMulti_cliente=new \Multi_cliente($db,$id);
@@ -130,12 +130,13 @@ class Clientes extends ApiService implements IApiService {
 		$objDatosRender->pedidos=$objMulti_cliente->arrMulti_pedido();
 		return $objDatosRender;
 	}
+	*/
 	/**
 	 * [getDatosRenderPedido description]
 	 * @param  [type] $idPed  [description]
 	 * @param  [type] $idUser [description]
 	 * @return [type]         [description]
-	 */
+	 *
 	public static function getDatosRenderPedido($idPed,$idUser){
 		$db=\cDb::confByKey('celorriov3');
 		$arrReturn=array();
@@ -241,6 +242,7 @@ class Clientes extends ApiService implements IApiService {
 		$arrReturn['mensajes']=$arrTmpMsgs;
 		return json_encode($arrReturn);
 	}
+	*/
 	/**
 	 * [acGrabaPerfil description]
 	 * @param  [type] $arrRequest [description]

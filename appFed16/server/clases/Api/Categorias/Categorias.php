@@ -51,6 +51,7 @@ class Categorias extends ApiService implements IApiService {
 			$obj->id=$objCat->GETid();
 			$obj->nombre=$objCat->GETnombre();
 			$obj->img='';
+			$obj->url=$objCat->url();
 			$arrCatsNietas=$objCat->arrMulti_categoriaHija("visible='1'","","","arrClassObjs");
 			$arrNietos=array();
 			if (!empty($arrCatsNietas)) {
@@ -58,6 +59,7 @@ class Categorias extends ApiService implements IApiService {
 					$objNieto=new \stdClass();
 					$objNieto->id=$objCatNieto->GETid();
 					$objNieto->nombre=$objCatNieto->GETnombre();
+					$objNieto->url=$objCatNieto->url();
 					array_push($arrNietos,$objNieto);
 				}
 			} else {
@@ -102,6 +104,13 @@ class Categorias extends ApiService implements IApiService {
 		return $listaIdsFotosMenu;
 	}
 
+	/**
+	 * [arrOfersMasVendidas description]
+	 * @param  [type]  $keyTienda         [description]
+	 * @param  integer $cuantos           [description]
+	 * @param  [type]  $idMulti_categoria [description]
+	 * @return [type]                     [description]
+	 */
 	public static function arrOfersMasVendidas($keyTienda, $cuantos=10, $idMulti_categoria=NULL) {
 		$db=\cDb::gI();
 		$arr=array();
@@ -126,7 +135,6 @@ class Categorias extends ApiService implements IApiService {
 					$obj->precio=$objOferta->pvp();
 					$obj->urlFotoPpal=$objOferta->imgSrc();
 					$obj->imgId=$objOferta->imgId();
-					$obj->popupProd=\Sintax\ApiService\Productos::popupProd($objOferta);
 					array_push($arr,$obj);
 					$insertadosEstaCat++;
 					$totalInsertados++;
@@ -135,5 +143,56 @@ class Categorias extends ApiService implements IApiService {
 		}
 		return $arr;
 	}
+
+	/**
+	 * [arrOfersCat description]
+	 * @param  [type] $idMulti_categoria [description]
+	 * @return [type]                    [description]
+	 */
+	public static function arrOfersCat($idMulti_categoria=NULL) {
+		$db=\cDb::gI();
+		$arr=array();
+		$objCat=new \Multi_categoria($db,$idMulti_categoria);
+
+		$arrOfers=$objCat->arrMulti_ofertaVenta("","","","arrClassObjs");
+		foreach ($arrOfers as $objOferta) {
+			$obj=new \stdClass();
+			$obj->id=$objOferta->GETid();
+			$obj->nombre=$objOferta->GETid().'.- '.$objOferta->GETnombre();
+			$obj->precio=$objOferta->pvp();
+			$obj->urlFotoPpal=$objOferta->imgSrc();
+			$obj->imgId=$objOferta->imgId();
+			array_push($arr,$obj);
+		}
+		return $arr;
+	}
+
+	/**
+	 * [arrOfersMayorDescuento description]
+	 * @param  [type]  $keyTienda [description]
+	 * @param  integer $cuantos   [description]
+	 * @return [type]             [description]
+	 */
+	public static function arrOfersMayorDescuento($keyTienda, $cuantos=10) {
+		$db=\cDb::gI();
+		$arr=array();
+		$arrIdsOfer=\Multi_ofertaVenta::arrIdsMayorDescuento($db,$keyTienda,$cuantos);
+
+		$totalInsertados=0;
+		foreach ($arrIdsOfer as $idOfer) {
+			if ($totalInsertados>=$cuantos) {break;}
+			$obj=new \stdClass();
+			$objOferta=new \Multi_ofertaVenta($db,$idOfer);
+			$obj->id=$objOferta->GETid();
+			$obj->nombre=$objOferta->GETid().'.- '.$objOferta->GETnombre();
+			$obj->precio=$objOferta->pvp();
+			$obj->urlFotoPpal=$objOferta->imgSrc();
+			$obj->imgId=$objOferta->imgId();
+			array_push($arr,$obj);
+			$totalInsertados++;
+		}
+		return $arr;
+	}
+
 }
 ?>

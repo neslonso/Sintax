@@ -29,6 +29,7 @@ class Home extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js.php");
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsCesta.php");
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsBuscador.php");
+
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsBanner.php");
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsOferDetalle.php");
 	}
@@ -61,9 +62,9 @@ class Home extends Error implements IPage {
 	}
 
 	public function cuerpo() {
-		//$arrProds=\Sintax\ApiService\Productos::arrRandomOfertasVenta(23,$GLOBALS['config']->tienda->key);
-		$arrProds=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,23);
-		require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
+		$objPageCategoria=new categoria($this->objUsr);
+		$objPageCategoria->cuerpo();
+		//require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
 	}
 	public function subMenu($idPadre){
 		$arrCatsSubMenu=\Sintax\ApiService\Categorias::arrCatsRootsSubMenu($idPadre);

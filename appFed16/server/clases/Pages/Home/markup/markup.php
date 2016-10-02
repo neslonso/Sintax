@@ -43,80 +43,80 @@
 						$nombreAvatarMin=strtoupper($nombreAvatar[0]);
 					}
 ?>
-                    <div class="btn-group" role="group" aria-label="...">
-	                    <button id="btnUserNav" class="btn btn-primary btn-menu" type="button" data-toggle="tooltip" title="Área de usuario" data-placement="top" data-container="body">
-	                        <span class="glyphicon glyphicon-user"></span>
-	                        <span class="badge visible-xs visible-sm"><?=$nombreAvatarMin?></span>
-	                        <span class="badge hidden-xs hidden-sm"><?=$nombreAvatar?></span>
-	                    </button>
-	                </div>
+					<div class="btn-group" role="group" aria-label="...">
+						<button id="btnUserNav" class="btn btn-primary btn-menu" type="button" data-toggle="tooltip" title="Área de usuario" data-placement="top" data-container="body">
+							<span class="glyphicon glyphicon-user"></span>
+							<span class="badge visible-xs visible-sm"><?=$nombreAvatarMin?></span>
+							<span class="badge hidden-xs hidden-sm"><?=$nombreAvatar?></span>
+						</button>
+					</div>
 					<div id="navUserMenu" class="nav-user-menu">
 						<div class="panel panel-default nav-user-panel">
 							<div class="panel-body">
 								<div class="row">
-		                            <div class="col-sm-3">
-		                                <p class="text-center">
-		                                    <span class="glyphicon glyphicon-user nav-user-avatar"></span>
-		                                </p>
-		                            </div>
-		                            <div class="col-sm-9">
-		                                <p class="text-left"><strong><?=$cliente->nombre?></strong></p>
-		                                <p class="text-left small"><?=$cliente->email?></p>
-		                            </div>
-		                        </div>
-		                        <hr>
-		                        <div class="row">
-		                            <div class="col-sm-7">
-		                            	<div class="text-right nav-user-txt-info"><b>Crédito de usuario:</b></div>
-		                            </div>
-		                            <div class="col-sm-5">
-		                            	<div class="nav-user-menu-credito">
+									<div class="col-sm-3">
+										<p class="text-center">
+											<span class="glyphicon glyphicon-user nav-user-avatar"></span>
+										</p>
+									</div>
+									<div class="col-sm-9">
+										<p class="text-left"><strong><?=$cliente->nombre?></strong></p>
+										<p class="text-left small"><?=$cliente->email?></p>
+									</div>
+								</div>
+								<hr>
+								<div class="row">
+									<div class="col-sm-7">
+										<div class="text-right nav-user-txt-info"><b>Crédito de usuario:</b></div>
+									</div>
+									<div class="col-sm-5">
+										<div class="nav-user-menu-credito">
 											<?=$cliente->saldo?>€
-		                            	</div>
-		                            </div>
-		                        </div>
+										</div>
+									</div>
+								</div>
 <?
 					if ($cliente->tipoDescuento>0){
 ?>
-		  						<div class="row">
-		                            <div class="col-sm-7">
+								<div class="row">
+									<div class="col-sm-7">
 										<div class="text-right nav-user-txt-info"><b>Descuento aplicable:</b></div>
-		                            </div>
-		                            <div class="col-sm-5">
-		                            	<div class="text-center nav-user-menu-descuento">
-		                            		<?=$cliente->tipoDescuento?>% <span class="glyphicon glyphicon-arrow-down"></span>
-		                            	</div>
-		                            </div>
-		                        </div>
+									</div>
+									<div class="col-sm-5">
+										<div class="text-center nav-user-menu-descuento">
+											<?=$cliente->tipoDescuento?>% <span class="glyphicon glyphicon-arrow-down"></span>
+										</div>
+									</div>
+								</div>
 <?
 					}
 ?>
 							</div>
 							<div class="panel-footer">
-                                <div class="row">
-                                	<div class="col-xs-12 text-right">
-                                		<a href="<?=BASE_URL?>mis_datos" class="btn btn-primary btn-sm blanco"><span class="fa fa-pencil-square-o"></span> Editar</a>
-                                		<a href="<?=BASE_URL?>mis_pedidos" class="btn btn-primary btn-sm blanco"><span class="fa fa-shopping-cart"></span> Pedidos</a>
+								<div class="row">
+									<div class="col-xs-12 text-right">
+										<a href="<?=BASE_URL?>mis_datos/" class="btn btn-primary btn-sm blanco"><span class="fa fa-pencil-square-o"></span> Editar</a>
+										<a href="<?=BASE_URL?>mis_pedidos/" class="btn btn-primary btn-sm blanco"><span class="fa fa-shopping-cart"></span> Pedidos</a>
 										<a title="Cerrar sesión" id="btnLogout" href="#" class="btn btn-danger btn-sm blanco"><span class="glyphicon glyphicon-log-out"></span> Salir</a>
-                                	</div>
-                                </div>
-                            </div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 <?
 				} else {
 ?>
 					<div class="btn-group" role="group" aria-label="...">
-	                    <button id="btnUserNav" class="btn btn-success btn-menu" type="button" data-toggle="tooltip" title="Accede / Regístrate" data-placement="top" data-container="body">
-	                        <span class="fa fa-user-plus"></span>
-	                    </button>
-	                    <button id="btnUserFB" class="btn btn-primary btn-menu" type="button" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
-	                        <span class="fa fa-facebook-square"></span>
-	                    </button>
-	                    <button id="btnUserTW" class="btn btn-info btn-menu" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
-	                        <span class="fa fa fa-twitter"></span>
-	                    </button>
-	                </div>
+						<button id="btnUserNav" class="btn btn-success btn-menu" type="button" data-toggle="tooltip" title="Accede / Regístrate" data-placement="top" data-container="body">
+							<span class="fa fa-user-plus"></span>
+						</button>
+						<button id="btnUserFB" class="btn btn-primary btn-menu" type="button" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
+							<span class="fa fa-facebook-square"></span>
+						</button>
+						<button id="btnUserTW" class="btn btn-info btn-menu" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
+							<span class="fa fa fa-twitter"></span>
+						</button>
+					</div>
 					<div id="navUserMenu" class="nav-user-menu">
 						<div class="row">
 							<div class="col-xs-12">
@@ -211,7 +211,7 @@
 																						//$imgProdsCat="<pre>".print_r($catH,true)."</pre>";
 																					}
 ?>
-																						<h4><?=$imgCat?><?=$catH->nombre?></h4>
+																						<h4><a href="<?=$catH->url?>"><?=$imgCat?><?=$catH->nombre?></a></h4>
 																						<?=$imgProdsCat?>
 																					</li>
 <?
@@ -219,7 +219,7 @@
 																		$i=1;
 																		foreach ($catH->arrNietos as $nieto) {
 ?>
-																					<li><a href="#"><?=$nieto->nombre?> <span class="fa fa-chevron-right"></span></a></li>
+																					<li><a href="<?=$nieto->url?>"><?=$nieto->nombre?> <span class="fa fa-chevron-right"></span></a></li>
 <?
 																			if ($i==1){
 ?>

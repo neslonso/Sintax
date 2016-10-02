@@ -253,6 +253,22 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		$src=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB&fichero=multi_productoAdjunto.id.'.$idMPA.'.data&ancho=150&alto=150&modo='.Imagen::OUTPUT_MODE_FILL;
 		return $src;
 	}
+
+	public static function arrIdsMayorDescuento($db,$keyTienda,$limit=10) {
+		$sql="
+			SELECT mov.id, (1-mov.precio/mp.precio)*100 AS dto FROM multi_producto mp
+				INNER JOIN multi_productoVARIOSmulti_ofertaVenta mpVmov ON mp.id=mpVmov.idMulti_producto
+				INNER JOIN multi_ofertaVenta mov ON mpVmov.idMulti_ofertaVenta=mov.id
+			WHERE keyTienda='".$keyTienda."' AND visible=1 AND agotado=0 ORDER BY dto DESC
+			LIMIT 0,".$limit;
+		$rsl=$db->query($sql);
+		$arrIds=array();
+		while ($data=$rsl->fetch_object()) {
+			$arrIds[]=$data->id;
+		}
+		return $arrIds;
+	}
+
 /******************************************************************************/
 }
 ?>

@@ -31,16 +31,16 @@
 ?>
 						<tr data-id="<?=$objPed->id?>" style="cursor:pointer;">
 							<td>
-								<?//=$objPed->keyTienda?>
+								<?=$objPed->keyPedido?>
 							</td>
 							<td>
-								<?//=$objPed->momento?>
+								<?=$objPed->momento?>
 							</td>
 							<td>
-								<?//=$objPed->nombreEstado?>
+								<?=$objPed->nombreEstado?>
 							</td>
 							<td>
-								<?//=$objPed->total?> €
+								<?=$objPed->total?> €
 							</td>
 						</tr>
 <?
