@@ -13,7 +13,7 @@ define('PHP_MIN_VERSION','5.4.0');
 define('SKEL_VERSION','1.0.0');
 
 define('PROTOCOL',((isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS']))?'https':'http'));
-define('BASE_DOMAIN',(substr($_SERVER['HTTP_HOST'],0,4)=="www.")?substr($_SERVER['HTTP_HOST'],4):$_SERVER['HTTP_HOST']);
+if (!defined('BASE_DOMAIN')) define('BASE_DOMAIN',(substr($_SERVER['HTTP_HOST'],0,4)=="www.")?substr($_SERVER['HTTP_HOST'],4):$_SERVER['HTTP_HOST']);
 define('BASE_DIR',
 	(dirname($_SERVER['SCRIPT_NAME'])=='/')?
 		dirname($_SERVER['SCRIPT_NAME']):

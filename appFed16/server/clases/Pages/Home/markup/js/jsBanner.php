@@ -33,8 +33,8 @@ $(document).ready(function() {
 			slideShadows : true
 		},
 		*/
-		speed:1000,
-		autoplay: 1000,
+		/*speed:1000,
+		autoplay: 1000,*/
 		autoplayDisableOnInteraction: false,
-	})
+	});
 });

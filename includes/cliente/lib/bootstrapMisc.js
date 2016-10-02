@@ -51,15 +51,23 @@ function muestraMsgModalBootstrap3(title, msg) {
 				.addClass(self.opt.img.class)
 				.appendTo($divCell);
 			*/
-			var $progress=$([
-			'<div style="width:25%; margin:auto;">',
-			'	<div class="progress">',
-			'		<div class="progress-bar progress-bar-striped active '+self.opt.progress.class+'" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">',
-			'			<span class="sr-only">100%</span>',
-			'		</div>',
-			'	</div>',
-			'</div>',
-			].join('')).appendTo($divCell);;
+			if (self.opt.progress.active) {
+				var $progress=$([
+				'<div style="width:25%; margin:auto;">',
+				'	<div class="progress">',
+				'		<div class="progress-bar progress-bar-striped active '+self.opt.progress.class+'" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">',
+				'			<span class="sr-only">100%</span>',
+				'		</div>',
+				'	</div>',
+				'</div>',
+				].join('')).appendTo($divCell);
+			}
+
+			if (self.opt.destroyOnClick) {
+				$divTable.on('click', function(event) {
+					$.overlay('destroy');
+				});
+			}
 
 			$divTable.appendTo($overlay);
 			$overlay.appendTo($db);
@@ -101,8 +109,10 @@ function muestraMsgModalBootstrap3(title, msg) {
 			},
 		},
 		progress: {
+			active:false,
 			class: '',
 		},
+		destroyOnClick:true,
 		selectorAppendTo:'body'
 	};
 })(jQuery);

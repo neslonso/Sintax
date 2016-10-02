@@ -28,7 +28,7 @@ class Categorias extends ApiService implements IApiService {
 			$obj->nombre=$objCat->GETnombre();
 			//$obj->ico=$objCat->icoSrc();
 			$obj->ico=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB_MPA_JOIN&fichero='.$listaIdsFotosMenu.'&ancho=30&alto=30&formato=jpg';
-			$obj->img=$objCat->imgSrc();
+			$obj->img=$objCat->imgSrc(200,200);
 			array_push($arr,$obj);
 		}
 		return $arr;
@@ -94,13 +94,6 @@ class Categorias extends ApiService implements IApiService {
 						if (!empty($ofer->imgId)) array_push($arrIdsFotos, base_convert($ofer->imgId,10,36));
 					}
 				}
-				$arrCatsNietas=$objCatHija->arrMulti_categoriaHija("visible='1'","","","arrClassObjs");
-				if (empty($arrCatsNietas)) {
-					$arrOfersMasVendidas=self::arrOfersMasVendidas($keyTienda, 6, $objCatHija->GETid());
-					foreach ($arrOfersMasVendidas as $ofer) {
-						if (!empty($ofer->imgId)) array_push($arrIdsFotos, $ofer->imgId);
-					}
-				}
 			}
 		}
 		$listaIdsFotosMenu=implode(",",$arrIdsFotos);
@@ -126,7 +119,7 @@ class Categorias extends ApiService implements IApiService {
 				if ($totalInsertados>=$cuantos) {break;}
 				if ($insertadosEstaCat>=$cuantosPorCat) {break;}
 				$obj=new \stdClass();
-				$objOferta=\Multi_ofertaVenta::cargarPorRef($db,$ref);
+				$objOferta=\Multi_ofertaVenta::cargarPorRef($db,$keyTienda,$ref);
 				if ($objOferta!==false) {
 					$obj->id=$objOferta->GETid();
 					$obj->nombre=$objOferta->GETid().'.- '.$objOferta->GETnombre();

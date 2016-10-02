@@ -274,6 +274,7 @@ class Clientes extends ApiService implements IApiService {
 		//si id=0 => nueva direccion
 		$idDir=($arrRequest['id']>0)?$arrRequest['id']:'';
 		$objDir=new \Multi_clienteDireccion($db,$idDir);
+		$objDir->SETidMulti_cliente($arrRequest['idMulti_cliente']);
 		$objDir->SETnombre($arrRequest['nombre']);
 		$objDir->SETdestinatario($arrRequest['destinatario']);
 		$objDir->SETdireccion($arrRequest['direccion']);
@@ -282,7 +283,6 @@ class Clientes extends ApiService implements IApiService {
 		$objDir->SETcp($arrRequest['cp']);
 		$objDir->SETpais($arrRequest['pais']);
 		$objDir->SETmovil($arrRequest['movil']);
-		$objDir->SETidMulti_cliente($arrRequest['idMulti_cliente']);
 		$objDir->grabar();
 		$arrAccion=array(
 			"valor" => true,

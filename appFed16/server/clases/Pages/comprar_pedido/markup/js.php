@@ -112,18 +112,17 @@ $(document).ready(function() {
 			$('#newPedWizard').wizard('selectedItem', {step:1});
 			return;
 		}
-		var destinatario=$dirRadioChecked.data('destinatario');
-		var direccion=$dirRadioChecked.data('direccion');
-		var poblacion=$dirRadioChecked.data('poblacion');
-		var provincia=$dirRadioChecked.data('provincia');
-		var cp=$dirRadioChecked.data('cp');
-		var pais=$dirRadioChecked.data('pais');
-		var telefono=$dirRadioChecked.data('movil');
-
-		var nombre=$('#newPedWizard').data('nombreCliente');
-		var apellidos=$('#newPedWizard').data('apellidosCliente');
-		var email=$('#newPedWizard').data('emailCliente');
-		var idMulti_cliente=$('#newPedWizard').data('idMulti_cliente');
+		var destinatario    = $dirRadioChecked.data('destinatario');
+		var direccion       = $dirRadioChecked.data('direccion');
+		var poblacion       = $dirRadioChecked.data('poblacion');
+		var provincia       = $dirRadioChecked.data('provincia');
+		var cp              = $dirRadioChecked.data('cp');
+		var pais            = $dirRadioChecked.data('pais');
+		var telefono        = $dirRadioChecked.data('movil');
+		var nombre          = $('#newPedWizard').data('nombreCliente');
+		var apellidos       = $('#newPedWizard').data('apellidosCliente');
+		var email           = $('#newPedWizard').data('emailCliente');
+		var idMulti_cliente = $('#newPedWizard').data('idMulti_cliente');
 
 
 		var objCmbCupon=$('#cuponCombo').combobox('selectedItem');
@@ -150,37 +149,37 @@ $(document).ready(function() {
 		});
 		var comentarios=$('#comentarios').val();
 		var pedData={
-			'nombre':nombre,
-			'apellidos':apellidos,
-			'destinatario':destinatario,
-			'telefono':telefono,
-			'email':email,
-			'direccion':direccion,
-			'cp':cp,
-			'poblacion':poblacion,
-			'provincia':provincia,
-			'pais':pais,
-			//'horario':'horario',
-			'portes':portes,
-			'credito':credito,
-			//'notas':'notas',
-			//'idUsuario':idUsuario,
-			//'idCupon':idCupon,
-			'idPedidoModoPago':idPedidoModoPago,
-			//'keyTienda':'keyTienda',
-			'idMulti_cliente':idMulti_cliente,
-			'idMulti_cupon':idMulti_cupon,
-			'lineas': lineas,
-			'dtos':dtos,
-			'comentarios':comentarios,
+			'nombre'           : nombre,
+			'apellidos'        : apellidos,
+			'destinatario'     : destinatario,
+			'telefono'         : telefono,
+			'email'            : email,
+			'direccion'        : direccion,
+			'cp'               : cp,
+			'poblacion'        : poblacion,
+			'provincia'        : provincia,
+			'pais'             : pais,
+			//'horario'        : 'horario',
+			'portes'           : portes,
+			'credito'          : credito,
+			//'notas'          : 'notas',
+			//'idUsuario'      : idUsuario,
+			//'idCupon'        : idCupon,
+			'idPedidoModoPago' : idPedidoModoPago,
+			//'keyTienda'      : 'keyTienda',
+			'idMulti_cliente'  : idMulti_cliente,
+			'idMulti_cupon'    : idMulti_cupon,
+			'lineas'           :  lineas,
+			'dtos'             : dtos,
+			'comentarios'      : comentarios,
 		}
 		console.log(pedData);
-		//if (confirm("¿Realizar el POST?")) {
+		if (confirm("¿Realizar el POST?")) {
 			Post ('action','<?=BASE_DIR.FILE_APP?>',
 				'MODULE','actions','acClase','comprar_pedido','acMetodo','acGrabar','acTipo','stdAssoc',
 				'pedData',pedData,'session_name','<?=$GLOBALS['session_name']?>'
 			);
-		//}
+		}
 	});
 
 	$('input[type=radio][name=modoPago]').change(function() {
@@ -268,40 +267,60 @@ $(document).ready(function() {
 		}
 	});
 
+	$('#btnModalAddDir').on('click',function(event) {
+		event.preventDefault();
+		$('#modalAddDir').appendTo('body').modal('show');
+	});
 	$('#btnAddDir').on('click', function () {
-		var destinatario=$('#destinatario','#modalAddDir').val();
-		var direccion=$('#direccion','#modalAddDir').val();
-		var poblacion=$('#poblacion','#modalAddDir').val();
-		var provincia=$('#provincia','#modalAddDir').val();
-		var cp=$('#cp','#modalAddDir').val();
-		var movil=$('#movil','#modalAddDir').val();
+		var destinatario = $('#destinatario','#modalAddDir').val();
+		var direccion    = $('#direccion'   ,'#modalAddDir').val();
+		var poblacion    = $('#poblacion'   ,'#modalAddDir').val();
+		var provincia    = $('#provincia'   ,'#modalAddDir').val();
+		var cp           = $('#cp'          ,'#modalAddDir').val();
+		var pais         = $('#pais'        ,'#modalAddDir').val();
+		var movil        = $('#movil'       ,'#modalAddDir').val();
 		if (destinatario.trim()=="" || direccion.trim()=="" || poblacion.trim()=="" || provincia.trim()=="" || cp.trim()=="" || movil.trim()==""){
 			muestraMsgModal('Error en el formulario','Por favor, rellene todos los campos marcados como obligatorios (<b>*</b>) de la dirección');
 		} else {
 			$.post('<?=BASE_DIR.FILE_APP?>',{
 				'MODULE':'actions',
-				'acClase':'comprar_pedido',
-				'acMetodo':'acAddDireccion',
-				'acTipo':'ajaxAssoc',
-				'id':0,
-				'nombre':$('#nombre','#modalAddDir').val(),
-				'destinatario':$('#destinatario','#modalAddDir').val(),
-				'movil':$('#movil','#modalAddDir').val(),
-				'direccion':$('#direccion','#modalAddDir').val(),
-				'poblacion':$('#poblacion','#modalAddDir').val(),
-				'provincia':$('#provincia','#modalAddDir').val(),
-				'cp':$('#cp','#modalAddDir').val(),
-				'pais':$('#pais','#modalAddDir').val(),
-				'session_name':'<?=$GLOBALS['session_name']?>'
+				'acClase':'mis_datos',
+				'acMetodo':'acCheckCP',
+				'acTipo':'ajax',
+				'cp':cp,
+				'pais':pais
 			},
 			function (response) {
-				console.log(response);
-				if (!response.exito){
-					muestraMsgModal('Error añadiendo dirección',response.msg);
+				if (!response.data.resultado.valor){
+					muestraMsgModal('Error',response.data.resultado.msg);
 				} else {
-					$('#modalAddDir').modal('hide');
-					$('#direccionEntregaSelectionControl').replaceWith(response.data);
-					$('[name="idDirEntrega"]').change();
+					$.post('<?=BASE_DIR.FILE_APP?>',{
+						'MODULE'      : 'actions',
+						'acClase'     : 'comprar_pedido',
+						'acMetodo'    : 'acAddDireccion',
+						'acTipo'      : 'ajaxAssoc',
+						'id'          : 0,
+						'nombre'      : $('#nombre','#modalAddDir').val(),
+						'destinatario': $('#destinatario','#modalAddDir').val(),
+						'movil'       : $('#movil','#modalAddDir').val(),
+						'direccion'   : $('#direccion','#modalAddDir').val(),
+						'poblacion'   : $('#poblacion','#modalAddDir').val(),
+						'provincia'   : $('#provincia','#modalAddDir').val(),
+						'cp'          : $('#cp','#modalAddDir').val(),
+						'pais'        : $('#pais','#modalAddDir').val(),
+						'session_name': '<?=$GLOBALS['session_name']?>'
+					},
+					function (response) {
+						console.log(response);
+						if (!response.exito){
+							muestraMsgModal('Error añadiendo dirección',response.msg);
+						} else {
+							$('#modalAddDir').modal('hide');
+							$('#direccionEntregaSelectionControl').replaceWith(response.data);
+							$('[name="idDirEntrega"]').change();
+						}
+					},
+					'json');
 				}
 			},
 			'json');

@@ -54,6 +54,53 @@ class comprar_pedido extends Home implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
 	}
 
+	public function acGrabar () {
+		\cDb::confByKey('celorriov3');
+		$objCli=$_SESSION['usuario']->objEntity;
+		$objCli->SETdb(\cDb::gI());
+
+		$arrayMulti=$_REQUEST;
+		$arrayMulti['keyTienda']=$GLOBALS['config']->tienda->key;
+		$arrayMulti['pedData']['idMulti_cliente']=$objCli->GETid();
+		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&&subService=newPed';
+		// use key 'http' even if you send the request to https://...
+		$options = array(
+		    'http' => array(
+		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+		        'method'  => 'POST',
+		        'content' => http_build_query($arrayMulti),
+		    ),
+		);
+		$context  = stream_context_create($options);
+		$envioMulti = file_get_contents($url, false, $context);
+		//echo "envioMulti: <pre>";
+		//var_dump($envioMulti);
+		//echo "</pre>";
+
+		$result=json_decode($envioMulti);
+		if (isset($result->exception)) {
+			/*
+			$errorUri=BASE_URL."/Error";
+			$GLOBALS['acReturnURI']=$errorUri;
+			ReturnInfo::add($result->infoExc,'Error durante la realización del pedido.');
+			echo '<a href="'.$errorUri.'">'.$errorUri.'</a>';
+			die();
+			*/
+			throw new \ActionException($result->infoExc, 1);
+		} else {
+			//echo "result: <pre>".print_r($result,true)."</pre>";
+			//eval('$objPed='."\\".$result->objPed.';');
+			$idMulti_pedido=$result->stdObjPed->id;
+			$returnURI=BASE_URL.'mi_pedido/'.$idMulti_pedido.'::1';
+			$objCesta=$this->ensureCesta(\cDb::gI());
+			$objCesta->SETidMulti_pedidoRealizado($idMulti_pedido);
+			$objCesta->grabar();
+			$GLOBALS['acReturnURI']=$returnURI;
+			unset($_SESSION['cesta']);
+		}
+	}
+
+
 /* Controles de wizard de pedidos *********************************************/
 	public function modoPagoSelectionControl($arrModosPago) {
 		$result='
@@ -179,32 +226,23 @@ class comprar_pedido extends Home implements IPage {
 		return $result;
 	}
 /* Peticion de datos a API ****************************************************/
-	public function acAddDireccion() {
-		$newPedBridgeData=$_SESSION['newPedBridgeDataOrigData'];
-		//POST a la API de V3 para añadir el pedido a la multi
-		$arrayMulti=$_REQUEST;
-		$arrayMulti['keyTienda']=$newPedBridgeData->store;
-		$arrayMulti['idMulti_cliente']=$_SESSION['usuario']->id;
-		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&&cliService=cliEditDir';
-		// use key 'http' even if you send the request to https://...
-		$options = array(
-		    'http' => array(
-		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-		        'method'  => 'POST',
-		        'content' => http_build_query($arrayMulti),
-		    ),
-		);
-		$context  = stream_context_create($options);
-		$envioMulti = file_get_contents($url, false, $context);
-		/*echo "envioMulti: <pre>";
-		var_dump($envioMulti);
-		echo "</pre>";*/
+	/**
+	 * [acAddDireccion description]
+	 * @param  array $stdObjDatosDir  array con datos de la dirección
+	 * @return string                 nuevo html del selector de direcciones
+	 */
+	public function acAddDireccion($arrDatosDir) {
+		\cDb::confByKey('celorriov3');
+		$objCli=$_SESSION['usuario']->objEntity;
+		$objCli->SETdb(\cDb::gI());
+		$arrDatosDir['idMulti_cliente']=$objCli->GETid();
 
-		$result=json_decode($envioMulti);
-		$GLOBALS['firephp']->info($result,"result acAddDireccion");
+		$result=\Sintax\ApiService\Clientes::acGrabaDireccion($arrDatosDir);
+		$result=json_decode($result);
+		$GLOBALS['firephp']->info($result,"result acGrabaDireccion");
 		if ($result->resultado->valor) {
-			$_SESSION['datosCli']=$this->getDatosCli();
-			$result=$this->direccionEntregaSelectionControl($_SESSION['datosCli'],$result->datos->idDireccion);
+			$datosCli=\Sintax\ApiService\Pedidos::getDatosCli($objCli);
+			$result=$this->direccionEntregaSelectionControl($datosCli,$result->datos->idDireccion);
 		} else {
 			throw new ActionException("Error añadiendo direccion: ".$result->resultado->msg, 1);
 		}

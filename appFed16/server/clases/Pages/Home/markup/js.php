@@ -1,6 +1,7 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
+	$('[data-toggle="tooltip"]').tooltip();
 	$('#divJqNotifications').jqNotifications();
 	$("#menu-toggle").click(function(e) {
 		e.preventDefault();
@@ -27,17 +28,7 @@ $(document).ready(function() {
 			$("#wrapper").toggleClass("toggled");
 		}
 	});
-	$('[data-toggle="tooltip.itemShop"]').tooltip({container: 'body'});
-	$('#modalItems').on('show.bs.modal', function (e) {
-		var idItem=$(e.relatedTarget).data('item');
-		$("#popupItemActive").val(idItem);
-		$("#itemPopup"+idItem).addClass('active');
-	});
-	$('#modalItems').on('hide.bs.modal', function (e) {
-		var itemActive= $("#popupItemActive").val();
-		$("#itemPopup"+itemActive).removeClass('active');
-		$("#popupItemActive").val("");
-	});
+
 	$('#btnUserNav').click(function(e) {
 		if($('#navUserMenu').hasClass('nav-user-menu-outside')){
 			$('#navUserMenu').removeClass('nav-user-menu-outside');

@@ -1,8 +1,5 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
-var _top=0;
-var _scrollTop=0;
-
 function grabarDireccion(id){
 	var nombre=$('#frmCliDir'+id+' #nombre').val();
 	var destinatario=$('#frmCliDir'+id+' #destinatario').val();
@@ -134,11 +131,9 @@ $(document).ready(function() {
 		$('#frmCliEditPerfil').submit();
 	});
 
-	$('body')
-	.on('show.bs.modal', '.modal', function (e) {
-		var $modalDialog=$(this).find(".modal-dialog");
-		var marginTop=20;
-		$modalDialog.css({'margin-top': marginTop + _scrollTop - _top});
+	$('#btnModalAddDir').on('click',function(event) {
+		event.preventDefault();
+		$('#modalAddDir').appendTo('body').modal('show');
 	});
 });
 

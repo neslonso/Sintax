@@ -27,6 +27,7 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 			"metaKeywords" => NULL,
 			"agotado" => NULL,
 			"agotadoDescripcion" => NULL,
+			"tipoDevolucionCredito" => NULL,
 			"keyTienda" => NULL,
 		);
 		parent::__construct($db,$keyValue);
@@ -90,6 +91,9 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 
 	public function GETagotadoDescripcion ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["agotadoDescripcion"],ENT_QUOTES,"UTF-8"):$this->arrDbData["agotadoDescripcion"];}
 	public function SETagotadoDescripcion ($agotadoDescripcion,$entity_encode=false) {$this->arrDbData["agotadoDescripcion"]=($entity_encode)?htmlentities($agotadoDescripcion,ENT_QUOTES,"UTF-8"):$agotadoDescripcion;}
+
+	public function GETtipoDevolucionCredito ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["tipoDevolucionCredito"],ENT_QUOTES,"UTF-8"):$this->arrDbData["tipoDevolucionCredito"];}
+	public function SETtipoDevolucionCredito ($tipoDevolucionCredito,$entity_encode=false) {$this->arrDbData["tipoDevolucionCredito"]=($entity_encode)?htmlentities($tipoDevolucionCredito,ENT_QUOTES,"UTF-8"):$tipoDevolucionCredito;}
 
 	public function GETkeyTienda ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["keyTienda"],ENT_QUOTES,"UTF-8"):$this->arrDbData["keyTienda"];}
 	public function SETkeyTienda ($keyTienda,$entity_encode=false) {$this->arrDbData["keyTienda"]=($entity_encode)?htmlentities($keyTienda,ENT_QUOTES,"UTF-8"):$keyTienda;}
@@ -183,9 +187,9 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		return $arr;
 	}
 /******************************************************************************/
-	public static function cargarPorRef($db,$ref) {
+	public static function cargarPorRef($db,$keyTienda,$ref) {
 		$result=false;
-		$sql="SELECT id FROM multi_ofertaVenta WHERE referencia='".$db->real_escape_string($ref)."'";
+		$sql="SELECT id FROM multi_ofertaVenta WHERE keyTienda='".$db->real_escape_string($keyTienda)."' AND referencia='".$db->real_escape_string($ref)."'";
 		$data=$db->get_row($sql);
 		if ($data) {
 			$result=new self($db,$data->id);

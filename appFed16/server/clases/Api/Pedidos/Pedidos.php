@@ -56,26 +56,39 @@ class Pedidos extends ApiService implements IApiService {
 			$std->concepto=$objOferta->GETnombre();
 			$std->pai=$objOferta->pai();
 			$std->tipoIva=$objOferta->tipoIva();
-		//$std->pvp=$objOferta->GETprecio();
 			$std->cantidad=$objLinea->GETcantidad();
-			$std->tipoDevolucionCredito=0;
-			//$std->tipoDevolucionCredito=$objProd->tipoDevolucionCredito;
+			//$std->tipoDevolucionCredito=0;
+			$std->tipoDevolucionCredito=$objOferta->GETtipoDevolucionCredito();
 
-			//Dtos
-			//$totalTipoDtos=0;
-			//$totalImporteDtos=0;
 			$arrDtosLineas=array();
-			if (false) {
-			//if ($objProd->tipoDescuentoGama()!=0) {
-				$stdObjDto=new stdClass();
-				$stdObjDto->importe=NULL;
-				$stdObjDto->tipoDescuento=0;
-				$totalTipoDtos+=$stdObjDto->tipoDescuento;
-				$stdObjDto->concepto='Descuento gama: '.$gama;
-				array_push($arrDtosLineas,$stdObjDto);
-				unset ($stdObjDto);
+			$arrProdsEnOferta=$objOferta->arrMulti_producto("","","","arrClassObjs");
+			foreach ($arrProdsEnOferta as $objProd) {
+				if ($objProd->tipoDescuentoGama()>0) {
+					$stdObjDto=new \stdClass();
+					$stdObjDto->importe=NULL;
+					$stdObjDto->tipoDescuento=$objProd->tipoDescuentoGama();
+					$stdObjDto->concepto='Descuento gama: '.$objProd->objMulti_productoGama()->GETnombre();
+					array_push($arrDtosLineas,$stdObjDto);
+					unset ($stdObjDto);
+				}
 			}
-			//Fin Dtos
+			/* Sistema de promociones
+			$arrDtosLineas=array();
+			foreach ($objOferta->arrPromociones() as $objPromocion) {
+				if ($objPromocion->esDtoLinea()) {
+					$stdObjDto=new stdClass();
+					$stdObjDto->importe=NULL;
+					$stdObjDto->tipoDescuento=0;
+					$totalTipoDtos+=$stdObjDto->tipoDescuento;
+					$stdObjDto->concepto='Descuento gama: '.$gama;
+					array_push($arrDtosLineas,$stdObjDto);
+					unset ($stdObjDto);
+				}
+				if ($objPromocion->esCreditoLinea()) {
+
+				}
+			}
+			*/
 			$std->dtos=$arrDtosLineas;
 			array_push($arr, $std);
 		}

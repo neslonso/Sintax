@@ -25,6 +25,7 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 			"gama" => NULL,
 			"marca" => NULL,
 			"idMulti_tipoIva" => NULL,
+			"idMulti_productoGama" => NULL,
 		);
 		parent::__construct($db,$keyValue);
 	}
@@ -80,10 +81,16 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 	public function GETidMulti_tipoIva ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["idMulti_tipoIva"],ENT_QUOTES,"UTF-8"):$this->arrDbData["idMulti_tipoIva"];}
 	public function SETidMulti_tipoIva ($idMulti_tipoIva,$entity_encode=false) {$this->arrDbData["idMulti_tipoIva"]=($entity_encode)?htmlentities($idMulti_tipoIva,ENT_QUOTES,"UTF-8"):$idMulti_tipoIva;}
 
+	public function GETidMulti_productoGama ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["idMulti_productoGama"],ENT_QUOTES,"UTF-8"):$this->arrDbData["idMulti_productoGama"];}
+	public function SETidMulti_productoGama ($idMulti_productoGama,$entity_encode=false) {$this->arrDbData["idMulti_productoGama"]=($entity_encode)?htmlentities($idMulti_productoGama,ENT_QUOTES,"UTF-8"):$idMulti_productoGama;}
+
 /******************************************************************************/
 
 /* Funciones FkFrom ***********************************************************/
 
+	public function objMulti_productoGama() {
+		return new \Multi_productoGama($this->db(),$this->arrDbData["idMulti_productoGama"]);
+	}
 	public function objMulti_tipoIva() {
 		return new \Multi_tipoIva($this->db(),$this->arrDbData["idMulti_tipoIva"]);
 	}
@@ -316,7 +323,7 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 		$sqlOrder=($order!="")?" ORDER BY ".$order:'';
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:'';
 		$sql="
-			SELECT id, referencia, nombre, mov.precio, precioMin, precioMax, visible, keyTienda
+			SELECT id, referencia, nombre, mov.precio, precioMin, precioMax, visible, agotado, keyTienda
 			FROM multi_ofertaVenta mov INNER JOIN multi_productoVARIOSmulti_ofertaVenta mpVmov ON mov.id=mpVmov.idMulti_ofertaVenta
 		".$sqlWhere.$sqlOrder.$sqlLimit;
 		$tQuery=microtime(true);
@@ -382,6 +389,9 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 	}
 	public function tipoIva() {
 		return $this->objMulti_tipoIva()->GETtipoIva();
+	}
+	public function tipoDescuentoGama() {
+		return $this->objMulti_productoGama()->GETtipoDescuento();
 	}
 }
 ?>

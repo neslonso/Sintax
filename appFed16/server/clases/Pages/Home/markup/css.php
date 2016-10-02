@@ -181,12 +181,20 @@ a.blanco{
 }
 .txtMenuRoot{
 	display: inline-block;
-	vertical-align: middle;
+	/*vertical-align: middle;
 	vertical-align: -moz-middle-with-baseline;
-	line-height: normal;
+	line-height: normal;*/
 	width: @width-root-txt-menu;
 	float:left;
 	padding-left: 5px;
+	height:30px;
+	line-height: 30px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-transform: capitalize;
+	font-variant: small-caps;
+	font-size: smaller;
 }
 .rootMenu-ico{
 	width: 30px;
@@ -202,14 +210,17 @@ a.blanco{
 	-webkit-column-count: 3;
 	column-count: 3;
 }
+.col-subMenu .containerImgDecoCat {
+	padding-top: 13px;
+}
 .img-cat-subMenu{
 	width: 30px;
 	height: 30px;
 	display: inline-block;
 	float: left !important;
-	margin-top: 0px !important;
-	margin-bottom: -10px !important;
-	margin-right: 5px;
+	/*margin-top: 0px !important;*/
+	/*margin-bottom: -10px !important;*/
+	margin-right: 3px;
 }
 .nombre-cat-subMenu{
 	float: left !important;
@@ -218,6 +229,12 @@ a.blanco{
 	padding: 5px 5px 5px 0 !important;
 }
 
+.ttmenu-content .box+.child h4 {
+	/*line-height: 30px;*/
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 /*
  * Row with equal height columns
  * --------------------------------------------------
@@ -332,29 +349,51 @@ a.blanco{
 }
 
 /***********  ZONA DE BANNERS *************/
-.swiper-container {
+#container-banners .swiper-container {
 	width: 100%;
 	height: 100%;
 	padding: 25px 0;
-	background-color: #FFF;
 	box-shadow: inset 0 -7px 3px rgba(0, 0, 0, 0.3);
+
+	background: linear-gradient(90deg, #ffffff, #6c94be, #ffffff, #cd5a91);
+	background-size: 800% 800%;
+	animation: bannerBackground 120s ease infinite;
 }
-.swiper-slide {
+@keyframes bannerBackground {
+	0%{background-position:0% 50%}
+	50%{background-position:100% 50%}
+	100%{background-position:0% 50%}
+}
+#container-banners .swiper-slide {
 	width:300px;
 }
-.swiper-slide-1 {
+#container-banners .swiper-slide>div {
 	height:100%;
 	background-color: #FFF;
-	/*background-color: rgb(68,219,166);
-	background-image: -webkit-linear-gradient(top, rgb(68,219,166), rgb(187,141,43));
-	background-image:    -moz-linear-gradient(top, rgb(68,219,166), rgb(187,141,43));
-	background-image:      -o-linear-gradient(top, rgb(68,219,166), rgb(187,141,43));
-	background-image:         linear-gradient(to bottom, rgb(68,219,166), rgb(187,141,43));*/
+	border: solid #a0a0a0 1px;
+	border-radius: 7px;
 }
-.swiper-slide-1 div {
+#container-banners .swiper-slide>div>div {
 	height: 100%;
-	border: solid #000 1px;
 }
+/*********** SWIPER DE OFERTAS ************/
+.ofersPageSwiperContainer {
+	width: 100%;
+	height: 100%;
+}
+.ofersPageSwiperContainer .swiper-slide {
+	width:300px;
+	height:100%;
+	background-color: #FFF;
+	border: solid #a0a0a0 1px;
+	border-radius: 7px;
+}
+.imgAnimatedToSlider {
+	background-color: #fff;
+	border: solid #a0a0a0 1px;
+	border-radius:7%;
+}
+/******************************************/
 /*********  LISTADO DE PRODUCTOS **********/
 
 .shop-item {

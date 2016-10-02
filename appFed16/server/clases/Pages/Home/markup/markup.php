@@ -128,7 +128,7 @@
 										<div class="panel-body">
 											<div class="form-group">
 												<label for="email" accesskey="">Email: </label>
-												<input  class="form-control" type="text" name="email" id="email" value="" placeholder="tuCorreo@electronico.com" />
+												<input  class="form-control" type="text" name="email" id="email" value="" placeholder="tucorreo@electronico.com" />
 											</div>
 											<div class="form-group">
 												<label for="pass" accesskey="">Contraseña:</label>
@@ -190,9 +190,9 @@
 																$arrCatsHijas=$this->subMenu($cat->id);
 																foreach ($arrCatsHijas as $catH) {
 																	$tieneHijos=(empty($catH->arrNietos))?false:true;
-
+																	$boxClass=(empty($catH->arrNietos))?'noChild':'child';
 ?>
-																			<div class="box">
+																			<div class="box <?=$boxClass?>">
 																				<ul style="display: inline-block;;">
 																					<li>
 <?
@@ -200,9 +200,9 @@
 																					$imgProdsCat="";
 																					if ($tieneHijos){
 																						$x-=30;
-																						$imgCat='<span style="background-image:url(\''.$cat->ico.'\'); background-position:'.$x.'px 0px;" class="img-cat-subMenu"></span>';
+																						//$imgCat='<span style="background-image:url(\''.$cat->ico.'\'); background-position:'.$x.'px 0px;" class="img-cat-subMenu"></span>';
 																					} else {
-																						$imgProdsCat='<div class="text-center">';
+																						$imgProdsCat='<div>';
 																						foreach ($catH->arrOfersMasVendidas as $oferMasVendida) {
 																							$x-=30;
 																							$imgProdsCat.='<span style="background-image:url(\''.$cat->ico.'\'); background-position:'.$x.'px 0px;" data-toggle="tooltip" title="'.$oferMasVendida->imgId.'--'.$oferMasVendida->nombre.'" data-placement="top" data-container="body" class="img-cat-subMenu"></span>';
@@ -236,7 +236,7 @@
 <?
 																}
 ?>
-																			<img src="<?=$cat->img?>" alt="" class="img-responsive">
+																			<div class="containerImgDecoCat"><img src="<?=$cat->img?>" alt="" class="img-responsive"></div>
 																		</div>
 																	</div>
 																</div><!-- end row -->

@@ -15,6 +15,7 @@ class Multi_cesta extends Sintax\Core\Entity implements Sintax\Core\IEntity {
 			"id" => NULL,
 			"insert" => NULL,
 			"update" => NULL,
+			"idMulti_pedidoRealizado" => NULL,
 			"idMulti_cliente" => NULL,
 		);
 		parent::__construct($db,$keyValue);
@@ -38,6 +39,9 @@ class Multi_cesta extends Sintax\Core\Entity implements Sintax\Core\IEntity {
 
 	public function GETupdate ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["update"],ENT_QUOTES,"UTF-8"):$this->arrDbData["update"];}
 	public function SETupdate ($update,$entity_encode=false) {$this->arrDbData["update"]=($entity_encode)?htmlentities($update,ENT_QUOTES,"UTF-8"):$update;}
+
+	public function GETidMulti_pedidoRealizado ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["idMulti_pedidoRealizado"],ENT_QUOTES,"UTF-8"):$this->arrDbData["idMulti_pedidoRealizado"];}
+	public function SETidMulti_pedidoRealizado ($idMulti_pedidoRealizado,$entity_encode=false) {$this->arrDbData["idMulti_pedidoRealizado"]=($entity_encode)?htmlentities($idMulti_pedidoRealizado,ENT_QUOTES,"UTF-8"):$idMulti_pedidoRealizado;}
 
 	public function GETidMulti_cliente ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["idMulti_cliente"],ENT_QUOTES,"UTF-8"):$this->arrDbData["idMulti_cliente"];}
 	public function SETidMulti_cliente ($idMulti_cliente,$entity_encode=false) {$this->arrDbData["idMulti_cliente"]=($entity_encode)?htmlentities($idMulti_cliente,ENT_QUOTES,"UTF-8"):$idMulti_cliente;}

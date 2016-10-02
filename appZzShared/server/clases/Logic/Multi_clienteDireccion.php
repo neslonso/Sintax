@@ -212,8 +212,6 @@ class Multi_clienteDireccion extends \Sintax\Core\Entity implements \Sintax\Core
 		while ($data=$rsl->fetch_object()) {
 			if ($data->id!=$this->GETid()) {
 				$result++;
-			} else {
-				break;
 			}
 		}
 		return $result;

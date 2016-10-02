@@ -18,7 +18,7 @@ $(document).ready(function() {
 							'<div>{{nombre}}</div>',
 							'<div>',
 								'<img style="float:left" ',
-									'src="http://fed16.farmaciacelorrio.com/index.php?MODULE=images&almacen=DB&fichero=multi_productoAdjunto.id.4793.data&ancho=60&alto=60&modo=256" ',
+									'src="<?=BASE_URL.FILE_APP?>?MODULE=images&almacen=DB&fichero=multi_productoAdjunto.id.4793.data&ancho=60&alto=60&modo=256" ',
 								'/>',
 								'<div style="height:40px; overflow:hidden; font-size:x-small;">{{descripcion}}</div>',
 								'<div style="text-align:right;">'+parseFloat(item.precio).toFixed(2)+'€</div>',

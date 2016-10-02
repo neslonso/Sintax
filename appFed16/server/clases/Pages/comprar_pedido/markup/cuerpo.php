@@ -55,7 +55,7 @@
 								<?=$this->direccionEntregaSelectionControl($datosCli,$idDirPredeterminada)?>
 							</div>
 							<div class="panel-footer text-right">
-								<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalAddDir">
+								<button id="btnModalAddDir" type="button" class="btn btn-default">
 									<span class="glyphicon glyphicon-plus"></span> Añadir dirección
 								</button>
 							</div>
@@ -228,13 +228,18 @@ foreach ($newPedBridgeData->lineas as $stdObjLinea) {
 		$totalRebotes+=$totalRebote;
 		$totalRebotesDesc.='<tr><td>'.$stdObjLinea->concepto.'</td><td>'.$this->totalLinea($stdObjLinea).'€ x'.$stdObjLinea->tipoDevolucionCredito.'%</td><td>=</td><td>'.$totalRebote.'€</td></tr>';
 	}
+	$precioLineaTooltip='';
+	if (in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
+		$precioLineaTooltip='data-toggle="tooltip" data-placement="left" data-html="true" title="Este tooltip sale porque IP está en IPS_DEV<br />'.$stdObjLinea->pai.'€ + '.$stdObjLinea->tipoIva.'% IVA"';
+	}
+
 ?>
 								<tr class="trLinea"
 									data-obj-linea='<?=json_encode($stdObjLinea)?>'
 								>
 									<td><?=$stdObjLinea->referencia;?></td>
 									<td><?=$stdObjLinea->concepto;?></td>
-									<td><span data-toggle="tooltip" data-placement="left" data-html="true" title="<?=$stdObjLinea->pai?>€ + <?=$stdObjLinea->tipoIva?>% IVA"><?=$this->pvp($stdObjLinea)?>€</span></td>
+									<td><span <?=$precioLineaTooltip?>><?=$this->pvp($stdObjLinea)?>€</span></td>
 									<td><?=$stdObjLinea->cantidad?></td>
 									<td><span data-toggle="tooltip" data-placement="left" data-html="true" title="<?=$dtoTooltip?>"><?=$dtoDesc?></span></td>
 									<td class="totalLinea" data-totalLinea="<?=$this->totalLinea($stdObjLinea)?>"><?=$this->totalLinea($stdObjLinea)?>€</td>

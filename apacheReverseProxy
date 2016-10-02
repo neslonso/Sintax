@@ -5,6 +5,10 @@ ProxyPassReverseCookieDomain  "fed16.farmaciacelorrio.com"  "bebefarma.com"
 ProxyPassReverseCookiePath  "/"  "/"
 ProxyVia On
 
+
+################################################################################
+# NO USAREMOS MOD_PROXY_HTML, NO REESCRIBE TODO Y DA PROBLEMAS CON EL AJAX
+################################################################################
 ProxyHTMLURLMap "http://fed16.farmaciacelorrio.com" "http://bebefarma.com"
 ProxyHTMLEnable On
 ProxyHTMLBufSize  102400

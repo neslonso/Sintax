@@ -30,6 +30,7 @@ class Home extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsCesta.php");
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsBuscador.php");
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsBanner.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsOferDetalle.php");
 	}
 	public function css() {
 		parent::css();
@@ -140,19 +141,6 @@ class Home extends Error implements IPage {
 			return $result;
 		} catch (Exception $e) {
 			throw new ActionException("Error añadiendo producto", 1,$e);
-		}
-	}
-
-	public function acRemoveFromCesta ($idMulti_ofertaVenta) {
-		try {
-			$db=\cDb::confByKey('celorriov3');
-			$objCesta=$this->ensureCesta($db);
-			$objLinea=$objCesta->arrMulti_cestaLinea("idMulti_ofertaVenta='".$idMulti_ofertaVenta."'","","","arrClassObjs");
-			$result=$objLinea[0]->borrar();
-			$_SESSION['cesta']=$objCesta;
-			return $result;
-		} catch (Exception $e) {
-			throw new ActionException("Error eliminando producto", 1,$e);
 		}
 	}
 

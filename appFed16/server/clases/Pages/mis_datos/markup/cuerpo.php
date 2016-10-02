@@ -257,7 +257,7 @@
 ?>
 		</div>
 		<div class="panel-footer text-right">
-				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalAddDir">
+				<button id="btnModalAddDir" type="button" class="btn btn-default">
 					<span class="glyphicon glyphicon-plus"></span> Añadir dirección
 				</button>
 		</div>
