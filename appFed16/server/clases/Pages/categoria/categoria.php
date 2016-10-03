@@ -44,7 +44,7 @@ class categoria extends Home implements IPage {
 			$arrOfersCuerpo=\Sintax\ApiService\Categorias::arrOfersCat($idCategoria);
 		} else {
 			//error o redireccion a Home
-			throw new Exception("CategorÃ­a No disponible.");
+			throw new Exception("Categoría No disponible.");
 		}
 		require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
 	}

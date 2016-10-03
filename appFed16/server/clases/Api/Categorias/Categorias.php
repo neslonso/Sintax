@@ -145,6 +145,8 @@ class Categorias extends ApiService implements IApiService {
 				if ($objOferta!==false) {
 					$obj=self::creaStdObjOferta($objOferta);
 					$obj->index=$totalInsertados;
+					$obj->rebote=$objOferta->GETtipoDevolucionCredito();
+					$obj->index=$totalInsertados;
 					array_push($arr,$obj);
 					$insertadosEstaCat++;
 					$totalInsertados++;
@@ -169,6 +171,8 @@ class Categorias extends ApiService implements IApiService {
 		foreach ($arrOfers as $objOferta) {
 			$obj=self::creaStdObjOferta($objOferta);
 			$obj->index=$i;
+			$obj->rebote=$objOferta->GETtipoDevolucionCredito();
+			$obj->index=$i;
 			array_push($arr,$obj);
 			$i++;
 		}
@@ -191,6 +195,8 @@ class Categorias extends ApiService implements IApiService {
 			if ($totalInsertados>=$cuantos) {break;}
 			$objOferta=new \Multi_ofertaVenta($db,$idOfer);
 			$obj=self::creaStdObjOferta($objOferta);
+			$obj->index=$totalInsertados;
+			$obj->rebote=$objOferta->GETtipoDevolucionCredito();
 			$obj->index=$totalInsertados;
 			array_push($arr,$obj);
 			$totalInsertados++;

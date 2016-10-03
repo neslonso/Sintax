@@ -229,11 +229,11 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
 		$pvpCatalogo=0;
 		if (count($arrProds)==1) {
-			$pvpCatalogo=$arrProds[0]->pvp();
+			$pvpCatalogo=$arrProds[0]->pai();
 		} else {
 			//TODO: Imprescindible, saber que hacer aquí, tendremos q sumar los precios de los pai de catalogo
 			throw new Exception("No sabemos que hacer con los packs de productos", 1);
-			$pvpCatalogo=$arrProds[0]->pvp();
+			$pvpCatalogo=$arrProds[0]->pai();
 		}
 		return $pvpCatalogo;
 	}
@@ -246,7 +246,7 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 	public function descuentoOferta(){
 		$pvpCatalogo=$this->pvpCatalogo();
 		$dif=$pvpCatalogo-$this->pvp();
-		return round(($dif/$pvpCatalogo)*100),2);
+		return round(($dif/$pvpCatalogo)*100,2);
 	}
 	/**
 	 * [imgSrc description]

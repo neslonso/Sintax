@@ -110,10 +110,10 @@
 						<button id="btnUserNav" class="btn btn-success btn-menu" type="button" data-toggle="tooltip" title="Accede / Regístrate" data-placement="top" data-container="body">
 							<span class="fa fa-user-plus"></span>
 						</button>
-						<button id="btnUserFB" class="btn btn-primary btn-menu" type="button" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
+						<button id="FbLogin" class="btn btn-primary btn-menu hidden-xs hidden-sm" type="button" disabled="disabled" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
 							<span class="fa fa-facebook-square"></span>
 						</button>
-						<button id="btnUserTW" class="btn btn-info btn-menu" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
+						<button id="btnUserTW" class="btn btn-info btn-menu hidden-xs hidden-sm" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
 							<span class="fa fa fa-twitter"></span>
 						</button>
 					</div>
@@ -139,6 +139,12 @@
 											<a id="btnRegistro" href="<?=BASE_URL?>registro_usuario" class="btn btn-warning btn-sm blanco">
 												<span class="glyphicon glyphicon-plus"></span> Registrate
 											</a>
+											<button id="FbLogin2" class="btn btn-primary btn-sm" type="button" disabled="disabled" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
+												<span class="fa fa-facebook-square"></span>
+											</button>
+											<button id="btnUserTW2" class="btn btn-info btn-sm" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
+												<span class="fa fa fa-twitter"></span>
+											</button>
 											<a id="btnLogin" href="#" class="btn btn-primary btn-sm blanco">
 												<span class="glyphicon glyphicon-ok"></span> Entrar
 											</a>
@@ -205,7 +211,7 @@
 																						$imgProdsCat='<div>';
 																						foreach ($catH->arrOfersMasVendidas as $oferMasVendida) {
 																							$x-=30;
-																							$imgProdsCat.='<span style="background-image:url(\''.$cat->ico.'\'); background-position:'.$x.'px 0px;" data-toggle="tooltip" title="'.$oferMasVendida->imgId.'--'.$oferMasVendida->nombre.'" data-placement="top" data-container="body" class="img-cat-subMenu"></span>';
+																							$imgProdsCat.='<span onclick="window.location=\''.BASE_URL.'prod/'.$oferMasVendida->imgId.'\'" style="cursor:pointer;background-image:url(\''.$cat->ico.'\'); background-position:'.$x.'px 0px;" data-toggle="tooltip" title="'.$oferMasVendida->nombre.'" data-placement="top" data-container="body" class="img-cat-subMenu"></span>';
 																						}
 																						$imgProdsCat.='</div>';
 																						//$imgProdsCat="<pre>".print_r($catH,true)."</pre>";

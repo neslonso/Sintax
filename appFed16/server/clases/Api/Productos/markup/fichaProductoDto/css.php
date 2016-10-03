@@ -1,3 +1,4 @@
+<?if (false) {?><style><?}?>
 .banner-background{
 	border-top-left-radius: 7px;
 }
@@ -20,6 +21,10 @@
 	color:#fff;
 	text-shadow: 2px 0 0 @color-principal, -2px 0 0 @color-principal, 0 2px 0 @color-principal, 0 -2px 0 @color-principal, 1px 1px @color-principal, -1px -1px 0 @color-principal, 1px -1px 0 @color-principal, -1px 1px 0 @color-principal;
 	font-size: 22px;
+}
+.banner-price-ahora-sinDescuento{
+	margin-top: 20px;
+	margin-bottom:7px;
 }
 .banner-price-comprar{
 	background: @color-secundario none repeat scroll 0 0;
@@ -45,10 +50,12 @@ a.banner-price-comprar:hover{
 .banner-txt{
 	color: white;
 	font: bold Helvetica, Sans-Serif;
-	font-size: 15px;
+	font-size: 20px;
+	font-weight: bold;
 	background: rgb(0, 0, 0);
 	background: @color-banner-txt;
 	padding: 5px;
+	padding-top: 10px;
 	border-bottom-left-radius: 7px;
 	border-bottom-right-radius: 7px;
 	bottom: 0px;
@@ -56,6 +63,7 @@ a.banner-price-comprar:hover{
 	width: 100%;
 	text-overflow: ellipsis;
 	overflow: hidden;
+	white-space: nowrap;
 	height: 49px;
 }
 .banner-txt > a{
