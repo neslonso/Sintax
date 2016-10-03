@@ -133,8 +133,12 @@ class Categorias extends ApiService implements IApiService {
 					$obj->id=$objOferta->GETid();
 					$obj->nombre=$objOferta->GETid().'.- '.$objOferta->GETnombre();
 					$obj->precio=$objOferta->pvp();
+					$obj->precioCatalogo=$objOferta->pvpCatalogo();
+					$obj->tipoDtoRespectoCatalogo=$objOferta->descuentoOferta();
 					$obj->urlFotoPpal=$objOferta->imgSrc();
 					$obj->imgId=$objOferta->imgId();
+					$obj->rebote=$objOferta->GETtipoDevolucionCredito();
+					$obj->index=$totalInsertados;
 					array_push($arr,$obj);
 					$insertadosEstaCat++;
 					$totalInsertados++;
@@ -154,15 +158,21 @@ class Categorias extends ApiService implements IApiService {
 		$arr=array();
 		$objCat=new \Multi_categoria($db,$idMulti_categoria);
 
-		$arrOfers=$objCat->arrMulti_ofertaVenta("","","","arrClassObjs");
+		$arrOfers=$objCat->arrMulti_ofertaVenta("","orden ASC","","arrClassObjs");
+		$i=0;
 		foreach ($arrOfers as $objOferta) {
 			$obj=new \stdClass();
 			$obj->id=$objOferta->GETid();
 			$obj->nombre=$objOferta->GETid().'.- '.$objOferta->GETnombre();
 			$obj->precio=$objOferta->pvp();
+			$obj->precioCatalogo=$objOferta->pvpCatalogo();
+			$obj->tipoDtoRespectoCatalogo=$objOferta->descuentoOferta();
 			$obj->urlFotoPpal=$objOferta->imgSrc();
 			$obj->imgId=$objOferta->imgId();
+			$obj->rebote=$objOferta->GETtipoDevolucionCredito();
+			$obj->index=$i;
 			array_push($arr,$obj);
+			$i++;
 		}
 		return $arr;
 	}
@@ -186,13 +196,28 @@ class Categorias extends ApiService implements IApiService {
 			$obj->id=$objOferta->GETid();
 			$obj->nombre=$objOferta->GETid().'.- '.$objOferta->GETnombre();
 			$obj->precio=$objOferta->pvp();
+			$obj->precioCatalogo=$objOferta->pvpCatalogo();
+			$obj->tipoDtoRespectoCatalogo=$objOferta->descuentoOferta();
 			$obj->urlFotoPpal=$objOferta->imgSrc();
 			$obj->imgId=$objOferta->imgId();
+			$obj->rebote=$objOferta->GETtipoDevolucionCredito();
+			$obj->index=$totalInsertados;
 			array_push($arr,$obj);
 			$totalInsertados++;
 		}
 		return $arr;
 	}
-
+/******************************************************************************/
+/* FRAGMENTOS *****************************************************************/
+	public function listaFichaProductoResponsive($arrOfers) {
+		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/listaFichaProductoResponsive/markup.php');
+	}
+	public function listaFichaProductoResponsiveJs() {
+		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/listaFichaProductoResponsive/js.php');
+	}
+	public function listaFichaProductoResponsiveCss() {
+		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/listaFichaProductoResponsive/css.php');
+	}
+/******************************************************************************/
 }
 ?>

@@ -37,11 +37,11 @@ class categoria extends Home implements IPage {
 		$idCategoria=(isset($_REQUEST['id']))?$_REQUEST['id']:NULL;
 		$objCat=new \Multi_categoria(\cDb::gI(),$idCategoria);
 		if ($objCat->GETid() && $objCat->GETkeyTienda()==$GLOBALS['config']->tienda->key) {
-			$arrOfersMasVendidas=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,3,$idCategoria);
-			$arrOfers=\Sintax\ApiService\Categorias::arrOfersCat($idCategoria);
+			$arrOfersBanner=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,3,$idCategoria);
+			$arrOfersCuerpo=\Sintax\ApiService\Categorias::arrOfersCat($idCategoria);
 		} else {
-			$arrOfersMayorDescuento=\Sintax\ApiService\Categorias::arrOfersMayorDescuento($GLOBALS['config']->tienda->key,13);
-			$arrOfersMasVendidas=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,24);
+			$arrOfersBanner=\Sintax\ApiService\Categorias::arrOfersMayorDescuento($GLOBALS['config']->tienda->key,13);
+			$arrOfersCuerpo=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,24);
 		}
 		require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
 	}

@@ -38,5 +38,30 @@ class Productos extends ApiService implements IApiService {
 		//error_log(print_r($arr,true));
 		return $arr;
 	}
+
+/******************************************************************************/
+/* FRAGMENTOS *****************************************************************/
+	public function fichaProductoResponsive($stdObjOfer) {
+		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/fichaProductoResponsive/markup.php');
+	}
+	public function fichaProductoResponsiveJs() {
+		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/fichaProductoResponsive/js.php');
+	}
+	public function fichaProductoResponsiveCss() {
+		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/fichaProductoResponsive/css.php');
+	}
+
+	public function fichaProductoDto($stdObjOfer) {
+		$imgSrc=$stdObjOfer->urlFotoPpal.'&modo='.(\Imagen::OUTPUT_MODE_SCALE | \Imagen::OUTPUT_MODE_ROTATE_H | \Imagen::OUTPUT_MODE_ROTATE_V);
+		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/fichaProductoDto/markup.php');
+	}
+	public function fichaProductoDtoJs() {
+		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/fichaProductoDto/js.php');
+	}
+	public function fichaProductoDtoCss() {
+		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/fichaProductoDto/css.php');
+	}
+
+/******************************************************************************/
 }
 ?>
