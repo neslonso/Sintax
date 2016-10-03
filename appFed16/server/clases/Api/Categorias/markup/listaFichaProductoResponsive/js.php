@@ -1,5 +1,3 @@
-<?if (false) {?><script><?}?>
-<?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
 	$('#container-cuerpo .shop-item-link').on('click',function(event) {
 		$thisShopItemElto=$(this).closest('.shop-item');
@@ -23,7 +21,7 @@ $(document).ready(function() {
 			"width"  : resultInitSwiper.size.width,
 			"height" : resultInitSwiper.size.height,
 		},{
-			duration: 370,
+			duration: 3700,
 			complete: function() {
 				resultInitSwiper.$swiperTemplateClone.fadeIn('400', function() {
 				});

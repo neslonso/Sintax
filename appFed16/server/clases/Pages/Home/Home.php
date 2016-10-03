@@ -31,11 +31,19 @@ class Home extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsBuscador.php");
 
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsBanner.php");
-		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsOferDetalle.php");
+		\Sintax\ApiService\Categorias::listaFichaProductoResponsiveJs();
 	}
 	public function css() {
 		parent::css();
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssBanner.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssBuscador.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssMenuCats.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssMenuUsr.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssOferDetalle.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssMediaQueries.php");
+		\Sintax\ApiService\Categorias::listaFichaProductoResponsiveCss();
+		\Sintax\ApiService\Productos::fichaProductoDtoCss();
 	}
 	public function markup() {
 		$db=\cDb::confByKey('celorriov3');
@@ -62,9 +70,12 @@ class Home extends Error implements IPage {
 	}
 
 	public function cuerpo() {
-		$objPageCategoria=new categoria($this->objUsr);
-		$objPageCategoria->cuerpo();
-		//require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
+		//$objPageCategoria=new categoria($this->objUsr);
+		//$objPageCategoria->cuerpo();
+
+		$arrOfersBanner=\Sintax\ApiService\Categorias::arrOfersMayorDescuento($GLOBALS['config']->tienda->key,13);
+		$arrOfersCuerpo=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,24);
+		require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
 	}
 	public function subMenu($idPadre){
 		$arrCatsSubMenu=\Sintax\ApiService\Categorias::arrCatsRootsSubMenu($idPadre);

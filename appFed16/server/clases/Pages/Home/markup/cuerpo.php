@@ -23,7 +23,7 @@
 	</div>
 </div>
 <div class="container shop-item-container" id="container-cuerpo">
-	<?\Sintax\ApiService\Categorias::listaFichaProductoResponsive($arrOfersCuerpo);?>
+		<?\Sintax\ApiService\Categorias::listaFichaProductoResponsive($arrOfersCuerpo);?>
 </div>
 
 <div class="hiddenSwiper" style="display:none;">
