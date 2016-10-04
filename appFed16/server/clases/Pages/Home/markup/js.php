@@ -94,16 +94,28 @@ $(document).ready(function() {
 			$("#wrapper").toggleClass("toggled");
 		}
 	});
-
 	$('#btnUserNav').click(function(e) {
 		if($('#navUserMenu').hasClass('nav-user-menu-outside')){
+			if($('.contentCart').hasClass('contentCartInside')){
+				/*cerramos cesta*/
+				$('.contentCart').removeClass('contentCartInside');
+				$('.contentCart').addClass('contentCartOutside');
+			}
+			/* abrimos menu*/
 			$('#navUserMenu').removeClass('nav-user-menu-outside');
 			$('#navUserMenu').addClass('nav-user-menu-inside');
 		}else{
 			if($('#navUserMenu').hasClass('nav-user-menu-inside')){
+				/* cerramos menu */
 				$('#navUserMenu').removeClass('nav-user-menu-inside');
 				$('#navUserMenu').addClass('nav-user-menu-outside');
 			}else{
+				if($('.contentCart').hasClass('contentCartInside')){
+					/*cerramos cesta*/
+					$('.contentCart').removeClass('contentCartInside');
+					$('.contentCart').addClass('contentCartOutside');
+				}
+				/*abrimos menu*/
 				$('#navUserMenu').removeClass('nav-user-menu-outside');
 				$('#navUserMenu').addClass('nav-user-menu-inside');
 			}

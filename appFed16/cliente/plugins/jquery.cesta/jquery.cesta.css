@@ -7,12 +7,12 @@
 @color-bd-btnCheckOrder: #ffffff;
 
 @color-font-btnRemoveItem :#ffffff;
-@color-bg-btnRemoveItem: #ff94be;
+@color-bg-btnRemoveItem: #CD5A91;
 
 @width-cesta: 400px;
 @color-bg-itemsCart: #f0f0f0;
 
-@color-principal: #ff94be;
+@color-principal: #CD5A91;
 @color-secundario: #6c94be;
 /*********  CESTA **********/
 /*  CESTA */
@@ -23,7 +23,7 @@
 	right: -@width-cesta !important;
 	width: @width-cesta !important;
 	height: auto !important;
-	border-top: 3px solid #ff94be;
+	border-top: 3px solid @color-principal;
 	overflow: hidden;
 	box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.23);
 	background-color: @color-bg-cart;
@@ -133,7 +133,20 @@
 		transform: translateX(-@width-cesta);
 	}
 }
-
+.btn-comprar{
+	background: @color-secundario none repeat scroll 0 0;
+    border: 1px solid #ffffff;
+    color: #ffffff !important;
+    transition: all 0.35s ease-in 0s;
+}
+a.btn-comprar{
+	color: #fff !important;
+	transition: all 0.35s ease-in 0s;
+}
+a.btn-comprar:hover{
+	background: @color-principal none repeat scroll 0 0;
+	color: #fff !important;
+}
 /* LG */
 @media (min-width: 1199px){
 

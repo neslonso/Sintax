@@ -99,6 +99,11 @@
  				$contentCart.removeClass('contentCartInside');
 				$contentCart.addClass('contentCartOutside');
 			} else {
+				if($('#navUserMenu').hasClass('nav-user-menu-inside')){
+					/* cerramos menu usuario*/
+					$('#navUserMenu').removeClass('nav-user-menu-inside');
+					$('#navUserMenu').addClass('nav-user-menu-outside');
+				}
  				$contentCart.addClass('contentCartInside');
 				$contentCart.removeClass('contentCartOutside');
 			}
@@ -304,7 +309,7 @@
 							'(<span class="quantity">' + udsCount + '</span>)&nbsp;Unidades',
 							'<span class="pull-xs-right"><b>TOTAL: <span class="total">' + parseFloat(total).toFixed(2) + '</span>&nbsp;€</b></span>',
 						'</div>',
-						'<a  class="btn btn-primary btn-lg btn-block btnCheckOrder" type="button" href="javascript:void(null)"><b>' + plugin.settings.cart.txtBtnOrder + '</b></a>',
+						'<a  class="btn btn-lg btn-block btn-comprar" type="button" href="javascript:void(null)"><b>' + plugin.settings.cart.txtBtnOrder + '</b></a>',
 					'</div>',
 				].join('');
 			}
