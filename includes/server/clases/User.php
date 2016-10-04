@@ -38,7 +38,20 @@ abstract class User implements IUser {
 }
 
 class AnonymousUser extends User implements IUser {
-	public function pagePermitida (Page $objPage) {return true;}
+	public function pagePermitida (Page $objPage) {
+		$result=false;
+		$pageClass=get_class($objPage);
+		switch ($pageClass) {
+			case 'Sintax\Pages\Home':
+			case 'Sintax\Pages\categoria':
+			case 'Sintax\Pages\prod':
+			case 'Sintax\Pages\registro_usuario':
+				$result=true;
+				break;
+		}
+		if (stristr($pageClass, 'Bridge')) {$result=true;}
+		return $result;
+	}
 	public function accionPermitida (Page $objPage,$metodo) {
 		$result=true;
 		switch (get_class($objPage)) {

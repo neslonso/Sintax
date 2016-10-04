@@ -64,8 +64,13 @@ function muestraMsgModalBootstrap3(title, msg) {
 			}
 
 			if (self.opt.destroyOnClick) {
-				$divTable.on('click', function(event) {
-					$.overlay('destroy');
+				$overlay.add($divTable).add($divCell)
+				.on('click', function(event) {
+					console.log(event);
+					console.log(this);
+					if (event.target==this) {
+						$.overlay('destroy');
+					}
 				});
 			}
 

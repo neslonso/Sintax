@@ -2,7 +2,7 @@
 use Sintax\Core\IUser;
 use Sintax\Core\User;
 use Sintax\Core\Page;
-class Multi_clienteUser extends User implements IUser {
+class Multi_clienteUser extends AnonymousUser implements IUser {
 	public $objEntity;
 
 	public function __construct (\MysqliDB $db=NULL, $keyValue=NULL) {
@@ -10,18 +10,18 @@ class Multi_clienteUser extends User implements IUser {
 	}
 
 	public function pagePermitida (Page $objPage) {
-		$result=false;
-		switch (get_class($objPage)) {
-			case 'Sintax\Pages\mi_pedido':
-			case 'Sintax\Pages\mis_pedidos':
-			case 'Sintax\Pages\comprar_pedido':
-			case 'Sintax\Pages\mis_datos':
-				$result=true;
-				break;
-			default:
-				//almacenar get_class($objPage), get_class($this)
-				break;
-		}
+			$result=parent::pagePermitida($objPage);
+			switch (get_class($objPage)) {
+				case 'Sintax\Pages\mi_pedido':
+				case 'Sintax\Pages\mis_pedidos':
+				case 'Sintax\Pages\comprar_pedido':
+				case 'Sintax\Pages\mis_datos':
+					$result=true;
+					break;
+				default:
+					//almacenar get_class($objPage), get_class($this)
+					break;
+			}
 		return $result;
 	}
 	public function accionPermitida (Page $objPage,$metodo) {

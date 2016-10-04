@@ -7,13 +7,13 @@
 		</div>
 		<div class="container-fluid container-cabecera-barraLogo">
 			<div class="row vertical-align">
-				<div class="col-xs-6 col-sm-4 col-md-3">
+				<div class="hidden-xs col-sm-3 col-md-3">
 					<a href="<?=BASE_URL?>"><img class="img-responsive logo" src="<?=$GLOBALS['config']->tienda->URL_LOGO?>" alt=""></a>
 				</div>
-				<div class="col-xs-3 col-sm-2 col-md-1">
+				<div class="col-xs-2 col-sm-1">
 					<a href="#menu-toggle" class="btn btn-default btn-menu" id="menu-toggle"><span class="glyphicon glyphicon-align-justify"></span></a>
 				</div>
-				<div class="hidden-xs col-sm-4 col-md-4">
+				<div class="col-xs-7 col-sm-6 col-md-4">
 					<form id="typeahead-form" name="typeahead-form" style="width:100%;">
 						<div class="typeahead__container">
 							<div class="typeahead__field">
@@ -44,7 +44,7 @@
 					}
 ?>
 					<div class="btn-group" role="group" aria-label="...">
-						<button id="btnUserNav" class="btn btn-primary btn-menu" type="button" data-toggle="tooltip" title="Área de usuario" data-placement="top" data-container="body">
+						<button class="btnUserNav btn btn-primary btn-menu" type="button" data-toggle="tooltip" title="Área de usuario" data-placement="top" data-container="body">
 							<span class="glyphicon glyphicon-user"></span>
 							<span class="badge visible-xs visible-sm"><?=$nombreAvatarMin?></span>
 							<span class="badge hidden-xs hidden-sm"><?=$nombreAvatar?></span>
@@ -106,17 +106,22 @@
 <?
 				} else {
 ?>
-					<div class="btn-group" role="group" aria-label="...">
-						<button id="btnUserNav" class="btn btn-success btn-menu" type="button" data-toggle="tooltip" title="Accede / Regístrate" data-placement="top" data-container="body">
+						<button class="btnUserNav btn btn-success btn-menu hidden-md hidden-lg" type="button" data-toggle="tooltip" title="Accede / Regístrate" data-placement="top" data-container="body">
 							<span class="fa fa-user-plus"></span>
 						</button>
-						<button id="FbLogin" class="btn btn-primary btn-menu hidden-xs hidden-sm" type="button" disabled="disabled" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
-							<span class="fa fa-facebook-square"></span>
-						</button>
-						<button id="btnUserTW" class="btn btn-info btn-menu hidden-xs hidden-sm" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
-							<span class="fa fa fa-twitter"></span>
-						</button>
-					</div>
+
+						<div class="btn-group hidden-xs hidden-sm" role="group" aria-label="Acceso de cliente">
+							<button class="btnUserNav btn btn-success btn-menu" type="button" data-toggle="tooltip" title="Accede / Regístrate" data-placement="top" data-container="body">
+								<span class="fa fa-user-plus"></span>
+							</button>
+							<button id="FbLogin" class="btn btn-primary btn-menu" type="button" disabled="disabled" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
+								<span class="fa fa-facebook-square"></span>
+							</button>
+							<button id="btnUserTW" class="btn btn-info btn-menu" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
+								<span class="fa fa fa-twitter"></span>
+							</button>
+						</div>
+
 					<div id="navUserMenu" class="nav-user-menu">
 						<div class="row">
 							<div class="col-xs-12">

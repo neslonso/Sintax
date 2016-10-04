@@ -268,9 +268,9 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 	 * @param  int $i indice
 	 * @return string url de la imagen
 	 */
-	public function imgSrc($i=0) {
+	public function imgSrc($i=0,$ancho=150,$alto=150) {
 		$idMPA=$this->imgId($i);
-		$src=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB&fichero=multi_productoAdjunto.id.'.$idMPA.'.data&ancho=150&alto=150&modo='.Imagen::OUTPUT_MODE_FILL;
+		$src=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB&fichero=multi_productoAdjunto.id.'.$idMPA.'.data&ancho='.$ancho.'&alto='.$alto.'&modo='.Imagen::OUTPUT_MODE_FILL;
 		return $src;
 	}
 

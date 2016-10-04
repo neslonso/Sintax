@@ -1,19 +1,41 @@
 $(document).ready(function() {
-	$('#container-cuerpo .shop-item-link').on('click',function(event) {
+	$('.shop-item-container .shop-item-link').on('click',function(event) {
+		event.preventDefault();
 		$thisShopItemElto=$(this).closest('.shop-item');
 		var resultInitSwiper=initOfersSwiper($thisShopItemElto.data('index'));
-		event.preventDefault();
-		var $animationElement=$thisShopItemElto;//.find('.imgOfer');
-		var $animationElementClone=$animationElement.clone().appendTo(document.body).off('click')
-		//.addClass('imgAnimatedToSlider')
+
+		var $animationElement=$thisShopItemElto;
+		var $animationElementClone=$animationElement.clone().appendTo(document.body).off('click');
+
+		//var $swiperSlideToEdit=$('.swiper-slide-active',resultInitSwiper.$swiperTemplateClone);
+		var $swiperSlideToEdit=$('.swiper-slide',resultInitSwiper.$swiperTemplateClone);
+		$(window).on('resize.swiperOferDetalle', function(event) {
+			event.preventDefault();
+			var shopItemDataHeight=$swiperSlideToEdit.find('.shop-item').height()-(
+				$swiperSlideToEdit.find('.shop-item-cart').outerHeight(true)
+			);
+			$swiperSlideToEdit.find('.shop-item-data').outerHeight(shopItemDataHeight);
+			cssFitContainer($swiperSlideToEdit.find('.shop-item-img'),$swiperSlideToEdit.find('.shop-item-img img'));
+			var shopItemDescHeight=shopItemDataHeight-(
+				$swiperSlideToEdit.find('.shop-item-img').outerHeight(true)+
+				$swiperSlideToEdit.find('.shop-item-dtls').outerHeight(true)
+			);
+			$swiperSlideToEdit.find('.shop-item-desc').outerHeight(shopItemDescHeight);
+			var topBottom=($(window).height()-resultInitSwiper.$swiperTemplateClone.outerHeight(true))/2;
+			resultInitSwiper.$swiperTemplateClone.css({
+				'top'      : topBottom,
+				'bottom'   : topBottom,
+			})
+		});
+		$animationElementClone
+		.addClass('cloneAnimatedToSlider')
 		.css({
 			"position" : 'fixed',
 			"left"     : $animationElement.offset().left-$(window).scrollLeft(),
 			"top"      : $animationElement.offset().top-$(window).scrollTop(),
-			"width"    : $animationElement.width(),
-			"height"   : $animationElement.height(),
+			"width"    : $animationElement.css('width'),
+			"height"   : $animationElement.css('height'),
 			"z-index"  : 999999999999,
-			"margin"   : '0px',
 		})
 		.animate({
 			"left"   : resultInitSwiper.offset.left,
@@ -21,34 +43,66 @@ $(document).ready(function() {
 			"width"  : resultInitSwiper.size.width,
 			"height" : resultInitSwiper.size.height,
 		},{
-			duration: 3700,
+			duration: 370,
 			complete: function() {
-				resultInitSwiper.$swiperTemplateClone.fadeIn('400', function() {
+				resultInitSwiper.$swiperTemplateClone.fadeIn(400, function() {
+					var shopItemDataHeight=$swiperSlideToEdit.find('.shop-item').height()-(
+						$swiperSlideToEdit.find('.shop-item-cart').outerHeight(true)
+					);
+					$swiperSlideToEdit.find('.shop-item-data').height(shopItemDataHeight);
+					cssFitContainer($swiperSlideToEdit.find('.shop-item-img'),$swiperSlideToEdit.find('.shop-item-img img'));
+					$animationElementClone.fadeOut(400, function() {
+						$animationElementClone.remove();
+					});
+					var shopItemDescHeight=shopItemDataHeight-(
+						$swiperSlideToEdit.find('.shop-item-img').outerHeight(true)+
+						$swiperSlideToEdit.find('.shop-item-dtls').outerHeight(true)
+					);
+					$swiperSlideToEdit.find('.shop-item-desc').outerHeight(shopItemDescHeight);
 				});
-				$animationElementClone.fadeOut('400', function() {
-					$animationElementClone.remove();
-				});
+			},
+			progress: function(animation,progress,remainignMs) {
+				var $this=$(this);
+				var shopItemDataHeight=$this.height()-(
+					$this.find('.shop-item-cart').outerHeight(true)
+				);
+				$this.find('.shop-item-data').height(shopItemDataHeight);
+				cssFitContainer($this.find('.shop-item-img'),$this.find('.shop-item-img img'));
+				var shopItemDescHeight=shopItemDataHeight-(
+					$this.find('.shop-item-img').outerHeight(true)+
+					$this.find('.shop-item-dtls').outerHeight(true)
+				);
+				$this.find('.shop-item-desc').outerHeight(shopItemDescHeight);
 			}
 		});
 	});
 });
 
 function initOfersSwiper (initialSlide) {
+				var left   = Math.floor($(window).width()*0);
+				var top    = Math.floor($(window).height()*0.2);
+				var right  = Math.floor($(window).width()*0);
+				var bottom = Math.floor($(window).height()*0.2);
+				/*
+				var left   = $(window).width()*0.2;
+				var top    = $(window).height()*0.2;
+				var right  = $(window).width()*0.2;
+				var bottom = $(window).height()*0.2;
+				*/
 				$.overlay();//destroyOnClick
 				var $divTable=$('body').data('overlay').$divTable;
 				var $swiperTemplateClone=$('.hiddenSwiper').clone(true,true).css({
-					'display'  : 'block',
-					'position' : 'fixed',
-					'z-index'  : 9999999,
-					'overflow' : 'hidden',
+					'display'    : 'block',
+					'position'   : 'fixed',
+					'z-index'    : 9999999,
+					//'overflow' : 'hidden',
 					//'outline'  : 'solid black 3px',
-					'left'     : $(window).width()*0.2,
-					'top'      : $(window).height()*0.2,
-					'right'    : $(window).width()*0.2,
-					'bottom'   : $(window).height()*0.2,
-				})
-				.on('click', function(event) {
-					event.stopPropagation();
+					'left'       : left,
+					'top'        : top,
+					'right'      : right,
+					'bottom'     : bottom,
+					'min-height' : '220px',
+					'max-height' : '500px',
 				})
 				.appendTo($divTable);
 
@@ -67,8 +121,8 @@ function initOfersSwiper (initialSlide) {
 					//scrollbar: '.swiper-scrollbar',
 
 					initialSlide:initialSlide,
-					spaceBetween: 30,
-					mousewheelControl: true,
+					spaceBetween: 300,
+					//mousewheelControl: true,
 					grabCursor: true,
 					centeredSlides: true,
 
@@ -79,13 +133,18 @@ function initOfersSwiper (initialSlide) {
 					loopedSlides:0,
 					effect: 'coverflow',
 					coverflow: {
-						rotate: 50,
+						rotate: 0,
 						stretch: 0,
-						depth: 300,
+						depth: 500,
 						modifier: 1,
 						slideShadows : false
 					},
 					slideToClickedSlide:true,
+					breakpoints: {
+						640: {
+							slidesPerView: 1,
+						},
+					},
 					/*
 					breakpoints: {
 						1024: {
@@ -121,6 +180,22 @@ function initOfersSwiper (initialSlide) {
 				result.$swiperTemplateClone=$swiperTemplateClone;
 
 				$swiperTemplateClone.hide();
-				console.log(result);
+				//console.log(result);
 				return result;
+}
+
+function cssFitContainer($container,$contained) {//,widthAdjust,heightAdjust) {
+	var cWidth=$container.innerWidth();//-widthAdjust;
+	var cHeight=$container.innerHeight();//-heightAdjust;
+	if (cWidth<cHeight) {
+		$contained.css({
+			'width': cWidth+'px',
+			'height': 'auto',
+		});
+	} else {
+		$contained.css({
+			'width': 'auto',
+			'height': cHeight+'px',
+		});
+	}
 }

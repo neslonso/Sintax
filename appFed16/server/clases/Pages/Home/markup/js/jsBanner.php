@@ -1,7 +1,7 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
-	var mySwiper = new Swiper ('.swiper-container', {
+	var mySwiper = new Swiper ('#container-banners .swiper-container', {
 		// Optional parameters
 		direction: 'horizontal',
 
@@ -19,9 +19,9 @@ $(document).ready(function() {
 		slidesPerView: 'auto', //auto debe ir con loopedSlides
 		paginationClickable: true,
 		spaceBetween: 30,
-		mousewheelControl: true,
-		/*speed:1000,
-		autoplay: 1000,*/
-		autoplayDisableOnInteraction: false,
+		//mousewheelControl: true,
+		speed:1000,
+		autoplay: 1000,
+		autoplayDisableOnInteraction: true,
 	});
 });
