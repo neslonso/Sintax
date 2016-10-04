@@ -32,6 +32,10 @@ class prod extends Home implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
 	public function cuerpo() {
+		$idProd = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
+		$objOferta=new \Multi_ofertaVenta(\cDb::gI(),$idProd);
+		$imagen = $objOferta->imgSrc();
+		$objCategoria = $objOferta->arrMulti_categoria()[0];
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
 	}
 }
