@@ -1,6 +1,6 @@
 <?
 use Sintax\Core\IUser;
-use Sintax\Core\User;
+use Sintax\Core\AnonymousUser;
 use Sintax\Core\Page;
 class Multi_clienteUser extends AnonymousUser implements IUser {
 	public $objEntity;

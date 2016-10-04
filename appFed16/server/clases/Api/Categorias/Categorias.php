@@ -13,7 +13,8 @@ class Categorias extends ApiService implements IApiService {
 	function creaStdObjOferta($objOferta) {
 		$obj=new \stdClass();
 		$obj->id=$objOferta->GETid();
-		$obj->nombre=$objOferta->GETid().'.- '.$objOferta->GETnombre();
+		//$obj->nombre=$objOferta->GETid().'.- '.$objOferta->GETnombre();
+		$obj->nombre=$objOferta->GETnombre();
 		$obj->descripcion=$objOferta->GETdescripcion();
 		$obj->precio=$objOferta->pvp();
 		$obj->precioCatalogo=$objOferta->pvpCatalogo();

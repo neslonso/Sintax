@@ -18,24 +18,16 @@ class Clientes extends ApiService implements IApiService {
 	 */
 	public static function acLoginCliente($email,$pass,$keyTienda) {
 		$db=\cDb::confByKey("celorriov3");
-		$arrReturn=array();
+		//$arrReturn=array();
+		$result=false;
 		$objCliUser=\Multi_clienteUser::login($db,$email,$pass,$keyTienda);
 		if ($objCliUser!==false) {
 			$_SESSION['usuario']=$objCliUser;
-			$arrAccion=array(
-				"valor" => true,
-				"msg" => "Login correcto"
-			);
-			$arrReturn['resultado']=$arrAccion;
+			$result=true;
 		} else {
-			//throw new \Exception("Dirección de email o contraseña incorrecta.", 1);
-			$arrAccion=array(
-				"valor" => false,
-				"msg" => "Login incorrecto"
-			);
-			$arrReturn['resultado']=$arrAccion;
+			throw new \ActionException("Dirección de correo o contraseña incorrecta.", 1);
 		}
-		return json_encode($arrReturn);
+		return $result;
 	}
 	/**
 	 * [acNuevoCliente description]

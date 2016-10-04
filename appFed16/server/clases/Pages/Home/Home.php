@@ -96,12 +96,19 @@ class Home extends Error implements IPage {
 		// Finally, destroy the session.
 		session_destroy();
 	}
+
 	/**
 	 * [acLogin description]
-	 * @return [type] [description]
+	 * @param  [type] $email [description]
+	 * @param  [type] $pass  [description]
+	 * @return [type]        [description]
 	 */
-	public function acLogin() {
-		$result=\Sintax\ApiService\Clientes::acLoginCliente($_REQUEST['email'],$_REQUEST['pass'],$GLOBALS['config']->tienda->key);
+	public function acLogin($email,$pass,$token) {
+		if ($token!="") {//token de FB
+			$result="¿Incluimos el API de FB para comprobar el token?";
+		} else {
+			$result=\Sintax\ApiService\Clientes::acLoginCliente($email,$pass,$GLOBALS['config']->tienda->key);
+		}
 		return json_decode($result);
 	}
 	public function acSearchOfers ($query) {

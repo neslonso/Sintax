@@ -114,7 +114,7 @@
 							<button class="btnUserNav btn btn-success btn-menu" type="button" data-toggle="tooltip" title="Accede / Regístrate" data-placement="top" data-container="body">
 								<span class="fa fa-user-plus"></span>
 							</button>
-							<button id="FbLogin" class="btn btn-primary btn-menu" type="button" disabled="disabled" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
+							<button class="FbLogin btn btn-primary btn-menu" type="button" disabled="disabled" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
 								<span class="fa fa-facebook-square"></span>
 							</button>
 							<button id="btnUserTW" class="btn btn-info btn-menu" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
@@ -144,7 +144,7 @@
 											<a id="btnRegistro" href="<?=BASE_URL?>registro_usuario" class="btn btn-warning btn-sm blanco">
 												<span class="glyphicon glyphicon-plus"></span> Registrate
 											</a>
-											<button id="FbLogin2" class="btn btn-primary btn-sm" type="button" disabled="disabled" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
+											<button class="FbLogin btn btn-primary btn-sm" type="button" disabled="disabled" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
 												<span class="fa fa-facebook-square"></span>
 											</button>
 											<button id="btnUserTW2" class="btn btn-info btn-sm" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">

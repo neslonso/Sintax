@@ -4,13 +4,15 @@ $(document).ready(function() {
 	$.ajaxSetup({ cache: true });
 	$.getScript('//connect.facebook.net/es_ES/sdk.js', function(){
 		FB.init({
-			appId: '1250359411691249',
-			version: 'v2.5' // or v2.0, v2.1, v2.2, v2.3
+			appId   : '<?=$GLOBALS['config']->tienda->FB_APP_ID?>',
+			//cookie  : true, // enable cookies to allow the server to access the session
+			//xfbml   : true, // parse social plugins on this page
+			status  : true, // ¿Llama a getLoginStatus al cargar el SDK?
+			version : 'v2.7' // or v2.0, v2.1, v2.2, v2.3
 		});
-		$('#FbLogin, #FbLogin2').removeAttr('disabled');
-		//FB.getLoginStatus(updateStatusCallback);
+		$('.FbLogin').removeAttr('disabled');
 	});
-	$('#FbLogin, #FbLogin2').click(function () {
+	$('.FbLogin').click(function () {
 		$.overlay();
 		FB.login(function(responseLogin) {
 			console.log(responseLogin);
@@ -20,6 +22,7 @@ $(document).ready(function() {
 					//conseguir sus datos
 					FB.api('/me/?fields=id,email,first_name,last_name,gender,birthday,picture', function(responseApiMe) {
 						console.log(responseApiMe);
+						acLogin(responseApiMe.email,'',responseLogin.authResponse.accessToken);
 						/*
 						<? //Tratamos de loggear el email que viene de FB?>
 						$.post('./actions.php',{
@@ -49,21 +52,32 @@ $(document).ready(function() {
 								muestraMsgModal('Fallo realizando acceso mediante facebook',data.msg);
 							}
 						},
-						'json');*/
+						'json');
+						*/
 					});
 				break;
 				case "not_authorized":
-					//console.log('usuario loggeado en FB y aplicación no autorizada');
+					console.log('usuario loggeado en FB y aplicación no autorizada');
 					$.overlay('destroy');
-					muestraMsgModal('Acceso con Facebook no autorizado','Si desea acceder a <?=SITE_NAME?> a través de Facebook debe autorizar a <?=SITE_NAME?> a utilizar sus datos pulsando "Iniciar sessión con Facebook"');
+					muestraMsgModal('Acceso con Facebook no autorizado',
+						'Si desea acceder a <?=$GLOBALS['config']->tienda->SITE_NAME?> a través de Facebook debe autorizar a '+
+						'<?=$GLOBALS['config']->tienda->SITE_NAME?> a utilizar sus datos.'
+					);
 				break;
 				case "unknown":
-					//console.log('usuario no loggeado en FB, no se sabe si la aplicación está autorizada');
+				default:
+					console.log('usuario no loggeado en FB, no se sabe si la aplicación está autorizada');
 					$.overlay('destroy');
-					muestraMsgModal('Sesión de Facebook no iniciada','Si desea acceder a <?=SITE_NAME?> a través de Facebook debe realizar el inicio de sesión en Facebook');
+					muestraMsgModal('Sesión de Facebook no iniciada',
+						'Si desea acceder a <?=$GLOBALS['config']->tienda->SITE_NAME?> a través de Facebook debe realizar el '+
+						'inicio de sesión en Facebook');
 				break;
 			}
-		}, {scope:'email,user_birthday'});
+		}, {
+			scope:'public_profile,email,user_friends',
+			return_scopes:true,
+		});
+		//}, {scope:'public_profile,email,user_friends,user_birthday,user_likes'});
 		return false;
 	});
 
@@ -141,27 +155,38 @@ $(document).ready(function() {
 
 	$('#frmLogin #btnLogin').on('click', function () {
 		if ($('#frmLogin #email').val()!="" && $('#frmLogin #pass').val()!=""){
-			$.post('<?=BASE_DIR.FILE_APP?>',{
-				'MODULE':'actions',
-				'acClase':'Home',
-				'acMetodo':'acLogin',
-				'acTipo':'ajax',
-				'email':$('#email').val(),
-				'pass':$('#pass').val()
-			},
-			function (response) {
-				console.log(response);
-				if (!response.data.resultado.valor){
-					muestraMsgModal('Error',response.data.resultado.msg);
-				} else {
-					window.location.reload();
-				}
-			},
-			'json');
+			acLogin($('#email').val(),$('#pass').val());
 		} else {
-			muestraMsgModal('Error','Escribe tu email y contraseña');
+			muestraMsgModal('Datos no válidos','Escribe tu email y contraseña');
 		}
 	});
 
 });
 
+function acLogin(email,pass,token) {
+	if (typeof token == 'undefined') {token='';}
+	$.post('<?=BASE_DIR.FILE_APP?>',{
+		'MODULE':'actions',
+		'acClase':'Home',
+		'acMetodo':'acLogin',
+		'acTipo':'ajax',
+		'email':email,
+		'pass':pass,
+		'token':token
+	},
+	function (response) {
+		console.log(response);
+		if (response.exito) {
+			if (response.data=='true') {
+				window.location.reload();
+			} else if (response.data=='FbLogin') {
+				window.location='<?=BASE_URL?>registro_usuario/';
+			} else {
+				muestraMsgModal('No fue posible iniciar sesión',response.msg);
+			}
+		} else {
+			muestraMsgModal('Se ha producido un error durante el inicio de sesión',response.msg);
+		}
+	},
+	'json');
+}

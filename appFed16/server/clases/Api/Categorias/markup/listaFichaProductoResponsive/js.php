@@ -89,7 +89,10 @@ function initOfersSwiper (initialSlide) {
 				var right  = $(window).width()*0.2;
 				var bottom = $(window).height()*0.2;
 				*/
-				$.overlay();//destroyOnClick
+				$.overlay({
+					progress: false,
+					destroyOnClick:true,
+				});
 				var $divTable=$('body').data('overlay').$divTable;
 				var $swiperTemplateClone=$('.hiddenSwiper').clone(true,true).css({
 					'display'    : 'block',
@@ -129,7 +132,7 @@ function initOfersSwiper (initialSlide) {
 
 					loop: true,
 					slidesPerView: 'auto',
-					//slidesPerView: '5',
+					keyboardControl: true,
 					loopedSlides:0,
 					effect: 'coverflow',
 					coverflow: {
@@ -141,7 +144,7 @@ function initOfersSwiper (initialSlide) {
 					},
 					slideToClickedSlide:true,
 					breakpoints: {
-						640: {
+						480: {
 							slidesPerView: 1,
 						},
 					},
