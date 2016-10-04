@@ -10,6 +10,20 @@ class Categorias extends ApiService implements IApiService {
 		parent::__construct($objUsr);
 	}
 
+	function creaStdObjOferta($objOferta) {
+		$obj=new \stdClass();
+		$obj->id=$objOferta->GETid();
+		$obj->nombre=$objOferta->GETid().'.- '.$objOferta->GETnombre();
+		$obj->descripcion=$objOferta->GETdescripcion();
+		$obj->precio=$objOferta->pvp();
+		$obj->precioCatalogo=$objOferta->pvpCatalogo();
+		$obj->tipoDtoRespectoCatalogo=$objOferta->descuentoOferta();
+		$obj->urlFotoPpal=$objOferta->imgSrc();
+		$obj->imgId=$objOferta->imgId();
+		$obj->rebote=$objOferta->GETtipoDevolucionCredito();
+		return $obj;
+	}
+
 	/**
 	 * [arrCatsRootsMenu description]
 	 * @param  [type] $keyTienda [description]
@@ -127,14 +141,10 @@ class Categorias extends ApiService implements IApiService {
 			foreach ($arrRefs as $ref) {
 				if ($totalInsertados>=$cuantos) {break;}
 				if ($insertadosEstaCat>=$cuantosPorCat) {break;}
-				$obj=new \stdClass();
 				$objOferta=\Multi_ofertaVenta::cargarPorRef($db,$keyTienda,$ref);
 				if ($objOferta!==false) {
-					$obj->id=$objOferta->GETid();
-					$obj->nombre=$objOferta->GETid().'.- '.$objOferta->GETnombre();
-					$obj->precio=$objOferta->pvp();
-					$obj->urlFotoPpal=$objOferta->imgSrc();
-					$obj->imgId=$objOferta->imgId();
+					$obj=self::creaStdObjOferta($objOferta);
+					$obj->index=$totalInsertados;
 					array_push($arr,$obj);
 					$insertadosEstaCat++;
 					$totalInsertados++;
@@ -154,15 +164,13 @@ class Categorias extends ApiService implements IApiService {
 		$arr=array();
 		$objCat=new \Multi_categoria($db,$idMulti_categoria);
 
-		$arrOfers=$objCat->arrMulti_ofertaVenta("","","","arrClassObjs");
+		$arrOfers=$objCat->arrMulti_ofertaVenta("","orden ASC","","arrClassObjs");
+		$i=0;
 		foreach ($arrOfers as $objOferta) {
-			$obj=new \stdClass();
-			$obj->id=$objOferta->GETid();
-			$obj->nombre=$objOferta->GETid().'.- '.$objOferta->GETnombre();
-			$obj->precio=$objOferta->pvp();
-			$obj->urlFotoPpal=$objOferta->imgSrc();
-			$obj->imgId=$objOferta->imgId();
+			$obj=self::creaStdObjOferta($objOferta);
+			$obj->index=$i;
 			array_push($arr,$obj);
+			$i++;
 		}
 		return $arr;
 	}
@@ -181,18 +189,25 @@ class Categorias extends ApiService implements IApiService {
 		$totalInsertados=0;
 		foreach ($arrIdsOfer as $idOfer) {
 			if ($totalInsertados>=$cuantos) {break;}
-			$obj=new \stdClass();
 			$objOferta=new \Multi_ofertaVenta($db,$idOfer);
-			$obj->id=$objOferta->GETid();
-			$obj->nombre=$objOferta->GETid().'.- '.$objOferta->GETnombre();
-			$obj->precio=$objOferta->pvp();
-			$obj->urlFotoPpal=$objOferta->imgSrc();
-			$obj->imgId=$objOferta->imgId();
+			$obj=self::creaStdObjOferta($objOferta);
+			$obj->index=$totalInsertados;
 			array_push($arr,$obj);
 			$totalInsertados++;
 		}
 		return $arr;
 	}
-
+/******************************************************************************/
+/* FRAGMENTOS *****************************************************************/
+	public function listaFichaProductoResponsive($arrOfers) {
+		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/listaFichaProductoResponsive/markup.php');
+	}
+	public function listaFichaProductoResponsiveJs() {
+		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/listaFichaProductoResponsive/js.php');
+	}
+	public function listaFichaProductoResponsiveCss() {
+		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/listaFichaProductoResponsive/css.php');
+	}
+/******************************************************************************/
 }
 ?>
