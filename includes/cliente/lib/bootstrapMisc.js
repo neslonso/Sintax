@@ -51,7 +51,7 @@ function muestraMsgModalBootstrap3(title, msg) {
 				.addClass(self.opt.img.class)
 				.appendTo($divCell);
 			*/
-			if (self.opt.progress.active) {
+			if (self.opt.progress) {
 				var $progress=$([
 				'<div style="width:25%; margin:auto;">',
 				'	<div class="progress">',
@@ -64,8 +64,19 @@ function muestraMsgModalBootstrap3(title, msg) {
 			}
 
 			if (self.opt.destroyOnClick) {
-				$divTable.on('click', function(event) {
-					$.overlay('destroy');
+				$overlay.add($divTable).add($divCell)
+				.on('click', function(event) {
+					//event.preventDefault();
+					if (event.target==this) {
+						$.overlay('destroy');
+					}
+				});
+				$('body')
+				.on('keydown.overlay',$overlay, function(event) {
+					if (event.keyCode==27) {
+						$('body').off('.overlay');
+						$.overlay('destroy');
+					}
 				});
 			}
 
@@ -109,10 +120,9 @@ function muestraMsgModalBootstrap3(title, msg) {
 			},
 		},
 		progress: {
-			active:false,
 			class: '',
 		},
-		destroyOnClick:true,
+		destroyOnClick:false,
 		selectorAppendTo:'body'
 	};
 })(jQuery);

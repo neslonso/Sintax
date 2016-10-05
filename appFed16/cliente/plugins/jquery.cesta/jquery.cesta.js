@@ -73,11 +73,14 @@
 				container: 'body',
 			});
 			$element.append([
-				'<div class="btn-group" role="group" aria-label="...">',
+				'<button type="button" class="hidden-md hidden-lg btn btn-default '+plugin.settings.linkCart.classBtn+' btnCart"></button>',
+				'<div class="btn-group hidden-xs hidden-sm" role="group" aria-label="Pedido">',
 					'<button type="button" class="btn btn-default '+plugin.settings.linkCart.classBtn+' btnCart"></button>',
 					'<button type="button" class="btn btn-default btn-warning '+plugin.settings.linkCart.classBtn+' btnCheckOrder" data-toggle="tooltip.jqCesta" title="Comprar ahora"></button>',
 				'</div>',
 				'<div class="contentCart">',
+					'<div class="totalCart">',
+					'</div>',
 					'<div class="itemsCart">',
 					'</div>',
 					'<div class="totalCart">',
@@ -99,6 +102,11 @@
  				$contentCart.removeClass('contentCartInside');
 				$contentCart.addClass('contentCartOutside');
 			} else {
+				if($('#navUserMenu').hasClass('nav-user-menu-inside')){
+					/* cerramos menu usuario*/
+					$('#navUserMenu').removeClass('nav-user-menu-inside');
+					$('#navUserMenu').addClass('nav-user-menu-outside');
+				}
  				$contentCart.addClass('contentCartInside');
 				$contentCart.removeClass('contentCartOutside');
 			}
@@ -202,7 +210,7 @@
 			var ico_html = '<i class="' + ST_linkCart.icoBtnCart + '"></i>';
 			var ico_checkout= '<i class="' + ST_linkCart.icoBtnCheckout + '"></i>';
 			var badgeQuantity_html = (ST_linkCart.badgeActiveQuantityBtnCart) ? '<span class="badge badgeCart">' + plugin.settings.arrItems.length + '</span>' : '';
-			$('.btn-group button:first-child',$element).html(ST_linkCart.txtBtnCart + ico_html + badgeQuantity_html);
+			$('.btnCart',$element).html(ST_linkCart.txtBtnCart + ico_html + badgeQuantity_html);
 			$('.btn-group button:last-child',$element).html(ico_checkout);
 		}
 
@@ -293,22 +301,41 @@
 		}
 		var renderTotal = function () {
 			var arr = plugin.settings.arrItems;
-			cuerpo = '';
 			if (arr.length>0) {
 				var udsCount=summarize('quantity');
 				var total=summarize('precio');
 
-				cuerpo = [
-					'<div class="col-lg-12">',
+				var total= [
 						'<div class="info-total p-a-1 m-y-1">',
 							'(<span class="quantity">' + udsCount + '</span>)&nbsp;Unidades',
 							'<span class="pull-xs-right"><b>TOTAL: <span class="total">' + parseFloat(total).toFixed(2) + '</span>&nbsp;€</b></span>',
 						'</div>',
-						'<a  class="btn btn-primary btn-lg btn-block btnCheckOrder" type="button" href="javascript:void(null)"><b>' + plugin.settings.cart.txtBtnOrder + '</b></a>',
-					'</div>',
 				].join('');
+
+				var btn= [
+						'<a  class="btn btn-lg btn-block btn-comprar btnCheckOrder" type="button" href="javascript:void(null)"><b>' + plugin.settings.cart.txtBtnOrder + '</b></a>',
+				].join('');
+
+				var cuerpoFirst=[
+					'<div class="col-lg-12">',
+						btn,
+						total,
+					'</div>'
+				].join('');
+				var cuerpoSecond=[
+					'<div class="col-lg-12">',
+						total,
+						btn,
+					'</div>'
+				].join('');
+
+				$('.totalCart',$element).first().
+					html(cuerpoFirst).
+				end().eq(1).
+					html(cuerpoSecond);
+			} else {
+				$('.totalCart',$element).html('');
 			}
-			$('.totalCart',$element).html(cuerpo);
 		}
 
 		// call the "constructor" method

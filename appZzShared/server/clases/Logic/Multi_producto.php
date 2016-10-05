@@ -393,5 +393,13 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 	public function tipoDescuentoGama() {
 		return $this->objMulti_productoGama()->GETtipoDescuento();
 	}
+	public function pai(){
+		return round($this->GETprecio(),2);
+	}
+
+	public function pvp(){
+		return round($this->pai()*(1+$this->tipoIVa()/100),2);
+	}
+
 }
 ?>

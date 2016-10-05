@@ -38,6 +38,7 @@ define ('ARR_TIENDAS',serialize(array (
 		'FROM_EMAIL' => 'atcioncliente@bebefarma.com',
 		'REPLY_TO_EMAIL' => 'pedidos@bebefarma.com',
 		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/shop-logo.jpg',
+		'FB_APP_ID' => '1250359411691249',
 	),
 	'FC' => array (
 		'SITE_NAME' => '',

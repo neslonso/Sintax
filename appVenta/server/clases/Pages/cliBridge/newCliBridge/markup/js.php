@@ -11,7 +11,8 @@ $(document).ready(function() {
 				'acTipo':'ajax',
 				'keyTienda':$('#keyTienda').val(),
 				'email':$('#email').val(),
-				'pass':$('#pass').val()
+				'pass':$('#pass').val(),
+				'session_name':'<?=$GLOBALS['session_name']?>'
 			},
 			function (response) {
 				if (!response.data.resultado.valor){
