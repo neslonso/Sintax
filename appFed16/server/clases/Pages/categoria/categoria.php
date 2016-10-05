@@ -27,21 +27,26 @@ class categoria extends Home implements IPage {
 	public function js() {
 		parent::js();
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js.php");
+		\Sintax\ApiService\Categorias::listaFichaProductoResponsiveJs();
 	}
 	public function css() {
 		parent::css();
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
+		\Sintax\ApiService\Categorias::listaFichaProductoResponsiveCss();
+		\Sintax\ApiService\Productos::fichaProductoDtoCss();
 	}
 
 	public function cuerpo() {
 		$idCategoria=(isset($_REQUEST['id']))?$_REQUEST['id']:NULL;
 		$objCat=new \Multi_categoria(\cDb::gI(),$idCategoria);
+		$arrCatsHijas=array();
 		if ($objCat->GETid() && $objCat->GETkeyTienda()==$GLOBALS['config']->tienda->key) {
-			$arrOfersMasVendidas=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,3,$idCategoria);
-			$arrOfers=\Sintax\ApiService\Categorias::arrOfersCat($idCategoria);
+			$arrOfersBanner=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,13,$idCategoria);
+			$arrOfersCuerpo=\Sintax\ApiService\Categorias::arrOfersCat($idCategoria);
+			$arrCatsHijas=$objCat->arrMulti_categoriaHija("visible='1'","","","arrClassObjs");
 		} else {
-			$arrOfersMayorDescuento=\Sintax\ApiService\Categorias::arrOfersMayorDescuento($GLOBALS['config']->tienda->key,13);
-			$arrOfersMasVendidas=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,24);
+			//error o redireccion a Home
+			throw new Exception("Categoría No disponible.");
 		}
 		require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
 	}
