@@ -14,10 +14,23 @@ class prod extends Home implements IPage {
 		return $this->objUsr->accionPermitida($this,$metodo);
 	}
 	public function title() {
-		return parent::title();
+		//$title= parent::title();
+		$title= '';
+		$idProd = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
+		if(\Multi_ofertaVenta::existe (\cDb::confByKey('celorriov3'),$idProd)){
+			$objOferta=new \Multi_ofertaVenta(\cDb::confByKey('celorriov3'),$idProd);
+			$title .= $objOferta->GETtitle();
+		}else{
+			throw new \Exception("El producto solicitado no se encuentra disponible en estos momentos. Disculpe las molestias");
+		}
+		return $title;
 	}
 	public function metaTags() {
-		return parent::metaTags();
+		$metaTags= parent::metaTags();
+		$idProd = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
+		$objOferta=new \Multi_ofertaVenta(\cDb::confByKey('celorriov3'),$idProd);
+		$metaTags .= '<meta name="description" content="'.$objOferta->GETmetaDescription().'">';
+		return $metaTags;
 	}
 	public function head() {
 		parent::head();
@@ -29,13 +42,15 @@ class prod extends Home implements IPage {
 	}
 	public function css() {
 		parent::css();
+		\Sintax\ApiService\Productos::fichaProductoResponsiveCss();
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
 	public function cuerpo() {
 		$idProd = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
 		$objOferta=new \Multi_ofertaVenta(\cDb::gI(),$idProd);
-		$imagen = $objOferta->imgSrc();
-		$objCategoria = $objOferta->arrMulti_categoria()[0];
+		$objCategoria = isset($objOferta->arrMulti_categoria()[0]) ? $objOferta->arrMulti_categoria()[0] : '';
+		$arrOfertasRelacionadas=\Sintax\ApiService\Productos::arrProductosRelacionados(50,$GLOBALS['config']->tienda->key);
+		$arrOfertasGama=\Sintax\ApiService\Productos::arrProductosGama(50,$GLOBALS['config']->tienda->key);
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
 	}
 }

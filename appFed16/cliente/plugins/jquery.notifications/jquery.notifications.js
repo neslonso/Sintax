@@ -84,7 +84,6 @@
 			// user-provided options (if any)
 			plugin.settings = $.extend({}, defaults, options);
 			// code goes here
-			console.log("Init plugin jQueryNotificactions");
 			//$('#divJqNotifications').html('Hola plugin').appendTo(element);
 
 			/*por defecto*/

@@ -66,60 +66,54 @@
 			<div class="step-pane sample-pane alert" data-step="2">
 				<div class="row">
 					<div class="col-md-6">
-						<div class="panel panel-default">
+						<div id="panelCredito" class="panel panel-default"
+							data-IMPORTE_MINIMO_APLICACION_CREDITO="<?=$storeData->IMPORTE_MINIMO_APLICACION_CREDITO?>"
+							data-credito-maximo-aplicable="">
 							<div class="panel-heading">
 								<h3 class="panel-title">Crédito de cliente</h3>
 							</div>
 							<div class="panel-body">
-<?
-if ( $this->totalLineas($newPedBridgeData->lineas) > $storeData->IMPORTE_MINIMO_APLICACION_CREDITO) {
-	$creditoMaximoAplicable=($this->totalLineas($newPedBridgeData->lineas)>$datosCli->saldoCredito)?$datosCli->saldoCredito:$this->totalLineas($newPedBridgeData->lineas);
-?>
-								<div class="row">
-									<div class="col-md-2">
-										<span class="h3">0.00€</span>
-									</div>
-									<div class="col-md-7">
-										<input type="range" name="credito" id="credito" value="<?=$creditoMaximoAplicable?>" min="0.0" max="<?=$creditoMaximoAplicable?>" step="0.01" />
-									</div>
-									<div class="col-md-3 text-right">
-										<span class="h3"><?=$creditoMaximoAplicable?>€</span>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-2"></div>
-									<div class="col-md-7 text-center">
-										<span class="h2"><small>Crédito a aplicar:</small></span>
-										<span id="creditoAplicar" class="h3" data-credito-aplicar="<?=$creditoMaximoAplicable?>"
-											data-saldo-inicial="<?=$datosCli->saldoCredito?>"><?=$creditoMaximoAplicable?>€</span>
-										<div class="small">
-											Dispone de <b><?=$datosCli->saldoCredito?>€</b> de crédito.<br>
-											En este pedido puede aplicar hasta <b><?=$creditoMaximoAplicable?>€</b>
+								<div id="creditoPermitido">
+									<div class="row">
+										<div class="col-md-2">
+											<span class="h3">0.00€</span>
 										</div>
-
+										<div class="col-md-7">
+											<input type="range" name="credito" id="credito" value="" min="0.0" max="" step="0.01" />
+										</div>
+										<div class="col-md-3 text-right">
+											<span id="creditoMaximoAplicable" class="h3"></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-2"></div>
+										<div class="col-md-7 text-center">
+											<span class="h2"><small>Crédito a aplicar:</small></span>
+											<span id="creditoAplicar" class="h3" data-credito-aplicar=""
+												data-saldo-inicial="<?=$datosCli->saldoCredito?>">€</span>
+											<div class="small">
+												Dispone de <b><?=$datosCli->saldoCredito?>€</b> de crédito.<br>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12 text-right">
+											<button type="button" id="addCredito" name="addCredito" class="btn btn-primary" aria-label="Aplicar credito"
+												data-loading-text="Validando...">Aplicar</button>
+										</div>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-md-12 text-right">
-										<button type="button" id="addCredito" name="addCredito" class="btn btn-primary" aria-label="Aplicar credito"
-											data-loading-text="Validando...">Aplicar</button>
-									</div>
+								<div id="creditoNoPermitido">
+									No es posible aplicar credito a su pedido. El importe de su pedido no alcanza el valor mínimo para
+									que su credito de cliente sea aplicable.<br />
+									<ul>
+										<li>Importe necesario: <?=$storeData->IMPORTE_MINIMO_APLICACION_CREDITO?> €</li>
+										<li>Importe actual: totalLineas!!!! €</li>
+										<li>Faltan: <?=$storeData->IMPORTE_MINIMO_APLICACION_CREDITO - 0?> €. totalLineas!!!!<!--<a href="#" title="Ver ofertas de valor aproximado"><i class="fa fa-search-plus" aria-hidden="true"></i></a>-->
+										<li>Crédito disponible: <?=$datosCli->saldoCredito?> €</li>
+									</ul>
+									<span id="creditoAplicar" data-credito-aplicar="0.00" data-saldo-inicial="<?=$datosCli->saldoCredito?>"></span>
 								</div>
-<?
-} else {
-?>
-								No es posible aplicar credito a su pedido. El importe de su pedido no alcanza el valor mínimo para
-								que su credito de cliente sea aplicable.<br />
-								<ul>
-									<li>Importe necesario: <?=$storeData->IMPORTE_MINIMO_APLICACION_CREDITO?> €</li>
-									<li>Importe actual: <?=$this->totalLineas($newPedBridgeData->lineas)?> €</li>
-									<li>Faltan: <?=$storeData->IMPORTE_MINIMO_APLICACION_CREDITO - $this->totalLineas($newPedBridgeData->lineas)?> €. <!--<a href="#" title="Ver ofertas de valor aproximado"><i class="fa fa-search-plus" aria-hidden="true"></i></a>-->
-									<li>Crédito disponible: <?=$datosCli->saldoCredito?> €</li>
-								</ul>
-								<span id="creditoAplicar" data-credito-aplicar="0.00" data-saldo-inicial="<?=$datosCli->saldoCredito?>"></span>
-<?
-}
-?>
 							</div>
 						</div>
 					</div>
@@ -189,7 +183,7 @@ if ($datosCli->tipoDescuento<=0 || $storeData->DTO_CLIENTE_COMPATIBLE_CUPON) {
 						<h3 class="panel-title">Su pedido</h3>
 					</div>
 					<div class="panel-body">
-						<table class="table table-striped">
+						<table id="tableLineas" class="table table-striped" data-arr-lineas="">
 							<thead>
 								<tr>
 									<th>Ref.</th>
@@ -201,58 +195,12 @@ if ($datosCli->tipoDescuento<=0 || $storeData->DTO_CLIENTE_COMPATIBLE_CUPON) {
 								</tr>
 							</thead>
 							<tbody>
-<?
-$totalRebotes=0;
-$totalRebotesDesc='<table>';
-foreach ($newPedBridgeData->lineas as $stdObjLinea) {
-	$dtoTooltip='';
-	$totalTipoDtoLinea=$this->totalDtoTipo($stdObjLinea);
-	$totalImporteDtoLinea=$this->totalDtoImporte($stdObjLinea);
-	foreach ($stdObjLinea->dtos as $stdObjDto) {
-		$dtoTooltip.='<li>'.$stdObjDto->concepto.'</li>';
-	}
-	$dtoDesc='';
-	if ($totalTipoDtoLinea>0) {
-		$dtoDesc.=$totalTipoDtoLinea.'%';
-	}
-	if ($totalTipoDtoLinea>0 && $totalImporteDtoLinea>0) {
-			$dtoDesc.=' + ';
-	}
-	if ($totalImporteDtoLinea>0) {
-		$dtoDesc.=$totalImporteDtoLinea.'€';
-	}
-	if ($dtoDesc=='') {$dtoDesc='--';}
-
-	if ($stdObjLinea->tipoDevolucionCredito>0) {
-		$totalRebote=round(($stdObjLinea->tipoDevolucionCredito/100)*$this->totalLinea($stdObjLinea),2);
-		$totalRebotes+=$totalRebote;
-		$totalRebotesDesc.='<tr><td>'.$stdObjLinea->concepto.'</td><td>'.$this->totalLinea($stdObjLinea).'€ x'.$stdObjLinea->tipoDevolucionCredito.'%</td><td>=</td><td>'.$totalRebote.'€</td></tr>';
-	}
-	$precioLineaTooltip='';
-	if (in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
-		$precioLineaTooltip='data-toggle="tooltip" data-placement="left" data-html="true" title="Este tooltip sale porque IP está en IPS_DEV<br />'.$stdObjLinea->pai.'€ + '.$stdObjLinea->tipoIva.'% IVA"';
-	}
-
-?>
-								<tr class="trLinea"
-									data-obj-linea='<?=json_encode($stdObjLinea)?>'
-								>
-									<td><?=$stdObjLinea->referencia;?></td>
-									<td><?=$stdObjLinea->concepto;?></td>
-									<td><span <?=$precioLineaTooltip?>><?=$this->pvp($stdObjLinea)?>€</span></td>
-									<td><?=$stdObjLinea->cantidad?></td>
-									<td><span data-toggle="tooltip" data-placement="left" data-html="true" title="<?=$dtoTooltip?>"><?=$dtoDesc?></span></td>
-									<td class="totalLinea" data-totalLinea="<?=$this->totalLinea($stdObjLinea)?>"><?=$this->totalLinea($stdObjLinea)?>€</td>
-								</tr>
-<?
-}
-$totalRebotesDesc.='</table>';
-?>
+								<!-- -->
 							</tbody>
 						</table>
 					</div>
 					<div class="panel-footer text-right">
-						<div>Total productos: <span id="spTotalLineas" class="spCalculado" data-total-lineas="<?=$this->totalLineas($newPedBridgeData->lineas)?>"><?=$this->totalLineas($newPedBridgeData->lineas)?></span> €</div>
+						<div>Total productos: <span id="spTotalLineas" class="spCalculado" data-total-lineas=""></span> €</div>
 						<div>
 							<span id="tipDtosImporte">
 								Descuentos por fidelización: <span id="spDescuentoImporte" class="spCalculado"></span> €
@@ -290,25 +238,14 @@ if ($storeData->TIPO_DEVOLUCION_IMPORTE_PEDIDO_EN_CREDITO>0) {
 <?
 }
 ?>
-<?
-if ($totalRebotes>0) {
-?>
-
-								<h4>
+								<h4 style="display: none;">
 									Productos rebote<br />
 									<small class="tooltip-wide">
 										Su pedido incluye productos rebote por un total de
-										<span class="spTotalRebotes" data-toggle="tooltip" data-placement="top" data-html="true" title="<?=$totalRebotesDesc?>">
-											<?=$totalRebotes?>€
-										</span>
+										<span id="spTotalRebotes"></span>
 										que recibirá como crédito para sus próximos pedidos!
 									</small>
 								</h4>
-
-<?
-}
-?>
-
 					</div>
 					<div class="panel-footer">
 					</div>

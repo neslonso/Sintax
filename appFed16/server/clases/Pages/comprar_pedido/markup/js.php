@@ -1,7 +1,14 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
+	getLineas();
+
 	$('[data-toggle="tooltip"]').tooltip();
+	/*$("body").tooltip({
+		selector: '[data-toggle="tooltip"]',
+		container: 'body',
+	});*/
+
 
 	ulDtosEmpty();
 	if ($('#newPedWizard').data('tipoDtoCliente')>0) {
@@ -20,7 +27,6 @@ $(document).ready(function() {
 			if (!$dirRadioChecked.length>0) {
 				muestraMsgModal('Dirección de entega','Debe seleccionar una dirección de entrega para su pedido.');
 				//$('#newPedWizard').wizard('selectedItem', {step:1});
-
 				var veces=0;
 				var intervalId=setInterval(function() {
 					veces+=1;
@@ -35,6 +41,7 @@ $(document).ready(function() {
 				,250);
 				evt.preventDefault();
 			}
+			compruebaPanelCredito();
 		}
 	});
 
@@ -47,12 +54,10 @@ $(document).ready(function() {
 			aplicaDtoVolumen();
 		}
 		if (data.step==ultimoPaso) {
+			refreshTableLineas();
 			var totalLineas=$('#spTotalLineas').data('totalLineas');
-
 			var dtoImporte=ulDtosTotalImporte().toFixed(2);
-
 			var baseDtosPorcentuales=(totalLineas-dtoImporte).toFixed(2);
-
 			var dtoTipo=ulDtosTotalTipo().toFixed(2);
 
 			$('#spDtoTipo').html(dtoTipo).data('dtoTipo',dtoTipo);
@@ -123,7 +128,6 @@ $(document).ready(function() {
 		var apellidos       = $('#newPedWizard').data('apellidosCliente');
 		var email           = $('#newPedWizard').data('emailCliente');
 		var idMulti_cliente = $('#newPedWizard').data('idMulti_cliente');
-
 
 		var objCmbCupon=$('#cuponCombo').combobox('selectedItem');
 		var idCupon=objCmbCupon.id;
@@ -384,7 +388,7 @@ function ulDtosDescTipo() {
 	var result='';
 	if (descTipo!="") {result='<ul>'+descTipo+'</ul>'}
 	return result;
-	return '<ul>'+descTipo+'</ul>';
+	return '<ul class="dtosDescTipo">'+descTipo+'</ul>';
 }
 
 function ulDtosTotalImporte() {
@@ -407,7 +411,7 @@ function ulDtosDescImporte() {
 		}
 	});
 	var result='';
-	if (descImporte!="") {result='<ul>'+descImporte+'</ul>'}
+	if (descImporte!="") {result='<ul class="dtosDescImporte">'+descImporte+'</ul>'}
 	return result;
 }
 /*****************************************************************************/
@@ -487,5 +491,81 @@ function msgRedirect() {
 			}
 		}
 	});
+}
+/******************************************************************************/
+function refreshTableLineas() {
+	var arrLineas=$('#tableLineas').data('arrLineas');
+	$('#tableLineas tbody tr').remove();
+	trsTableLineas(arrLineas);
+	$('[data-toggle="tooltip"]').tooltip();
+}
+function trsTableLineas (arrLineas) {
+	for (var i = 0; i < arrLineas.length; i++) {
+		var oLinea=arrLineas[i];
+		var trHtml=[
+			'<tr class="trLinea">',
+				'<td>'+oLinea.referencia+'</td>',
+				'<td>'+oLinea.concepto+'</td>',
+				'<td><span '+oLinea.precioLineaTooltip+'>'+oLinea.pvp+'€</span></td>',
+				'<td data-cantidad="'+oLinea.cantidad+'">'+oLinea.cantidad+'</td>',
+				'<td><span data-toggle="tooltip" data-placement="left" data-html="true" title="'+oLinea.dtoTooltip+'">'+oLinea.dtoDesc+'</span></td>',
+				'<td class="totalLinea" data-totalLinea="'+oLinea.totalLinea+'">'+oLinea.totalLinea+'€</td>',
+			'</tr>',
+		].join('');
+		$(trHtml).
+			data('objLinea',oLinea).
+			appendTo('#tableLineas tbody');
+	}
+}
+
+function getLineas () {
+	$.post('<?=BASE_DIR.FILE_APP?>',{
+		'MODULE':'actions',
+		'acClase':'comprar_pedido',
+		'acMetodo':'acGetLineas',
+		'acTipo':'ajax',
+		'session_name':'<?=$GLOBALS['session_name']?>'
+	},
+	function (response) {
+		if (!response.exito){
+			muestraMsgModal('Ha ocurrido un error en el calculo del pedido','Se ha producido el siguiente error durante el cálculo de importes de pedido:<br/>'+response.msg);
+		} else {
+			console.log(response);
+			var arrLineas=response.data.arrLineas;
+			var totalLineas=parseFloat(response.data.totalLineas).toFixed(2);
+			var totalRebotes=parseFloat(response.data.totalRebotes).toFixed(2);
+			var totalRebotesDesc=response.data.totalRebotesDesc;
+			var creditoMaximoAplicable=parseFloat(response.data.creditoMaximoAplicable).toFixed(2);
+			$('#tableLineas').data('arrLineas',arrLineas);
+			//$('#spPortes').html(portes).data('portes',portes);
+			$('#spTotalLineas').html(totalLineas).data('totalLineas',totalLineas);
+
+			$('#spTotalRebotes').html(totalRebotes+'€').attr({
+				'data-toggle'         : 'tooltip',
+				'data-placement'      : 'top',
+				'data-html'           : 'true',
+				'data-original-title' : totalRebotesDesc,
+				'title'               : totalRebotesDesc,
+			}).data('totalRebotes',totalRebotes);
+			if (totalRebotes>0) {$('#spTotalRebotes').closest('h4').show();} else {$('#spTotalRebotes').closest('h4').hide();}
+
+			$('#panelCredito').data('creditoMaximoAplicable',creditoMaximoAplicable);
+			$('#credito').val(creditoMaximoAplicable).attr({max:creditoMaximoAplicable});
+
+			refreshTableLineas();
+			$('[data-toggle="tooltip"]').tooltip();
+		}
+	},
+	'json');
+}
+
+function compruebaPanelCredito() {
+	if ($('#spTotalLineas').data('totalLineas') > $('#panelCredito').data('IMPORTE_MINIMO_APLICACION_CREDITO')) {
+		$('#creditoPermitido').show();
+		$('#creditoNoPermitido').hide();
+	} else {
+		$('#creditoPermitido').hide();
+		$('#creditoNoPermitido').show();
+	}
 }
 <?="\n/*".get_class()."*/\n"?>

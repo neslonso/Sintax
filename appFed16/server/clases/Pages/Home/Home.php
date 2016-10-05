@@ -109,7 +109,7 @@ class Home extends Error implements IPage {
 		} else {
 			$result=\Sintax\ApiService\Clientes::acLoginCliente($email,$pass,$GLOBALS['config']->tienda->key);
 		}
-		return json_decode($result);
+		return $result;
 	}
 	public function acSearchOfers ($query) {
 		$db=\cDb::confByKey("celorriov3");

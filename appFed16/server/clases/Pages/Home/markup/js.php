@@ -177,7 +177,7 @@ function acLogin(email,pass,token) {
 	function (response) {
 		console.log(response);
 		if (response.exito) {
-			if (response.data=='true') {
+			if (response.data===true) {
 				window.location.reload();
 			} else if (response.data=='FbLogin') {
 				window.location='<?=BASE_URL?>registro_usuario/';

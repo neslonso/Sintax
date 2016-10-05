@@ -22,6 +22,9 @@
 	font-weight:bold;
 }
 
+#creditoPermitido,#creditoNoPermitido {
+	display: none;
+}
 /*
 .tooltip table td:not(:first-child) {white-space:nowrap;}
 */
