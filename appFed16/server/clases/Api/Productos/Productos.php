@@ -22,15 +22,14 @@ class Productos extends ApiService implements IApiService {
 		$sql="SELECT id FROM multi_ofertaVenta where keyTienda='".$keyTienda."' ORDER BY RAND() LIMIT 0,".$cuantos;
 		$arr=array();
 		$rsl=$db->query($sql);
+		$i=0;
 		while ($data=$rsl->fetch_object()) {
 			if ($asObjectArray) {
-				$obj=new \stdClass();
 				$objOferta=new \Multi_ofertaVenta($db,$data->id);
-				$obj->id=$objOferta->GETid();
-				$obj->nombre=$objOferta->GETnombre();
-				$obj->precio=$objOferta->pvp();
-				$obj->urlFotoPpal=$objOferta->imgSrc();
+				$obj=\Sintax\ApiService\Categorias::creaStdObjOferta($objOferta);
+				$obj->index=$i;
 				array_push($arr,$obj);
+				$i++;
 			} else {
 				array_push($arr,$data->id);
 			}
@@ -55,7 +54,30 @@ class Productos extends ApiService implements IApiService {
 	public function fichaProductoDtoCss() {
 		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/fichaProductoDto/css.php');
 	}
-
 /******************************************************************************/
+	/*funciones necesarias para prod.php*/
+	/**
+	 * [arrProductosRelacionados description]
+	 * @param  integer $cuantos       [description]
+	 * @param  string  $keyTienda     [description]
+	 * @param  boolean $asObjectArray [description]
+	 * @return [type]                 [description]
+	 */
+	public static function arrProductosRelacionados($cuantos=10, $keyTienda="", $asObjectArray=true){
+		$arr = \Sintax\ApiService\Productos::arrRandomOfertasVenta($cuantos,$keyTienda);
+		return $arr;
+	}
+
+	/**
+	 * [arrProductosGama description]
+	 * @param  integer $cuantos       [description]
+	 * @param  string  $keyTienda     [description]
+	 * @param  boolean $asObjectArray [description]
+	 * @return [type]                 [description]
+	 */
+	public static function arrProductosGama($cuantos=10, $keyTienda="", $asObjectArray=true){
+		$arr = \Sintax\ApiService\Productos::arrRandomOfertasVenta($cuantos,$keyTienda);
+		return $arr;
+	}
 }
 ?>

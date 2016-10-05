@@ -46,9 +46,9 @@ class comprar_pedido extends Home implements IPage {
 		$datosCli=\Sintax\ApiService\Pedidos::getDatosCli($objCli);
 		$storeData=\Sintax\ApiService\Pedidos::getStoreData();
 
-		$objCesta=$this->ensureCesta(\cDb::gI());
-		$newPedBridgeData=new \stdClass();
-		$newPedBridgeData->lineas=\Sintax\ApiService\Pedidos::arrLineasComprarPedido($objCesta);
+		//$objCesta=$this->ensureCesta(\cDb::gI());
+		//$newPedBridgeData=new \stdClass();
+		//$newPedBridgeData->lineas=\Sintax\ApiService\Pedidos::arrLineasComprarPedido($objCesta);
 
 		$idDirPredeterminada=(isset($datosCli->arrDirecciones[0]))?$datosCli->arrDirecciones[0]->id:NULL;
 
@@ -56,6 +56,7 @@ class comprar_pedido extends Home implements IPage {
 		$paisDefecto=\Sintax\ApiService\Pedidos::idPaisDefecto();
 
 		$jsonArrDtosVolumen=htmlspecialchars(json_encode($storeData->DTOS_VOLUMEN_PEDIDO),ENT_QUOTES,'UTF-8');
+
 
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
 	}
@@ -304,6 +305,70 @@ class comprar_pedido extends Home implements IPage {
 	}
 
 /* Calculos sobre líneas ******************************************************/
+	public function acGetLineas() {
+		\cDb::confByKey('celorriov3');
+		$objCli=$_SESSION['usuario']->objEntity;
+		$objCli->SETdb(\cDb::gI());
+		$datosCli=\Sintax\ApiService\Pedidos::getDatosCli($objCli);
+		$objCesta=$this->ensureCesta(\cDb::gI());
+		$arrLineas=\Sintax\ApiService\Pedidos::arrLineasComprarPedido($objCesta);
+
+		$arrLineasProcesado=array();
+		$totalRebotes=0;
+		$totalRebotesDesc='<table>';
+		foreach ($arrLineas as $stdObjLinea) {
+			$stdObjLinea->pvp=round($stdObjLinea->pai*(1+$stdObjLinea->tipoIva/100),2);
+			$stdObjLinea->totalLinea=$this->totalLinea($stdObjLinea);
+
+			$stdObjLinea->dtoTooltip='';
+			$totalTipoDtoLinea=$this->totalDtoTipo($stdObjLinea);
+			$totalImporteDtoLinea=$this->totalDtoImporte($stdObjLinea);
+			foreach ($stdObjLinea->dtos as $stdObjDto) {
+				$stdObjLinea->dtoTooltip.='<li>'.$stdObjDto->concepto.'</li>';
+			}
+			$dtoDesc='';
+			if ($totalTipoDtoLinea>0) {$dtoDesc.=$totalTipoDtoLinea.'%';}
+			if ($totalTipoDtoLinea>0 && $totalImporteDtoLinea>0) {$dtoDesc.=' + ';}
+			if ($totalImporteDtoLinea>0) {$dtoDesc.=$totalImporteDtoLinea.'€';}
+			if ($dtoDesc=='') {$dtoDesc='--';}
+			$stdObjLinea->dtoDesc=$dtoDesc;
+
+			if ($stdObjLinea->tipoDevolucionCredito>0) {
+				$totalRebote=round(($stdObjLinea->tipoDevolucionCredito/100)*$this->totalLinea($stdObjLinea),2);
+				$totalRebotes+=$totalRebote;
+				$totalRebotesDesc.='<tr><td>'.$stdObjLinea->concepto.'</td><td>'.$this->totalLinea($stdObjLinea).'€ x'.$stdObjLinea->tipoDevolucionCredito.'%</td><td>=</td><td>'.$totalRebote.'€</td></tr>';
+			}
+			$stdObjLinea->precioLineaTooltip='';
+			if (in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
+				$stdObjLinea->precioLineaTooltip='data-toggle="tooltip" data-placement="left" data-html="true" title="Este tooltip sale porque IP está en IPS_DEV<br />'.$stdObjLinea->pai.'€ + '.$stdObjLinea->tipoIva.'% IVA"';
+			}
+
+			array_push($arrLineasProcesado, $stdObjLinea);
+		}
+		$totalRebotesDesc.='</table>';
+		//$totalRebotesDesc=htmlspecialchars($totalRebotesDesc,ENT_QUOTES,'UTF-8');
+
+		$totalLineas=$this->totalLineas($arrLineas);
+		$creditoMaximoAplicable=
+			($this->totalLineas($arrLineas)>$datosCli->saldoCredito)
+			?$datosCli->saldoCredito
+			:$this->totalLineas($arrLineas);
+
+		$result=array();
+		$result['arrLineas']=$arrLineasProcesado;
+		$result['totalLineas']=$totalLineas;
+		$result['totalRebotes']=$totalRebotes;
+		$result['totalRebotesDesc']=$totalRebotesDesc;
+		$result['creditoMaximoAplicable']=$creditoMaximoAplicable;
+
+		return $result;
+
+		/*
+		foreach ($arrLineas as $stdObjLinea) {
+		}
+		*/
+
+	}
 	private function pvp ($stdObjLinea) {
 		return round($stdObjLinea->pai*(1+$stdObjLinea->tipoIva/100),2);
 	}
