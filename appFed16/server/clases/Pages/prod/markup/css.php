@@ -11,9 +11,19 @@
 	padding: 10px;
 	line-height: 38px;
 }
+.text-muted{
+    /*color: #bababa;*/
+    /*padding-left: 20px;*/
+}
 
 /*item detail*/
-
+.item-detail .shop-item-rebote {
+    top:-4px;
+    right: 29px;
+}
+.item-detail .shop-item-rebote > div {
+    top: 51px;
+}
 .price-ahora{
 	color: rgba(205, 90, 145, 0.6);
     font-size: 28px;
@@ -57,7 +67,35 @@
 	width: 100%;
 }
 
+/*relacionados*/
+.item-relacionados{
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+}
+.item-relacionados .text-muted{
+    padding-left: 10px;
+}
+
+/*gama*/
+.item-gama{
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+}
+.item-gama .text-muted{
+    padding-left: 10px;
+}
+
 /*descripcion*/
-.desc-item{
+.item-desc{
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+}
+.item-desc .text-muted{
+    padding-left: 10px;
+}
+.item-desc .item-desc-text{
 	padding: 10px;
+    max-height: 400px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
