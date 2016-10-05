@@ -368,6 +368,25 @@ class Clientes extends ApiService implements IApiService {
 		$arrReturn['resultado']=$arrAccion;
 		return json_encode($arrReturn);
 	}
-
+	/******************************************************************************/
+	/* FRAGMENTOS *****************************************************************/
+	public function formularioAltaCliente($keyTienda) {
+		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/formularioAltaCliente/markup.php');
+	}
+	public function formularioAltaClienteCss() {
+		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/formularioAltaCliente/css.php');
+	}
+	public function formularioAltaClienteJs() {
+		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/formularioAltaCliente/js.php');
+	}
+	public function formularioLoginCliente($keyTienda) {
+		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/formularioLoginCliente/markup.php');
+	}
+	public function formularioLoginClienteCss() {
+		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/formularioLoginCliente/css.php');
+	}
+	public function formularioLoginClienteJs() {
+		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/formularioLoginCliente/js.php');
+	}
 }
 ?>

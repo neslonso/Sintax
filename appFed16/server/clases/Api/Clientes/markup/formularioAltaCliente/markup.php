@@ -1,6 +1,5 @@
 <?="\n<!-- ".get_class()." -->\n"?>
-<?\Sintax\ApiService\Clientes::formularioAltaCliente($keyTienda);?>
-<!--<div class="container-fluid">
+<div class="container-fluid">
 	<div class="page-header">
 		<h1>Alta de cliente</h1>
 	</div>
@@ -28,7 +27,7 @@
 					<div class="form-group">
 						<label for="pass" accesskey="">Repite contraseña:</label>
 						<input class="form-control" type="password" name="pass2" id="pass2NewUsr" value="" />
-						<p class="help-block">Repite nuevamente tu contraseña</p>
+						<p class="help-block">Repetir contraseña</p>
 					</div>
 				</div>
 			</div>
@@ -39,5 +38,5 @@
 			</button>
 		</div>
 	</div>
-</div>-->
+</div>
 <?="\n<!-- /".get_class()." -->\n"?>
