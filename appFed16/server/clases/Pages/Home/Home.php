@@ -3,6 +3,9 @@ namespace Sintax\Pages;
 use Sintax\Core\IPage;
 use Sintax\Core\User;
 use Sintax\Core\ReturnInfo;
+
+use \Abraham\TwitterOAuth\TwitterOAuth;
+
 class Home extends Error implements IPage {
 	public function __construct(User $objUsr) {
 		parent::__construct($objUsr);
@@ -31,6 +34,7 @@ class Home extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsBuscador.php");
 
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsBanner.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsFB.php");
 		\Sintax\ApiService\Categorias::listaFichaProductoResponsiveJs();
 	}
 	public function css() {
@@ -41,6 +45,7 @@ class Home extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssMenuCats.php");
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssMenuUsr.php");
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssOferDetalle.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssFooter.php");
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssMediaQueries.php");
 		\Sintax\ApiService\Categorias::listaFichaProductoResponsiveCss();
 		\Sintax\ApiService\Productos::fichaProductoDtoCss();
@@ -75,6 +80,10 @@ class Home extends Error implements IPage {
 
 		$arrOfersBanner=\Sintax\ApiService\Categorias::arrOfersMayorDescuento($GLOBALS['config']->tienda->key,13);
 		$arrOfersCuerpo=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,24);
+		if (isset($_SESSION['usuario'])){
+			$objCli=$_SESSION['usuario']->objEntity;
+			$arrOfersRecomendados=\Sintax\ApiService\Categorias::arrOfersRecomendados($GLOBALS['config']->tienda->key,12,$objCli->GETid());
+		}
 		require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
 	}
 	public function subMenu($idPadre){
@@ -105,7 +114,7 @@ class Home extends Error implements IPage {
 	 */
 	public function acLogin($email,$pass,$token) {
 		if ($token!="") {//token de FB
-			$result="¿Incluimos el API de FB para comprobar el token?";
+			$result=\Sintax\ApiService\Clientes::acLoginClienteFB($email,$token,$GLOBALS['config']->tienda->key);
 		} else {
 			$result=\Sintax\ApiService\Clientes::acLoginCliente($email,$pass,$GLOBALS['config']->tienda->key);
 		}
@@ -173,6 +182,52 @@ class Home extends Error implements IPage {
 			return $result;
 		} catch (Exception $e) {
 			throw new ActionException("Error eliminando producto", 1,$e);
+		}
+	}
+	public function acEditCesta($idMulti_ofertaVenta,$cantidad) {
+		try {
+			$db=\cDb::confByKey('celorriov3');
+			$objCesta=$this->ensureCesta($db);
+			$objLinea=$objCesta->getLineaOfertaOrNew($idMulti_ofertaVenta);
+			$objLinea->SETcantidad($cantidad);
+			$objLinea->SETidMulti_cesta($objCesta->GETid());
+			$objLinea->SETidMulti_ofertaVenta($idMulti_ofertaVenta);
+			$result=$objLinea->grabar();
+			$_SESSION['cesta']=$objCesta;
+			return $result;
+		} catch (Exception $e) {
+			throw new ActionException("Error modificando producto", 1,$e);
+		}
+	}
+
+	public function acTwLogin() {
+		$connection = new TwitterOAuth($GLOBALS['config']->tienda->TW_CONSUMER_KEY,$GLOBALS['config']->tienda->TW_CONSUMER_SECRET);
+		$request_token = $connection->oauth('oauth/request_token',
+			array('oauth_callback' => BASE_URL.FILE_APP.'?MODULE=actions&acClase=Home&acMetodo=acTwLoginCallBack&acTipo=std'));
+
+		$_SESSION['tw_oauth']['oauth_token'] = $request_token['oauth_token'];
+		$_SESSION['tw_oauth']['oauth_token_secret'] = $request_token['oauth_token_secret'];
+
+		$url = $connection->url('oauth/authorize', array('oauth_token' => $request_token['oauth_token']));
+	}
+
+	public function acTwLoginCallBack() {
+		$TWCK=$GLOBALS['config']->tienda->TW_CONSUMER_KEY;
+		$TWCS=$GLOBALS['config']->tienda->TW_CONSUMER_SECRET;
+		$request_token = [];
+		$request_token['oauth_token'] = $_SESSION['tw_oauth']['oauth_token'];
+		$request_token['oauth_token_secret'] = $_SESSION['tw_oauth']['oauth_token_secret'];
+
+		if (isset($_REQUEST['oauth_token']) && $request_token['oauth_token'] !== $_REQUEST['oauth_token']) {
+			// Abort! Something is wrong.
+			\ReturnInfo::add('No fue posible realizar la conexión con twitter','No se pudo conectar con Twitter');
+		} else {
+			$connection = new TwitterOAuth($TWCK,$TWCS,$request_token['oauth_token'],$request_token['oauth_token_secret']);
+			$access_token = $connection->oauth("oauth/access_token", ["oauth_verifier" => $_REQUEST['oauth_verifier']]);
+			$_SESSION['tw_oauth']['access_token'] = $access_token;
+			$connection = new TwitterOAuth($TWCK,$TWCS, $access_token['oauth_token'], $access_token['oauth_token_secret']);
+			$user = $connection->get("account/verify_credentials");
+			//$content = $connection->get("statuses/home_timeline");
 		}
 	}
 }

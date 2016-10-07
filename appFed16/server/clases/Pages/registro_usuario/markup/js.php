@@ -1,6 +1,8 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
+	$('#emailNewUsr').val(getUrlParameter('email',''));
+
 	$('#btnNewUser').on('click', function () {
 		var email=$.trim($('#emailNewUsr').val());
 		var error=false;
@@ -8,6 +10,10 @@ $(document).ready(function() {
 		if (email==""){
 			error=true;
 			msg="- Escribe un correo electrónico válido<br>";
+		}
+		if (!$('#checkLegal').is(':checked')){
+			error=true;
+			msg+="- Debe aceptar las condiciones de uso<br>";
 		}
 		if (($('#passNewUsr').val()==$('#pass2NewUsr').val()) && $('#passNewUsr').val()!="" && !error){
 			$.post('<?=BASE_DIR.FILE_APP?>',{

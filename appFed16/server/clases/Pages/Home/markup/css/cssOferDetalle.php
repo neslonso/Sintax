@@ -10,3 +10,12 @@
 	border: solid #a0a0a0 1px;
 	border-radius: 7px;*/
 }
+.swiper-slide-recomendados{
+	width:auto;
+	padding-right:10px;
+	display:inline-flex;
+}
+.swiper-slide-recomendados > div{
+	width:305px;
+	height:245px;
+}

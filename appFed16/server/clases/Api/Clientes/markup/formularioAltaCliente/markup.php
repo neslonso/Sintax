@@ -31,6 +31,14 @@
 					</div>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="form-group">
+						<input type="checkbox" name="checkLegal" id="checkLegal" value="1" />
+						<label for="legal" accesskey="">Acepto las <a href="<?=BASE_URL?>aviso_legal/">condiciones de uso</a></label>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="panel-footer text-right">
 			<button type="button" id="btnNewUser" class="btn btn-primary">

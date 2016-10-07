@@ -23,7 +23,46 @@
 	</div>
 </div>
 <div class="container shop-item-container" id="container-cuerpo">
-		<?\Sintax\ApiService\Categorias::listaFichaProductoResponsive($arrOfersCuerpo);?>
+<?
+	if (isset($_SESSION['usuario'])){
+?>
+	<div class="categoria-cabecera text-left">
+		<h1><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Recomendado para tí</h1>
+	</div>
+	<div class="row vertical-align">
+		<div class="col-xs-1">
+			<div class="swiper-recomendados-button-prev swiper-button-prev"></div>
+		</div>
+		<div class="col-xs-10">
+			<div class="swiper-container" id="swiperRecomendados">
+				<div class="swiper-wrapper swiper-wrapper-recomendados">
+<?
+		$i=0;
+		foreach ($arrOfersRecomendados as $stdObjOferRec) {
+			$i++;
+?>
+					<div class="swiper-slide swiper-slide-recomendados">
+						<div>
+							<?\Sintax\ApiService\Productos::fichaProductoResponsive($stdObjOferRec)?>
+						</div>
+					</div>
+<?
+		}
+?>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-1">
+			<div class="swiper-recomendados-button-next swiper-button-next"></div>
+		</div>
+	</div>
+<?
+	}
+?>
+	<div class="categoria-cabecera text-left">
+		<h1><i class="fa fa-star" aria-hidden="true"></i> Nuestros productos más vendidos</h1>
+	</div>
+	<?\Sintax\ApiService\Categorias::listaFichaProductoResponsive($arrOfersCuerpo);?>
 </div>
 
 <div class="hiddenSwiper" style="display:none;">

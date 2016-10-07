@@ -41,9 +41,13 @@ class categoria extends Home implements IPage {
 		$objCat=new \Multi_categoria(\cDb::gI(),$idCategoria);
 		$arrCatsHijas=array();
 		if ($objCat->GETid() && $objCat->GETkeyTienda()==$GLOBALS['config']->tienda->key) {
-			$arrOfersBanner=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,13,$idCategoria);
 			$arrOfersCuerpo=\Sintax\ApiService\Categorias::arrOfersCat($idCategoria);
-			$arrCatsHijas=$objCat->arrMulti_categoriaHija("visible='1'","","","arrClassObjs");
+			$arrOfersBanner=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,min(count($arrOfersCuerpo),13),$idCategoria);
+			if (isset($_SESSION['usuario'])){
+				$objCli=$_SESSION['usuario']->objEntity;
+				$arrOfersRecomendados=\Sintax\ApiService\Categorias::arrOfersRecomendados($GLOBALS['config']->tienda->key,12,$objCli->GETid(),$idCategoria);
+			}
+			$arrCatsHijas=$objCat->arrMulti_categoriaHija("fff.visible='1'","","","arrClassObjs");
 		} else {
 			//error o redireccion a Home
 			throw new Exception("Categoría No disponible.");

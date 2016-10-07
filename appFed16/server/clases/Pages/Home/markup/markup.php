@@ -117,7 +117,7 @@
 							<button class="FbLogin btn btn-primary btn-menu" type="button" disabled="disabled" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
 								<span class="fa fa-facebook-square"></span>
 							</button>
-							<button id="btnUserTW" class="btn btn-info btn-menu" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
+							<button class="TwLogin btn btn-info btn-menu" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
 								<span class="fa fa fa-twitter"></span>
 							</button>
 						</div>
@@ -147,7 +147,7 @@
 											<button class="FbLogin btn btn-primary btn-sm" type="button" disabled="disabled" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
 												<span class="fa fa-facebook-square"></span>
 											</button>
-											<button id="btnUserTW2" class="btn btn-info btn-sm" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
+											<button class="TwLogin btn btn-info btn-sm" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
 												<span class="fa fa fa-twitter"></span>
 											</button>
 											<a id="btnLogin" href="#" class="btn btn-primary btn-sm blanco">
@@ -279,17 +279,111 @@
 		<?=$this->cuerpo()?>
 
 		<div class="container-fluid" id="container-pie">
-			<div class="row vertical-align">
-				<div class="col-md-2">
-					<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&fichero=cofinanciado.xunta.png" alt="" class="img-responsive">
+			<footer>
+			    <div class="footer" id="footer">
+			        <div class="container-fluid">
+			            <div class="row">
+			                <div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
+			                    <h3><i class="fa fa-truck" aria-hidden="true"></i>  Entrega </h3>
+			                    <ul>
+			                        <li>- Entrega: 24/48h </li>
+			                        <li>- Tarifa plana portes</li>
+			                        <li>- Seguimiento online del pedido</li>
+			                    </ul>
+			                </div>
+			                <div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
+			                    <h3><i class="fa fa-lock" aria-hidden="true"></i>  Pago seguro </h3>
+			                    <ul>
+			                        <li>- Tarjeta, transferencia bancaria y contra reembolso</li>
+			                        <li>- Pago seguro via plataformas bancarias</li>
+			                        <li>- 0% comisión contra reembolso</li>
+			                    </ul>
+			                </div>
+			                <div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
+			                    <h3><i class="fa fa-gavel" aria-hidden="true"></i>  Cond. venta </h3>
+			                    <ul>
+			                        <li>- Precios IVA incluído en euros</li>
+			                        <li>- Gastos de envío desglosados en cada pedido</li>
+			                        <li>- Fotos no contractuales</li>
+			                        <li><a href="<?=BASE_URL?>aviso_legal/">- Condiciones de Uso y Política de Privacidad</a></li>
+			                    </ul>
+			                </div>
+			                <div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
+			                    <h3><i class="fa fa-building" aria-hidden="true"></i>  Empresa </h3>
+			                    <ul>
+			                        <li> <a href="#"> Lorem Ipsum </a> </li>
+			                        <li> <a href="#"> Lorem Ipsum </a> </li>
+			                        <li> <a href="#"> Lorem Ipsum </a> </li>
+			                    </ul>
+			                </div>
+			                <div class="col-lg-4  col-md-3 col-sm-6 col-xs-12 ">
+			                    <h3><i class="fa fa-rss" aria-hidden="true"></i>  Suscríbete </h3>
+			                    <ul>
+			                        <li>
+			                            <div class="input-append newsletter-box text-center">
+			                            	<p class="text-justify">Suscríbete a nuestro boletín y estarás informado de todas nuestras ofertas.</p>
+			                            	<form id="frmSuscribir">
+												<div class="form-group">
+													<div class="input-group">
+														<span class="input-group-addon" id="spanAceptoSuscribir"  data-toggle="tooltip" title="Acepto las condiciones de uso" data-placement="top" data-container="body">
+															<input type="checkbox" id="aceptoSuscribir" name="aceptoSuscribir" value="1">
+														</span>
+														<span class="input-group-addon"  data-toggle="tooltip" title="Ver las condiciones de uso" data-placement="top" data-container="body">
+															<a href="<?=BASE_URL?>aviso_legal/"><i class="fa fa-gavel" aria-hidden="true"></i></a>
+														</span>
+														<input  class="form-control" type="text" name="emailSuscribir" id="emailSuscribir" value="" placeholder="tucorreo@electronico.com"  />
+													</div>
+												</div>
+	                                			<button type="button" id="btnSuscribir" class="btn btn-primary">
+													 Enviar <i class="fa fa-long-arrow-right"> </i>
+												</button>
+											</form>
+			                            </div>
+			                        </li>
+			                    </ul>
+			                    <!--
+			                    <ul class="social">
+			                        <li> <a href="#"> <i class=" fa fa-facebook">   </i> </a> </li>
+			                        <li> <a href="#"> <i class="fa fa-twitter">   </i> </a> </li>
+			                        <li> <a href="#"> <i class="fa fa-google-plus">   </i> </a> </li>
+			                        <li> <a href="#"> <i class="fa fa-pinterest">   </i> </a> </li>
+			                        <li> <a href="#"> <i class="fa fa-youtube">   </i> </a> </li>
+			                    </ul>
+			                	-->
+			                </div>
+			            </div>
+			            <!--/.row-->
+			        </div>
+			        <!--/.container-->
 				</div>
-				<div class="col-md-2">
-					<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&filtro=grayscale&fichero=visaMasterLogo.png" alt="" class="img-responsive">
+				<!--/.footer-->
+
+				<div class="footer-bottom">
+				    <div class="container-fluid">
+				        <div class="pull-left footer-logoTienda">
+							<a href="<?=BASE_URL?>">
+								<img style="height:65px;" src="<?=$GLOBALS['config']->tienda->URL_LOGO?>" alt="<?=$GLOBALS['config']->tienda->key?>">
+							</a>
+				        	<!--© Nombretienda-->
+				        </div>
+				        <div class="pull-right footer-logos">
+							<a href="<?=BASE_URL?>">
+								<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&alto=65&fichero=cofinanciado.xunta.png" alt="Xunta de Galicia">
+							</a>
+							<a href="<?=BASE_URL?>">
+								<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&alto=65&fichero=visaMasterLogo.png" alt="Pago seguro">
+							</a>
+							<a href="<?=BASE_URL?>">
+								<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&alto=65&fichero=html5Logo.png" alt="html5">
+							</a>
+							<a href="<?=BASE_URL?>">
+								<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&alto=65&fichero=lib/dondominio_seals/ddsecure_70x70_white@3x.png" alt="Conexión cifrada">
+							</a>
+				        </div>
+				    </div>
 				</div>
-				<div class="col-md-1">
-					<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&filtro=grayscale&fichero=html5Logo.png" alt="" class="img-responsive">
-				</div>
-			</div>
+				<!--/.footer-bottom-->
+			</footer>
 		</div>
 	</div>
 	<!-- /#page-content-wrapper -->

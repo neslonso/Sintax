@@ -63,6 +63,12 @@
 		position: relative;
 		max-width: 100% !important;
 	}
+	.footer-logoTienda{
+		text-align: center !important;
+	}
+	.footer-logos{
+		text-align: center !important;
+	}
 }
 /* XS y SM*/
 @media (max-width: 991px){
