@@ -210,7 +210,7 @@ class Categorias extends ApiService implements IApiService {
 	 * @param  [type]  $idMulti_categoria [description]
 	 * @return [type]                     [description]
 	 */
-	public static function arrOfersRecomendados($keyTienda, $cuantos=10, $idMulti_categoria=NULL) {
+	public static function arrOfersRecomendados($keyTienda, $cuantos=10, $idUsuario, $idMulti_categoria=NULL) {
 		$db=\cDb::gI();
 		$arr=array();
 		$objCat=new \Multi_categoria($db,$idMulti_categoria);

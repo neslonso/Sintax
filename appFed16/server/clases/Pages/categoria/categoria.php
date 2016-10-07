@@ -43,6 +43,10 @@ class categoria extends Home implements IPage {
 		if ($objCat->GETid() && $objCat->GETkeyTienda()==$GLOBALS['config']->tienda->key) {
 			$arrOfersCuerpo=\Sintax\ApiService\Categorias::arrOfersCat($idCategoria);
 			$arrOfersBanner=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,min(count($arrOfersCuerpo),13),$idCategoria);
+			if (isset($_SESSION['usuario'])){
+				$objCli=$_SESSION['usuario']->objEntity;
+				$arrOfersRecomendados=\Sintax\ApiService\Categorias::arrOfersRecomendados($GLOBALS['config']->tienda->key,12,$objCli->GETid(),$idCategoria);
+			}
 			$arrCatsHijas=$objCat->arrMulti_categoriaHija("fff.visible='1'","","","arrClassObjs");
 		} else {
 			//error o redireccion a Home

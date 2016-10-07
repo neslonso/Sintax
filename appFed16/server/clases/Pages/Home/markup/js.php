@@ -104,16 +104,29 @@ $(document).ready(function() {
 	$('#btnSuscribir').click(function () {
 		var email=$.trim($('#emailSuscribir').val());
 		var error=false;
+		var msg="";
+		$('#emailSuscribir').removeClass('btn-danger');
+		$('#spanAceptoSuscribir').addClass('btn-danger');
 		if (!$('#aceptoSuscribir').is(':checked')){
 			error=true;
-			$('#aceptoSuscribir').addClass('btn-danger');
+			$('#spanAceptoSuscribir').addClass('btn-danger');
+			msg+="- Debe aceptar las condiciones de uso<br>";
 		}
 		if (email==""){
 			error=true;
 			$('#emailSuscribir').addClass('btn-danger');
+			msg+="- Escribe un correo electrónico válido<br>";
 		}
-		if (!error){
+		if (error){
+			muestraMsgModal('Error',msg);
+
+		} else {
 			//registramos al cliente
+			//
+			//
+			//
+			//
+			muestraMsgModal('¡Gracias!','Su correo electrónico ha sido añadido a nuestro boletín. Gracias por su interés.');
 		}
 	});
 });

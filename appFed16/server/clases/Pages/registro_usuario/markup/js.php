@@ -11,6 +11,10 @@ $(document).ready(function() {
 			error=true;
 			msg="- Escribe un correo electrónico válido<br>";
 		}
+		if (!$('#checkLegal').is(':checked')){
+			error=true;
+			msg+="- Debe aceptar las condiciones de uso<br>";
+		}
 		if (($('#passNewUsr').val()==$('#pass2NewUsr').val()) && $('#passNewUsr').val()!="" && !error){
 			$.post('<?=BASE_DIR.FILE_APP?>',{
 				'MODULE':'actions',

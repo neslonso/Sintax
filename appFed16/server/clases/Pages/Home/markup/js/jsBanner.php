@@ -25,4 +25,13 @@ $(document).ready(function() {
 		autoplay: 10000,
 		autoplayDisableOnInteraction: false,
 	});
+	var mySwiperRec = new Swiper ('#swiperRecomendados', {
+		slidesPerView: 'auto',
+		direction: 'horizontal',
+		loop: false,
+		mousewheelControl: false,
+		grabCursor: true,
+	    nextButton: '.swiper-recomendados-button-next',
+	    prevButton: '.swiper-recomendados-button-prev',
+	});
 });
