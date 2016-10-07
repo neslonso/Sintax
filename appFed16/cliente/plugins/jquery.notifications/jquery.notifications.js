@@ -33,15 +33,15 @@
 			notification: {
 				add: {
 					icoClass: "fa fa-cart-plus",
-					icoClose: "fa fa-times",
+					icoClose: "fa fa-close",
 					icoClassExt : "icoClassExt",
 					icoCloseExt : "icoCloseExt",
 					color : "green",/*green, red, blue, yellow, white*/
 					lifeTime: 4000,
 				},
 				del: {
-					icoClass: "fa fa-remove",
-					icoClose: "fa fa-times",
+					icoClass: "fa fa-close",
+					icoClose: "fa fa-close",
 					icoClassExt : "icoClassExt",
 					icoCloseExt : "icoCloseExt",
 					color : "red",/*green, red, blue, yellow, white*/
@@ -49,10 +49,34 @@
 				},
 				other: {
 					icoClass: "fa fa-info",
-					icoClose: "fa fa-times",
+					icoClose: "fa fa-close",
 					icoClassExt : "icoClassExt",
 					icoCloseExt : "icoCloseExt",
 					color : "yellow",/*green, red, blue, yellow, white*/
+					lifeTime: 4000,
+				},
+				info: {
+					icoClass: "fa fa-info",
+					icoClose: "fa fa-close",
+					icoClassExt : "icoClassExt",
+					icoCloseExt : "icoCloseExt",
+					color : "green",/*green, red, blue, yellow, white*/
+					lifeTime: 4000,
+				},
+				warning: {
+					icoClass: "fa fa-exclamation",
+					icoClose: "fa fa-close",
+					icoClassExt : "icoClassExt",
+					icoCloseExt : "icoCloseExt",
+					color : "yellow",/*green, red, blue, yellow, white*/
+					lifeTime: 4000,
+				},
+				danger: {
+					icoClass: "fa fa-close",
+					icoClose: "fa fa-close",
+					icoClassExt : "icoClassExt",
+					icoCloseExt : "icoCloseExt",
+					color : "red",/*green, red, blue, yellow, white*/
 					lifeTime: 4000,
 				}
 			},

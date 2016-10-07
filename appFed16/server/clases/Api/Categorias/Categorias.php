@@ -10,7 +10,7 @@ class Categorias extends ApiService implements IApiService {
 		parent::__construct($objUsr);
 	}
 
-	function static creaStdObjOferta($objOferta) {
+	public static function creaStdObjOferta($objOferta) {
 		$obj=new \stdClass();
 		$obj->id=$objOferta->GETid();
 		//$obj->nombre=$objOferta->GETid().'.- '.$objOferta->GETnombre();
@@ -59,7 +59,7 @@ class Categorias extends ApiService implements IApiService {
 		//$db=\cDb::confByKey("celorriov3");
 		$db=\cDb::gI();
 		$objMCat=new \Multi_categoria($db,$idPadre);
-		$arrCatsHijas=$objMCat->arrMulti_categoriaHija("visible='1'","","","arrClassObjs");
+		$arrCatsHijas=$objMCat->arrMulti_categoriaHija("fff.visible='1'","","","arrClassObjs");
 		$arr=array();
 		foreach ($arrCatsHijas as $objCat) {
 			$obj=new \stdClass();
@@ -67,7 +67,7 @@ class Categorias extends ApiService implements IApiService {
 			$obj->nombre=$objCat->GETnombre();
 			$obj->img='';
 			$obj->url=$objCat->url();
-			$arrCatsNietas=$objCat->arrMulti_categoriaHija("visible='1'","","","arrClassObjs");
+			$arrCatsNietas=$objCat->arrMulti_categoriaHija("fff.visible='1'","","","arrClassObjs");
 			$arrNietos=array();
 			if (!empty($arrCatsNietas)) {
 				foreach ($arrCatsNietas as $objCatNieto) {
@@ -79,7 +79,7 @@ class Categorias extends ApiService implements IApiService {
 				}
 			} else {
 				//$obj->arrOfersMasVendidas=array();
-				$obj->arrOfersMasVendidas=self::arrOfersMasVendidas($objCat->GETkeyTienda(), 6, $objCat->GETid());
+				$obj->arrOfersMasVendidas=self::arrOfersMasVendidas($objCat->GETkeyTienda(), 0, $objCat->GETid());
 			}
 			$obj->arrNietos=$arrNietos;
 			array_push($arr,$obj);
@@ -143,7 +143,7 @@ class Categorias extends ApiService implements IApiService {
 				if ($totalInsertados>=$cuantos) {break;}
 				if ($insertadosEstaCat>=$cuantosPorCat) {break;}
 				$objOferta=\Multi_ofertaVenta::cargarPorRef($db,$keyTienda,$ref);
-				if ($objOferta!==false) {
+				if ($objOferta!==false && $objOferta->vendible()) {
 					$obj=self::creaStdObjOferta($objOferta);
 					$obj->index=$totalInsertados;
 					array_push($arr,$obj);
@@ -168,10 +168,12 @@ class Categorias extends ApiService implements IApiService {
 		$arrOfers=$objCat->arrMulti_ofertaVenta("","orden ASC","","arrClassObjs");
 		$i=0;
 		foreach ($arrOfers as $objOferta) {
-			$obj=self::creaStdObjOferta($objOferta);
-			$obj->index=$i;
-			array_push($arr,$obj);
-			$i++;
+			if ($objOferta->vendible()) {
+				$obj=self::creaStdObjOferta($objOferta);
+				$obj->index=$i;
+				array_push($arr,$obj);
+				$i++;
+			}
 		}
 		return $arr;
 	}
@@ -191,10 +193,37 @@ class Categorias extends ApiService implements IApiService {
 		foreach ($arrIdsOfer as $idOfer) {
 			if ($totalInsertados>=$cuantos) {break;}
 			$objOferta=new \Multi_ofertaVenta($db,$idOfer);
-			$obj=self::creaStdObjOferta($objOferta);
-			$obj->index=$totalInsertados;
-			array_push($arr,$obj);
-			$totalInsertados++;
+			if ($objOferta->vendible()) {
+				$obj=self::creaStdObjOferta($objOferta);
+				$obj->index=$totalInsertados;
+				array_push($arr,$obj);
+				$totalInsertados++;
+			}
+		}
+		return $arr;
+	}
+
+	/**
+	 * [arrOfersRecomendados description]
+	 * @param  [type]  $keyTienda         [description]
+	 * @param  integer $cuantos           [description]
+	 * @param  [type]  $idMulti_categoria [description]
+	 * @return [type]                     [description]
+	 */
+	public static function arrOfersRecomendados($keyTienda, $cuantos=10, $idMulti_categoria=NULL) {
+		$db=\cDb::gI();
+		$arr=array();
+		$objCat=new \Multi_categoria($db,$idMulti_categoria);
+
+		$arrOfers=$objCat->arrMulti_ofertaVenta("","orden ASC","","arrClassObjs");
+		$i=0;
+		foreach ($arrOfers as $objOferta) {
+			if ($objOferta->vendible()) {
+				$obj=self::creaStdObjOferta($objOferta);
+				$obj->index=$i;
+				array_push($arr,$obj);
+				$i++;
+			}
 		}
 		return $arr;
 	}

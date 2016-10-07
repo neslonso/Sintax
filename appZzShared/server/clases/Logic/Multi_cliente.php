@@ -285,7 +285,7 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 	 * @param  string $email     [description]
 	 * @param  string $pass      [description]
 	 * @param  string $keyTienda [description]
-	 * @return Multi_cliente     [description]
+	 * @return Multi_cliente o boolean false      [description]
 	 */
 	public function login($db,$email,$pass,$keyTienda) {
 		$sql="SELECT id FROM multi_cliente WHERE (email='".$db->real_escape_string($email)."' || login='".$db->real_escape_string($email)."')
@@ -338,5 +338,16 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		if ($data) {$result=true;} else {$result=false;}
 		return $result;
 	}
+	public static function cargarPorEmail ($db, $email, $keyTienda) {
+		$sql="SELECT id FROM multi_cliente WHERE email='".$db->real_escape_string($email)."' AND keyTienda='".$keyTienda."'";
+		$data=$db->get_row($sql);
+		if ($data) {
+			$result=new self($db,$data->id);
+		} else {
+			$result=false;
+		}
+		return $result;
+	}
+
 }
 ?>

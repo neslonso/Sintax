@@ -19,30 +19,27 @@ define ('ARR_DOMAINS',serialize(array (
 define ('ARR_TIENDAS',serialize(array (
 	'CL' => array (
 		'SITE_NAME' => '',
-		'FROM_EMAIL' => '',
 	),
 	'FD' => array (
 		'SITE_NAME' => '',
-		'FROM_EMAIL' => '',
 	),
 	'SB' => array (
 		'SITE_NAME' => '',
-		'FROM_EMAIL' => '',
 	),
 	'SC' => array (
 		'SITE_NAME' => '',
-		'FROM_EMAIL' => '',
 	),
 	'BF' => array (
 		'SITE_NAME' => 'Bebefarma',
-		'FROM_EMAIL' => 'atcioncliente@bebefarma.com',
-		'REPLY_TO_EMAIL' => 'pedidos@bebefarma.com',
 		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/shop-logo.jpg',
 		'FB_APP_ID' => '1250359411691249',
+		'TW_CONSUMER_KEY' => 'IeCWw2hagRgboE6Q5ughcuP4k',
+		'TW_CONSUMER_SECRET' => 'VF9KYlb9gZUlJ8l9Ax5w1LPalN1zr9CP6W5lgy0sbXctDTdE1A',
+		//atcioncliente@bebefarma.com
+		//pedidos@bebefarma.com
 	),
 	'FC' => array (
 		'SITE_NAME' => '',
-		'FROM_EMAIL' => '',
 	),
 )));
 

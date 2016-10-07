@@ -49,7 +49,7 @@ class AnonymousUser extends User implements IUser {
 				$result=true;
 				break;
 		}
-		if (stristr($pageClass, 'Bridge')) {$result=true;}
+		if (stristr($pageClass, 'Bridge')) {$result=true;}//Para que continuen funcionando las pages de appVenta
 		return $result;
 	}
 	public function accionPermitida (Page $objPage,$metodo) {

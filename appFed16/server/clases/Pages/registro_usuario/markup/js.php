@@ -1,6 +1,8 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
+	$('#emailNewUsr').val(getUrlParameter('email',''));
+
 	$('#btnNewUser').on('click', function () {
 		var email=$.trim($('#emailNewUsr').val());
 		var error=false;

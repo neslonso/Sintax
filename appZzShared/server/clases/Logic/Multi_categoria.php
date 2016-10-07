@@ -118,7 +118,7 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 		$sqlWhere=($where!="")?" WHERE idMulti_categoriaContenedora='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_categoriaContenedora='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
-		$sql="SELECT * FROM multi_categoriaVARIOSmulti_categoria f INNER JOIN multi_categoria ff ON f.idMulti_categoriaContenedora=ff.".\Multi_categoria::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;
+		$sql="SELECT * FROM multi_categoriaVARIOSmulti_categoria f INNER JOIN multi_categoria ff ON f.idMulti_categoriaContenedora=ff.".\Multi_categoria::GETkeyField()." INNER JOIN multi_categoria fff ON f.idMulti_categoriaContenida=fff.id".$sqlWhere.$sqlOrder.$sqlLimit;
 		$arr=array();
 		$rsl=$this->db()->query($sql);
 		while ($data=$rsl->fetch_object()) {
@@ -145,7 +145,7 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 		$sqlWhere=($where!="")?" WHERE idMulti_categoria='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_categoria='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
 		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
-		$sql="SELECT * FROM multi_categoriaVARIOSmulti_ofertaVenta f INNER JOIN multi_ofertaVenta ff ON f.idMulti_ofertaVenta=ff.".\Multi_ofertaVenta::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;
+		$sql="SELECT * FROM multi_categoriaVARIOSmulti_ofertaVenta f INNER JOIN multi_ofertaVenta ff ON f.idMulti_ofertaVenta=ff.".\Multi_ofertaVenta::GETkeyField().$sqlWhere.$sqlOrder.$sqlLimit;
 		$arr=array();
 		$rsl=$this->db()->query($sql);
 		while ($data=$rsl->fetch_object()) {
@@ -297,7 +297,7 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 			$selected=($idSelectedCat==$this->GETid())?'selected="selected"':"";
 		}
 		$result='<option '.$selected.' value="'.$this->GETid().'" style="padding-left:'.($actDepth*10).'px;">'.$this->GETnombre().'</option>';
-		$where=($soloVisibles)?"visible=1":"";
+		$where=($soloVisibles)?"fff.visible=1":"";
 		$arrHijos=$this->arrMulti_categoriaHija($where,"","","arrClassObjs");
 		if (count($arrHijos)>0) {
 			//$result.='<ul>';

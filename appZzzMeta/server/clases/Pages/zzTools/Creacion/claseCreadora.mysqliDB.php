@@ -256,6 +256,7 @@ class ClassEntitySubclaser {
 			if (is_array($arrTables[$fTable])) {
 				$functionName.='By'.ucfirst($fField);
 			}
+			$resultCode.=$sg.'//OJO!!!!, cuando se cubre una relacion varios a varios, no está en la consulta la tabla del extremo opuesto de la relacion y no se puede flitrar por sus datos.'.$sl;
 			$resultCode.=$sg.'public function arr'.ucfirst($functionName).'($where="",$order="",$limit="",$tipo="arrStdObjs") {'.$sl;
 			$resultCode.=$sg.$sg.'$sqlWhere=($where!="")?" WHERE '.$fField.'=\'".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."\' AND ".$where:" WHERE '.$fField.'=\'".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."\'";'.$sl;
 			$resultCode.=$sg.$sg.'$sqlOrder=($order!="")?" ORDER BY ".$order:"";'.$sl;

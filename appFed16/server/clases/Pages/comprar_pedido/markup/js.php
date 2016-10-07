@@ -54,58 +54,7 @@ $(document).ready(function() {
 			aplicaDtoVolumen();
 		}
 		if (data.step==ultimoPaso) {
-			refreshTableLineas();
-			var totalLineas=$('#spTotalLineas').data('totalLineas');
-			var dtoImporte=ulDtosTotalImporte().toFixed(2);
-			var baseDtosPorcentuales=(totalLineas-dtoImporte).toFixed(2);
-			var dtoTipo=ulDtosTotalTipo().toFixed(2);
-
-			$('#spDtoTipo').html(dtoTipo).data('dtoTipo',dtoTipo);
-			var dtoMonto=(Math.round(
-					baseDtosPorcentuales*(ulDtosTotalTipo()/100)
-				*100)/100).toFixed(2);
-			$('#spDtoMonto').html(dtoMonto).data('dtoMonto',dtoMonto);
-			$('#tipDtosTipo').tooltip({
-				placement: 'left',
-				html: true,
-				title: ulDtosDescTipo
-			});
-
-
-			$('#spDescuentoImporte').html(dtoImporte).data('dtoImporte',dtoImporte);
-			$('#tipDtosImporte').tooltip({
-				placement: 'left',
-				html: true,
-				title: ulDtosDescImporte
-			});
-
-			$.overlay({
-				progress: {class:'progress-bar-success'}
-			});
-			calculaPortes(
-				$('#spTotalLineas').data('totalLineas'),
-				$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl').val(),
-				function() {
-					var portes=parseFloat($('#spPortes').data('portes'));
-					$('#spPortes').html(portes.toFixed(2));
-
-					console.log('totalLineas: ' + totalLineas);
-					console.log('dtoImporte: ' + dtoImporte);
-					console.log('baseDtosPorcentuales: ' + baseDtosPorcentuales);
-					console.log('dtoMonto: ' + dtoMonto);
-					console.log('portes: ' + portes);
-
-					var total=totalLineas-dtoMonto-dtoImporte+portes;
-					total=(Math.round(total*100)/100).toFixed(2);
-					$('#spTotal').html(total).data('total',total);
-
-					var montoDevolucionImportePedidoEnCredito=(Math.round(
-					total*parseFloat($('#spFidelizacionCredit').data('tipoDevolucionImportePedidoEnCredito'))/100
-					*100)/100).toFixed(2);
-					$('#spFidelizacionCredit').html(montoDevolucionImportePedidoEnCredito+'€').data('montoDevolucionImportePedidoEnCredito',montoDevolucionImportePedidoEnCredito);
-					$.overlay('destroy');
-				}
-			);
+			calculaTotales();
 		}
 
 	});
@@ -204,10 +153,24 @@ $(document).ready(function() {
 		var credito=$('#creditoAplicar').data('creditoAplicar');
 		ulDtosDel('dtoCredito');
 		if (credito>0) {
-			muestraMsgModal('Crédito de cliente aplicado.','Se aplicarán '+credito+'€ de crédito de cliente.');
+			//muestraMsgModal('Crédito de cliente aplicado.','Se aplicarán '+credito+'€ de crédito de cliente.');
+			$('#divJqNotifications').data('jqNotifications')
+				.addNotification('Crédito de cliente.<br />Se aplicarán '+credito+'€ de crédito de cliente.', 'info');
 			ulDtosAdd('dtoCredito','Crédito de cliente','',credito);
 		} else {
-			muestraMsgModal('Crédito de cliente aplicado.','No se aplicará crédito de cliente.');
+			//muestraMsgModal('Crédito de cliente aplicado.','No se aplicará crédito de cliente.');
+			$('#divJqNotifications').data('jqNotifications')
+				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'add');
+			$('#divJqNotifications').data('jqNotifications')
+				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'del');
+			$('#divJqNotifications').data('jqNotifications')
+				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'other');
+			$('#divJqNotifications').data('jqNotifications')
+				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'info');
+			$('#divJqNotifications').data('jqNotifications')
+				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'warning');
+			$('#divJqNotifications').data('jqNotifications')
+				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'danger');
 		}
 	});
 
@@ -519,6 +482,8 @@ function trsTableLineas (arrLineas) {
 }
 
 function getLineas () {
+	console.log('getLineas');
+	$.overlay({progress: {class:'progress-bar-success'}});
 	$.post('<?=BASE_DIR.FILE_APP?>',{
 		'MODULE':'actions',
 		'acClase':'comprar_pedido',
@@ -551,12 +516,68 @@ function getLineas () {
 
 			$('#panelCredito').data('creditoMaximoAplicable',creditoMaximoAplicable);
 			$('#credito').val(creditoMaximoAplicable).attr({max:creditoMaximoAplicable});
-
-			refreshTableLineas();
-			$('[data-toggle="tooltip"]').tooltip();
 		}
 	},
-	'json');
+	'json')
+	.always(function() {
+		$.overlay('destroy');
+		refreshTableLineas();
+		calculaTotales();
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+}
+
+function calculaTotales() {
+	var totalLineas=$('#spTotalLineas').data('totalLineas');
+	var dtoImporte=ulDtosTotalImporte().toFixed(2);
+	var baseDtosPorcentuales=(totalLineas-dtoImporte).toFixed(2);
+	var dtoTipo=ulDtosTotalTipo().toFixed(2);
+
+	$('#spDtoTipo').html(dtoTipo).data('dtoTipo',dtoTipo);
+	var dtoMonto=(Math.round(
+			baseDtosPorcentuales*(ulDtosTotalTipo()/100)
+		*100)/100).toFixed(2);
+	$('#spDtoMonto').html(dtoMonto).data('dtoMonto',dtoMonto);
+	$('#tipDtosTipo').tooltip({
+		placement: 'left',
+		html: true,
+		title: ulDtosDescTipo
+	});
+
+	$('#spDescuentoImporte').html(dtoImporte).data('dtoImporte',dtoImporte);
+	$('#tipDtosImporte').tooltip({
+		placement: 'left',
+		html: true,
+		title: ulDtosDescImporte
+	});
+
+	$.overlay({progress: {class:'progress-bar-success'}});
+	calculaPortes(
+		$('#spTotalLineas').data('totalLineas'),
+		$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl').val(),
+		function() {
+			var portes=parseFloat($('#spPortes').data('portes'));
+			$('#spPortes').html(portes.toFixed(2));
+
+			/*
+			console.log('totalLineas: ' + totalLineas);
+			console.log('dtoImporte: ' + dtoImporte);
+			console.log('baseDtosPorcentuales: ' + baseDtosPorcentuales);
+			console.log('dtoMonto: ' + dtoMonto);
+			console.log('portes: ' + portes);
+			*/
+
+			var total=totalLineas-dtoMonto-dtoImporte+portes;
+			total=(Math.round(total*100)/100).toFixed(2);
+			$('#spTotal').html(total).data('total',total);
+
+			var montoDevolucionImportePedidoEnCredito=(Math.round(
+			total*parseFloat($('#spFidelizacionCredit').data('tipoDevolucionImportePedidoEnCredito'))/100
+			*100)/100).toFixed(2);
+			$('#spFidelizacionCredit').html(montoDevolucionImportePedidoEnCredito+'€').data('montoDevolucionImportePedidoEnCredito',montoDevolucionImportePedidoEnCredito);
+			$.overlay('destroy');
+		}
+	);
 }
 
 function compruebaPanelCredito() {

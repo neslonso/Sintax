@@ -80,6 +80,11 @@ a.blanco{
 }
 #container-pie {
 	background-color: @color-pie;
+	box-shadow: 0 -3px 5px 0 rgba(0, 0, 0, 0.25);
+	margin-top: 10px;
+}
+#container-pie .img-responsive {
+	margin:auto;
 }
 #container-pie img{
 	margin: 10px;

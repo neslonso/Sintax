@@ -19,8 +19,6 @@
     top: 9px;
 }
 
-
-
 /**/
 #divJqNotifications {
     position: fixed;
@@ -42,7 +40,7 @@
 }
 #divJqNotifications .message .icon-holder {
     border: 3px solid @color-bd-iconHolder;
-    border-radius: 150px;
+    border-radius: 50%;
     height: 70px;
     margin: 15px;
     width: 70px;

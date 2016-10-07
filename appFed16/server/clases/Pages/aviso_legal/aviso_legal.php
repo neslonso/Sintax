@@ -3,12 +3,12 @@ namespace Sintax\Pages;
 use Sintax\Core\IPage;
 use Sintax\Core\User;
 use Sintax\Core\ReturnInfo;
-class StagePlugin extends Error implements IPage {
+class aviso_legal extends Home implements IPage {
 	public function __construct(User $objUsr) {
 		parent::__construct($objUsr);
 	}
 	public function pageValida () {
-		return $this->objUsr->pagePermitida($this);
+		return true;
 	}
 	public function accionValida($metodo) {
 		return $this->objUsr->accionPermitida($this,$metodo);
@@ -31,8 +31,8 @@ class StagePlugin extends Error implements IPage {
 		parent::css();
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
-	public function markup() {
-		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
+	public function cuerpo() {
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
 	}
 }
 ?>

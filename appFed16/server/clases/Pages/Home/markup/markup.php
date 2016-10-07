@@ -117,7 +117,7 @@
 							<button class="FbLogin btn btn-primary btn-menu" type="button" disabled="disabled" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
 								<span class="fa fa-facebook-square"></span>
 							</button>
-							<button id="btnUserTW" class="btn btn-info btn-menu" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
+							<button class="TwLogin btn btn-info btn-menu" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
 								<span class="fa fa fa-twitter"></span>
 							</button>
 						</div>
@@ -147,7 +147,7 @@
 											<button class="FbLogin btn btn-primary btn-sm" type="button" disabled="disabled" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
 												<span class="fa fa-facebook-square"></span>
 											</button>
-											<button id="btnUserTW2" class="btn btn-info btn-sm" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
+											<button class="TwLogin btn btn-info btn-sm" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
 												<span class="fa fa fa-twitter"></span>
 											</button>
 											<a id="btnLogin" href="#" class="btn btn-primary btn-sm blanco">
@@ -279,15 +279,31 @@
 		<?=$this->cuerpo()?>
 
 		<div class="container-fluid" id="container-pie">
-			<div class="row vertical-align">
-				<div class="col-md-2">
-					<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&fichero=cofinanciado.xunta.png" alt="" class="img-responsive">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<a href="<?=BASE_URL?>">
+						<img class="img-responsive logo" style="height:75px;" src="<?=$GLOBALS['config']->tienda->URL_LOGO?>" alt="<?=$GLOBALS['config']->tienda->key?>">
+					</a>
 				</div>
-				<div class="col-md-2">
-					<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&filtro=grayscale&fichero=visaMasterLogo.png" alt="" class="img-responsive">
+				<div class="col-xs-12 col-sm-6 col-md-2">
+					<a href="<?=BASE_URL?>">
+						<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&alto=75&fichero=cofinanciado.xunta.png" alt="Xunta de Galicia" class="img-responsive">
+					</a>
 				</div>
-				<div class="col-md-1">
-					<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&filtro=grayscale&fichero=html5Logo.png" alt="" class="img-responsive">
+				<div class="col-xs-12 col-sm-12 col-md-2">
+					<a href="<?=BASE_URL?>">
+						<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&alto=75&filtro=grayscale&fichero=visaMasterLogo.png" alt="Pago seguro" class="img-responsive">
+					</a>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-1">
+					<a href="<?=BASE_URL?>">
+						<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&alto=75&filtro=grayscale&fichero=html5Logo.png" alt="html5" class="img-responsive">
+					</a>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-1">
+					<a href="<?=BASE_URL?>">
+						<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&alto=75&fichero=lib/dondominio_seals/ddsecure_70x70_white@3x.png" alt="Conexión cifrada" class="img-responsive">
+					</a>
 				</div>
 			</div>
 		</div>

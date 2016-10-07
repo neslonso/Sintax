@@ -1,3 +1,4 @@
+<?if(false) {?><script><?}?>
 $(document).ready(function() {
 	$('.shop-item-container .shop-item-link').on('click',function(event) {
 		event.preventDefault();

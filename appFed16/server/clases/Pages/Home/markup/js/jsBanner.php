@@ -15,10 +15,10 @@ $(document).ready(function() {
 		// And if we need scrollbar
 		//scrollbar: '.swiper-scrollbar',
 
-		loop: true,
+		loop: false,
 		slidesPerView: 'auto', //auto debe ir con loopedSlides
-		paginationClickable: true,
 		freeMode:true,
+		//centeredSlides: true,
 		spaceBetween: 30,
 		//mousewheelControl: true,
 		speed:3000,

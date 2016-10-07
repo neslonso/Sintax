@@ -2,7 +2,9 @@
 	<div class="swiper-container">
 		<div class="swiper-wrapper">
 <?
+		$i=0;
 		foreach ($arrOfersBanner as $stdObjOfer) {
+			$i++;
 ?>
 				<div class="swiper-slide">
 					<?\Sintax\ApiService\Productos::fichaProductoDto($stdObjOfer)?>
@@ -46,7 +48,7 @@
 ?>
 	<?\Sintax\ApiService\Categorias::listaFichaProductoResponsive($arrOfersCuerpo);?>
 <?
-	if (!is_null($idCategoria)) {
+	if (!empty($objCat->GETdescripcion())) {
 ?>
 		<div class="text-justify categoria-descripcion">
 			<?=$objCat->GETdescripcion()?>

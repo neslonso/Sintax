@@ -10,7 +10,7 @@ class comprar_pedido extends Home implements IPage {
 	public function pageValida () {
 		if (!$this->objUsr->pagePermitida($this)) {
 			ReturnInfo::add('Debe identificarse como cliente para poder realizar pedidos.','No se encuentra identificado como cliente');
-			$result='Sintax\Pages\registro_usuario';
+			$result='Sintax\Pages\acceso_usuario';
 		} else {
 			$result=true;
 		}

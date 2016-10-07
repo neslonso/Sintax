@@ -25,13 +25,13 @@ class registro_usuario extends Home implements IPage {
 	}
 	public function js() {
 		parent::js();
-		\Sintax\ApiService\Clientes::formularioAltaClienteJs();
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js.php");
+		\Sintax\ApiService\Clientes::formularioAltaClienteJs();
 	}
 	public function css() {
 		parent::css();
-		\Sintax\ApiService\Clientes::formularioAltaClienteCss();
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
+		\Sintax\ApiService\Clientes::formularioAltaClienteCss();
 	}
 	public function cuerpo() {
 		$keyTienda=$GLOBALS['config']->tienda->key;

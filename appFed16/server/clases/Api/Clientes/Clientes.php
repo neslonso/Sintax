@@ -9,6 +9,26 @@ class Clientes extends ApiService implements IApiService {
 	public function __construct (User $objUsr=NULL) {
 		parent::__construct($objUsr);
 	}
+	public static function acLoginClienteFB($email,$token,$keyTienda) {
+		\cDb::confByKey("celorriov3");
+		$result=false;
+		//¿Incluimos el API de FB para comprobar el token?
+		$objCli=\Multi_cliente::cargarPorEmail(\cDb::gI(),$email,$GLOBALS['config']->tienda->key);
+		if ($objCli!==false) {
+			//Ya conocemos al cliente, lo logeamos
+			$result=false;
+			$objCliUser=new \Multi_clienteUser($db);
+			$objCliUser->objEntity=$objCli;
+			$_SESSION['usuario']=$objCliUser;
+			$result=true;
+		} else {
+			//Está logeado en FB y APP autorizada, pero no está en la tienda
+			$siteName=$GLOBALS['config']->tienda->SITE_NAME;
+			\Sintax\Core\ReturnInfo::add('Su email ('.$email.') no se encuentra regisatrado como cliente de '.$siteName.'. Por favor introduzca una contraseña para registrarse como cliente.','Bienvenido a '.$siteName);
+			$result='FBLogin';
+		}
+		return $result;
+	}
 	/**
 	 * [acLoginCliente description]
 	 * @param  [type] $email     [description]
@@ -368,8 +388,8 @@ class Clientes extends ApiService implements IApiService {
 		$arrReturn['resultado']=$arrAccion;
 		return json_encode($arrReturn);
 	}
-	/******************************************************************************/
-	/* FRAGMENTOS *****************************************************************/
+/******************************************************************************/
+/* FRAGMENTOS *****************************************************************/
 	public function formularioAltaCliente($keyTienda) {
 		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/formularioAltaCliente/markup.php');
 	}
@@ -388,5 +408,6 @@ class Clientes extends ApiService implements IApiService {
 	public function formularioLoginClienteJs() {
 		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/formularioLoginCliente/js.php');
 	}
+/******************************************************************************/
 }
 ?>

@@ -1,5 +1,4 @@
 <?="\n<!-- ".get_class()." -->\n"?>
-<div class="container-fluid">
 	<div class="page-header">
 		<h1>Alta de cliente</h1>
 	</div>
@@ -38,5 +37,4 @@
 			</button>
 		</div>
 	</div>
-</div>
 <?="\n<!-- /".get_class()." -->\n"?>

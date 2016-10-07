@@ -289,6 +289,10 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		return $arrIds;
 	}
 
+	public function vendible() {
+		return $this->GETvisible() && !$this->GETagotado();
+	}
+
 /******************************************************************************/
 }
 ?>

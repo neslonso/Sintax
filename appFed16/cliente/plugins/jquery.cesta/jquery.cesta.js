@@ -119,13 +119,13 @@
 				objItem.id = id;
 				objItem.imagen = src;
 				objItem.descripcion = ttl;
-				objItem.quantity = unit;
+				objItem.quantity = parseFloat(unit);
 				objItem.precio = prc;
 				objItem.timestamp = $.now();;
 				plugin.settings.arrItems.push(objItem);
 			} else {
 				var objItem=plugin.settings.arrItems[idxOfId]
-				objItem.quantity+=1;
+				objItem.quantity=parseFloat(objItem.quantity)+1;
 			}
 			renderItems();
 			renderTotal();
@@ -148,7 +148,7 @@
 			idxOfId=plugin.settings.arrItems.getIndexBy("id", id);
 			var objItem = new Object();
 			if (typeof plugin.settings.arrItems[idxOfId] != 'undefined') {
-				plugin.settings.arrItems[idxOfId].quantity = quantity;
+				plugin.settings.arrItems[idxOfId].quantity = parseFloat(quantity);
 				objItem = plugin.settings.arrItems[idxOfId];
 			}
 			renderItems();
