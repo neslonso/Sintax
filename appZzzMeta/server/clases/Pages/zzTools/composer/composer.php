@@ -11,6 +11,8 @@ use Symfony\Component\Console\Output\BufferedOutput;
 class composer extends Error implements IPage {
 	public function __construct(User $objUsr=NULL) {
 		parent::__construct($objUsr);
+		//$this->php='php';
+		$this->php='/opt/plesk/php/5.6/bin/php';
 	}
 	public function pageValida () {
 		return $this->objUsr->pagePermitida($this);
@@ -53,7 +55,7 @@ class composer extends Error implements IPage {
 			1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
 			2 => array("pipe", "w"),  // stderr is a pipe that the child will write to
 		);
-		$cmd='php '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar --version';
+		$cmd=$this->php.' '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar --version';
 		$process = proc_open($cmd, $descriptorspec, $pipes);
 		$stdout = stream_get_contents($pipes[1]);
 		fclose($pipes[1]);
@@ -173,7 +175,7 @@ class composer extends Error implements IPage {
 			$componentsFilePath=$arrAppData['RUTA_APP'].'cliente/'.$localIncludeFilename;
 		}
 
-		if (!file_exists($componentsFilePath)) {throw new \ActionException('Fichero components no existe ('.$componentsFilePath.')', 1);return;}
+		if (!file_exists($componentsFilePath)) {if (!touch($componentsFilePath)) {throw new \ActionException('Fichero components no pudo ser creado ('.$componentsFilePath.')', 1);return;}}
 
 		//file_put_contents($componentsFilePath,'');
 		$arrComponents=$arrInstalledLibs;
@@ -278,7 +280,7 @@ class composer extends Error implements IPage {
 			1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
 			2 => array("pipe", "w"),  // stderr is a pipe that the child will write to
 		);
-		$cmd='php '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar self-update';
+		$cmd=$this->php.' '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar self-update';
 		echo "<h2>Ejecutando: ".$cmd."</h2>";
 		$process = proc_open($cmd, $descriptorspec, $pipes);
 		$stdout = stream_get_contents($pipes[1]);
@@ -321,7 +323,7 @@ class composer extends Error implements IPage {
 			1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
 			2 => array("pipe", "w"),  // stderr is a pipe that the child will write to
 		);
-		$cmd='php '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar '.$cCmd.' '.$pkgs.' '.$opts;
+		$cmd=$this->php.' '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar '.$cCmd.' '.$pkgs.' '.$opts;
 		echo "<h2>Ejecutando: ".$cmd."</h2>";
 		$process = proc_open($cmd, $descriptorspec, $pipes);
 		$stdout = stream_get_contents($pipes[1]);

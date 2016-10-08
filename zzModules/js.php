@@ -7,7 +7,14 @@ try {
 	header('Content-type: text/javascript; charset=utf-8');
 	session_cache_limiter('public');
 	session_start();
-	header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 60*60*24*364));
+	//header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 60*60*24*364));
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
+
+header("Cache-Control: no-store, no-cache, must-revalidate");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 
 	$page=(isset($_GET['page']))?$_GET['page']:'Home';
 
@@ -28,10 +35,19 @@ try {
 	$arrFilesModTime[__FILE__]=filemtime(__FILE__);//Fecha de modificacion de este fichero
 	$arrFilesModTime[SKEL_ROOT_DIR."includes/server/start.php"]=filemtime(SKEL_ROOT_DIR."includes/server/start.php");
 	ob_start();
+		$firephp->group("Incluyendo Libs de ARR_CLIENT_LIBS", array('Collapsed' => true, 'Color' => '#FF6600'));
 		foreach ($ARR_CLIENT_LIBS as $libPath) {
-			$arrFilesModTime[$libPath]=filemtime($libPath);
-			require $libPath;
+			try {
+				$firephp->info($libPath,"Incluyendo");
+				include $libPath;
+				$arrFilesModTime[$libPath]=filemtime($libPath);
+			} catch (Exception $e) {
+				$infoExc="Excepcion de tipo: ".get_class($e).". Mensaje: ".$e->getMessage()." en fichero ".$e->getFile()." en linea ".$e->getLine();
+				$firephp->warn($infoExc);
+				$firephp->warn($e->getTraceAsString(),"traceAsString");
+			}
 		}
+		$firephp->groupEnd();
 	$jsScriptTags=ob_get_clean();
 	$jsMinFile=CACHE_DIR."jsMin.".md5(serialize($arrFilesModTime)).".js";
 
@@ -56,7 +72,7 @@ try {
 			$firephp->info($infoExc);
 		}
 
-		$jsMinFile=CACHE_DIR.str_replace('/', '-',dirname($_SERVER['SCRIPT_NAME']))."-jsMin.".md5(serialize($arrFilesModTime)).".js";
+		$jsMinFile=CACHE_DIR.str_replace('/', '-',KEY_APP)."-jsMin.".md5(serialize($arrFilesModTime)).".js";
 		$firephp->info($jsMinFile,'jsFile:');
 		$firephp->group('Fechas de ficheros', array('Collapsed' => true, 'Color' => '#FF9933'));
 		foreach ($arrFilesModTime as $filePath => $modTimeStamp) {
@@ -76,18 +92,18 @@ try {
 			$jsLibs="// Js Libs \n";
 			$firephp->group('Carga de SRCs JS', array('Collapsed' => true, 'Color' => '#FF9933'));
 			foreach ($srcs as $src) {
-				$origSrc=$src;
-				if (substr($src, 0,2)=='./') {
-					$src=realpath(SKEL_ROOT_DIR.$src);
-					if (!$src) {
-						throw new Exception ('realpath ('.SKEL_ROOT_DIR.$origSrc.') devolvió false, ¿existe el fichero?.');
-					}
-				}
-				if (substr($src, 0,2)=='//') {
-					$src=PROTOCOL.":".$src;
-				}
-				$firephp->info($src,'Intentando file_get_contents:');
 				try {
+					$origSrc=$src;
+					if (substr($src, 0,2)=='./') {
+						$src=realpath(SKEL_ROOT_DIR.$src);
+						if (!$src) {
+							throw new Exception ('realpath ('.SKEL_ROOT_DIR.$origSrc.') devolvió false, ¿existe el fichero?.');
+						}
+					}
+					if (substr($src, 0,2)=='//') {
+						$src=PROTOCOL.":".$src;
+					}
+					$firephp->info($src,'Intentando file_get_contents:');
 					$fileContent=file_get_contents($src)."\n\n";
 					$jsLibs.=$fileContent."\n\n";
 					//$jsLibs.=JSMin::minify($fileContent);
@@ -150,7 +166,6 @@ echo $jsLocalMin;
 	$firephp->group($msg, array('Collapsed' => false, 'Color' => '#FF6600'));
 	$firephp->info($infoExc);
 	$firephp->info($e->getTraceAsString(),"traceAsString");
-	$firephp->info($e->getTrace(),"trace");
 	$firephp->groupEnd();
 	ob_clean();
 	//echo '<h1>'.date("YmdHis").': '.$msg.'</h1>';

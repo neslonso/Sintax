@@ -16,32 +16,32 @@ try {
 	session_start();
 ?>
 <?
-	if (!isset($_POST['acReturnURI'])) {
-		$_POST['acReturnURI']=(isset($_SERVER['HTTP_REFERER']))?$_SERVER['HTTP_REFERER']:"";
+	if (!isset($_REQUEST['acReturnURI'])) {
+		$_REQUEST['acReturnURI']=(isset($_SERVER['HTTP_REFERER']))?$_SERVER['HTTP_REFERER']:"";
 	}
 
 	//error_log ('$_SESSION='.print_r($_SESSION,true));
-	//error_log ('$_POST='.print_r($_POST,true));
-	$firephp->group('Llamada a actions.php 	clase: '.$_POST['acClase'].'. Metodo: '.$_POST['acMetodo'].'. Tipo: '.$_POST['acTipo'].'. ReturnURI: '.$_POST['acReturnURI'],
+	//error_log ('$_REQUEST='.print_r($_REQUEST,true));
+	$firephp->group('Llamada a actions.php 	clase: '.$_REQUEST['acClase'].'. Metodo: '.$_REQUEST['acMetodo'].'. Tipo: '.$_REQUEST['acTipo'].'. ReturnURI: '.$_REQUEST['acReturnURI'],
 					array('Collapsed' => true,
 						  'Color' => '#FF9933'));
-	$firephp->group('_SESSION, _REQUEST, _POST y _FILES', array('Collapsed' => true, 'Color' => '#9933FF'));
+	$firephp->group('_SESSION, _REQUEST, _COOKIE y _FILES', array('Collapsed' => true, 'Color' => '#9933FF'));
 	$firephp->info($_SESSION,'$_SESSION');
-	$firephp->info($_POST,'$_REQUEST');
-	$firephp->info($_POST,'$_POST');
+	$firephp->info($_REQUEST,'$_REQUEST');
+	$firephp->info($_COOKIE,'$_COOKIE');
 	$firephp->info($_FILES,'$_FILES');
 	$firephp->groupend();
 
 	$result="";
-	$acClase=$_POST['acClase'];
-	$acClase="Sintax\\Pages\\".$_POST['acClase'];
-	$acMetodo=$_POST['acMetodo'];
-	$acTipo=(isset($_POST['acTipo']))?$_POST['acTipo']:"std";
-	$acReturnURI=(isset($_POST['acReturnURI']))?$_POST['acReturnURI']:"./";
-	unset ($_POST['acClase']);
-	unset ($_POST['acMetodo']);
-	unset ($_POST['acTipo']);
-	unset ($_POST['acReturnURI']);
+	$acClase=$_REQUEST['acClase'];
+	$acClase="Sintax\\Pages\\".$_REQUEST['acClase'];
+	$acMetodo=$_REQUEST['acMetodo'];
+	$acTipo=(isset($_REQUEST['acTipo']))?$_REQUEST['acTipo']:"std";
+	$acReturnURI=(isset($_REQUEST['acReturnURI']))?$_REQUEST['acReturnURI']:"./";
+	unset ($_REQUEST['acClase']);
+	unset ($_REQUEST['acMetodo']);
+	unset ($_REQUEST['acTipo']);
+	unset ($_REQUEST['acReturnURI']);
 
 	$objUsr=new Sintax\Core\AnonymousUser();
 	if (isset($_SESSION['usuario'])) {
@@ -62,7 +62,7 @@ try {
 	$firephp->group('Almacenado lastAction', array('Collapsed' => true, 'Color' => '#3399FF'));
 	$_SESSION['lastAction'][$acClase][$acMetodo]['TIMESTAMP']=time();
 	$_SESSION['lastAction'][$acClase][$acMetodo]['URI']=(isset($_SERVER['HTTP_REFERER']))?$_SERVER['HTTP_REFERER']:"";
-	$_SESSION['lastAction'][$acClase][$acMetodo]['_POST']=$_POST;
+	$_SESSION['lastAction'][$acClase][$acMetodo]['_REQUEST']=$_REQUEST;
 	$firephp->group('Copiando _FILES', array('Collapsed' => true, 'Color' => '#3399FF'));
 	foreach ($_FILES as $inputName => $arrFileData) {
 		if (!is_array($arrFileData['error'])) {
@@ -106,20 +106,20 @@ try {
 			if ($accionValida===true) {
 				$phpSentence="";
 				switch ($acTipo) {
-					case "std"://Los parametros vienen por POST, se pasan al metodo uno por uno y despues se redirige el navegador
-					case "ajax"://Los parametros vienen por POST y se pasan al metodo uno por uno
+					case "std"://Los parametros vienen en la REQUEST, se pasan al metodo uno por uno y despues se redirige el navegador
+					case "ajax"://Los parametros vienen en la REQUEST y se pasan al metodo uno por uno
 					case "plain"://No hace nada, se llama a la acción y nada mas
 						$args="";
-						foreach ($_POST as $value) {
+						foreach ($_REQUEST as $value) {
 							$args.='"'.$value.'", ';
 						}
 						$args=substr($args,0,-2);
 						$phpSentence='$resultSentence=$obj->'.$acMetodo.'('.$args.');';
 						break;
-					case "stdAssoc"://Los parametros vienen POST y se pasan al metodo como un array y despues se redirige el navegador
-					case "ajaxAssoc"://Los parametros vienen POST y se pasan al metodo como un array
+					case "stdAssoc"://Los parametros vieen la REQUEST y se pasan al metodo como un array y despues se redirige el navegador
+					case "ajaxAssoc"://Los parametros vieen la REQUEST y se pasan al metodo como un array
 					case "plainAssoc"://No hace nada, se llama a la acción y nada mas
-						$args=$_POST;
+						$args=$_REQUEST;
 						$phpSentence='$resultSentence=$obj->'.$acMetodo.'($args);';
 						break;
 				}
@@ -179,13 +179,15 @@ try {
 					}
 					$firephp->groupEnd();
 					$firephp->groupEnd();
-					unset($_SESSION['lastAction'][$acClase][$acMetodo]);
-					if (count($_SESSION['lastAction'][$acClase])==0) {
-						unset($_SESSION['lastAction'][$acClase]);
-					}
-					if (count($_SESSION['lastAction'])==0) {
-						unset($_SESSION['lastAction']);
-					}
+					try {
+						unset($_SESSION['lastAction'][$acClase][$acMetodo]);
+						if (count($_SESSION['lastAction'][$acClase])==0) {
+							unset($_SESSION['lastAction'][$acClase]);
+						}
+						if (count($_SESSION['lastAction'])==0) {
+							unset($_SESSION['lastAction']);
+						}
+					} catch (Exception $e) {}
 				}
 			} else {
 				$result="operación no permitida. (ERROR_NO_VALIDA)";
@@ -264,7 +266,7 @@ try {
 				$msg=$infoExc;
 				$title="Situación de excepción no controlada";
 				ReturnInfo::add($msg,$title);
-				$location=BASE_DIR.FILE_APP."?page=error";
+				$location=BASE_DIR.FILE_APP."?page=Error";
 			}
 			error_log('redireccionando a ('.$location.')');
 			$firephp->info($location,'redireccionando a ($location)');

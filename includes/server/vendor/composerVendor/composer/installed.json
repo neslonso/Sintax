@@ -1,0 +1,1887 @@
+[
+    {
+        "name": "fxp/composer-asset-plugin",
+        "version": "v1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/fxpio/composer-asset-plugin.git",
+            "reference": "dbc856439a09f07987de673aa8a264c1b88b0c6b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/fxpio/composer-asset-plugin/zipball/dbc856439a09f07987de673aa8a264c1b88b0c6b",
+            "reference": "dbc856439a09f07987de673aa8a264c1b88b0c6b",
+            "shasum": ""
+        },
+        "require": {
+            "composer-plugin-api": "1.0.0",
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "composer/composer": "~1.0@dev"
+        },
+        "time": "2015-01-25 13:24:06",
+        "type": "composer-plugin",
+        "extra": {
+            "class": "Fxp\\Composer\\AssetPlugin\\FxpAssetPlugin",
+            "branch-alias": {
+                "dev-master": "1.0-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Fxp\\Composer\\AssetPlugin\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "François Pluchino",
+                "email": "francois.pluchino@gmail.com"
+            }
+        ],
+        "description": "NPM/Bower Dependency Manager for Composer",
+        "homepage": "https://github.com/francoispluchino/composer-asset-plugin",
+        "keywords": [
+            "asset",
+            "bower",
+            "composer",
+            "dependency manager",
+            "nodejs",
+            "npm",
+            "package"
+        ]
+    },
+    {
+        "name": "andrewsville/php-token-reflection",
+        "version": "1.4.0",
+        "version_normalized": "1.4.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Andrewsville/PHP-Token-Reflection.git",
+            "reference": "e6d0ac2baf66cdf154be34c3d2a2aa1bd4b426ee"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Andrewsville/PHP-Token-Reflection/zipball/e6d0ac2baf66cdf154be34c3d2a2aa1bd4b426ee",
+            "reference": "e6d0ac2baf66cdf154be34c3d2a2aa1bd4b426ee",
+            "shasum": ""
+        },
+        "require": {
+            "ext-tokenizer": "*",
+            "php": ">=5.3.0"
+        },
+        "time": "2014-08-06 16:37:08",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "TokenReflection": "./"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3"
+        ],
+        "authors": [
+            {
+                "name": "Ondřej Nešpor",
+                "homepage": "https://github.com/andrewsville"
+            },
+            {
+                "name": "Jaroslav Hanslík",
+                "homepage": "https://github.com/kukulich"
+            }
+        ],
+        "description": "Library emulating the PHP internal reflection using just the tokenized source code.",
+        "homepage": "http://andrewsville.github.com/PHP-Token-Reflection/",
+        "keywords": [
+            "library",
+            "reflection",
+            "tokenizer"
+        ]
+    },
+    {
+        "name": "bower-asset/bootstrap",
+        "version": "v3.3.5",
+        "version_normalized": "3.3.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/twbs/bootstrap.git",
+            "reference": "16b48259a62f576e52c903c476bd42b90ab22482"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/twbs/bootstrap/zipball/16b48259a62f576e52c903c476bd42b90ab22482",
+            "reference": "16b48259a62f576e52c903c476bd42b90ab22482",
+            "shasum": ""
+        },
+        "require": {
+            "bower-asset/jquery": ">=1.9.1"
+        },
+        "type": "bower-asset-library",
+        "extra": {
+            "bower-asset-main": [
+                "less/bootstrap.less",
+                "dist/js/bootstrap.js"
+            ],
+            "bower-asset-ignore": [
+                "/.*",
+                "_config.yml",
+                "CNAME",
+                "composer.json",
+                "CONTRIBUTING.md",
+                "docs",
+                "js/tests",
+                "test-infra"
+            ]
+        },
+        "installation-source": "source",
+        "license": [
+            "MIT"
+        ],
+        "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
+        "keywords": [
+            "css",
+            "framework",
+            "front-end",
+            "js",
+            "less",
+            "mobile-first",
+            "responsive",
+            "web"
+        ]
+    },
+    {
+        "name": "firephp/firephp-core",
+        "version": "v0.4.0",
+        "version_normalized": "0.4.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/firephp/firephp-core.git",
+            "reference": "fabad0f2503f9577fe8dd2cb1d1c7cd73ed2aacf"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/firephp/firephp-core/zipball/fabad0f2503f9577fe8dd2cb1d1c7cd73ed2aacf",
+            "reference": "fabad0f2503f9577fe8dd2cb1d1c7cd73ed2aacf",
+            "shasum": ""
+        },
+        "time": "2013-04-23 15:28:20",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "lib/FirePHPCore/FirePHP.class.php",
+                "lib/FirePHPCore/fb.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Christoph Dorn",
+                "email": "christoph@christophdorn.com",
+                "homepage": "http://christophdorn.com"
+            }
+        ],
+        "description": "Traditional FirePHPCore library for sending PHP variables to the browser.",
+        "homepage": "https://github.com/firephp/firephp-core"
+    },
+    {
+        "name": "mtdowling/cron-expression",
+        "version": "v1.0.4",
+        "version_normalized": "1.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mtdowling/cron-expression.git",
+            "reference": "fd92e883195e5dfa77720b1868cf084b08be4412"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/mtdowling/cron-expression/zipball/fd92e883195e5dfa77720b1868cf084b08be4412",
+            "reference": "fd92e883195e5dfa77720b1868cf084b08be4412",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.2"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "4.*"
+        },
+        "time": "2015-01-11 23:07:46",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Cron": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Michael Dowling",
+                "email": "mtdowling@gmail.com",
+                "homepage": "https://github.com/mtdowling"
+            }
+        ],
+        "description": "CRON for PHP: Calculate the next or previous run date and determine if a CRON expression is due",
+        "keywords": [
+            "cron",
+            "schedule"
+        ]
+    },
+    {
+        "name": "oyejorge/less.php",
+        "version": "v1.7.0.5",
+        "version_normalized": "1.7.0.5",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/oyejorge/less.php.git",
+            "reference": "4385036b1dbfaf37f5380bd26a1e6006fc43149f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/oyejorge/less.php/zipball/4385036b1dbfaf37f5380bd26a1e6006fc43149f",
+            "reference": "4385036b1dbfaf37f5380bd26a1e6006fc43149f",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3"
+        },
+        "time": "2015-07-13 20:34:18",
+        "bin": [
+            "bin/lessc"
+        ],
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Less": "lib/"
+            },
+            "classmap": [
+                "lessc.inc.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Matt Agar",
+                "homepage": "https://github.com/agar"
+            },
+            {
+                "name": "Martin Jantošovič",
+                "homepage": "https://github.com/Mordred"
+            },
+            {
+                "name": "Josh Schmidt",
+                "homepage": "https://github.com/oyejorge"
+            }
+        ],
+        "description": "PHP port of the Javascript version of LESS http://lesscss.org",
+        "homepage": "http://lessphp.gpeasy.com",
+        "keywords": [
+            "css",
+            "less",
+            "less.js",
+            "lesscss",
+            "php",
+            "stylesheet"
+        ]
+    },
+    {
+        "name": "phpdocumentor/reflection-docblock",
+        "version": "2.0.4",
+        "version_normalized": "2.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
+            "reference": "d68dbdc53dc358a816f00b300704702b2eaff7b8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/d68dbdc53dc358a816f00b300704702b2eaff7b8",
+            "reference": "d68dbdc53dc358a816f00b300704702b2eaff7b8",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.0"
+        },
+        "suggest": {
+            "dflydev/markdown": "~1.0",
+            "erusev/parsedown": "~1.0"
+        },
+        "time": "2015-02-03 12:10:50",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.0.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "phpDocumentor": [
+                    "src/"
+                ]
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Mike van Riel",
+                "email": "mike.vanriel@naenius.com"
+            }
+        ]
+    },
+    {
+        "name": "phpmailer/phpmailer",
+        "version": "v5.2.9",
+        "version_normalized": "5.2.9.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/PHPMailer/PHPMailer.git",
+            "reference": "73b61679809615850706f1dbf88e6df2ddc05745"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/73b61679809615850706f1dbf88e6df2ddc05745",
+            "reference": "73b61679809615850706f1dbf88e6df2ddc05745",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.0.0"
+        },
+        "require-dev": {
+            "phpdocumentor/phpdocumentor": "*",
+            "phpunit/phpunit": "4.1.*"
+        },
+        "time": "2014-09-26 18:33:30",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "class.phpmailer.php",
+                "class.pop3.php",
+                "class.smtp.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-2.1"
+        ],
+        "authors": [
+            {
+                "name": "Jim Jagielski",
+                "email": "jimjag@gmail.com"
+            },
+            {
+                "name": "Marcus Bointon",
+                "email": "phpmailer@synchromedia.co.uk"
+            },
+            {
+                "name": "Andy Prevost",
+                "email": "codeworxtech@users.sourceforge.net"
+            },
+            {
+                "name": "Brent R. Matzelle"
+            }
+        ],
+        "description": "PHPMailer is a full-featured email creation and transfer class for PHP"
+    },
+    {
+        "name": "phpunit/php-token-stream",
+        "version": "1.4.8",
+        "version_normalized": "1.4.8.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/php-token-stream.git",
+            "reference": "3144ae21711fb6cac0b1ab4cbe63b75ce3d4e8da"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/3144ae21711fb6cac0b1ab4cbe63b75ce3d4e8da",
+            "reference": "3144ae21711fb6cac0b1ab4cbe63b75ce3d4e8da",
+            "shasum": ""
+        },
+        "require": {
+            "ext-tokenizer": "*",
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.2"
+        },
+        "time": "2015-09-15 10:49:45",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.4-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            }
+        ],
+        "description": "Wrapper around PHP's tokenizer extension.",
+        "homepage": "https://github.com/sebastianbergmann/php-token-stream/",
+        "keywords": [
+            "tokenizer"
+        ]
+    },
+    {
+        "name": "sebastian/version",
+        "version": "1.0.6",
+        "version_normalized": "1.0.6.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/version.git",
+            "reference": "58b3a85e7999757d6ad81c787a1fbf5ff6c628c6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/version/zipball/58b3a85e7999757d6ad81c787a1fbf5ff6c628c6",
+            "reference": "58b3a85e7999757d6ad81c787a1fbf5ff6c628c6",
+            "shasum": ""
+        },
+        "time": "2015-06-21 13:59:46",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
+            }
+        ],
+        "description": "Library that helps with managing the version number of Git-hosted PHP projects",
+        "homepage": "https://github.com/sebastianbergmann/version"
+    },
+    {
+        "name": "sebastian/exporter",
+        "version": "1.2.1",
+        "version_normalized": "1.2.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/exporter.git",
+            "reference": "7ae5513327cb536431847bcc0c10edba2701064e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/7ae5513327cb536431847bcc0c10edba2701064e",
+            "reference": "7ae5513327cb536431847bcc0c10edba2701064e",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3",
+            "sebastian/recursion-context": "~1.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.4"
+        },
+        "time": "2015-06-21 07:55:53",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.2.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Jeff Welch",
+                "email": "whatthejeff@gmail.com"
+            },
+            {
+                "name": "Volker Dusch",
+                "email": "github@wallbash.com"
+            },
+            {
+                "name": "Bernhard Schussek",
+                "email": "bschussek@2bepublished.at"
+            },
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            },
+            {
+                "name": "Adam Harvey",
+                "email": "aharvey@php.net"
+            }
+        ],
+        "description": "Provides the functionality to export PHP variables for visualization",
+        "homepage": "http://www.github.com/sebastianbergmann/exporter",
+        "keywords": [
+            "export",
+            "exporter"
+        ]
+    },
+    {
+        "name": "sebastian/comparator",
+        "version": "1.2.0",
+        "version_normalized": "1.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/comparator.git",
+            "reference": "937efb279bd37a375bcadf584dec0726f84dbf22"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/937efb279bd37a375bcadf584dec0726f84dbf22",
+            "reference": "937efb279bd37a375bcadf584dec0726f84dbf22",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3",
+            "sebastian/diff": "~1.2",
+            "sebastian/exporter": "~1.2"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.4"
+        },
+        "time": "2015-07-26 15:48:44",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.2.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Jeff Welch",
+                "email": "whatthejeff@gmail.com"
+            },
+            {
+                "name": "Volker Dusch",
+                "email": "github@wallbash.com"
+            },
+            {
+                "name": "Bernhard Schussek",
+                "email": "bschussek@2bepublished.at"
+            },
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            }
+        ],
+        "description": "Provides the functionality to compare PHP values for equality",
+        "homepage": "http://www.github.com/sebastianbergmann/comparator",
+        "keywords": [
+            "comparator",
+            "compare",
+            "equality"
+        ]
+    },
+    {
+        "name": "phpunit/php-text-template",
+        "version": "1.2.1",
+        "version_normalized": "1.2.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/php-text-template.git",
+            "reference": "31f8b717e51d9a2afca6c9f046f5d69fc27c8686"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-text-template/zipball/31f8b717e51d9a2afca6c9f046f5d69fc27c8686",
+            "reference": "31f8b717e51d9a2afca6c9f046f5d69fc27c8686",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "time": "2015-06-21 13:50:34",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
+            }
+        ],
+        "description": "Simple template engine.",
+        "homepage": "https://github.com/sebastianbergmann/php-text-template/",
+        "keywords": [
+            "template"
+        ]
+    },
+    {
+        "name": "doctrine/instantiator",
+        "version": "1.0.5",
+        "version_normalized": "1.0.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/doctrine/instantiator.git",
+            "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/doctrine/instantiator/zipball/8e884e78f9f0eb1329e445619e04456e64d8051d",
+            "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3,<8.0-DEV"
+        },
+        "require-dev": {
+            "athletic/athletic": "~0.1.8",
+            "ext-pdo": "*",
+            "ext-phar": "*",
+            "phpunit/phpunit": "~4.0",
+            "squizlabs/php_codesniffer": "~2.0"
+        },
+        "time": "2015-06-14 21:17:01",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Doctrine\\Instantiator\\": "src/Doctrine/Instantiator/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Marco Pivetta",
+                "email": "ocramius@gmail.com",
+                "homepage": "http://ocramius.github.com/"
+            }
+        ],
+        "description": "A small, lightweight utility to instantiate objects in PHP without invoking their constructors",
+        "homepage": "https://github.com/doctrine/instantiator",
+        "keywords": [
+            "constructor",
+            "instantiate"
+        ]
+    },
+    {
+        "name": "phpunit/php-file-iterator",
+        "version": "1.4.1",
+        "version_normalized": "1.4.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
+            "reference": "6150bf2c35d3fc379e50c7602b75caceaa39dbf0"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/6150bf2c35d3fc379e50c7602b75caceaa39dbf0",
+            "reference": "6150bf2c35d3fc379e50c7602b75caceaa39dbf0",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "time": "2015-06-21 13:08:43",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.4.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sb@sebastian-bergmann.de",
+                "role": "lead"
+            }
+        ],
+        "description": "FilterIterator implementation that filters files based on a list of suffixes.",
+        "homepage": "https://github.com/sebastianbergmann/php-file-iterator/",
+        "keywords": [
+            "filesystem",
+            "iterator"
+        ]
+    },
+    {
+        "name": "bower-asset/datatables-bootstrap3",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "git@github.com:Jowin/Datatables-Bootstrap3.git",
+            "reference": "45802ec4d337bdba6750f03b6472ddbb1d34608c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Jowin/Datatables-Bootstrap3/zipball/45802ec4d337bdba6750f03b6472ddbb1d34608c",
+            "reference": "45802ec4d337bdba6750f03b6472ddbb1d34608c",
+            "shasum": ""
+        },
+        "require": {
+            "bower-asset/datatables": ">=1.9.4"
+        },
+        "type": "bower-asset-library",
+        "extra": {
+            "bower-asset-main": [
+                "BS3/assets/css/datatables.css",
+                "BS3/assets/images/sort_asc.png",
+                "BS3/assets/images/sort_asc_disabled.png",
+                "BS3/assets/images/sort_both.png",
+                "BS3/assets/images/sort_desc.png",
+                "BS3/assets/images/sort_desc_disabled.png",
+                "BS3/assets/js/datatables.js"
+            ],
+            "bower-asset-ignore": [
+                "BS3/examples/",
+                "BS3/Datatables.png",
+                "BS3/index.html"
+            ],
+            "branch-alias": {
+                "dev-master": "1.0.0-dev"
+            }
+        },
+        "installation-source": "source",
+        "license": [
+            "README.md"
+        ],
+        "description": "Plugin for Datatables Bootstrap3 UI Compatibility"
+    },
+    {
+        "name": "bower-asset/fontawesome",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "git@github.com:FortAwesome/Font-Awesome.git",
+            "reference": "8e241f209faa1dd2182c9fdc9c352d8806504a4e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/8e241f209faa1dd2182c9fdc9c352d8806504a4e",
+            "reference": "8e241f209faa1dd2182c9fdc9c352d8806504a4e",
+            "shasum": ""
+        },
+        "type": "bower-asset-library",
+        "extra": {
+            "bower-asset-main": [
+                "less/font-awesome.less",
+                "scss/font-awesome.scss"
+            ],
+            "bower-asset-ignore": [
+                "*/.*",
+                "*.json",
+                "src",
+                "*.yml",
+                "Gemfile",
+                "Gemfile.lock",
+                "*.md"
+            ]
+        },
+        "installation-source": "source",
+        "license": [
+            "OFL-1.1",
+            "MIT",
+            "CC-BY-3.0"
+        ],
+        "description": "Font Awesome"
+    },
+    {
+        "name": "sebastian/global-state",
+        "version": "1.1.1",
+        "version_normalized": "1.1.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/global-state.git",
+            "reference": "bc37d50fea7d017d3d340f230811c9f1d7280af4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/bc37d50fea7d017d3d340f230811c9f1d7280af4",
+            "reference": "bc37d50fea7d017d3d340f230811c9f1d7280af4",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.2"
+        },
+        "suggest": {
+            "ext-uopz": "*"
+        },
+        "time": "2015-10-12 03:26:01",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            }
+        ],
+        "description": "Snapshotting of global state",
+        "homepage": "http://www.github.com/sebastianbergmann/global-state",
+        "keywords": [
+            "global state"
+        ]
+    },
+    {
+        "name": "sebastian/recursion-context",
+        "version": "1.0.2",
+        "version_normalized": "1.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/recursion-context.git",
+            "reference": "913401df809e99e4f47b27cdd781f4a258d58791"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/recursion-context/zipball/913401df809e99e4f47b27cdd781f4a258d58791",
+            "reference": "913401df809e99e4f47b27cdd781f4a258d58791",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.4"
+        },
+        "time": "2015-11-11 19:50:13",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Jeff Welch",
+                "email": "whatthejeff@gmail.com"
+            },
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            },
+            {
+                "name": "Adam Harvey",
+                "email": "aharvey@php.net"
+            }
+        ],
+        "description": "Provides functionality to recursively process PHP variables",
+        "homepage": "http://www.github.com/sebastianbergmann/recursion-context"
+    },
+    {
+        "name": "sebastian/environment",
+        "version": "1.3.7",
+        "version_normalized": "1.3.7.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/environment.git",
+            "reference": "4e8f0da10ac5802913afc151413bc8c53b6c2716"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/4e8f0da10ac5802913afc151413bc8c53b6c2716",
+            "reference": "4e8f0da10ac5802913afc151413bc8c53b6c2716",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.4"
+        },
+        "time": "2016-05-17 03:18:57",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.3.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            }
+        ],
+        "description": "Provides functionality to handle HHVM/PHP environments",
+        "homepage": "http://www.github.com/sebastianbergmann/environment",
+        "keywords": [
+            "Xdebug",
+            "environment",
+            "hhvm"
+        ]
+    },
+    {
+        "name": "sebastian/diff",
+        "version": "1.4.1",
+        "version_normalized": "1.4.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/diff.git",
+            "reference": "13edfd8706462032c2f52b4b862974dd46b71c9e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/diff/zipball/13edfd8706462032c2f52b4b862974dd46b71c9e",
+            "reference": "13edfd8706462032c2f52b4b862974dd46b71c9e",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.8"
+        },
+        "time": "2015-12-08 07:14:41",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.4-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Kore Nordmann",
+                "email": "mail@kore-nordmann.de"
+            },
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            }
+        ],
+        "description": "Diff implementation",
+        "homepage": "https://github.com/sebastianbergmann/diff",
+        "keywords": [
+            "diff"
+        ]
+    },
+    {
+        "name": "symfony/yaml",
+        "version": "v2.8.6",
+        "version_normalized": "2.8.6.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/yaml.git",
+            "reference": "e4fbcc65f90909c999ac3b4dfa699ee6563a9940"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/yaml/zipball/e4fbcc65f90909c999ac3b4dfa699ee6563a9940",
+            "reference": "e4fbcc65f90909c999ac3b4dfa699ee6563a9940",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.9"
+        },
+        "time": "2016-03-29 19:00:15",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.8-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Yaml\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Yaml Component",
+        "homepage": "https://symfony.com"
+    },
+    {
+        "name": "phpspec/prophecy",
+        "version": "v1.6.0",
+        "version_normalized": "1.6.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phpspec/prophecy.git",
+            "reference": "3c91bdf81797d725b14cb62906f9a4ce44235972"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phpspec/prophecy/zipball/3c91bdf81797d725b14cb62906f9a4ce44235972",
+            "reference": "3c91bdf81797d725b14cb62906f9a4ce44235972",
+            "shasum": ""
+        },
+        "require": {
+            "doctrine/instantiator": "^1.0.2",
+            "php": "^5.3|^7.0",
+            "phpdocumentor/reflection-docblock": "~2.0",
+            "sebastian/comparator": "~1.1",
+            "sebastian/recursion-context": "~1.0"
+        },
+        "require-dev": {
+            "phpspec/phpspec": "~2.0"
+        },
+        "time": "2016-02-15 07:46:21",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.5.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Prophecy\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Konstantin Kudryashov",
+                "email": "ever.zet@gmail.com",
+                "homepage": "http://everzet.com"
+            },
+            {
+                "name": "Marcello Duarte",
+                "email": "marcello.duarte@gmail.com"
+            }
+        ],
+        "description": "Highly opinionated mocking framework for PHP 5.3+",
+        "homepage": "https://github.com/phpspec/prophecy",
+        "keywords": [
+            "Double",
+            "Dummy",
+            "fake",
+            "mock",
+            "spy",
+            "stub"
+        ]
+    },
+    {
+        "name": "phpunit/phpunit-mock-objects",
+        "version": "2.3.8",
+        "version_normalized": "2.3.8.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
+            "reference": "ac8e7a3db35738d56ee9a76e78a4e03d97628983"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/ac8e7a3db35738d56ee9a76e78a4e03d97628983",
+            "reference": "ac8e7a3db35738d56ee9a76e78a4e03d97628983",
+            "shasum": ""
+        },
+        "require": {
+            "doctrine/instantiator": "^1.0.2",
+            "php": ">=5.3.3",
+            "phpunit/php-text-template": "~1.2",
+            "sebastian/exporter": "~1.2"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.4"
+        },
+        "suggest": {
+            "ext-soap": "*"
+        },
+        "time": "2015-10-02 06:51:40",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.3.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sb@sebastian-bergmann.de",
+                "role": "lead"
+            }
+        ],
+        "description": "Mock Object library for PHPUnit",
+        "homepage": "https://github.com/sebastianbergmann/phpunit-mock-objects/",
+        "keywords": [
+            "mock",
+            "xunit"
+        ]
+    },
+    {
+        "name": "phpunit/php-timer",
+        "version": "1.0.8",
+        "version_normalized": "1.0.8.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/php-timer.git",
+            "reference": "38e9124049cf1a164f1e4537caf19c99bf1eb260"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-timer/zipball/38e9124049cf1a164f1e4537caf19c99bf1eb260",
+            "reference": "38e9124049cf1a164f1e4537caf19c99bf1eb260",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4|~5"
+        },
+        "time": "2016-05-12 18:03:57",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sb@sebastian-bergmann.de",
+                "role": "lead"
+            }
+        ],
+        "description": "Utility class for timing",
+        "homepage": "https://github.com/sebastianbergmann/php-timer/",
+        "keywords": [
+            "timer"
+        ]
+    },
+    {
+        "name": "phpunit/php-code-coverage",
+        "version": "2.2.4",
+        "version_normalized": "2.2.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
+            "reference": "eabf68b476ac7d0f73793aada060f1c1a9bf8979"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/eabf68b476ac7d0f73793aada060f1c1a9bf8979",
+            "reference": "eabf68b476ac7d0f73793aada060f1c1a9bf8979",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3",
+            "phpunit/php-file-iterator": "~1.3",
+            "phpunit/php-text-template": "~1.2",
+            "phpunit/php-token-stream": "~1.3",
+            "sebastian/environment": "^1.3.2",
+            "sebastian/version": "~1.0"
+        },
+        "require-dev": {
+            "ext-xdebug": ">=2.1.4",
+            "phpunit/phpunit": "~4"
+        },
+        "suggest": {
+            "ext-dom": "*",
+            "ext-xdebug": ">=2.2.1",
+            "ext-xmlwriter": "*"
+        },
+        "time": "2015-10-06 15:47:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.2.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sb@sebastian-bergmann.de",
+                "role": "lead"
+            }
+        ],
+        "description": "Library that provides collection, processing, and rendering functionality for PHP code coverage information.",
+        "homepage": "https://github.com/sebastianbergmann/php-code-coverage",
+        "keywords": [
+            "coverage",
+            "testing",
+            "xunit"
+        ]
+    },
+    {
+        "name": "phpunit/phpunit",
+        "version": "4.8.26",
+        "version_normalized": "4.8.26.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/phpunit.git",
+            "reference": "fc1d8cd5b5de11625979125c5639347896ac2c74"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fc1d8cd5b5de11625979125c5639347896ac2c74",
+            "reference": "fc1d8cd5b5de11625979125c5639347896ac2c74",
+            "shasum": ""
+        },
+        "require": {
+            "ext-dom": "*",
+            "ext-json": "*",
+            "ext-pcre": "*",
+            "ext-reflection": "*",
+            "ext-spl": "*",
+            "php": ">=5.3.3",
+            "phpspec/prophecy": "^1.3.1",
+            "phpunit/php-code-coverage": "~2.1",
+            "phpunit/php-file-iterator": "~1.4",
+            "phpunit/php-text-template": "~1.2",
+            "phpunit/php-timer": "^1.0.6",
+            "phpunit/phpunit-mock-objects": "~2.3",
+            "sebastian/comparator": "~1.1",
+            "sebastian/diff": "~1.2",
+            "sebastian/environment": "~1.3",
+            "sebastian/exporter": "~1.2",
+            "sebastian/global-state": "~1.0",
+            "sebastian/version": "~1.0",
+            "symfony/yaml": "~2.1|~3.0"
+        },
+        "suggest": {
+            "phpunit/php-invoker": "~1.1"
+        },
+        "time": "2016-05-17 03:09:28",
+        "bin": [
+            "phpunit"
+        ],
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "4.8.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
+            }
+        ],
+        "description": "The PHP Unit Testing framework.",
+        "homepage": "https://phpunit.de/",
+        "keywords": [
+            "phpunit",
+            "testing",
+            "xunit"
+        ]
+    },
+    {
+        "name": "bower-asset/jquery",
+        "version": "2.2.4",
+        "version_normalized": "2.2.4.0",
+        "source": {
+            "type": "git",
+            "url": "git@github.com:jquery/jquery-dist.git",
+            "reference": "c0185ab7c75aab88762c5aae780b9d83b80eda72"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/c0185ab7c75aab88762c5aae780b9d83b80eda72",
+            "reference": "c0185ab7c75aab88762c5aae780b9d83b80eda72",
+            "shasum": ""
+        },
+        "type": "bower-asset-library",
+        "extra": {
+            "bower-asset-main": "dist/jquery.js",
+            "bower-asset-ignore": [
+                "package.json"
+            ]
+        },
+        "installation-source": "source",
+        "license": [
+            "MIT"
+        ],
+        "keywords": [
+            "browser",
+            "javascript",
+            "jquery",
+            "library"
+        ]
+    },
+    {
+        "name": "bower-asset/datatables",
+        "version": "1.10.12",
+        "version_normalized": "1.10.12.0",
+        "source": {
+            "type": "git",
+            "url": "git@github.com:DataTables/DataTables.git",
+            "reference": "b31abf704462a45f6ba7db439862d23c8cedc1f4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/DataTables/DataTables/zipball/b31abf704462a45f6ba7db439862d23c8cedc1f4",
+            "reference": "b31abf704462a45f6ba7db439862d23c8cedc1f4",
+            "shasum": ""
+        },
+        "require": {
+            "bower-asset/jquery": ">=1.7.0"
+        },
+        "type": "bower-asset-library",
+        "extra": {
+            "bower-asset-main": [
+                "media/js/jquery.dataTables.js",
+                "media/css/jquery.dataTables.css",
+                "media/images/sort_asc.png",
+                "media/images/sort_asc_disabled.png",
+                "media/images/sort_both.png",
+                "media/images/sort_desc.png",
+                "media/images/sort_desc_disabled.png"
+            ],
+            "bower-asset-ignore": [
+                "/.*",
+                "examples",
+                "media/unit_testing",
+                "composer.json",
+                "dataTables.jquery.json",
+                "package.json"
+            ]
+        },
+        "installation-source": "source",
+        "license": [
+            "MIT"
+        ],
+        "keywords": [
+            "datatables",
+            "javascript",
+            "jquery",
+            "library",
+            "table"
+        ]
+    },
+    {
+        "name": "bower-asset/twitter-bootstrap-wizard",
+        "version": "1.3.2",
+        "version_normalized": "1.3.2.0",
+        "source": {
+            "type": "git",
+            "url": "git@github.com:VinceG/twitter-bootstrap-wizard.git",
+            "reference": "b0d182737f81fd5fe60f9f7eb43b5eb65d566f28"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/VinceG/twitter-bootstrap-wizard/zipball/b0d182737f81fd5fe60f9f7eb43b5eb65d566f28",
+            "reference": "b0d182737f81fd5fe60f9f7eb43b5eb65d566f28",
+            "shasum": ""
+        },
+        "require": {
+            "bower-asset/bootstrap": ">=3.3.0",
+            "bower-asset/jquery": ">=1.9.1"
+        },
+        "type": "bower-asset-library",
+        "extra": {
+            "bower-asset-main": "jquery.bootstrap.wizard.min.js",
+            "bower-asset-ignore": [
+                "**/.*",
+                "examples",
+                "README.md",
+                "*.txt",
+                "*.html",
+                "prettify.js",
+                "prettify.css",
+                "bower.json",
+                "node_modules",
+                "bower_components",
+                "test",
+                "tests"
+            ]
+        },
+        "installation-source": "source",
+        "license": [
+            "MIT"
+        ],
+        "description": "This twitter bootstrap plugin builds a wizard out of a formatter tabbable structure. It allows to build a wizard functionality using buttons to go through the different wizard steps and using events allows to hook into each step individually.",
+        "keywords": [
+            "bootstrap",
+            "twitter",
+            "wizard"
+        ]
+    },
+    {
+        "name": "bower-asset/moment",
+        "version": "2.13.0",
+        "version_normalized": "2.13.0.0",
+        "source": {
+            "type": "git",
+            "url": "git@github.com:moment/moment.git",
+            "reference": "f90b5150a46651fabd7724d06438d7df2db59401"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/moment/moment/zipball/f90b5150a46651fabd7724d06438d7df2db59401",
+            "reference": "f90b5150a46651fabd7724d06438d7df2db59401",
+            "shasum": ""
+        },
+        "type": "bower-asset-library",
+        "extra": {
+            "bower-asset-main": "moment.js",
+            "bower-asset-ignore": [
+                "**/.*",
+                "benchmarks",
+                "bower_components",
+                "meteor",
+                "node_modules",
+                "scripts",
+                "tasks",
+                "test",
+                "component.json",
+                "composer.json",
+                "CONTRIBUTING.md",
+                "ender.js",
+                "Gruntfile.js",
+                "Moment.js.nuspec",
+                "package.js",
+                "package.json"
+            ]
+        },
+        "installation-source": "source"
+    },
+    {
+        "name": "bower-asset/requirejs",
+        "version": "2.2.0",
+        "version_normalized": "2.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "git@github.com:jrburke/requirejs-bower.git",
+            "reference": "1da07057390909f5422c5fd4fb18b6b57cf92b66"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/jrburke/requirejs-bower/zipball/1da07057390909f5422c5fd4fb18b6b57cf92b66",
+            "reference": "1da07057390909f5422c5fd4fb18b6b57cf92b66",
+            "shasum": ""
+        },
+        "type": "bower-asset-library",
+        "extra": {
+            "bower-asset-main": "require.js",
+            "bower-asset-ignore": []
+        },
+        "installation-source": "source",
+        "license": [
+            "MIT"
+        ],
+        "description": "A file and module loader for JavaScript",
+        "keywords": [
+            "AMD"
+        ]
+    },
+    {
+        "name": "bower-asset/fuelux",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "git@github.com:ExactTarget/fuelux.git",
+            "reference": "35c3341a0f01aa1cfa71866571cf0fa7b2f73eb3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ExactTarget/fuelux/zipball/35c3341a0f01aa1cfa71866571cf0fa7b2f73eb3",
+            "reference": "35c3341a0f01aa1cfa71866571cf0fa7b2f73eb3",
+            "shasum": ""
+        },
+        "require": {
+            "bower-asset/bootstrap": "dev-3.x,|3.x",
+            "bower-asset/jquery": "dev-default|*",
+            "bower-asset/moment": ">=2.10.6,<3.0.0",
+            "bower-asset/requirejs": "dev-2.x,|2.x"
+        },
+        "require-dev": {
+            "bower-asset/blanket": "dev-1.x,|1.x",
+            "bower-asset/jquery": "*",
+            "bower-asset/jquery-1.9.1": "1.9.1",
+            "bower-asset/qunit": "dev-1.x,|1.x",
+            "bower-asset/require-handlebars-plugin": "~1.0.0",
+            "bower-asset/requirejs-text": "dev-2.x,|2.x",
+            "bower-asset/underscore": "dev-1.x,|1.x"
+        },
+        "type": "bower-asset-library",
+        "extra": {
+            "bower-asset-main": [
+                "dist/css/fuelux.css",
+                "dist/js/fuelux.js",
+                "dist/fonts/fuelux.eot",
+                "dist/fonts/fuelux.svg",
+                "dist/fonts/fuelux.ttf",
+                "dist/fonts/fuelux.woff"
+            ],
+            "bower-asset-ignore": [
+                "**/.*",
+                "_*",
+                "*.yml",
+                "BACKLOG.md",
+                "data.js",
+                "dev",
+                "devserver.js",
+                "dist/fuelux.zip",
+                "Gruntfile.js",
+                "index.css",
+                "index.html",
+                "index.js",
+                "node_modules",
+                "Procfile",
+                "test"
+            ]
+        },
+        "installation-source": "source",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "Extending Bootstrap with additional lightweight JavaScript controls.",
+        "keywords": [
+            "application",
+            "bootstrap",
+            "controls",
+            "css",
+            "exacttarget",
+            "front-end",
+            "fuel ux",
+            "fuelux",
+            "js",
+            "salesforce",
+            "user interface",
+            "web"
+        ]
+    },
+    {
+        "name": "bower-asset/bootbox",
+        "version": "v4.4.0",
+        "version_normalized": "4.4.0.0",
+        "source": {
+            "type": "git",
+            "url": "git@github.com:makeusabrew/bootbox.git",
+            "reference": "cb756203e250ed0ff2539359ff0ad1c3ffb8e8d3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/makeusabrew/bootbox/zipball/cb756203e250ed0ff2539359ff0ad1c3ffb8e8d3",
+            "reference": "cb756203e250ed0ff2539359ff0ad1c3ffb8e8d3",
+            "shasum": ""
+        },
+        "require": {
+            "bower-asset/bootstrap": ">=3.0.0"
+        },
+        "type": "bower-asset-library",
+        "extra": {
+            "bower-asset-main": "./bootbox.js",
+            "bower-asset-ignore": [
+                "CHANGELOG.md",
+                "CONTRIBUTING",
+                "Gruntfile.js",
+                "header.txt",
+                "karma*.js",
+                "build",
+                "tests"
+            ]
+        },
+        "installation-source": "source"
+    },
+    {
+        "name": "bower-asset/swiper",
+        "version": "v3.3.1",
+        "version_normalized": "3.3.1.0",
+        "source": {
+            "type": "git",
+            "url": "git@github.com:nolimits4web/Swiper.git",
+            "reference": "33101a659e579146f5462e4a9d6a7fdfd7436c35"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/nolimits4web/Swiper/zipball/33101a659e579146f5462e4a9d6a7fdfd7436c35",
+            "reference": "33101a659e579146f5462e4a9d6a7fdfd7436c35",
+            "shasum": ""
+        },
+        "type": "bower-asset-library",
+        "extra": {
+            "bower-asset-main": [
+                "dist/js/swiper.js",
+                "dist/css/swiper.css"
+            ],
+            "bower-asset-ignore": [
+                ".*",
+                "demos",
+                "gulpfile",
+                "build",
+                "node_modules",
+                "playground",
+                "package.json"
+            ]
+        },
+        "installation-source": "source",
+        "license": [
+            "MIT"
+        ],
+        "description": "Most modern mobile touch slider and framework with hardware accelerated transitions",
+        "keywords": [
+            "app",
+            "carousel",
+            "cordova",
+            "framework",
+            "gallery",
+            "ios",
+            "mobile",
+            "phonegap",
+            "slider",
+            "swipe",
+            "swiper",
+            "touch"
+        ]
+    },
+    {
+        "name": "bower-asset/jquery-typeahead",
+        "version": "2.7.0",
+        "version_normalized": "2.7.0.0",
+        "source": {
+            "type": "git",
+            "url": "git@github.com:running-coder/jquery-typeahead.git",
+            "reference": "c35f5a264144fdabe5a5c3878349d524194722ae"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/running-coder/jquery-typeahead/zipball/c35f5a264144fdabe5a5c3878349d524194722ae",
+            "reference": "c35f5a264144fdabe5a5c3878349d524194722ae",
+            "shasum": ""
+        },
+        "type": "bower-asset-library",
+        "extra": {
+            "bower-asset-main": [
+                "dist/jquery.typeahead.min.js",
+                "dist/jquery.typeahead.min.css"
+            ],
+            "bower-asset-ignore": []
+        },
+        "installation-source": "source",
+        "description": "jQuery plugin that provides Typeahead (autocomplete) Search preview from Json object(s) via same domain Ajax request or cross domain Jsonp and offers data compression inside Local Storage. The plugin is built with a lot of options and callbacks to allow customization.",
+        "keywords": [
+            "ajax",
+            "autocomplete",
+            "input",
+            "json",
+            "jsonp",
+            "search",
+            "typeahead"
+        ]
+    },
+    {
+        "name": "abraham/twitteroauth",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/abraham/twitteroauth.git",
+            "reference": "4d7a4abb9986ac5bbff3f3f58de6ff2994c86000"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/abraham/twitteroauth/zipball/4d7a4abb9986ac5bbff3f3f58de6ff2994c86000",
+            "reference": "4d7a4abb9986ac5bbff3f3f58de6ff2994c86000",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "php": ">=5.5.0"
+        },
+        "require-dev": {
+            "phpmd/phpmd": "2.3.*",
+            "phpunit/phpunit": "4.8.*",
+            "squizlabs/php_codesniffer": "2.3.*"
+        },
+        "time": "2016-07-03 17:35:30",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Abraham\\TwitterOAuth\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Abraham Williams",
+                "email": "abraham@abrah.am",
+                "homepage": "https://abrah.am",
+                "role": "Developer"
+            }
+        ],
+        "description": "The most popular PHP library for use with the Twitter OAuth REST API.",
+        "homepage": "https://twitteroauth.com",
+        "keywords": [
+            "Twitter API",
+            "Twitter oAuth",
+            "api",
+            "oauth",
+            "rest",
+            "social",
+            "twitter"
+        ]
+    }
+]

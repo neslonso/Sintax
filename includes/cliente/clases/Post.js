@@ -15,14 +15,7 @@ function Post() {
 		default:
 			if (arguments[i+1] instanceof Array ||
 				arguments[i+1] instanceof Object) {
-				for (var indexOrProperty in arguments[i+1]) {
-					var value=arguments[i+1][indexOrProperty];
-					input=document.createElement("input");
-					input.setAttribute("type","hidden");
-					input.setAttribute("name",arguments[i]+"[]");
-					input.setAttribute("value",value);
-					form.appendChild(input);
-				}
+				createInputsFor(form, arguments[i],arguments[i+1]);
 			} else {
 				input=document.createElement("input");
 				input.setAttribute("type","hidden");
@@ -35,4 +28,22 @@ function Post() {
 	document.body.appendChild(form);
 	//console.log(form);
 	form.submit();
+}
+
+function createInputsFor(form, name, arrayOrObject) {
+	for (var indexOrProperty in arrayOrObject) {
+		if (arrayOrObject.hasOwnProperty(indexOrProperty)) {
+			var value=arrayOrObject[indexOrProperty];
+			if (value instanceof Array ||
+				value instanceof Object) {
+				createInputsFor(form, name+'['+indexOrProperty+']', value);
+			} else {
+				input=document.createElement("input");
+				input.setAttribute("type","hidden");
+				input.setAttribute("name",name+"["+indexOrProperty+"]");
+				input.setAttribute("value",value);
+				form.appendChild(input);
+			}
+		}
+	}
 }

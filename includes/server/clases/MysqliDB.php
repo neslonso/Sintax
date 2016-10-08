@@ -1,16 +1,41 @@
 <?
-class DBException extends Exception {}
+class MysqliDB_Exception extends \Exception {}
+class DBException extends \MysqliDB_Exception {}//Obsdoleta, eliminar todos sus lanzamientos en Sintax y dejarla de usar en las apps
 
-class MysqliDB extends mysqli {
+class MysqliDB extends \mysqli {
+	/**
+	 * host de MySQL
+	 * @var string
+	 */
+	protected $host='localhost';
+	/**
+	 * Usuario de acceso a MySQL
+	 * @var string
+	 */
+	protected $user='root';
+	/**
+	 * Contraseña del usuario de acceso a MySQL
+	 * @var string
+	 */
+	protected $pass='';
+	/**
+	 * Nombre del esquema de MySQL
+	 * @var string
+	 */
+	protected $db='';
 	/**
 	 * Constructor: Conecta a MySQL y establece el charset a utf8
 	 * @param string $host host de MySQL
 	 * @param string $user usuario de acceso a MySQL
 	 * @param string $pass contraseña del usuario de acceso a MySQL
 	 * @param string $db nombbre de esquema de MySQL
-	 * @throws DBException si no puede conectar o establecer el charset a utf8
+	 * @throws MysqliDB_Exception si no puede conectar o establecer el charset a utf8
 	 */
 	public function __construct($host, $user, $pass, $db) {
+		$this->host=$host;
+		$this->user=$user;
+		$this->pass=$pass;
+		$this->db=$db;
 		parent::init();
 		/*
 		if (!parent::options(MYSQLI_INIT_COMMAND, 'SET AUTOCOMMIT = 0')) {
@@ -24,16 +49,16 @@ class MysqliDB extends mysqli {
 		if (!parent::real_connect($host, $user, $pass, $db)) {
 			//throw new exception($this->connect_error, $this->connect_errno);
 			//$connect_error falla hasta PHP 5.3.0, asi que usamos la siguiente
-			throw new DBException(mysqli_connect_error(), mysqli_connect_errno());
+			throw new MysqliDB_Exception(mysqli_connect_error(), mysqli_connect_errno());
 		}
 		/* change character set to utf8 */
 		if (!parent::set_charset("utf8")) {
-			throw new DBException(mysqli_connect_error(), mysqli_connect_errno());
+			throw new MysqliDB_Exception(mysqli_connect_error(), mysqli_connect_errno());
 		}
 	}
 	/**
 	 * Destructor: cierra la conexión a MySQL si está abierta
-	 * @throws DBException si no se puede cerrar la conexion
+	 * @throws MysqliDB_Exception si no se puede cerrar la conexion
 	 */
 	public function __destruct() {
 		try {
@@ -43,10 +68,16 @@ class MysqliDB extends mysqli {
 		}
 		if ($pingResult) {
 			if (!parent::close()) {
-				throw new DBException(mysqli_connect_error(), mysqli_connect_errno());
+				throw new MysqliDB_Exception(mysqli_connect_error(), mysqli_connect_errno());
 			}
 		}
 	}
+
+	public function GEThost() {return $this->host;}
+	public function GETuser() {return $this->user;}
+	public function GETpass() {return $this->pass;}
+	public function GETdb() {return $this->db;}
+
 	/**
 	 * Ejecuta una consulta
 	 * @param  string $query Consulta SQL a ejecutar
@@ -55,8 +86,12 @@ class MysqliDB extends mysqli {
 	public function query($query) {
 		$localeActual=setlocale(LC_ALL, 0);
 	 	setlocale(LC_ALL,'en_US.utf8');
-
+$tInicial=microtime(true);
 		$result=parent::query($query);
+$tTotal=microtime(true)-$tInicial;
+if ($tTotal>1) {
+	error_log ("QUERY LENTA: ".$query.":".round($tTotal,3)." segundos.");
+}
 
 		setlocale(LC_ALL,$localeActual);
 		/*
@@ -66,7 +101,7 @@ class MysqliDB extends mysqli {
 		*/
 		if($this->errno!=0) {
 			$sql=(strlen($query)<512)?$query:substr($query,0,512)."[RESTO DE LA CONSULTA ELIMINADA]";
-			throw new DBException("SQL: ".$sql.". ".$this->error, $this->errno);
+			throw new MysqliDB_Exception("SQL: ".$sql.". ".$this->error, $this->errno);
 		}
 		return $result;
 	}
@@ -146,7 +181,7 @@ class MysqliDB extends mysqli {
 				break;
 			case "arrVars":
 				$result=array();
-				while ($row=$qResult->fetch_array(MYSQLI_ASSOC)) {
+				while ($row=$qResult->fetch_array(MYSQLI_NUM)) {
 					array_push($result,$row[0]);
 				}
 				break;
@@ -249,29 +284,84 @@ class MysqliDB extends mysqli {
 		return $result;
 	}
 
+	/* insertArray ************************************************
+	**************************************************************/
+	/**
+	 * Inserta el array pasado como parametro en la tabla pasada
+	 * como parametro. Si la tabla no existe se crea, con todos los
+	 * campos VARCHAR(255) NULL. Si el array contiene alguna clave
+	 * para la que no exista campo, se realiza el ALTER correspondiente.
+	 * @param  array $arr Array asociativo con los nombres y valores de los campos a insertar
+	 * @param  string $nombreTabla Nombre de la tabla en la que insertar el aaray
+	 */
+	public function insertArray($arr,$nombreTabla) {
+		$sqlShowTables='show tables LIKE "'.$nombreTabla.'"';
+		$tableExists=($this->get_num_rows($sqlShowTables))?TRUE:FALSE;
+		if (!$tableExists) {
+			$sqlCreateTable='CREATE TABLE IF NOT EXISTS `'.$nombreTabla.'` (
+				`id` INT NOT NULL,
+				`insert` TIMESTAMP NULL DEFAULT NULL,
+				`update` TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,'.PHP_EOL;
+			foreach ($arr as $name => $value) {
+				$sqlCreateTable.='`'.$name.'` VARCHAR(255) NULL,'.PHP_EOL;
+			}
+			$sqlCreateTable.='`extraData` VARCHAR(255) NULL COMMENT "Datos nuevos que no llegaban cuando se creo la tabla o datos a mayores para depuracion",';
+			$sqlCreateTable.='
+				PRIMARY KEY (`id`))
+				ENGINE = InnoDB
+			';
+			$this->query ($sqlCreateTable);
+		}
+
+		$sqlInsertInto='INSERT INTO `'.$nombreTabla.'` (';
+		$sqlInsertInto.='`id`,';
+		$sqlInsertInto.='`insert`,';
+		$sqlInsertInto.='`update`,';
+		$lastCheckedColumn='';
+		foreach ($arr as $name => $value) {
+			$sqlShowColumns='SHOW COLUMNS FROM `'.$nombreTabla.'` LIKE "'.$name.'"';
+			$fieldExists=($this->get_num_rows($sqlShowColumns))?TRUE:FALSE;
+			if (!$fieldExists) {
+				//lo creamos
+				$firstAfter=($lastCheckedColumn!='')?'AFTER `'.$lastCheckedColumn.'`':'FIRST';
+				$sqlAlterTable='ALTER TABLE `'.$nombreTabla.'` ADD COLUMN `'.$name.'` VARCHAR(255) NULL '.$firstAfter;
+				'`'.$name.'` VARCHAR(255) NULL,'.PHP_EOL;
+				$this->query ($sqlAlterTable);
+				$sqlShowColumns='SHOW COLUMNS FROM `'.$nombreTabla.'` LIKE "'.$name.'"';
+				$fieldExists=($this->get_num_rows($sqlShowColumns))?TRUE:FALSE;
+			}
+			if ($fieldExists) {
+				$sqlInsertInto.='`'.$name.'`,';
+			}
+			$lastCheckedColumn=$name;
+		}
+
+		$sqlInsertInto.='`extraData`) VALUES (';
+
+		$sqlInsertInto.=''.$this->nextId($nombreTabla,'id').',';
+		$sqlInsertInto.='"'.date("YmdHis").'",';
+		$sqlInsertInto.='NULL,';
+		$extraData='{';
+		$extraData.='"getRemoteIPAddress()":"'.getRemoteIPAddress().'",';
+		foreach ($arr as $name => $value) {
+			$sqlShowColumns='SHOW COLUMNS FROM `'.$nombreTabla.'` LIKE "'.$name.'"';
+			$fieldExists=($this->get_num_rows($sqlShowColumns))?TRUE:FALSE;
+			if ($fieldExists) {
+				$sqlInsertInto.='"'.$value.'",';
+			} else {
+				$extraData.='"'.$name.'":"'.$value.'",';
+			}
+		}
+
+		$extraData=substr($extraData,0,-1).'}';
+		$sqlInsertInto=substr($sqlInsertInto,0,-1).',';
+		$sqlInsertInto.='\''.$extraData.'\')';
+		$this->query($sqlInsertInto);
+	}
+
 }
 
-class cDb extends MysqliDB {
-	/**
-	 * host de MySQL
-	 * @var string
-	 */
-	private static $host='localhost';
-	/**
-	 * Usuario de acceso a MySQL
-	 * @var string
-	 */
-	private static $user='root';
-	/**
-	 * Contraseña del usuario de acceso a MySQL
-	 * @var string
-	 */
-	private static $pass='';
-	/**
-	 * Nombre del esquema de MySQL
-	 * @var string
-	 */
-	private static $db='';
+final class cDb extends MysqliDB {
 	/**
 	 * NULL o instancia de la propia clase, ya conectada a la BD
 	 * @var NULL o instancia de self
@@ -286,24 +376,47 @@ class cDb extends MysqliDB {
 	 * @return object: instancia de self
 	 */
 	public static function conf($host, $user, $pass, $db) {
-		self::$host=$host;
-		self::$user=$user;
-		self::$pass=$pass;
-		self::$db=$db;
-		if(self::$singleton instanceof self) {self::$singleton->close();}
+	//$GLOBALS['firephp']->group('Llamada a conf', array('Collapsed' => true, 'Color' => '#00FFFF'));
+	//$GLOBALS['firephp']->error(debug_backtrace(),'debug_backtrace()');
+	//$GLOBALS['firephp']->error(self::$singleton,'self::$singleton');
+		//if(self::$singleton instanceof self) {self::$singleton->close();}
 		self::$singleton=NULL;
-		return self::getInstance();
+	//$GLOBALS['firephp']->groupEnd();
+		return self::getInstance($host, $user, $pass, $db);
+	}
+
+	/**
+	 * Realiza conexión a la base de datos mediante una key del array DBS
+	 * @param string $arrKey Clave del array DBS que contiene los datos de conexión
+	 * @return object: instancia de self
+	 * @throws MysqliDB_Exception En caso de que la constante DBS no esté definida, o no contenga un array, ono exista clave arrKey o la clave arrKey no contenga a su vez otro array
+	 */
+	public static function confByKey($arrKey) {
+	//$GLOBALS['firephp']->error(debug_backtrace(),'confByKey');
+		if (!defined('DBS')) {throw new MysqliDB_Exception("DBS no definida", 1);}
+		$arrDbs=unserialize(DBS);
+		if (!is_array($arrDbs)) {throw new MysqliDB_Exception("DBS no contiene un array", 1);}
+		if (!isset($arrDbs[$arrKey])) {throw new MysqliDB_Exception("key [".$arrKey."] no isset", 1);}
+		if (!is_array($arrDbs[$arrKey])) {throw new MysqliDB_Exception("DBS[".$arrKey."] no contiene un array", 1);}
+		return self::conf($arrDbs[$arrKey]['_DB_HOST_'],$arrDbs[$arrKey]['_DB_USER_'],$arrDbs[$arrKey]['_DB_PASSWD_'],$arrDbs[$arrKey]['_DB_NAME_']);
+		//return self::getInstance();
 	}
 
 	/**
 	 * devuelve una referencia a la instancia conectada
 	 * @return object: instancia de self
 	 */
-	public static function getInstance() {
-		if(!self::$singleton instanceof self) {
-			//self::$singleton = new self(self::_DB_HOST_, self::_DB_USER_, self::_DB_PASSWD_, self::_DB_NAME_);
-			self::$singleton = new self(self::$host, self::$user, self::$pass, self::$db);
+	public static function getInstance($host="localhost", $user="root", $pass="", $db="") {
+	//$GLOBALS['firephp']->group('Llamada a getinstance', array('Collapsed' => true, 'Color' => '#FF00FF'));
+	//$GLOBALS['firephp']->error(debug_backtrace(),'debug_backtrace()');
+	//$GLOBALS['firephp']->error(self::$singleton,'self::$singleton');
+	//$GLOBALS['firephp']->error(self::$singleton instanceof self,'self::$singleton instanceof self');
+		if(!(self::$singleton instanceof self)) {
+			self::$singleton = new self($host, $user, $pass, $db);
+		//$GLOBALS['firephp']->error(self::$singleton,'getInstance: Nuevo self');
 		}
+	//$GLOBALS['firephp']->error(self::$singleton->ping(),'getInstance: Ping');
+	//$GLOBALS['firephp']->groupEnd();
 		return self::$singleton;
 	}
 	/**
@@ -311,6 +424,12 @@ class cDb extends MysqliDB {
 	 */
 	public static function gI() {
 		return self::getInstance();
+	}
+	/**
+	 * Destructor
+	 */
+	public function __destruct() {
+	//$GLOBALS['firephp']->error(debug_backtrace(),"Destructor de cDb");
 	}
 }
 ?>

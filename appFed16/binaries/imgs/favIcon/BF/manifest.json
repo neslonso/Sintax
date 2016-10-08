@@ -1,0 +1,12 @@
+{
+	"name": "Bebefarma",
+	"icons": [
+		{
+			"src": "\/appFed16\/binaries\/imgs\/favIcon\/BF\/android-chrome-192x192.png?v=lkgMkggyvj",
+			"sizes": "192x192",
+			"type": "image\/png"
+		}
+	],
+	"theme_color": "#ffffff",
+	"display": "standalone"
+}

@@ -83,9 +83,9 @@ class Imagen {
 	 * @param  string $format formato de salida de la imagen (gif | jpeg | jpg | png | wbmp)
 	 * @return string Datos de la imagen
 	 */
-	public function toString ($width=NULL, $height=NULL, $outputMode=self::OUTPUT_MODE_SCALE, $format="png") {
+	public function toString ($width=NULL, $height=NULL, $outputMode=self::OUTPUT_MODE_SCALE, $format="png", $quality="default", $filter=NULL) {
 		ob_start();
-		$this->output($width,$height,$outputMode,$format,true);
+		$this->output($width,$height,$outputMode,$format,true,$quality,$filter);
 		$result=ob_get_contents();
 		ob_end_clean();
 		return $result;
@@ -99,8 +99,13 @@ class Imagen {
 	 * @param  string $format formato de salida de la imagen (gif | jpeg | jpg | png | wbmp)
 	 * @param  boolean $withoutHeader Si es true solo se vuelcan los datos de la imagen,
 	 *  si es false se añade una cabecera Content-Type acorde al parametro formato
+	 * @param  integer $quality compresion de la imagen de salida
+	 *  JPG: desde 0 (peor calidad, archivo pequeño) a 100 (mejor calidad, archivo grande).
+	 *  	El valor por defecto es el valor de calidad predeterminada de IJG (sobre 75)
+	 *  PNG: desde 0 (NO COMPRESSION at all), 1 (FASTEST but produces larger files)...hasta 9 (best compression)
+	 *  	El valor por defecto es 6.
 	 */
-	public function output ($width=NULL, $height=NULL, $outputMode=self::OUTPUT_MODE_SCALE, $format="png",$withoutHeader=false) {
+	public function output ($width=NULL, $height=NULL, $outputMode=self::OUTPUT_MODE_SCALE, $format="png", $withoutHeader=false, $quality="default", $filter=NULL) {
 		$this->ensureAlpha();
 		$puntear=false;
 		if($outputMode & self::OUTPUT_MODE_ROTATE_H) {
@@ -154,6 +159,12 @@ class Imagen {
 			$this->fillPattern(self::pattern4x1());
 		}
 
+		if (!is_null($filter)){
+			switch ($filter) {
+				case 'grayscale': $this->grayscale(); break;
+			}
+		}
+
 		if (count($this->marcasAgua)>0) {
 			foreach ($this->marcasAgua as $arrParams) {
 				if (!is_null($arrParams['file']) && is_readable($arrParams['file'])) {
@@ -177,11 +188,15 @@ class Imagen {
 		switch ($format) {
 			case "gif":imagegif($outputData);break;
 			case "jpeg":
-			case "jpg":imagejpeg($outputData);break;
+			case "jpg":
+				$quality=($quality=="default")?75:$quality;
+				imagejpeg($outputData,NULL,$quality);
+				break;
 			case "png":
 				imagealphablending($this->imgData, false);
 				imagesavealpha($this->imgData, true);
-				imagepng($outputData);
+				$quality=($quality=="default")?6:$quality;
+				imagepng($outputData,NULL,$quality);
 				//imagepng($outputData,NULL,9,PNG_ALL_FILTERS);
 			break;
 			case "wbmp":imagewbmp($outputData);break;
@@ -264,7 +279,7 @@ class Imagen {
 		}
 	}
 	/**
-	 * Fit la imagen en $width*$height y rellena lo que sobre con transparente para generar una imagen de exactamente el mismo tamaño que el hueco
+	 * Fill la imagen en $width*$height y rellena lo que sobre con transparente para generar una imagen de exactamente el mismo tamaño que el hueco
 	 * @param  integer  $width   anchura del hueco que debe rellenar la imagen
 	 * @param  integer  $height  altura del hueco que debe rellenar la imagen
 	 */
@@ -469,6 +484,39 @@ class Imagen {
 			}
 		}
 		$this->imgData=$img;
+	}
+
+	public function grayscale(){
+		$im=$this->imgData;
+		if($im && imagefilter($im, IMG_FILTER_GRAYSCALE)){
+			imagepng($im, 'dave.png');
+		} else {
+			return false;
+		}
+		$this->imgData=$im;
+	}
+
+	/**
+	 * [join description]
+	 * @param  \self  $objImg   objeto de esta misma clase con el que se unirá $this
+	 * @param  string $position Dos palabras que indican alineación horizontal (left | right | center) y vertical (top | bottom | center)
+	 * @return [type]           [description]
+	 */
+	public function join(\Imagen $objImg,$position="right"){
+		switch ($position) {
+			case 'right':
+				$objImg->fill($this->height(),$this->height());
+				$newWidth = $this->width() + $objImg->width();
+				$newHeight = $this->height();
+				$new_image = imagecreatetruecolor($newWidth, $newHeight);
+				$col=imagecolorallocatealpha($new_image,0,0,0,127);
+				imagefill($new_image, 0, 0, $col);
+
+				imagecopyresampled($new_image, $this->imgData, 0, 0, 0, 0, $this->width(), $this->height(), $this->width(), $this->height());
+				imagecopyresampled($new_image, $objImg->imgData, $this->width(), 0, 0, 0, $objImg->width(), $objImg->height(), $objImg->width(), $objImg->height());
+				$this->imgData=$new_image;
+			break;
+		}
 	}
 
 /* Estaticas ******************************************************************/

@@ -1,0 +1,1 @@
+<?\Sintax\ApiService\Productos::fichaProductoResponsiveCss();?>

@@ -369,6 +369,31 @@ class Cadena {
 			return $res;
 	}
 
+	public static function pwParseCorreo2016($var, $urlBase=".", $noBRs=false) {
+		/*Esta funcion parsea un texto sustituyendo determinados tokens
+		por codigo HTML, los enlaces se hacen con URL absoluta pq el texto
+		sale por email*/
+
+			//$res = isset($var) ? nl2br(htmlSpecialChars(stripslashes(strip_tags($var)))) : "";
+			//$res = isset($var) ? nl2br(htmlSpecialChars(stripslashes($var))) : "";
+			$res=$var;
+			$res=stripslashes($res);
+			if (!$noBRs) {$res = nl2br($res);}
+			$res = ereg_replace("<br /><br />", "<br />",$res);//Para eliminar un posible exceso de <br />s
+			$res = ereg_replace("  ", " &nbsp;",$res);//Para respetar el esceso de espacios que tenga el texto
+			//$res = ereg_replace("\t", " &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ",$res);
+			$res = ereg_replace("(([A-Za-z0-9.\-])*)@([a-zA-Z0-9\.]*)([a-zA-Z0-9])", "<a class='parseEnlaceMailto' href=\"mailto:\\0\">\\0</a>",$res);
+			$res = ereg_replace("\(#\)", "<br />&bull;",$res);
+			$res= ereg_replace('negrita\(([^)]*))', "<b class='parseNegrita'>\\1</b>",$res);
+			$res= ereg_replace("cursiva\(([^)]*))", "<i class='parseCursiva'>\\1</i>",$res);
+			$res= ereg_replace("subr\(([^)]*))", "<u class='parseSubrayado'>\\1</u>",$res);
+			$res = ereg_replace("enlaceI\(([^,]*),([^)]*),([^)]*))", "<a class='parseEnlace' href=\"".$urlBase."/index.php?clase=\\2&id=\\3\">\\1</a>",$res);
+			$res = ereg_replace("enlaceE\(([^,]*),([^)]*))", "<a class='parseEnlaceBlank' target=\"_blank\" href=\"http://\\2\">\\1</a>",$res);
+			//$res = ereg_replace("www.(([A-Za-z0-9.\-])*)([a-zA-Z0-9])", "<a class=enlace target=_new href=\"\\0\">\\0</a>",$res);
+			/**/
+			return $res;
+	}
+
 	public static function random_color($minLuminosity=0,$maxLuminosity=255){
 		mt_srand((double)microtime()*1000000);
 		do {

@@ -8,45 +8,71 @@ ob_start();
 //modo
 //formato
 try {
+	$ancho=(isset($_GET['ancho']) && is_numeric($_GET['ancho']))?$_GET['ancho']:NULL;
+	$alto=(isset($_GET['alto']) && is_numeric($_GET['alto']))?$_GET['alto']:NULL;
+	$modo=(isset($_GET['modo']) && is_numeric($_GET['modo']))?$_GET['modo']:Imagen::OUTPUT_MODE_SCALE;
+	$formato=(isset($_GET['formato']))?$_GET['formato']:"png";
+	$cabecera=(isset($_GET['cabecera']))?$_GET['cabecera']:false;
+	$calidad=(isset($_GET['calidad']))?$_GET['calidad']:'default';
+	$filtro=(isset($_GET['filtro']))?$_GET['filtro']:NULL;
+
 	switch ($_GET["almacen"]) {
-		case "LOREMPIXEL":
-			/*
-			http://lorempixel.com/400/200 to get a random picture of 400 x 200 pixels
-			http://lorempixel.com/g/400/200 to get a random gray picture of 400 x 200 pixels
-			http://lorempixel.com/400/200/sports to get a random picture of the sports category
-			http://lorempixel.com/400/200/sports/1 to get picture no. 1/10 from the sports category
-			http://lorempixel.com/400/200/sports/Dummy-Text...with a custom text on the random Picture
-			*/
-			try {
-				$ancho=(isset($_GET["ancho"]))?$_GET["ancho"]:640;
-				$alto=(isset($_GET["alto"]))?$_GET["alto"]:480;
-				$categoria=(isset($_GET["fichero"]))?"/".$_GET["fichero"]:"";
-				$url="http://lorempixel.com/".$ancho."/".$alto.$categoria;
-				//$firephp->info($url,"URL: ");
-				$objImg=Imagen::fromString(file_get_contents($url));
-			} catch (Exception $e) {
-				error_log ($e->getMessage());
-				$file=BASE_IMGS_DIR.'imgErr.png';
-				$objImg=Imagen::fromFile($file);
-			}
-		break;
 		case "DB";
 			try {
-				\cDb::conf(_DB_HOST_, _DB_USER_, _DB_PASSWD_, _DB_NAME_);
-				$db=cDb::getInstance();
+				$db=\cDb::confByKey('celorriov3');
 				list($tabla,$campoId,$valorId,$campoData)=explode('.',$_GET["fichero"]);
-				$sql="SELECT ".$campoId.", ".$campoData." FROM ".$tabla." WHERE id='".$db->real_Escape_String($valorId)."'";
-				//$GLOBALS['firephp']->info($sql);
+				$sql="SELECT ".$campoId.", ".$campoData." FROM ".$tabla." WHERE id='".$db->real_escape_string($valorId)."'";
 				$rslSet=$db->query($sql);
 				if ($rslSet->num_rows>0) {
 					$data=$rslSet->fetch_object();
 					$data=$data->$campoData;
+					$objImg=Imagen::fromString($data);
+					//$objImg->marcaAgua("");
+					//$objImg->marcaAgua("",1,1,"center");
+				} else {
+					throw new Exception("No encontrado registro con ID [".$valorId."]", 1);
 				}
-				$objImg=Imagen::fromString($data);
-				//$objImg->marcaAgua("");
-				//$objImg->marcaAgua("",1,1,"center");
 			} catch (Exception $e) {
-				error_log(print_r($e,true));
+				$firephp->error($e);
+				$file=BASE_IMGS_DIR.'imgErr.png';
+				$objImg=Imagen::fromFile($file);
+			}
+		break;
+		case "DB_MPA_JOIN";
+			try {
+//$tInicial=microtime(true);
+				$listaIds=$_GET["fichero"];
+				$filePath=CACHE_DIR.'imgMenu.'.md5($listaIds.$ancho.$alto.$modo.$formato.$calidad.$filtro).'.'.$formato;
+				$usarCache=file_exists($filePath) && filemtime($filePath)>time()-(60*60*240);
+				if ($usarCache) {
+					$objImg=Imagen::fromFile($filePath);
+					$ancho=$objImg->width();
+				} else {
+					$db=\cDb::confByKey('celorriov3');
+					$arrIds=explode(',',$listaIds);
+					$objImg=NULL;
+					foreach ($arrIds as $id) {
+						$sql="SELECT id, data FROM multi_productoAdjunto WHERE id='".$db->real_escape_string(base_convert($id,36,10))."'";
+						$rslSet=$db->query($sql);
+						$data=$rslSet->fetch_object();
+						$data=$data->data;
+						if (is_null($objImg)) {
+							$objImg=Imagen::fromString($data);
+							$objImg->fill($ancho,$alto);
+						} else {
+							$objImg->join(Imagen::fromString($data),"right");
+							$ancho=$objImg->width();
+						}
+					}
+					if (!is_dir(dirname($filePath))) {
+						mkdir(dirname($filePath),0700,true);
+					}
+					file_put_contents($filePath, $objImg->toString($ancho,$alto,$modo,$formato,$calidad,$filtro));
+				}
+//$tTotal=microtime(true)-$tInicial;
+//error_log('/** Excep. Timepo de JOIN de images: '.round($tTotal,4));
+			} catch (Exception $e) {
+				$firephp->error($e);
 				$file=BASE_IMGS_DIR.'imgErr.png';
 				$objImg=Imagen::fromFile($file);
 			}
@@ -60,8 +86,7 @@ try {
 				}
 				$objImg=Imagen::fromFile($file);
 			} catch (Exception $e) {
-				//error_log(print_r($e,true));
-				error_log($e->getMessage());
+				$firephp->error($e);
 				$file=BASE_IMGS_DIR.'imgErr.png';
 				$objImg=Imagen::fromFile($file);
 			}
@@ -72,15 +97,9 @@ try {
 
 	header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 60*60*24*364));
 
-	$ancho=(isset($_GET['ancho']) && is_numeric($_GET['ancho']))?$_GET['ancho']:NULL;
-	$alto=(isset($_GET['alto']) && is_numeric($_GET['alto']))?$_GET['alto']:NULL;
-	$modo=(isset($_GET['modo']) && is_numeric($_GET['modo']))?$_GET['modo']:Imagen::OUTPUT_MODE_SCALE;
-	$formato=(isset($_GET['formato']))?$_GET['formato']:"png";
-
-	$objImg->output($ancho,$alto,$modo,$formato);
+	$objImg->output($ancho,$alto,$modo,$formato,$cabecera,$calidad,$filtro);
 } catch (Exception $e) {
 	$firephp->info("Excepcion de tipo: ".get_class($e).". Mensaje: ".$e->getMessage()." en fichero ".$e->getFile()." en linea ".$e->getLine());
-	$firephp->info($e->getTrace(),"trace");
 	$firephp->info($e->getTraceAsString(),"traceAsString");
 	error_log ("Excepcion de tipo: ".get_class($e).". Mensaje: ".$e->getMessage()." en fichero ".$e->getFile()." en linea ".$e->getLine());
 	error_log ("TRACE: ".$e->getTraceAsString());
