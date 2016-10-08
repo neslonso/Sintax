@@ -34,6 +34,13 @@
 
 @height-banner: 250px;
 
+/**/
+/* http://stackoverflow.com/questions/19288546/how-can-i-prevent-body-scrollbar-and-shifting-when-twitter-bootstrap-modal-dialo */
+.modal-open {
+	overflow: auto;
+	padding-right: 0px !important;
+}
+/**/
 /*********** ZONAS GENERALES ************/
 body {
 	background-color: @color-body;

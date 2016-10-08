@@ -5,15 +5,15 @@
 			<div>
 					<h2>Condiciones generales</h2>
 					<div>
-						La contratación de productos en http://farmaciacelorrio.com implica la aceptación expresa de las
+						La contratación de productos en <?=$URL_TIENDA?> implica la aceptación expresa de las
 						siguientes condiciones generales:<BR /><BR />
-						Condiciones generales de contratación entre Celorrio Farma S.L. (B27232859), y el usuario:
+						Condiciones generales de contratación entre <?=$NOMBRE_EMPRESA?> (<?=$CIF_EMPRESA?>), y el usuario:
 					</div>
 					<div class="divOl">
 						<OL STYLE="">
 							<LI><p>
 								El usuario declara que es mayor de edad (mayor de 18 años) y dispone de capacidad legal necesaria para
-								contratar los productos ofertados por Celorrio Farma S.L., manifestando asimismo que acepta la vinculación a este
+								contratar los productos ofertados por <?=$NOMBRE_EMPRESA?>, manifestando asimismo que acepta la vinculación a este
 								acuerdo y entiende, y acepta en su totalidad las condiciones aquí enunciadas para utilizar este sitio web,
 								y para contratar los productos ofertados.</p>
 							</LI>
@@ -26,17 +26,17 @@
 								y a la Ley 34/2002 de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico.<BR /></p>
 							</LI>
 							<LI><p>
-								Los productos de Celorrio Farma S.L. que son comercializados vía Internet serán recibidos en soporte físico
+								Los productos de <?=$NOMBRE_EMPRESA?> que son comercializados vía Internet serán recibidos en soporte físico
 								en el domicilio indicado por el Cliente en el formulario que deberá cumplimentar. A tal efecto, el Cliente
 								declara que toda la información suministrada a la hora de registrarse es verdadera, completa y precisa
 								y que de conformidad con la Ley Orgánica 15/1999 de Protección de Datos de Carácter Personal, la persona que se
-								registra autoriza expresamente a Celorrio Farma S.L. para que proceda a incluir en un fichero automatizado los
+								registra autoriza expresamente a <?=$NOMBRE_EMPRESA?> para que proceda a incluir en un fichero automatizado los
 								datos de carácter personal que figuran en los campos del formulario por resultar necesarios para la adecuada
-								prestación de sus servicios. Los clientes de Celorrio Farma S.L. pueden, en todo momento, ejercitar los derechos
+								prestación de sus servicios. Los clientes de <?=$NOMBRE_EMPRESA?> pueden, en todo momento, ejercitar los derechos
 								de acceso, rectificación, cancelación y oposición sobre sus datos personales comunicándolo por escrito
-								a Celorrio Farma S.L., Avda A Coruña 195, 27003, Lugo; o bien notificándolo vía telemática en atcioncliente@farmaciacelorrio.com.<BR />
+								a <?=$NOMBRE_EMPRESA?>, <?=$DIRECCION_EMPRESA?>; o bien notificándolo vía telemática en <?=$EMAIL_CONTACTO?>.<BR />
 								El Cliente da su consentimiento expreso para recibir comunicaciones electrónicas con publicidad y novedades
-								comerciales de Celorrio Farma S.L. y de los productos o servicios que comercializa. Celorrio Farma S.L. pone a
+								comerciales de <?=$NOMBRE_EMPRESA?> y de los productos o servicios que comercializa. <?=$NOMBRE_EMPRESA?> pone a
 								disposición de los Clientes los medios de contacto referidos en el párrafo anterior para que estos revoquen su
 								consentimiento.</p>
 							</LI>
@@ -54,19 +54,19 @@
 								Póngase en contacto con nosotros a través del correo electrónico para indicarle como debe realizar su devolución.</p>
 							</LI>
 							<LI><p>
-								Todos los contenidos, marcas, logos, dibujos etc. que figuran en el sitio web http://www.farmaciacelorrio.com, se hallan protegidos por
-								los derechos de propiedad intelectual e industrial que son expresamente reservados por Celorrio Farma S.L. o, en su caso,
+								Todos los contenidos, marcas, logos, dibujos etc. que figuran en el sitio web <?=$URL_TIENDA?>, se hallan protegidos por
+								los derechos de propiedad intelectual e industrial que son expresamente reservados por <?=$NOMBRE_EMPRESA?> o, en su caso,
 								por las personas o empresas que figuran como autores o titulares de los derechos. La violación de los anteriores derechos
 								será perseguida de conformidad con la legislación vigente. Por lo tanto queda prohibida la reproducción, explotación,
 								alteración, distribución o comunicación pública por cualquier título o medio de la totalidad de los contenidos del sitio
-								web http://www.farmaciacelorrio.com para usos diferentes de la legítima información o contratación por los usuarios de los servicios
-								ofertados. En todo caso será necesario el consentimiento previo por escrito de Celorrio Farma S.L..</p>
+								web <?=$URL_TIENDA?> para usos diferentes de la legítima información o contratación por los usuarios de los servicios
+								ofertados. En todo caso será necesario el consentimiento previo por escrito de <?=$NOMBRE_EMPRESA?>.</p>
 							</LI>
 							<LI><p>
-								Celorrio Farma S.L. no garantiza la disponibilidad permanente de los productos, quedando exonerado por cualquier tipo de
+								<?=$NOMBRE_EMPRESA?> no garantiza la disponibilidad permanente de los productos, quedando exonerado por cualquier tipo de
 								responsabilidad que se derive de la indisponibilidad del servicio siempre y cuando se debiera a fuerza mayor o errores
 								en las redes telemáticas de transferencia de datos, ajenos a su voluntad.<BR />
-								Celorrio Farma S.L. tampoco se hace responsable del contenido de los enlaces a otras páginas web que no sean titularidad
+								<?=$NOMBRE_EMPRESA?> tampoco se hace responsable del contenido de los enlaces a otras páginas web que no sean titularidad
 								suya y que, por lo tanto, no pueden ser controladas por ésta.</p>
 							</LI>
 							<LI><p>
@@ -91,7 +91,7 @@
 						la realización de campañas de publicidad, y el desarrollo de acciones comerciales relacionadas con los productos o servicios contratados,
 						por cualquier medio de comunicación, incluyendo SMS, correo electrónico. Autoriza la cesión de datos a empesas de transporte con la
 						finalidad de entregar el pedido. Le informamos que puede ejercer sus derechos de acceso, rectificación, cancelación y oposición
-						comunicándolo por escrito al Responsable del Fichero CELORRIO FARMA S.L. DOMICILIO, AV. CORUÑA 195 BJ, 27003-LUGO (LUGO).
+						comunicándolo por escrito al Responsable del Fichero <?=$NOMBRE_EMPRESA?> DOMICILIO, <?=$DIRECCION_EMPRESA?>.
 					</div>
 					<h2>Información del uso de cookies</h2>
 					<div>
@@ -102,7 +102,7 @@
 						<br><p>Cookies de análisis que permiten el análisis anónimo del comportamiento de los usuarios de la web y que permiten medir la actividad del usuario y elaborar perfiles de navegación con el fin objetivo de mejorar los sitios web.</p>
 						<br><p>Cookies publicitarias que permiten la gestión de los espacios publicitarios de la web.</p>
 						<br><p>Cookies de publicidad personalizada que permiten la gestión de los espacios publicitarios de la web en base al comportamiento y hábitos de navegación del usuario, de donde se obtiene su perfil y este hecho permite personalizar la publicidad que se muestra en el navegador del usuario.</p>
-						<br><p>Celorriofarma S.L. únicamente utiliza cookies técnicas, de personalización y análisis, propias y de terceros, que en ningún caso tratan datos de carácter personal ni captan hábitos de navegación para fines publicitarios.</p>
+						<br><p><?=$NOMBRE_EMPRESA?> únicamente utiliza cookies técnicas, de personalización y análisis, propias y de terceros, que en ningún caso tratan datos de carácter personal ni captan hábitos de navegación para fines publicitarios.</p>
 						<br><p>Por ello, al acceder a nuestra web, en cumplimiento del artículo 22 de la Ley de Servicios de la Sociedad de la Información, al tratar cookies de análisis, le hemos solicitado su consentimiento para su uso, que en todo caso se instalarán pasado un plazo de tiempo prudencial para que el usuario tenga tiempo de decidir prestar su consentimiento o no.</p>
 						<br><p>De todas formas, le informamos que puede activar o desactivar estas cookies siguiendo las instrucciones de su navegador de Internet.</p>
 						<br>

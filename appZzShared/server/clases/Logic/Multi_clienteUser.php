@@ -18,6 +18,12 @@ class Multi_clienteUser extends AnonymousUser implements IUser {
 			case 'Sintax\Pages\mis_datos':
 				$result=true;
 				break;
+			case 'Sintax\Pages\registro_usuario':
+				$result='Sintax\Pages\mis_datos';
+				break;
+			case 'Sintax\Pages\acceso_usuario':
+				$result='Sintax\Pages\Home';
+				break;
 			default:
 				//almacenar get_class($objPage), get_class($this)
 				break;

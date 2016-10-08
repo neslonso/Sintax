@@ -1,6 +1,7 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
+	//http://www.runningcoder.org/jquerytypeahead/demo/
 	$.typeahead({
 		input: '.js-typeahead',
 		minLength: 3,
@@ -13,15 +14,20 @@ $(document).ready(function() {
 			ofers: {
 				display: ["nombre","descripcion"],
 				template: function (query,item) {
+					//console.log(item);
+					item.imgSrc='<?=BASE_URL.FILE_APP?>?MODULE=images&almacen=DB&fichero=multi_productoAdjunto.id.'+item.idFoto+'.data&ancho=60&alto=60&modo=256';
 					var template=[
 						'<li>',
 							'<div>{{nombre}}</div>',
 							'<div>',
 								'<img style="float:left" ',
-									'src="<?=BASE_URL.FILE_APP?>?MODULE=images&almacen=DB&fichero=multi_productoAdjunto.id.4793.data&ancho=60&alto=60&modo=256" ',
+									'src="'+item.imgSrc+'" ',
 								'/>',
 								'<div style="height:40px; overflow:hidden; font-size:x-small;">{{descripcion}}</div>',
 								'<div style="text-align:right;">'+parseFloat(item.precio).toFixed(2)+'€</div>',
+							'</div>',
+							'<div>',
+								'<button type="button" class="btn btn-warning jqCst" data-id="'+item.id+'" data-ttl="'+item.nombre+'" data-unit="1" data-prc="'+parseFloat(item.precio).toFixed(2)+'" data-src="'+item.src+'">Comprar</button>',
 							'</div>',
 						'</li>',
 					].join('');
@@ -89,8 +95,8 @@ $(document).ready(function() {
 				node.cache=[];
 			},
 			onClick: function (node, a, item, event) {
-				//console.log(node);console.log(a);console.log(item);console.log(event);
-				//console.log('onClick function triggered');
+				console.log(node);console.log(a);console.log(item);console.log(event);
+				console.log('onClick function triggered');
 			},
 			onSubmit: function (node, form, item, event) {
 				//console.log(node);console.log(form);console.log(item);console.log(event);

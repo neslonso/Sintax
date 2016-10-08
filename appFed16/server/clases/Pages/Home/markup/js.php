@@ -119,14 +119,23 @@ $(document).ready(function() {
 		}
 		if (error){
 			muestraMsgModal('Error',msg);
-
 		} else {
-			//registramos al cliente
-			//
-			//
-			//
-			//
-			muestraMsgModal('¡Gracias!','Su correo electrónico ha sido añadido a nuestro boletín. Gracias por su interés.');
+			$.post('<?=BASE_DIR.FILE_APP?>',{
+				'MODULE':'actions',
+				'acClase':'Home',
+				'acMetodo':'acGrabarCliente',
+				'acTipo':'ajax',
+				'email':$('#emailSuscribir').val(),
+			},
+			function (response) {
+				console.log(response);
+				if (!response.data.resultado.valor){
+					muestraMsgModal('Error',response.data.resultado.msg);
+				} else {
+					muestraMsgModal('¡Gracias!','Su correo electrónico ha sido añadido a nuestro boletín. Gracias por su interés.');
+				}
+			},
+			'json');
 		}
 	});
 });
@@ -157,4 +166,48 @@ function acLogin(email,pass,token) {
 		}
 	},
 	'json');
+}
+
+function acGrabarCliente(email,pass) {
+	$.post('<?=BASE_DIR.FILE_APP?>',{
+		'MODULE':'actions',
+		'acClase':'Home',
+		'acMetodo':'acGrabarCliente',
+		'acTipo':'ajax',
+		'email':email,
+		'pass':pass,
+	},
+	function (response) {
+		console.log(response);
+		if (!response.data.resultado.valor){
+			muestraMsgModal('Error',response.data.resultado.msg);
+		} else {
+			//window.location.href = '<?=BASE_URL?>';
+			window.location.reload();
+		}
+	},
+	'json');
+}
+
+function validaDatosAltaCliente(email,pass,repass,legal) {
+	var error=false;
+	var msg="<ul>";
+	if (email==""){
+		error=true;
+		msg+="<li>Debe introducir su dirección de correo electrónico.</li>";
+	}
+	if (pass=="") {
+		error=true;
+		msg+="<li>Debe introducir y confirmar la contraseña.</li>";
+	}
+	if (pass!=repass) {
+		error=true;
+		msg+="<li>Las contraseñas introducidas no coinciden.</li>";
+	}
+	if (!legal){
+		error=true;
+		msg+="<li>Debe aceptar las condiciones de uso</li>";
+	}
+	msg+="</ul>";
+	return (error)?msg:false;
 }

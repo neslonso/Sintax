@@ -1,5 +1,9 @@
 <?if (false) {?><style><?}?>
 <?="\n/*".get_class()."*/\n"?>
+
+.fuelux {
+	margin: 2em 0em;
+}
 #ulDtos {}
 @media (min-width: 992px) {
 	#ulDtos li {

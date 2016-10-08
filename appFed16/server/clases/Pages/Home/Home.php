@@ -28,20 +28,22 @@ class Home extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/head.php");
 	}
 	public function favIcon() {
+		$keyTienda=$GLOBALS['config']->tienda->key;
+		$sitename=$GLOBALS['config']->tienda->SITE_NAME;
+		$TileColor='#2d89ef';//#00a300
 		//http://realfavicongenerator.net/
 		echo '
-			<link rel="apple-touch-icon" sizes="180x180" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/apple-touch-icon.png?v=3ea9qPGKdq">
-			<link rel="icon" type="image/png" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/favicon-32x32.png?v=3ea9qPGKdq" sizes="32x32">
-			<link rel="icon" type="image/png" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/android-chrome-192x192.png?v=3ea9qPGKdq" sizes="192x192">
-			<link rel="icon" type="image/png" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/favicon-16x16.png?v=3ea9qPGKdq" sizes="16x16">
-			<link rel="manifest" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/manifest.json?v=3ea9qPGKdq">
-			<link rel="mask-icon" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/safari-pinned-tab.svg?v=3ea9qPGKdq" color="#5bbad5">
-			<link rel="shortcut icon" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/favicon.ico?v=3ea9qPGKdq">
-			<meta name="apple-mobile-web-app-title" content="Bebefarma">
-			<meta name="application-name" content="Bebefarma">
-			<meta name="msapplication-TileColor" content="#da532c">
-			<meta name="msapplication-TileImage" content="'.BASE_URL.'appFed16/binaries/imgs/favIcon/mstile-144x144.png?v=3ea9qPGKdq">
-			<meta name="msapplication-config" content="'.BASE_URL.'appFed16/binaries/imgs/favIcon/browserconfig.xml?v=3ea9qPGKdq">
+			<link rel="apple-touch-icon" sizes="180x180" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/apple-touch-icon.png?v=lkgMkggyvj">
+			<link rel="icon" type="image/png" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/favicon-32x32.png?v=lkgMkggyvj" sizes="32x32">
+			<link rel="icon" type="image/png" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/favicon-16x16.png?v=lkgMkggyvj" sizes="16x16">
+			<link rel="manifest" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/manifest.json?v=lkgMkggyvj">
+			<link rel="mask-icon" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/safari-pinned-tab.svg?v=lkgMkggyvj" color="#5bbad5">
+			<link rel="shortcut icon" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/favicon.ico?v=lkgMkggyvj">
+			<meta name="apple-mobile-web-app-title" content="'.$sitename.'">
+			<meta name="application-name" content="'.$sitename.'">
+			<meta name="msapplication-TileColor" content="'.$TileColor.'">
+			<meta name="msapplication-TileImage" content="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/mstile-144x144.png?v=lkgMkggyvj">
+			<meta name="msapplication-config" content="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/browserconfig.xml?v=lkgMkggyvj">
 			<meta name="theme-color" content="#ffffff">
 		';
 	}
@@ -100,7 +102,7 @@ class Home extends Error implements IPage {
 		$arrOfersCuerpo=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,24);
 		if (isset($_SESSION['usuario'])){
 			$objCli=$_SESSION['usuario']->objEntity;
-			$arrOfersRecomendados=\Sintax\ApiService\Categorias::arrOfersRecomendados($GLOBALS['config']->tienda->key,12,$objCli->GETid());
+			$arrOfersCustom=\Sintax\ApiService\Categorias::arrOfersCustom($GLOBALS['config']->tienda->key,12,$objCli->GETid());
 		}
 		require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
 	}
@@ -147,8 +149,15 @@ class Home extends Error implements IPage {
 				nombre LIKE '%".$like."%'
 			)
 		";
-		$arr=\Multi_ofertaVenta::getArray($db,$where,"","","arrStdObjs");
-		return $arr;
+		$arr=\Multi_ofertaVenta::getArray($db,$where,"","","arrKeys");
+		$arrResults=array();
+		foreach ($arr as $idMulti_ofertaVenta) {
+			$objOferta=new \Multi_ofertaVenta ($db,$idMulti_ofertaVenta);
+			$std=$objOferta->toStdObj();
+			$std->idFoto=$objOferta->imgId();
+			array_push($arrResults, $std);
+		}
+		return $arrResults;
 	}
 
 	protected function ensureCesta($db) {
@@ -220,7 +229,10 @@ class Home extends Error implements IPage {
 
 	public function acTwLogin() {
 		error_log("Excep: acTwLogin");
-		$connection = new TwitterOAuth($GLOBALS['config']->tienda->TW_CONSUMER_KEY,$GLOBALS['config']->tienda->TW_CONSUMER_SECRET);
+		$TWCK=$GLOBALS['config']->tienda->SOCIAL->TW->CONSUMER_KEY;
+		$TWCS=$GLOBALS['config']->tienda->SOCIAL->TW->CONSUMER_SECRET;
+
+		$connection = new TwitterOAuth($TWCK,$TWCS);
 		$request_token = $connection->oauth('oauth/request_token',
 			array('oauth_callback' => BASE_URL.FILE_APP.'?MODULE=actions&acClase=Home&acMetodo=acTwLoginCallBack&acTipo=std'));
 			//array('oauth_callback' => 'obb'));
@@ -233,8 +245,8 @@ class Home extends Error implements IPage {
 	}
 
 	public function acTwLoginCallBack() {
-		$TWCK=$GLOBALS['config']->tienda->TW_CONSUMER_KEY;
-		$TWCS=$GLOBALS['config']->tienda->TW_CONSUMER_SECRET;
+		$TWCK=$GLOBALS['config']->tienda->SOCIAL->TW->CONSUMER_KEY;
+		$TWCS=$GLOBALS['config']->tienda->SOCIAL->TW->CONSUMER_SECRET;
 
 		if (!isset($_REQUEST['oauth_token']) || $_REQUEST['oauth_token'] !== $_SESSION['tw_oauth']['oauth_token']) {
 			// Abort! Something is wrong.
@@ -251,5 +263,13 @@ class Home extends Error implements IPage {
 			$GLOBALS['firephp']->info($verify_credentials);
 		}
 	}
+
+	public function acGrabarCliente($email,$pass=""){
+		if (empty($pass)) {$pass=\Cadena::generatePassword();}
+		$result=\Sintax\ApiService\Clientes::acNuevoCliente($email,$pass,$GLOBALS['config']->tienda->key);
+		$result=json_decode($result);
+		return $result;
+	}
+
 }
 ?>

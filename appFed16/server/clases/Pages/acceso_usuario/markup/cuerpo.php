@@ -2,10 +2,10 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-lg-6">
-			<?\Sintax\ApiService\Clientes::formularioAltaCliente($keyTienda);?>
+			<?\Sintax\ApiService\Clientes::formularioAltaCliente();?>
 		</div>
 		<div class="col-lg-6">
-			<?\Sintax\ApiService\Clientes::formularioLoginCliente($keyTienda);?>
+			<?\Sintax\ApiService\Clientes::formularioLoginCliente();?>
 		</div>
 	</div>
 </div>

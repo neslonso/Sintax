@@ -8,7 +8,7 @@ class acceso_usuario extends Home implements IPage {
 		parent::__construct($objUsr);
 	}
 	public function pageValida () {
-		return true;
+		return $this->objUsr->pagePermitida($this);
 	}
 	public function accionValida($metodo) {
 		return $this->objUsr->accionPermitida($this,$metodo);
@@ -35,21 +35,7 @@ class acceso_usuario extends Home implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
 	public function cuerpo() {
-		$keyTienda=$GLOBALS['config']->tienda->key;
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
-	}
-	public function acGrabarCliente(){
-		$result=\Sintax\ApiService\Clientes::acNuevoCliente($_REQUEST['email'],$_REQUEST['pass'],$_REQUEST['keyTienda']);
-		$result=json_decode($result);
-		return $result;
-	}
-	public function acLoginCliente() {
-		if ($_REQUEST['token']!="") {//token de FB
-			$result="¿Incluimos el API de FB para comprobar el token?";
-		} else {
-			$result=\Sintax\ApiService\Clientes::acLoginCliente($_REQUEST['email'],$_REQUEST['pass'],$_REQUEST['keyTienda']);
-		}
-		return $result;
 	}
 }
 ?>

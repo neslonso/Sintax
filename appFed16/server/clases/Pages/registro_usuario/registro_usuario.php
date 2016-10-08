@@ -8,7 +8,7 @@ class registro_usuario extends Home implements IPage {
 		parent::__construct($objUsr);
 	}
 	public function pageValida () {
-		return true;
+		return $this->objUsr->pagePermitida($this);
 	}
 	public function accionValida($metodo) {
 		return $this->objUsr->accionPermitida($this,$metodo);
@@ -34,13 +34,7 @@ class registro_usuario extends Home implements IPage {
 		\Sintax\ApiService\Clientes::formularioAltaClienteCss();
 	}
 	public function cuerpo() {
-		$keyTienda=$GLOBALS['config']->tienda->key;
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
-	}
-	public function acGrabarCliente(){
-		$result=\Sintax\ApiService\Clientes::acNuevoCliente($_REQUEST['email'],$_REQUEST['pass'],$_REQUEST['keyTienda']);
-		$result=json_decode($result);
-		return $result;
 	}
 }
 ?>

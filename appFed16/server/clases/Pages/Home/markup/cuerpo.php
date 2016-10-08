@@ -24,7 +24,7 @@
 </div>
 <div class="container shop-item-container" id="container-cuerpo">
 <?
-	if (isset($_SESSION['usuario'])){
+	if (isset($_SESSION['usuario']) && count($arrOfersCustom)>0){
 ?>
 	<div class="categoria-cabecera text-left">
 		<h1><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Recomendado para tí</h1>
@@ -38,11 +38,12 @@
 				<div class="swiper-wrapper swiper-wrapper-recomendados">
 <?
 		$i=0;
-		foreach ($arrOfersRecomendados as $stdObjOferRec) {
+		foreach ($arrOfersCustom as $stdObjOferRec) {
 			$i++;
 ?>
 					<div class="swiper-slide swiper-slide-recomendados">
 						<div>
+							<?=$stdObjOferRec->reason?>
 							<?\Sintax\ApiService\Productos::fichaProductoResponsive($stdObjOferRec)?>
 						</div>
 					</div>

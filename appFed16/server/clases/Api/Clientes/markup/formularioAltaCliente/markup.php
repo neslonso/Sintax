@@ -1,11 +1,7 @@
 <?="\n<!-- ".get_class()." -->\n"?>
-	<div class="page-header">
-		<h1>Alta de cliente</h1>
-	</div>
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			Registro de usuario
-			<input type="hidden" name="keyTienda" id="keyTiendaNewUsr" value="<?=$keyTienda?>" />
 		</div>
 		<div class="panel-body">
 			<div class="row">

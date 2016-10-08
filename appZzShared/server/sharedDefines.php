@@ -18,7 +18,34 @@ define ('ARR_DOMAINS',serialize(array (
 
 define ('ARR_TIENDAS',serialize(array (
 	'CL' => array (
-		'SITE_NAME' => '',
+		'SITE_NAME' => 'Celorriofarma',
+		'CONTACTO' => (object) array(
+			'EMAIL' => 'atcioncliente@'.BASE_DOMAIN,
+			'TLF' => '982 20 30 08',
+		),
+		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/shop-logo.jpg',
+		'MENU' => (object) array (
+			'FOTO_CATS_SEGUNDO_NIVEL' => false,//Si las cats de segundo nivel con hijos llevan foto
+			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
+		),
+		'EMPRESA' => (object) array (
+			'NOMBRE' => 'Celorriofarma S.L.',
+			'DIRECCION' => 'Avada. A Coruña 195, 27003 Lugo',
+			'CIF' => 'B27232859',
+			'REGISTRO' => 'tomo 257 libro 0 folio 192 hoja LU5912 inscripción 3',
+		),
+		'SOCIAL' => (object) array (
+			'FB' => (object) array (
+				'URL' => 'https://www.facebook.com/celorriofarmalugo/',
+				'APP_ID' => '1785793438334904',
+			),
+			'TW' => (object) array (
+				'URL' => 'https://twitter.com/celorriofarma',
+				'CONSUMER_KEY' => 'IeCWw2hagRgboE6Q5ughcuP4k',
+				'CONSUMER_SECRET' => 'VF9KYlb9gZUlJ8l9Ax5w1LPalN1zr9CP6W5lgy0sbXctDTdE1A',
+			),
+		),
+		'ANALYTICS' => 'UA-36657351-2',
 	),
 	'FD' => array (
 		'SITE_NAME' => '',
@@ -31,12 +58,33 @@ define ('ARR_TIENDAS',serialize(array (
 	),
 	'BF' => array (
 		'SITE_NAME' => 'Bebefarma',
+		'CONTACTO' => (object) array(
+			'EMAIL' => 'atcioncliente@'.BASE_DOMAIN,
+			'TLF' => '982 215 630',
+		),
 		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/shop-logo.jpg',
-		'FB_APP_ID' => '1250359411691249',
-		'TW_CONSUMER_KEY' => 'IeCWw2hagRgboE6Q5ughcuP4k',
-		'TW_CONSUMER_SECRET' => 'VF9KYlb9gZUlJ8l9Ax5w1LPalN1zr9CP6W5lgy0sbXctDTdE1A',
-		//atcioncliente@bebefarma.com
-		//pedidos@bebefarma.com
+		'MENU' => (object) array (
+			'FOTO_CATS_SEGUNDO_NIVEL' => false,//Si las cats de segundo nivel con hijos llevan foto
+			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
+		),
+		'EMPRESA' => (object) array (
+			'NOMBRE' => 'Farmamas S.L.',
+			'DIRECCION' => 'Axel López Pérez, nº10, 4ºB, 27003 Lugo',
+			'CIF' => 'B27275841',
+			'REGISTRO' => 'tomo 257 libro 0 folio 192 hoja LU5912 inscripción 3',
+		),
+		'SOCIAL' => (object) array (
+			'FB' => (object) array (
+				'URL' => 'javascript:void(null);',
+				'APP_ID' => '1250359411691249',
+			),
+			'TW' => (object) array (
+				'URL' => 'https://twitter.com/pedrogimeno1201',
+				'CONSUMER_KEY' => 'IeCWw2hagRgboE6Q5ughcuP4k',
+				'CONSUMER_SECRET' => 'VF9KYlb9gZUlJ8l9Ax5w1LPalN1zr9CP6W5lgy0sbXctDTdE1A',
+			),
+		),
+		'ANALYTICS' => 'UA-36657351-5',
 	),
 	'FC' => array (
 		'SITE_NAME' => '',

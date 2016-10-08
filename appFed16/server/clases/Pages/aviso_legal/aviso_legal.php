@@ -32,6 +32,11 @@ class aviso_legal extends Home implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
 	public function cuerpo() {
+		$URL_TIENDA=BASE_URL;
+		$NOMBRE_EMPRESA=$GLOBALS['config']->tienda->EMPRESA->NOMBRE;
+		$CIF_EMPRESA=$GLOBALS['config']->tienda->EMPRESA->CIF;
+		$DIRECCION_EMPRESA=$GLOBALS['config']->tienda->EMPRESA->DIRECCION;
+		$EMAIL_CONTACTO=$GLOBALS['config']->tienda->CONTACTO->EMAIL;
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
 	}
 }

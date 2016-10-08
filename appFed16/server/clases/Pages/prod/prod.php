@@ -14,16 +14,7 @@ class prod extends Home implements IPage {
 		return $this->objUsr->accionPermitida($this,$metodo);
 	}
 	public function title() {
-		//$title= parent::title();
-		$title= '';
-		$idProd = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
-		if(\Multi_ofertaVenta::existe (\cDb::confByKey('celorriov3'),$idProd)){
-			$objOferta=new \Multi_ofertaVenta(\cDb::confByKey('celorriov3'),$idProd);
-			$title .= $objOferta->GETtitle();
-		}else{
-			throw new \Exception("El producto solicitado no se encuentra disponible en estos momentos. Disculpe las molestias");
-		}
-		return $title;
+		return parent::title();
 	}
 	public function metaTags() {
 		$metaTags= parent::metaTags();

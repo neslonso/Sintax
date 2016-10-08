@@ -3,43 +3,22 @@
 $(document).ready(function() {
 	$('#emailNewUsr').val(getUrlParameter('email',''));
 
+	$('.panel').keypress(function(e){
+		if(e.which == 13) {
+			$(this).find('#btnNewUser').click();
+		}
+	});
+
 	$('#btnNewUser').on('click', function () {
 		var email=$.trim($('#emailNewUsr').val());
-		var error=false;
-		var msg="";
-		if (email==""){
-			error=true;
-			msg="- Escribe un correo electrónico válido<br>";
-		}
-		if (!$('#checkLegal').is(':checked')){
-			error=true;
-			msg+="- Debe aceptar las condiciones de uso<br>";
-		}
-		if (($('#passNewUsr').val()==$('#pass2NewUsr').val()) && $('#passNewUsr').val()!="" && !error){
-			$.post('<?=BASE_DIR.FILE_APP?>',{
-				'MODULE':'actions',
-				'acClase':'registro_usuario',
-				'acMetodo':'acGrabarCliente',
-				'acTipo':'ajax',
-				'keyTienda':$('#keyTiendaNewUsr').val(),
-				'email':$('#emailNewUsr').val(),
-				'pass':$('#passNewUsr').val()
-			},
-			function (response) {
-				console.log(response);
-				if (!response.data.resultado.valor){
-					muestraMsgModal('Error',response.data.resultado.msg);
-				} else {
-					window.location.href = "/";
-				}
-			},
-			'json');
+		var pass=$.trim($('#passNewUsr').val());
+		var repass=$.trim($('#pass2NewUsr').val());
+		var legal=$('#checkLegal').is(':checked');
+		var errorMsg=validaDatosAltaCliente(email,pass,repass,legal);
+		if (errorMsg==false){
+			acGrabarCliente(email,pass);
 		} else {
-			error=true;
-			msg+="- Escribe tu contraseña y repítela correctamente";
-		}
-		if (error){
-			muestraMsgModal('Error',msg);
+			muestraMsgModal('Datos no válidos',errorMsg);
 		}
 	});
 });

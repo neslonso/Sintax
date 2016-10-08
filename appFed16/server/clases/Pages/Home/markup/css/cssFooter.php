@@ -27,19 +27,22 @@
 .footer h3 {
 	border-bottom: 1px solid #BAC1C8;
 	color: #54697E;
-	font-size: 18px;
+	font-size: 1.5em;
 	font-weight: 600;
 	line-height: 27px;
 	padding: 10px 0 10px;
 	/*text-transform: uppercase;*/
 }
 .footer ul {
-	font-size: 13px;
+	font-size: 0.9em;
 	list-style-type: none;
 	margin-left: 0;
 	padding-left: 0;
 	margin-top: 15px;
 	color: #54697e;
+}
+.footer .caracteristicas ul {
+	list-style-type: circle;
 }
 .footer ul li a {
 	padding: 0 0 5px 0;
@@ -47,13 +50,6 @@
 }
 .footer a {
 	color: #78828D
-}
-.supportLi h4 {
-	font-size: 20px;
-	font-weight: lighter;
-	line-height: normal;
-	margin-bottom: 0 !important;
-	padding-bottom: 0;
 }
 .newsletter-box input#appendedInputButton {
 	background: #FFFFFF;
@@ -119,7 +115,7 @@
 	background: #2c3e50;
 }
 .social li a i {
-	font-size: 16px;
+	font-size: 1.3em;
 	margin: 0 0 0 5px;
 	color: #EDEFF1 !important;
 }
@@ -131,9 +127,6 @@
 }
 .footer-bottom p.pull-left {
 	padding-top: 6px;
-}
-.payments {
-	font-size: 1.5em;
 }
 /* XS */
 @media (max-width: 767px){

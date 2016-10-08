@@ -1,39 +1,25 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
+	$('#emailNewUsr').val(getUrlParameter('email',''));
+
+	$('.panel').keypress(function(e){
+		if(e.which == 13) {
+			$(this).find('#btnNewUser').click();
+			$(this).find('#btnLoginUser').click();
+		}
+	});
+
 	$('#btnNewUser').on('click', function () {
 		var email=$.trim($('#emailNewUsr').val());
-		var error=false;
-		var msg="";
-		if (email==""){
-			error=true;
-			msg="- Escribe un correo electrónico válido<br>";
-		}
-		if (($('#passNewUsr').val()==$('#pass2NewUsr').val()) && $('#passNewUsr').val()!="" && !error){
-			$.post('<?=BASE_DIR.FILE_APP?>',{
-				'MODULE':'actions',
-				'acClase':'acceso_usuario',
-				'acMetodo':'acGrabarCliente',
-				'acTipo':'ajax',
-				'keyTienda':$('#keyTiendaNewUsr').val(),
-				'email':$('#emailNewUsr').val(),
-				'pass':$('#passNewUsr').val()
-			},
-			function (response) {
-				console.log(response);
-				if (!response.data.resultado.valor){
-					muestraMsgModal('Error',response.data.resultado.msg);
-				} else {
-					window.location.href = "/";
-				}
-			},
-			'json');
+		var pass=$.trim($('#passNewUsr').val());
+		var repass=$.trim($('#pass2NewUsr').val());
+		var legal=$('#checkLegal').is(':checked');
+		var errorMsg=validaDatosAltaCliente(email,pass,repass,legal);
+		if (errorMsg==false){
+			acGrabarCliente(email,pass);
 		} else {
-			error=true;
-			msg+="- Escribe tu contraseña y repítela correctamente";
-		}
-		if (error){
-			muestraMsgModal('Error',msg);
+			muestraMsgModal('Datos no válidos',errorMsg);
 		}
 	});
 
@@ -44,36 +30,11 @@ $(document).ready(function() {
 		var msg="";
 		if (email=="" || pass==""){
 			error=true;
-			msg="-Escribe tu email y contraseña<br>";
+			msg="Escribe tu email y contraseña<br>";
 		}
 		if (!error){
-			//if (typeof token == 'undefined') {token='';}
-			token='';
-			$.post('<?=BASE_DIR.FILE_APP?>',{
-				'MODULE':'actions',
-				'acClase':'acceso_usuario',
-				'acMetodo':'acLoginCliente',
-				'acTipo':'ajax',
-				'keyTienda':$('#keyTiendaNewUsr').val(),
-				'email':email,
-				'pass':$('#passLoginUser').val(),
-				'token':token
-			},
-			function (response) {
-				if (response.exito) {
-					if (response.data=='true') {
-						window.location='<?=BASE_URL?>';
-					}
-				} else {
-					muestraMsgModal('Se ha producido un error durante el inicio de sesión',response.msg);
-				}
-			},
-			'json');
+			acLogin(email,pass);
 		} else {
-			error=true;
-			msg+="- Escribe tu contraseña y repítela correctamente";
-		}
-		if (error){
 			muestraMsgModal('Error',msg);
 		}
 	});

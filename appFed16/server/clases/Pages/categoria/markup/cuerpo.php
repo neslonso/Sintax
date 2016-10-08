@@ -18,7 +18,7 @@
 </div>
 <div class="container shop-item-container" id="container-cuerpo">
 <?
-	if (isset($_SESSION['usuario'])){
+	if (isset($_SESSION['usuario']) && count($arrOfersCustom)>0){
 		if (!is_null($idCategoria)) {
 			$nombreCat=" de ".$objCat->GETnombre();
 		}
@@ -35,7 +35,7 @@
 				<div class="swiper-wrapper swiper-wrapper-recomendados">
 <?
 		$i=0;
-		foreach ($arrOfersRecomendados as $stdObjOferRec) {
+		foreach ($arrOfersCustom as $stdObjOferRec) {
 			$i++;
 ?>
 					<div class="swiper-slide swiper-slide-recomendados">

@@ -60,16 +60,17 @@ class Clientes extends ApiService implements IApiService {
 		$db=\cDb::confByKey("celorriov3");
 		$arrReturn=array();
 		$email=trim($email);
-		if ($email=""){
+		if ($email==""){
 			$arrAccion=array(
 				"valor" => false,
 				"msg" => "El correo electrónico no es correcto"
 			);
 		} else {
+			error_log("Excep email: ".$email);
 			if (\Multi_cliente::existeEmail($db,$email,$keyTienda)){
 				$arrAccion=array(
 					"valor" => false,
-					"msg" => "El correo electrónico ya existe"
+					"msg" => "El correo electrónico ya se encuentra registrado"
 				);
 			} else {
 				$objCli=new \Multi_cliente($db);
@@ -390,7 +391,7 @@ class Clientes extends ApiService implements IApiService {
 	}
 /******************************************************************************/
 /* FRAGMENTOS *****************************************************************/
-	public function formularioAltaCliente($keyTienda) {
+	public function formularioAltaCliente() {
 		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/formularioAltaCliente/markup.php');
 	}
 	public function formularioAltaClienteCss() {
@@ -399,7 +400,7 @@ class Clientes extends ApiService implements IApiService {
 	public function formularioAltaClienteJs() {
 		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/formularioAltaCliente/js.php');
 	}
-	public function formularioLoginCliente($keyTienda) {
+	public function formularioLoginCliente() {
 		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/formularioLoginCliente/markup.php');
 	}
 	public function formularioLoginClienteCss() {

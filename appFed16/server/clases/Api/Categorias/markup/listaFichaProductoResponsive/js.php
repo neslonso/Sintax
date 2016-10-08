@@ -1,6 +1,6 @@
 <?if(false) {?><script><?}?>
 $(document).ready(function() {
-	$('.shop-item-container .shop-item-link').on('click',function(event) {
+	$('.listaFichaProductoResponsive .shop-item-link').on('click',function(event) {
 		event.preventDefault();
 		$thisShopItemElto=$(this).closest('.shop-item');
 		var resultInitSwiper=initOfersSwiper($thisShopItemElto.data('index'));

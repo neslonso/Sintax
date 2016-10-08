@@ -349,5 +349,42 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		return $result;
 	}
 
+	public function timestampUltimaCompra($referencia) {
+		$sql="SELECT MAX(mp.`update`) as fUltimaCompra FROM multi_pedido mp
+			INNER JOIN multi_pedidoLinea mpl ON mp.id=mpl.idPedido
+			WHERE DATE(mp.`update`) > DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+			AND idMulti_cliente='".$this->db()->real_escape_string($this->GETid())."'
+			AND referencia='".$this->db()->real_escape_string($referencia)."'
+		";
+		$rsl=$this->db()->query($sql);
+		$data=$rsl->fetch_object();
+		if (!is_null($data->fUltimaCompra)) {
+			//error_log('Excep timestampUltimaCompra: '.str_replace(["\r","\n"], '',$sql));
+			$result=\Fecha::FromMysql($data->fUltimaCompra)->GETdate();
+		} else {
+			$result=-1;
+		}
+		return $result;
+	}
+	public function arrInteres(\Multi_ofertaVenta $objOferta) {
+		error_log ("Excep: ".$objOferta->GETreferencia());
+		$result=array();
+		if (time() - $this->timestampUltimaCompra($objOferta->GETreferencia()) < (60*60*24*30) ) {
+			$obj=new \stdClass();
+			$obj->peso=1;
+			$obj->reason="lo has comprado recientemente";
+			array_push($result,$obj);
+		}
+		if (count($result)==0) {
+			$result=false;
+		} else {
+			usort($result, function ($a, $b) {
+				$result=($a->peso < $b->peso)?-1:1;
+				$result=($a->peso == $b->peso)?0:$result;
+				return $result;
+			});
+		}
+		return $result;
+	}
 }
 ?>

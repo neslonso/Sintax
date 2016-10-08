@@ -1,8 +1,9 @@
+<?if (false) {?><script><?}?>
 $(document).ready(function() {
 	$.ajaxSetup({ cache: true });
 	$.getScript('//connect.facebook.net/es_ES/sdk.js', function(){
 		FB.init({
-			appId   : '<?=$GLOBALS['config']->tienda->FB_APP_ID?>',
+			appId   : '<?=$GLOBALS['config']->tienda->SOCIAL->FB->APP_ID?>',
 			//cookie  : true, // enable cookies to allow the server to access the session
 			//xfbml   : true, // parse social plugins on this page
 			status  : true, // ¿Llama a getLoginStatus al cargar el SDK?

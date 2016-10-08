@@ -90,10 +90,10 @@ if($objOferta->GETtipoDevolucionCredito()>0){
 						<button type="button" <?=$agotado?> class="btn btn-default btn-warning btnOrder <?=$agotado?>" ><i class="glyphicon glyphicon-ok-circle"></i>&nbsp;Comprar ahora</button>
 					</div>
 					<div class="col-xs-6 visible-xs">
-						<button type="button" <?=$agotado?> class="jqCst btn btn-default btn-comprar btnAddCart" data-id="<?=$objOferta->GETid()?>"  data-ttl="<?=$objOferta->GETnombre()?>" data-unit="1" data-prc="<?=$objOferta->pvp()?>" data-src="<?=$objOferta->imgSrc()?>"><i class="glyphicon glyphicon-shopping-cart"></i></button>
+						<button type="button" <?=$agotado?> class="jqCst btn btn-default btn-comprar btnAddCart btnXs" data-id="<?=$objOferta->GETid()?>"  data-ttl="<?=$objOferta->GETnombre()?>" data-unit="1" data-prc="<?=$objOferta->pvp()?>" data-src="<?=$objOferta->imgSrc()?>"><i class="glyphicon glyphicon-shopping-cart"></i></button>
 					</div>
 					<div class="col-xs-6 visible-xs">
-						<button type="button" <?=$agotado?> class="btn btn-default btn-warning btnOrder <?=$agotado?>" ><i class="glyphicon glyphicon-ok-circle"></i>&nbsp;</button>
+						<button type="button" <?=$agotado?> class="btn btn-default btn-warning btnOrder <?=$agotado?> btnXs" ><i class="glyphicon glyphicon-ok-circle"></i>&nbsp;</button>
 					</div>
 				</div>
 			</div>

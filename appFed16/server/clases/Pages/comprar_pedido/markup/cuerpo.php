@@ -1,4 +1,8 @@
 <?="\n<!-- ".get_class()." -->\n"?>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-xs-12">
+
 <div class="fuelux">
 	<div class="wizard" data-initialize="wizard" id="newPedWizard"
 	data-store="<?=$store?>"
@@ -67,7 +71,7 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div id="panelCredito" class="panel panel-default"
-							data-IMPORTE_MINIMO_APLICACION_CREDITO="<?=$storeData->IMPORTE_MINIMO_APLICACION_CREDITO?>"
+							data-importe_minimo_aplicacion_credito="<?=$storeData->IMPORTE_MINIMO_APLICACION_CREDITO?>"
 							data-credito-maximo-aplicable="">
 							<div class="panel-heading">
 								<h3 class="panel-title">Crédito de cliente</h3>
@@ -108,8 +112,8 @@
 									que su credito de cliente sea aplicable.<br />
 									<ul>
 										<li>Importe necesario: <?=$storeData->IMPORTE_MINIMO_APLICACION_CREDITO?> €</li>
-										<li>Importe actual: totalLineas!!!! €</li>
-										<li>Faltan: <?=$storeData->IMPORTE_MINIMO_APLICACION_CREDITO - 0?> €. totalLineas!!!!<!--<a href="#" title="Ver ofertas de valor aproximado"><i class="fa fa-search-plus" aria-hidden="true"></i></a>-->
+										<li>Importe actual: <span class="spTotalLineas spCalculado" data-total-lineas=""></span> €</li>
+										<li>Faltan: <span id="spRestoToCredito"></span> €. <!--<a href="#" title="Ver ofertas de valor aproximado"><i class="fa fa-search-plus" aria-hidden="true"></i></a>-->
 										<li>Crédito disponible: <?=$datosCli->saldoCredito?> €</li>
 									</ul>
 									<span id="creditoAplicar" data-credito-aplicar="0.00" data-saldo-inicial="<?=$datosCli->saldoCredito?>"></span>
@@ -200,7 +204,7 @@ if ($datosCli->tipoDescuento<=0 || $storeData->DTO_CLIENTE_COMPATIBLE_CUPON) {
 						</table>
 					</div>
 					<div class="panel-footer text-right">
-						<div>Total productos: <span id="spTotalLineas" class="spCalculado" data-total-lineas=""></span> €</div>
+						<div>Total productos: <span id="spTotalLineas" class="spTotalLineas spCalculado" data-total-lineas=""></span> €</div>
 						<div>
 							<span id="tipDtosImporte">
 								Descuentos por fidelización: <span id="spDescuentoImporte" class="spCalculado"></span> €
@@ -251,6 +255,10 @@ if ($storeData->TIPO_DEVOLUCION_IMPORTE_PEDIDO_EN_CREDITO>0) {
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+</div>
+
 		</div>
 	</div>
 </div>

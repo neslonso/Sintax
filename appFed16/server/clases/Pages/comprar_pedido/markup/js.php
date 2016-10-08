@@ -30,10 +30,10 @@ $(document).ready(function() {
 				var veces=0;
 				var intervalId=setInterval(function() {
 					veces+=1;
-					$('[data-target="#modalAddDir"]').toggleClass('btn-danger');
+					$('#btnModalAddDir').toggleClass('btn-danger');
  					$('.panel','#direccionEntregaSelectionControl').toggleClass('panel-danger');
 					if (veces>20) {
-						$('[data-target="#modalAddDir"]').removeClass('btn-danger');
+						$('#btnModalAddDir').removeClass('btn-danger');
 						$('.panel','#direccionEntregaSelectionControl').removeClass('panel-danger');
 						clearInterval(intervalId);
 					}
@@ -93,6 +93,26 @@ $(document).ready(function() {
 		$('.trLinea').each(function(index, el) {
 			lineas.push($(this).data('objLinea'));
 		});
+		if (lineas.length==0) {
+			bootbox.dialog({
+				message:'Es necesario seleccionar al menos un producto para poder realizar su pedido',
+				title:'Su pedido no contiene ningún producto',
+				onEscape: false,
+				closeButton: false,
+				buttons: {
+					aceptar: {
+						label: 'Aceptar',
+						classname: 'btn-primary',
+						callback: function () {
+							//window.location.replace("<?=BASE_URL?>");
+							//return false;
+						}
+					}
+				}
+			});
+			return;
+		}
+
 		var dtos=[];
 		$('#ulDtos>li').each (function () {
 			//El crédito no se envía a guardar como un descuento, tiene su propio campo en el pedido
@@ -436,25 +456,6 @@ function aplicaDtoVolumen() {
 		}
 	}
 }
-
-function msgRedirect() {
-	bootbox.dialog({
-		message:'Es necesario seleccionar al menos un producto para poder realizar su pedido',
-		title:'Su pedido no contiene ningún producto',
-		onEscape: false,
-		closeButton: false,
-		buttons: {
-			aceptar: {
-				label: 'Aceptar',
-				classname: 'btn-primary',
-				callback: function () {
-					window.location = "<?=BASE_URL?>";
-					return false;
-				}
-			}
-		}
-	});
-}
 /******************************************************************************/
 function refreshTableLineas() {
 	var arrLineas=$('#tableLineas').data('arrLineas');
@@ -482,7 +483,6 @@ function trsTableLineas (arrLineas) {
 }
 
 function getLineas () {
-	console.log('getLineas');
 	$.overlay({progress: {class:'progress-bar-success'}});
 	$.post('<?=BASE_DIR.FILE_APP?>',{
 		'MODULE':'actions',
@@ -495,7 +495,6 @@ function getLineas () {
 		if (!response.exito){
 			muestraMsgModal('Ha ocurrido un error en el calculo del pedido','Se ha producido el siguiente error durante el cálculo de importes de pedido:<br/>'+response.msg);
 		} else {
-			console.log(response);
 			var arrLineas=response.data.arrLineas;
 			var totalLineas=parseFloat(response.data.totalLineas).toFixed(2);
 			var totalRebotes=parseFloat(response.data.totalRebotes).toFixed(2);
@@ -503,7 +502,7 @@ function getLineas () {
 			var creditoMaximoAplicable=parseFloat(response.data.creditoMaximoAplicable).toFixed(2);
 			$('#tableLineas').data('arrLineas',arrLineas);
 			//$('#spPortes').html(portes).data('portes',portes);
-			$('#spTotalLineas').html(totalLineas).data('totalLineas',totalLineas);
+			$('.spTotalLineas').html(totalLineas).data('totalLineas',totalLineas);
 
 			$('#spTotalRebotes').html(totalRebotes+'€').attr({
 				'data-toggle'         : 'tooltip',
@@ -523,6 +522,7 @@ function getLineas () {
 		$.overlay('destroy');
 		refreshTableLineas();
 		calculaTotales();
+		compruebaPanelCredito();
 		$('[data-toggle="tooltip"]').tooltip();
 	});
 }
@@ -532,7 +532,10 @@ function calculaTotales() {
 	var dtoImporte=ulDtosTotalImporte().toFixed(2);
 	var baseDtosPorcentuales=(totalLineas-dtoImporte).toFixed(2);
 	var dtoTipo=ulDtosTotalTipo().toFixed(2);
+	var restoToCredito=($('#panelCredito').data('importe_minimo_aplicacion_credito')-totalLineas).toFixed(2);
+	var idDirEntrega=$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl').val();
 
+	$('#spRestoToCredito').html(restoToCredito).data('restoToCredito',restoToCredito);
 	$('#spDtoTipo').html(dtoTipo).data('dtoTipo',dtoTipo);
 	var dtoMonto=(Math.round(
 			baseDtosPorcentuales*(ulDtosTotalTipo()/100)
@@ -551,37 +554,39 @@ function calculaTotales() {
 		title: ulDtosDescImporte
 	});
 
-	$.overlay({progress: {class:'progress-bar-success'}});
-	calculaPortes(
-		$('#spTotalLineas').data('totalLineas'),
-		$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl').val(),
-		function() {
-			var portes=parseFloat($('#spPortes').data('portes'));
-			$('#spPortes').html(portes.toFixed(2));
+	if (idDirEntrega) {
+		$.overlay({progress: {class:'progress-bar-success'}});
+		calculaPortes(
+			totalLineas,
+			idDirEntrega,
+			function() {
+				var portes=parseFloat($('#spPortes').data('portes'));
+				$('#spPortes').html(portes.toFixed(2));
 
-			/*
-			console.log('totalLineas: ' + totalLineas);
-			console.log('dtoImporte: ' + dtoImporte);
-			console.log('baseDtosPorcentuales: ' + baseDtosPorcentuales);
-			console.log('dtoMonto: ' + dtoMonto);
-			console.log('portes: ' + portes);
-			*/
+				/*
+				console.log('totalLineas: ' + totalLineas);
+				console.log('dtoImporte: ' + dtoImporte);
+				console.log('baseDtosPorcentuales: ' + baseDtosPorcentuales);
+				console.log('dtoMonto: ' + dtoMonto);
+				console.log('portes: ' + portes);
+				*/
 
-			var total=totalLineas-dtoMonto-dtoImporte+portes;
-			total=(Math.round(total*100)/100).toFixed(2);
-			$('#spTotal').html(total).data('total',total);
+				var total=totalLineas-dtoMonto-dtoImporte+portes;
+				total=(Math.round(total*100)/100).toFixed(2);
+				$('#spTotal').html(total).data('total',total);
 
-			var montoDevolucionImportePedidoEnCredito=(Math.round(
-			total*parseFloat($('#spFidelizacionCredit').data('tipoDevolucionImportePedidoEnCredito'))/100
-			*100)/100).toFixed(2);
-			$('#spFidelizacionCredit').html(montoDevolucionImportePedidoEnCredito+'€').data('montoDevolucionImportePedidoEnCredito',montoDevolucionImportePedidoEnCredito);
-			$.overlay('destroy');
-		}
-	);
+				var montoDevolucionImportePedidoEnCredito=(Math.round(
+				total*parseFloat($('#spFidelizacionCredit').data('tipoDevolucionImportePedidoEnCredito'))/100
+				*100)/100).toFixed(2);
+				$('#spFidelizacionCredit').html(montoDevolucionImportePedidoEnCredito+'€').data('montoDevolucionImportePedidoEnCredito',montoDevolucionImportePedidoEnCredito);
+				$.overlay('destroy');
+			}
+		);
+	}
 }
 
 function compruebaPanelCredito() {
-	if ($('#spTotalLineas').data('totalLineas') > $('#panelCredito').data('IMPORTE_MINIMO_APLICACION_CREDITO')) {
+	if ($('#spTotalLineas').data('totalLineas') > $('#panelCredito').data('importe_minimo_aplicacion_credito')) {
 		$('#creditoPermitido').show();
 		$('#creditoNoPermitido').hide();
 	} else {

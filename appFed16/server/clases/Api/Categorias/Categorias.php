@@ -79,13 +79,13 @@ class Categorias extends ApiService implements IApiService {
 				}
 			} else {
 				//$obj->arrOfersMasVendidas=array();
-				$obj->arrOfersMasVendidas=self::arrOfersMasVendidas($objCat->GETkeyTienda(), 0, $objCat->GETid());
+				$obj->arrOfersMasVendidas=self::arrOfersMasVendidas($objCat->GETkeyTienda(), $GLOBALS['config']->tienda->MENU->NUM_OFERS_MAS_VENDIDAS, $objCat->GETid());
 			}
 			$obj->arrNietos=$arrNietos;
 			array_push($arr,$obj);
 		}
 	$tTotal=microtime(true)-$tInicial;
-	error_log('/** Excep. arrCatsRootsSubMenu: '.round($tTotal,4));
+	//error_log('/** Excep. arrCatsRootsSubMenu: '.round($tTotal,4));
 		return $arr;
 	}
 	/**
@@ -104,9 +104,9 @@ class Categorias extends ApiService implements IApiService {
 			if (!empty($imgId)) array_push($arrIdsFotos, base_convert($imgId,10,36));
 			foreach ($arrCatsHijas as $objCatHija) {
 				$imgId=$objCatHija->imgId();
-				if (!empty($imgId)) array_push($arrIdsFotos, base_convert($imgId,10,36));
+				if (!empty($imgId) && $GLOBALS['config']->tienda->MENU->FOTO_CATS_SEGUNDO_NIVEL) array_push($arrIdsFotos, base_convert($imgId,10,36));
 				if (!$objCatHija->contieneCategorias()) {
-					$arrOfersMasVendidas=self::arrOfersMasVendidas($keyTienda, 6, $objCatHija->GETid());
+					$arrOfersMasVendidas=self::arrOfersMasVendidas($keyTienda, $GLOBALS['config']->tienda->MENU->NUM_OFERS_MAS_VENDIDAS, $objCatHija->GETid());
 					foreach ($arrOfersMasVendidas as $ofer) {
 						if (!empty($ofer->imgId)) array_push($arrIdsFotos, base_convert($ofer->imgId,10,36));
 					}
@@ -140,7 +140,7 @@ class Categorias extends ApiService implements IApiService {
 			$insertadosEstaCat=0;
 			$arrRefs=$objCat->arrRefsMasVendidas();
 			foreach ($arrRefs as $ref) {
-				if ($totalInsertados>=$cuantos) {break;}
+				if ($totalInsertados>=$cuantos) {break 2;}
 				if ($insertadosEstaCat>=$cuantosPorCat) {break;}
 				$objOferta=\Multi_ofertaVenta::cargarPorRef($db,$keyTienda,$ref);
 				if ($objOferta!==false && $objOferta->vendible()) {
@@ -204,27 +204,56 @@ class Categorias extends ApiService implements IApiService {
 	}
 
 	/**
-	 * [arrOfersRecomendados description]
+	 * [arrOfersCustom description]
 	 * @param  [type]  $keyTienda         [description]
 	 * @param  integer $cuantos           [description]
+	 * @param  [type]  $idMulti_cliente   [description]
 	 * @param  [type]  $idMulti_categoria [description]
 	 * @return [type]                     [description]
 	 */
-	public static function arrOfersRecomendados($keyTienda, $cuantos=10, $idUsuario, $idMulti_categoria=NULL) {
+	public static function arrOfersCustom($keyTienda, $cuantos=10, $idMulti_cliente, $idMulti_categoria=NULL) {
 		$db=\cDb::gI();
 		$arr=array();
-		$objCat=new \Multi_categoria($db,$idMulti_categoria);
-
-		$arrOfers=$objCat->arrMulti_ofertaVenta("","orden ASC","","arrClassObjs");
-		$i=0;
-		foreach ($arrOfers as $objOferta) {
-			if ($objOferta->vendible()) {
-				$obj=self::creaStdObjOferta($objOferta);
-				$obj->index=$i;
-				array_push($arr,$obj);
-				$i++;
-			}
+		$arrCats=array();
+		if (\Multi_cliente::existe($db,$idMulti_cliente)) {
+			$objCliente=new \Multi_cliente($db,$idMulti_cliente);
+		} else {
+			throw new \Exception("arrOfersCustom idMulti_cliente [".$idMulti_cliente."] not exists", 1);
 		}
+		if (\Multi_categoria::existe($db,$idMulti_categoria)) {
+			$objCat=new \Multi_categoria($db,$idMulti_categoria);
+			$arrOfers=$objCat->arrMulti_ofertaVenta("","orden ASC","","arrKeys");
+		} else {
+			$arrOfers=\Multi_ofertaVenta::getArray($db,"keyTienda='".$keyTienda."'","","","arrKeys");
+			//throw new \Exception("arrOfersCustom idMulti_categoria [".$idMulti_categoria."] not exists", 1);
+		}
+		//$cuantosPorCat=ceil($cuantos/count($arrCats));
+		$totalInsertados=0;
+		$index=0;
+		//foreach ($arrCats as $objCat) {
+			//$insertadosEstaCat=0;
+			//$arrOfers=$objCat->arrMulti_ofertaVenta("","orden ASC","","arrKeys");
+			foreach ($arrOfers as $idMulti_ofertaVenta) {
+				if ($totalInsertados>=$cuantos) {break;}
+				//if ($insertadosEstaCat>=$cuantosPorCat) {break;}
+				$objOferta=new \Multi_ofertaVenta ($db,$idMulti_ofertaVenta);
+				if ($objOferta->vendible()) {
+					$arrInteres=$objCliente->arrInteres($objOferta);
+					if ($arrInteres!==false) {
+						foreach ($arrInteres as $soPesoReason) {
+							$reason=$soPesoReason->reason;
+						}
+						$obj=self::creaStdObjOferta($objOferta);
+						$obj->index=$index;
+						$obj->reason=$reason;
+						array_push($arr,$obj);
+						//$insertadosEstaCat++;
+						$totalInsertados++;
+						$index++;
+					}
+				}
+			}
+		//}
 		return $arr;
 	}
 /******************************************************************************/

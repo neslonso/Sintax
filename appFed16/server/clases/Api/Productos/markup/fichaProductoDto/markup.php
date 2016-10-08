@@ -11,7 +11,7 @@
 <?
 			} else {
 ?>
-									<div class="banner-price-ahora banner-price-ahora-sinDescuento">Compra ahora: <?=$stdObjOfer->precio?> €</div>
+									<div class="banner-price-ahora banner-price-ahora-sinDescuento">Comprar ahora: <?=$stdObjOfer->precio?> €</div>
 <?
 			}
 ?>
