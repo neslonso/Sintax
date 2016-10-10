@@ -18,7 +18,8 @@ class Home extends Error implements IPage {
 		return $this->objUsr->accionPermitida($this,$metodo);
 	}
 	public function title() {
-		return parent::title();
+		//return parent::title();
+		return $GLOBALS['config']->tienda->SITE_NAME;
 	}
 	public function metaTags() {
 		return parent::metaTags();
