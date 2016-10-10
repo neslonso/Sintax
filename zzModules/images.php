@@ -95,7 +95,7 @@ try {
 
 	ob_clean();//limpiamos el buffer antes de mandar la imagen, no queremos nada más que la imagen
 
-	header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 60*60*24*364));
+	header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 60*60*24*14));
 
 	$objImg->output($ancho,$alto,$modo,$formato,$cabecera,$calidad,$filtro);
 } catch (Exception $e) {

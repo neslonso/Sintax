@@ -3,7 +3,6 @@ $tInicial=microtime(true);
 ?>
 <?
 define ('SKEL_ROOT_DIR',realpath(__DIR__.'/'.'./').'/');
-//probando
 $module='';
 try {
 	//var_dump(getallheaders());

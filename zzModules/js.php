@@ -1,5 +1,5 @@
 <?
-$minify=false;//true no funciona del todo bien, debe existir algun problema en la clase JSMin
+$minify=true;//true no funciona del todo bien, debe existir algun problema en la clase JSMin
 ob_start();
 ?>
 <?

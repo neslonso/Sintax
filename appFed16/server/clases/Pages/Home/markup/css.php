@@ -3,8 +3,9 @@
 /*********** DEFINICION DE VARIABLES ************/
 /* https://color.adobe.com/es/create/color-wheel/ */
 @color-principal: <?=$GLOBALS['config']->tienda->TEMA->COLOR_PRIMARIO?>; /*#ff94be*/
-@color-secundario: spin(@color-principal, 120%);
-@color-terciario: spin(@color-principal, 240%);
+@color-secundario: <?=$GLOBALS['config']->tienda->TEMA->COLOR_SECUNDARIO?>;
+/*@color-terciario: spin(@color-principal, 210%);*/
+@color-terciario: multiply(@color-principal, @color-secundario);
 @color-links: #304c71;
 @color-links-hover: #6c94be;
 
