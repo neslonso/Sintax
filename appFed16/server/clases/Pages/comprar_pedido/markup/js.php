@@ -147,12 +147,12 @@ $(document).ready(function() {
 			'comentarios'      : comentarios,
 		}
 		console.log(pedData);
-		if (confirm("¿Realizar el POST?")) {
+		//if (confirm("¿Realizar el POST?")) {
 			Post ('action','<?=BASE_DIR.FILE_APP?>',
 				'MODULE','actions','acClase','comprar_pedido','acMetodo','acGrabar','acTipo','stdAssoc',
 				'pedData',pedData,'session_name','<?=$GLOBALS['session_name']?>'
 			);
-		}
+		//}
 	});
 
 	$('input[type=radio][name=modoPago]').change(function() {
