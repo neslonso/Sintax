@@ -22,7 +22,19 @@ class Home extends Error implements IPage {
 		return $GLOBALS['config']->tienda->SITE_NAME;
 	}
 	public function metaTags() {
-		return parent::metaTags();
+		$sitename=$GLOBALS['config']->tienda->SITE_NAME;
+		$metaTags= parent::metaTags();
+		/*$idProd = isset($_REQUEST['idProd']) ? $_REQUEST['idProd'] : '23137' ;
+		if(\Multi_ofertaVenta::existe (\cDb::confByKey('celorriov3'),$idProd)){
+			$objOferta=new \Multi_ofertaVenta(\cDb::confByKey('celorriov3'),$idProd);
+			$metaTags .= '<meta name="description" content="'.$objOferta->GETmetaDescription().'">';
+		}else{
+			throw new \Exception("El producto solicitado no se encuentra disponible en estos momentos. Disculpe las molestias");
+		}*/
+		$metaTags.='<meta property="og:title" content="'.$sitename.'" />';
+		$metaTags.='<meta property="og:description" content="'.$sitename.'" />';
+		$metaTags .= '<meta name="description" content="'.$sitename.'">';
+		return $metaTags;
 	}
 	public function head() {
 		parent::head();
@@ -32,8 +44,9 @@ class Home extends Error implements IPage {
 		$keyTienda=$GLOBALS['config']->tienda->key;
 		$sitename=$GLOBALS['config']->tienda->SITE_NAME;
 		$TileColor='#2d89ef';//#00a300
+		$favIcon='';
 		//http://realfavicongenerator.net/
-		echo '
+		$favIcon.= '
 			<link rel="apple-touch-icon" sizes="180x180" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/apple-touch-icon.png?v=lkgMkggyvj">
 			<link rel="icon" type="image/png" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/favicon-32x32.png?v=lkgMkggyvj" sizes="32x32">
 			<link rel="icon" type="image/png" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/favicon-16x16.png?v=lkgMkggyvj" sizes="16x16">
@@ -46,7 +59,9 @@ class Home extends Error implements IPage {
 			<meta name="msapplication-TileImage" content="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/mstile-144x144.png?v=lkgMkggyvj">
 			<meta name="msapplication-config" content="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/browserconfig.xml?v=lkgMkggyvj">
 			<meta name="theme-color" content="#ffffff">
+			<meta property="og:image" content="'.BASE_URL.'zzWorkspace/favIcon.CL.300.png" />
 		';
+		echo $favIcon;
 	}
 	public function js() {
 		parent::js();
