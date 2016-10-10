@@ -201,6 +201,31 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		$this->SETprecioMax($precioMax);
 	}
 
+	public function objMulti_productoGama() {
+		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
+		$objMulti_productoGama=0;
+		if (count($arrProds)==1) {
+			$objMulti_productoGama=$arrProds[0]->objMulti_productoGama();
+		} else {
+			//TODO: Imprescindible, saber que hacer aquí
+			throw new Exception("No sabemos que hacer con los packs de productos", 1);
+			$objMulti_productoGama=$arrProds[0]->objMulti_productoGama();
+		}
+		return $objMulti_productoGama;
+	}
+	public function tipoDescuentoGama() {
+		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
+		$tipoDescuentoGama=0;
+		if (count($arrProds)==1) {
+			$tipoDescuentoGama=$arrProds[0]->tipoDescuentoGama();
+		} else {
+			//TODO: Imprescindible, saber que hacer aquí
+			throw new Exception("No sabemos que hacer con los packs de productos", 1);
+			$tipoDescuentoGama=$arrProds[0]->tipoDescuentoGama();
+		}
+		return $tipoDescuentoGama;
+	}
+
 	public function tipoIva() {
 		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
 		$tipoIva=0;
@@ -265,7 +290,8 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 	 */
 	public function imgSrc($i=0,$ancho=150,$alto=150) {
 		$idMPA=$this->imgId($i);
-		$src=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB&fichero=multi_productoAdjunto.id.'.$idMPA.'.data&ancho='.$ancho.'&alto='.$alto.'&modo='.Imagen::OUTPUT_MODE_FILL;
+		//$src=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB&fichero=multi_productoAdjunto.id.'.$idMPA.'.data&ancho='.$ancho.'&alto='.$alto.'&modo='.Imagen::OUTPUT_MODE_FILL;
+		$src=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB_MOV&fichero='.$this->GETid().'.data&ancho='.$ancho.'&alto='.$alto.'&modo='.Imagen::OUTPUT_MODE_FILL;
 		return $src;
 	}
 

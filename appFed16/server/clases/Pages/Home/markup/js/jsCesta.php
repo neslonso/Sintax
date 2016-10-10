@@ -41,7 +41,7 @@ function updateCesta(acMetodo,item) {
 					if (data.exito) {
 						$('#divJqNotifications').data('jqNotifications').addNotification('Producto añadido', 'Se ha añadido al pedido el producto <strong>'+item.descripcion+'</strong>', 'add');
 					} else {
-						$('#divJqNotifications').data('jqNotifications').addNotification('Error añadiendo producto', 'No fue psible añadir el producto <strong>'+item.descripcion+'</strong>.<br /><br />'+data.msg, 'other');
+						$('#divJqNotifications').data('jqNotifications').addNotification('Error añadiendo producto', 'No fue posible añadir el producto <strong>'+item.descripcion+'</strong>.<br /><br />'+data.msg, 'other');
 						//muestraMsgModal('No fue posible añadir el producto a su pedido',data.msg);
 						//$('#divJqCesta').data('jqCesta').removeItem(item.id);
 					}
@@ -50,7 +50,7 @@ function updateCesta(acMetodo,item) {
 					if (data.exito) {
 						$('#divJqNotifications').data('jqNotifications').addNotification('Producto eliminado', 'Se ha eliminado del pedido el producto <strong>'+item.descripcion+'</strong>', 'del');
 					} else {
-						$('#divJqNotifications').data('jqNotifications').addNotification('Error eliminando producto', 'No fue psible eliminar el producto <strong>'+item.descripcion+'</strong>.<br /><br />'+data.msg, 'other');
+						$('#divJqNotifications').data('jqNotifications').addNotification('Error eliminando producto', 'No fue posible eliminar el producto <strong>'+item.descripcion+'</strong>.<br /><br />'+data.msg, 'other');
 						//muestraMsgModal('No fue posible eliminar el producto de su pedido',data.msg);
 						//$('#divJqCesta').data('jqCesta').addItem(item.id);
 					}
@@ -59,7 +59,7 @@ function updateCesta(acMetodo,item) {
 					if (data.exito) {
 						$('#divJqNotifications').data('jqNotifications').addNotification('Producto modificado', 'Se ha modificado el producto <strong>'+item.descripcion+'</strong>', 'other');
 					} else {
-						$('#divJqNotifications').data('jqNotifications').addNotification('Error modificando producto', 'No fue psible modificar el producto <strong>'+item.descripcion+'</strong>.<br /><br />'+data.msg, 'other');
+						$('#divJqNotifications').data('jqNotifications').addNotification('Error modificando producto', 'No fue posible modificar el producto <strong>'+item.descripcion+'</strong>.<br /><br />'+data.msg, 'other');
 						muestraMsgModal('No fue posible eliminar el producto de su pedido',data.msg);
 					}
 				break;

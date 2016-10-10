@@ -73,9 +73,9 @@ if($objOferta->GETtipoDevolucionCredito()>0){
 					</div>
 					<div class="col-xs-12 col-sm-9">
 <?
-	$disponibilidad = ($objOferta->GETagotado()==1) ? 'Agotado' : 'Disponible';
-	$agotado = ($objOferta->GETagotado()==1) ? 'disabled' : '';
-	$classText = ($objOferta->GETagotado()==1) ? 'text-danger' : 'text-success';
+	$disponibilidad = (!$objOferta->vendible()) ? 'No disponible' : 'Disponible';
+	//$vendible = (!$objOferta->vendible()) ? 'disabled' : '';
+	$classText = (!$objOferta->vendible()) ? 'text-danger' : 'text-success';
 ?>
 						<span class="<?=$classText?>"><?=$disponibilidad?></span>
 					</div>
@@ -84,16 +84,18 @@ if($objOferta->GETtipoDevolucionCredito()>0){
 			<div class="card-item-white">
 				<div class="row">
 					<div class="col-md-6 col-md-push-3 hidden-xs">
-						<button type="button" <?=$agotado?> class="jqCst btn btn-default btn-comprar btnAddCart" data-id="<?=$objOferta->GETid()?>"  data-ttl="<?=$objOferta->GETnombre()?>" data-unit="1" data-prc="<?=$objOferta->pvp()?>" data-src="<?=$objOferta->imgSrc()?>"><i class="glyphicon glyphicon-shopping-cart"></i>&nbsp;Comprar ahora</button>
+						<?=\Sintax\ApiService\Productos::btnComprar($objOferta,'banner-price-comprar');?>
+						<!--<button type="button" <?=$vendible?> class="jqCst btn btn-default btn-comprar btnAddCart" data-id="<?=$objOferta->GETid()?>"  data-ttl="<?=$objOferta->GETnombre()?>" data-unit="1" data-prc="<?=$objOferta->pvp()?>" data-src="<?=$objOferta->imgSrc()?>"><i class="glyphicon glyphicon-shopping-cart"></i>&nbsp;Comprar ahora</button>-->
 					</div>
 					<!--<div class="col-md-6 hidden-xs">
-						<button type="button" <?=$agotado?> class="btn btn-default btn-warning btnOrder <?=$agotado?>" ><i class="glyphicon glyphicon-ok-circle"></i>&nbsp;Comprar ahora</button>
+						<button type="button" <?=$vendible?> class="btn btn-default btn-warning btnOrder <?=$vendible?>" ><i class="glyphicon glyphicon-ok-circle"></i>&nbsp;Comprar ahora</button>
 					</div>-->
 					<div class="col-xs-12 visible-xs">
-						<button type="button" <?=$agotado?> class="jqCst btn btn-default btn-comprar btnAddCart btnXs" data-id="<?=$objOferta->GETid()?>"  data-ttl="<?=$objOferta->GETnombre()?>" data-unit="1" data-prc="<?=$objOferta->pvp()?>" data-src="<?=$objOferta->imgSrc()?>"><i class="glyphicon glyphicon-shopping-cart">&nbsp;Comprar ahora</i></button>
+						<?=\Sintax\ApiService\Productos::btnComprar($objOferta,'banner-price-comprar');?>
+						<!--<button type="button" <?=$vendible?> class="jqCst btn btn-default btn-comprar btnAddCart" data-id="<?=$objOferta->GETid()?>"  data-ttl="<?=$objOferta->GETnombre()?>" data-unit="1" data-prc="<?=$objOferta->pvp()?>" data-src="<?=$objOferta->imgSrc()?>"><i class="glyphicon glyphicon-shopping-cart">&nbsp;Comprar ahora</i></button>-->
 					</div>
 					<!--<div class="col-xs-6 visible-xs">
-						<button type="button" <?=$agotado?> class="btn btn-default btn-warning btnOrder <?=$agotado?> btnXs" ><i class="glyphicon glyphicon-ok-circle"></i>&nbsp;</button>
+						<button type="button" <?=$vendible?> class="btn btn-default btn-warning btnOrder <?=$vendible?>" ><i class="glyphicon glyphicon-ok-circle"></i>&nbsp;</button>
 					</div>-->
 				</div>
 			</div>

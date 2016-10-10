@@ -20,8 +20,10 @@ class Categorias extends ApiService implements IApiService {
 		$obj->precioCatalogo=$objOferta->pvpCatalogo();
 		$obj->tipoDtoRespectoCatalogo=$objOferta->descuentoOferta();
 		$obj->urlFotoPpal=$objOferta->imgSrc();
+			$obj->imgSrc=$objOferta->imgSrc();
 		$obj->imgId=$objOferta->imgId();
 		$obj->rebote=$objOferta->GETtipoDevolucionCredito();
+		$obj->vendible=$objOferta->vendible();
 		return $obj;
 	}
 

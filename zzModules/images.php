@@ -43,7 +43,7 @@ try {
 			try {
 //$tInicial=microtime(true);
 				$listaIds=$_GET["fichero"];
-				$filePath=CACHE_DIR.'imgMenu.'.md5($listaIds.$ancho.$alto.$modo.$formato.$calidad.$filtro).'.'.$formato;
+				$filePath=CACHE_DIR.'joinedImg.'.md5($listaIds.$ancho.$alto.$modo.$formato.$calidad.$filtro).'.'.$formato;
 				$usarCache=file_exists($filePath) && filemtime($filePath)>time()-(60*60*240);
 				if ($usarCache) {
 					$objImg=Imagen::fromFile($filePath);
@@ -74,6 +74,29 @@ try {
 				}
 //$tTotal=microtime(true)-$tInicial;
 //error_log('/** Excep. Timepo de JOIN de images: '.round($tTotal,4));
+			} catch (Exception $e) {
+				$firephp->error($e);
+				$file=BASE_IMGS_DIR.'imgErr.png';
+				$objImg=Imagen::fromFile($file);
+			}
+		break;
+		case 'DB_MOV':
+			try {
+				$db=\cDb::confByKey('celorriov3');
+				$idMulti_ofertaVenta=$_GET["fichero"];
+				$objOferta=new \Multi_ofertaVenta($db,$idMulti_ofertaVenta);
+				if ($objOferta->GETid()) {
+					$objMPA=new  \Multi_productoAdjunto($db,$objOferta->imgId($i=0));
+					$strImg=$objMPA->GETdata();
+					$objImg=Imagen::fromString($strImg);
+					if ($objOferta->GETagotado()) {
+						$objImg->marcaAgua(BASE_IMGS_DIR."marcaAguaAgotado.png",1,1,"center");
+					}
+					$fecha=$objMPA->GETupdate() ?: $objMPA->GETinsert();
+					$last_modified_time=Fecha::fromMysql($fecha)->GETdate();
+				} else {
+					throw new Exception("No encontrado registro con ID [".$valorId."]", 1);
+				}
 			} catch (Exception $e) {
 				$firephp->error($e);
 				$file=BASE_IMGS_DIR.'imgErr.png';
