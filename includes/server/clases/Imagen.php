@@ -487,13 +487,13 @@ class Imagen {
 	}
 
 	public function grayscale(){
-		$im=$this->imgData;
-		if($im && imagefilter($im, IMG_FILTER_GRAYSCALE)){
-			imagepng($im, 'dave.png');
-		} else {
-			return false;
+		try {
+			$im=$this->imgData;
+			imagefilter($im, IMG_FILTER_GRAYSCALE);
+			$this->imgData=$im;
+		} catch (Exception $e) {
+			throw new Exception("Error procesando grayscale)", 1,$e);
 		}
-		$this->imgData=$im;
 	}
 
 	/**

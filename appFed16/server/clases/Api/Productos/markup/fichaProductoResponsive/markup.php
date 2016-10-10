@@ -5,9 +5,10 @@
 				$zIndex=$stdObjOfer->index-1;
 				$rebote = '<div class="shop-item-rebote" data-toggle="tooltip" title="Con la compra de '.$stdObjOfer->nombre.' recibirá el '.$stdObjOfer->rebote.'% de su importe como crédito para futuras compras" data-index="'.$zIndex.'"><div>'.$stdObjOfer->rebote.'%</div></div>';
 			}
+			if (!isset($stdObjOfer->tooltip)) {$stdObjOfer->tooltip=$stdObjOfer->nombre;}
 ?>
 					<div class="shop-item-wrapper" data-id="<?=$stdObjOfer->id?>" data-index="<?=($stdObjOfer->index)?>">
-						<div class="shop-item" data-toggle="tooltip" title="<?=$stdObjOfer->nombre?>" data-index="<?=($stdObjOfer->index)?>">
+						<div class="shop-item" data-toggle="tooltip" title="<?=$stdObjOfer->tooltip?>" data-index="<?=($stdObjOfer->index)?>">
 							<div class="shop-item-data">
 								<div class="shop-item-img">
 									<a class="shop-item-link">

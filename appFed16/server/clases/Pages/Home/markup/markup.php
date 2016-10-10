@@ -14,20 +14,12 @@
 					<a href="#menu-toggle" class="btn btn-default btn-menu" id="menu-toggle"><span class="glyphicon glyphicon-align-justify"></span></a>
 				</div>
 				<div class="col-xs-7 col-sm-6 col-md-4">
-					<form id="typeahead-form" name="typeahead-form" style="width:100%;">
-						<div class="typeahead__container">
-							<div class="typeahead__field">
-								<span class="typeahead__query">
-									<span class="typeahead__cancel-button"></span><input class="js-typeahead" name="q" type="search" placeholder="Busca en <?=$GLOBALS['config']->tienda->SITE_NAME?>..." autocomplete="off">
-								</span>
-								<span class="typeahead__button">
-									<button type="submit">
-										<span class="typeahead__search-icon"></span>
-									</button>
-								</span>
-							</div>
-						</div>
-					</form>
+					<div class="input-group">
+						<input id="ssSearch" type="text" class="form-control" placeholder="Busca en <?=$GLOBALS['config']->tienda->SITE_NAME?>..." aria-describedby="térmnos de búsqueda">
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+						</span>
+					</div>
 				</div>
 				<div class="col-xs-3 col-sm-2 col-md-4">
 					<div id="divJqCesta" data-arr-items="<?=$jsonArrCestaItems?>"></div>
@@ -372,16 +364,16 @@
 							<!--© Nombretienda-->
 						</div>
 						<div class="pull-right footer-logos">
-							<a href="<?=BASE_URL?>">
+							<a href="http://xunta.es">
 								<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&alto=65&fichero=cofinanciado.xunta.png" alt="Xunta de Galicia">
 							</a>
-							<a href="<?=BASE_URL?>">
+							<a href="javascript:void(null);">
 								<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&alto=65&fichero=visaMasterLogo.png" alt="Pago seguro">
 							</a>
-							<a href="<?=BASE_URL?>">
+							<a href="javascript:void(null);">
 								<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&alto=65&fichero=html5Logo.png" alt="html5">
 							</a>
-							<a href="<?=BASE_URL?>">
+							<a href="javascript:void(null);">
 								<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&alto=65&fichero=lib/dondominio_seals/ddsecure_70x70_white@3x.png" alt="Conexión cifrada">
 							</a>
 						</div>

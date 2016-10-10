@@ -24,7 +24,5 @@
 	<!-- Menu Styles -->
 	<link href="./appFed16/cliente/plugins/tt-menu/menu.css" rel="stylesheet">
 
-<!-- jquery-typeahead -->
-	<!-- Las dependencias están sin especificar en el bower.json y la carga de syntax no puede resolverlo, lo incluimos a mano  -->
-	<!-- jquery-typeahead --><script src="./includes/cliente/vendor/composer-asset-plugin/jquery-typeahead/dist/jquery.typeahead.min.js"></script>
-	<!-- jquery-typeahead --><link href="./includes/cliente/vendor/composer-asset-plugin/jquery-typeahead/dist/jquery.typeahead.min.css" rel="stylesheet">
+<!-- server side search -->
+<script type="text/javascript" src="./appFed16/cliente/plugins/ssSearch/ssSearch.js"></script>

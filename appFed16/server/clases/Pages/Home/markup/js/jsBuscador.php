@@ -1,7 +1,79 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
+
+	$('#ssSearch').ssSearch({
+		ajax: {
+			url: '<?=BASE_URL.FILE_APP?>',
+			data: {
+				'MODULE':'actions',
+				'acClase':'Home',
+				'acMetodo':'acSearchOfers',
+				'acTipo':'ajax',
+			},
+			path:'data',
+		},
+		container: {
+			cssClasses:'',
+			css: {},
+			template: [
+				'<div class="container-fluid">',
+					'<div class="row">',
+					'</div>',
+				'</div>',
+			].join(''),
+			emptyTemplate:[
+					'<div style="height:13px; background-color: #a0a0a0;"></div>',
+					'<div style="text-align:center;">',
+						'No se encontraron resultado para la búsqueda "{{sQuery}}"',
+					'</div>',
+					'<div style="height:13px; background-color: #a0a0a0;"></div>',
+			].join(''),
+		},
+		item: {
+			cssClasses:'col-xs-12 col-md-6',
+			template: [
+				'<div>',
+					'<div class="row">',
+						'<div class="col-xs-12">',
+							'<div class="nombre">{{nombreHighlight}}</div>',
+						'</div>',
+						'<div class="col-xs-6">',
+							'<img src="{{imgSrc}}" style="float:left" />',
+						'</div>',
+						'<div class="col-xs-6">',
+							'<div class="descripcion">{{descripcion}}</div>',
+						'</div>',
+						'<div class="col-xs-6">',
+							'<span class="precio">{{precio}} €</span>',
+						'</div>',
+						'<div class="col-xs-6 text-right">',
+							'<a class="btn jqCst banner-price-comprar" data-id="{{id}}" data-ttl="{{nombre}}" data-unit="1" data-prc="{{precio}}" data-src="{{imgSrc}}">Comprar</a>',
+						'</div>',
+					'</div>',
+				'</div>',
+			].join(''),
+		}
+	});
+	/*
 	//http://www.runningcoder.org/jquerytypeahead/demo/
+
+					<form id="typeahead-form" name="typeahead-form" style="width:100%;">
+						<div class="typeahead__container">
+							<div class="typeahead__field">
+								<span class="typeahead__query">
+									<span class="typeahead__cancel-button"></span><input class="js-typeahead" name="q" type="search" placeholder="Busca en <?=$GLOBALS['config']->tienda->SITE_NAME?>..." autocomplete="off">
+								</span>
+								<span class="typeahead__button">
+									<button type="submit">
+										<span class="typeahead__search-icon"></span>
+									</button>
+								</span>
+							</div>
+						</div>
+					</form>
+
+
 	$.typeahead({
 		input: '.js-typeahead',
 		minLength: 3,
@@ -19,12 +91,12 @@ $(document).ready(function() {
 					var template=[
 						'<li>',
 							'<div>{{nombre}}</div>',
-							'<div>',
+							'<div class="clearfix">',
 								'<img style="float:left" ',
 									'src="'+item.imgSrc+'" ',
 								'/>',
 								'<div style="height:40px; overflow:hidden; font-size:x-small;">{{descripcion}}</div>',
-								'<div style="text-align:right;">'+parseFloat(item.precio).toFixed(2)+'€</div>',
+								'<div style="text-align:right; font-size:3em;">'+parseFloat(item.precio).toFixed(2)+'€</div>',
 							'</div>',
 							'<div>',
 								'<button type="button" class="btn btn-warning jqCst" data-id="'+item.id+'" data-ttl="'+item.nombre+'" data-unit="1" data-prc="'+parseFloat(item.precio).toFixed(2)+'" data-src="'+item.src+'">Comprar</button>',
@@ -94,6 +166,11 @@ $(document).ready(function() {
 				//console.log('onInit function triggered');
 				node.cache=[];
 			},
+			onClickBefore: function (node, a, item, event) {
+				console.log(node);console.log(a);console.log(item);console.log(event);
+				console.log('onClickBefore function triggered');
+				event.stopPropagation();
+			},
 			onClick: function (node, a, item, event) {
 				console.log(node);console.log(a);console.log(item);console.log(event);
 				console.log('onClick function triggered');
@@ -126,4 +203,5 @@ $(document).ready(function() {
 			},
 		}
 	});
+	*/
 });

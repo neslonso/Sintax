@@ -9,7 +9,7 @@ $fp = $firephp = FirePHP::getInstance(true);
 if (!in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
 	$firephp->setEnabled(false);  // or FB::setEnabled(false);
 }
-$firephp->setEnabled(false);  // or FB::setEnabled(false);
+//$firephp->setEnabled(false);  // or FB::setEnabled(false);
 //FB::send(/* See fb() */);
 
 /* EXCEPCIONES */

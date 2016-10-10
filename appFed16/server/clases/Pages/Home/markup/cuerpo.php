@@ -43,7 +43,6 @@
 ?>
 					<div class="swiper-slide swiper-slide-recomendados">
 						<div>
-							<?=$stdObjOferRec->reason?>
 							<?\Sintax\ApiService\Productos::fichaProductoResponsive($stdObjOferRec)?>
 						</div>
 					</div>

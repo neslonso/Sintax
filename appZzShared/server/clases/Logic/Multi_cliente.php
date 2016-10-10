@@ -322,7 +322,7 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		$sql="SELECT id FROM multi_apunteCredito WHERE idMulti_cliente='".$this->GETid()."'";
 		$rsl=$this->db()->query($sql);
 		while ($data=$rsl->fetch_object()) {
-			$objApunte=new Multi_apunteCredito($data->id);
+			$objApunte=new Multi_apunteCredito($this->db(),$data->id);
 			if ($objApunte->caducado()) {
 				$saldo+=$objApunte->GETgasto();
 			} else {
@@ -348,7 +348,7 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		}
 		return $result;
 	}
-
+	/* */
 	public function timestampUltimaCompra($referencia) {
 		$sql="SELECT MAX(mp.`update`) as fUltimaCompra FROM multi_pedido mp
 			INNER JOIN multi_pedidoLinea mpl ON mp.id=mpl.idPedido
@@ -366,15 +366,57 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		}
 		return $result;
 	}
+	public function vecesComprado($referencia) {
+		$sql="SELECT count(*) as vecesComprado FROM multi_pedido mp
+			INNER JOIN multi_pedidoLinea mpl ON mp.id=mpl.idPedido
+			WHERE idMulti_cliente='".$this->db()->real_escape_string($this->GETid())."'
+			AND referencia='".$this->db()->real_escape_string($referencia)."'
+		";
+		$rsl=$this->db()->query($sql);
+		$data=$rsl->fetch_object();
+		return $data->vecesComprado;
+	}
+	public function facebookLikeAbout($objOferta) {
+		$result=false;
+		//Consultar los likes de facebook a ver si alguno coincide con la marca o las claves del producot de la oferta
+		if (in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
+			$arrFbLikes=array("Vichy","Avene","Dercos");
+		} else {
+			$arrFbLikes=array();
+		}
+		foreach ($arrFbLikes as $nombreLike) {
+			foreach (explode(" ", $nombreLike) as $keyLike) {
+				if (stripos($objOferta->GETnombre(), $keyLike)!==false) {
+					$result=$nombreLike;
+				}
+			}
+		}
+		return $result;
+	}
 	public function arrInteres(\Multi_ofertaVenta $objOferta) {
-		error_log ("Excep: ".$objOferta->GETreferencia());
+		//error_log ("Excep: ".$objOferta->GETreferencia());
 		$result=array();
-		if (time() - $this->timestampUltimaCompra($objOferta->GETreferencia()) < (60*60*24*30) ) {
+		if (time() - $this->timestampUltimaCompra($objOferta->GETreferencia()) < (60*60*24*60) ) {
 			$obj=new \stdClass();
-			$obj->peso=1;
+			$obj->peso=2;
 			$obj->reason="lo has comprado recientemente";
 			array_push($result,$obj);
 		}
+		$vecesComprado=$this->vecesComprado($objOferta->GETreferencia());
+		if ( $vecesComprado > 3) {
+			$obj=new \stdClass();
+			$obj->peso=2*$vecesComprado;
+			$obj->reason="lo has comprado en varias ocasiones";// (".$vecesComprado.")";
+			array_push($result,$obj);
+		}
+		$fbLike=$this->facebookLikeAbout($objOferta);
+		if ($fbLike) {
+			$obj=new \stdClass();
+			$obj->peso=1;
+			$obj->reason="te gusta ".$fbLike." en Facebook";
+			array_push($result,$obj);
+		}
+		/**/
 		if (count($result)==0) {
 			$result=false;
 		} else {

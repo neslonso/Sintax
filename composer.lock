@@ -4,8 +4,62 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bbd179512c48af0aace22a2e81224b3d",
+    "hash": "d79ea02e9b4981b390374c7a12b062fc",
     "packages": [
+        {
+            "name": "abraham/twitteroauth",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/abraham/twitteroauth.git",
+                "reference": "4d7a4abb9986ac5bbff3f3f58de6ff2994c86000"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/abraham/twitteroauth/zipball/4d7a4abb9986ac5bbff3f3f58de6ff2994c86000",
+                "reference": "4d7a4abb9986ac5bbff3f3f58de6ff2994c86000",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "phpmd/phpmd": "2.3.*",
+                "phpunit/phpunit": "4.8.*",
+                "squizlabs/php_codesniffer": "2.3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Abraham\\TwitterOAuth\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Abraham Williams",
+                    "email": "abraham@abrah.am",
+                    "homepage": "https://abrah.am",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The most popular PHP library for use with the Twitter OAuth REST API.",
+            "homepage": "https://twitteroauth.com",
+            "keywords": [
+                "Twitter API",
+                "Twitter oAuth",
+                "api",
+                "oauth",
+                "rest",
+                "social",
+                "twitter"
+            ],
+            "time": "2016-07-03 17:35:30"
+        },
         {
             "name": "andrewsville/php-token-reflection",
             "version": "1.4.0",
@@ -368,39 +422,6 @@
                 "javascript",
                 "jquery",
                 "library"
-            ]
-        },
-        {
-            "name": "bower-asset/jquery-typeahead",
-            "version": "2.7.0",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:running-coder/jquery-typeahead.git",
-                "reference": "c35f5a264144fdabe5a5c3878349d524194722ae"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/running-coder/jquery-typeahead/zipball/c35f5a264144fdabe5a5c3878349d524194722ae",
-                "reference": "c35f5a264144fdabe5a5c3878349d524194722ae",
-                "shasum": ""
-            },
-            "type": "bower-asset-library",
-            "extra": {
-                "bower-asset-main": [
-                    "dist/jquery.typeahead.min.js",
-                    "dist/jquery.typeahead.min.css"
-                ],
-                "bower-asset-ignore": []
-            },
-            "description": "jQuery plugin that provides Typeahead (autocomplete) Search preview from Json object(s) via same domain Ajax request or cross domain Jsonp and offers data compression inside Local Storage. The plugin is built with a lot of options and callbacks to allow customization.",
-            "keywords": [
-                "ajax",
-                "autocomplete",
-                "input",
-                "json",
-                "jsonp",
-                "search",
-                "typeahead"
             ]
         },
         {
@@ -1778,7 +1799,7 @@
         "bower-asset/fuelux": 20,
         "bower-asset/bootbox": 20,
         "bower-asset/swiper": 20,
-        "bower-asset/jquery-typeahead": 20
+        "abraham/twitteroauth": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -1,8 +1,10 @@
 <?if (false) {?><style><?}?>
 <?="\n/*".get_class()."*/\n"?>
 /*********** DEFINICION DE VARIABLES ************/
-@color-principal: #CD5A91; /*#ff94be*/
-@color-secundario: #6c94be;
+/* https://color.adobe.com/es/create/color-wheel/ */
+@color-principal: <?=$GLOBALS['config']->tienda->TEMA->COLOR_PRIMARIO?>; /*#ff94be*/
+@color-secundario: spin(@color-principal, 120%);
+@color-terciario: spin(@color-principal, 240%);
 @color-links: #304c71;
 @color-links-hover: #6c94be;
 
@@ -14,7 +16,7 @@
 @color-sidebarMenu: #fff;
 @color-pie: #fff;
 
-@color-banner-txt: rgba(205, 90, 145, 0.6);
+@color-banner-txt: @color-terciario;
 
 @color-borde-items: #a0a0a0;
 @color-bg-items: #fff;
@@ -178,4 +180,42 @@ a.blanco{
 	height: 5px;
 	background-color: @color-principal;
 	*/
+}
+
+.ssSearchContainer {
+	border           : solid rgba(0,0,0,0.9) 1px;
+	background-color : rgba(192,192,192,0.9);
+	box-shadow       : 10px 10px 5px 0px rgba(0,0,0,0.75);
+	padding          : 13px;
+}
+
+.ssSearchItemContainer {
+	/*padding:7px;*/
+}
+.ssSearchItemContainer>div {
+	background-color : rgba(255,255,255,0.9);
+	margin  : 15px 0px 15px 0px;
+	padding : 13px;
+	border  : solid black 1px;
+	height: 180px;
+}
+.ssSearchItemContainer .nombre {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.ssSearchItemContainer .descripcion {
+	overflow: hidden;
+	height: 100px;
+}
+
+.ssSearchItemContainer .precio {
+	font-size: larger;
+}
+
+.highlight {
+	color: @color-principal;
+	font-size:large;
+	font-weight:bold;
 }
