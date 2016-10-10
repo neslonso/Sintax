@@ -23,7 +23,7 @@ define ('ARR_TIENDAS',serialize(array (
 			'EMAIL' => 'atcioncliente@'.BASE_DOMAIN,
 			'TLF' => '982 20 30 08',
 		),
-		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/cl-logo.jpg',
+		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.CL.jpg',
 		'MENU' => (object) array (
 			'FOTO_CATS_SEGUNDO_NIVEL' => false,//Si las cats de segundo nivel con hijos llevan foto
 			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
@@ -67,7 +67,7 @@ define ('ARR_TIENDAS',serialize(array (
 			'EMAIL' => 'atcioncliente@'.BASE_DOMAIN,
 			'TLF' => '982 215 630',
 		),
-		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/shop-logo.jpg',
+		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.BF.jpg',
 		'MENU' => (object) array (
 			'FOTO_CATS_SEGUNDO_NIVEL' => false,//Si las cats de segundo nivel con hijos llevan foto
 			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos

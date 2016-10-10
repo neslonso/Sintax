@@ -22,7 +22,20 @@ class Home extends Error implements IPage {
 		return $GLOBALS['config']->tienda->SITE_NAME;
 	}
 	public function metaTags() {
-		return parent::metaTags();
+		$sitename=$GLOBALS['config']->tienda->SITE_NAME;
+		$metaTags= parent::metaTags();
+		/*$idProd = isset($_REQUEST['idProd']) ? $_REQUEST['idProd'] : '23137' ;
+		if(\Multi_ofertaVenta::existe (\cDb::confByKey('celorriov3'),$idProd)){
+			$objOferta=new \Multi_ofertaVenta(\cDb::confByKey('celorriov3'),$idProd);
+			$metaTags .= '<meta name="description" content="'.$objOferta->GETmetaDescription().'">';
+		}else{
+			throw new \Exception("El producto solicitado no se encuentra disponible en estos momentos. Disculpe las molestias");
+		}*/
+		$metaTags.='<meta property="og:title" content="'.$sitename.'" />';
+		$metaTags.='<meta property="og:description" content="'.$sitename.'" />';
+		$metaTags.='<meta name="description" content="'.$sitename.'">';
+		$metaTags.='<meta property="og:image" content="'.BASE_URL.'appFed16/binaries/imgs/ogImage.png" />';
+		return $metaTags;
 	}
 	public function head() {
 		parent::head();
@@ -147,6 +160,7 @@ class Home extends Error implements IPage {
 		$arrResults=array();
 		foreach ($arr as $objOferta) {
 			$std=$objOferta->toStdObj();
+			$std->precio=$objOferta->pvp();
 			$std->imgId=$objOferta->imgId();
 			$std->imgSrc=$objOferta->imgSrc(0,100,100);
 			//$std->descripcion=//parsear para quitar brs de mas
