@@ -43,6 +43,9 @@
 	#vertical .navbar-default .navbar-nav li .vertical-menu {
 		max-width: 500px !important;
 	}
+	#container-cabecera .logo{
+		margin-top: 20px !important;
+	}
 }
 /* XS */
 @media (max-width: 767px){

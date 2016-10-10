@@ -13,15 +13,15 @@
 				<div class="col-xs-2 col-sm-1">
 					<a href="#menu-toggle" class="btn btn-default btn-menu" id="menu-toggle"><span class="glyphicon glyphicon-align-justify"></span></a>
 				</div>
-				<div class="col-xs-7 col-sm-6 col-md-4">
-					<div class="input-group">
+				<div class="col-xs-6 col-sm-6 col-md-4">
+					<div class="input-group divBuscador">
 						<input id="ssSearch" type="text" class="form-control" placeholder="Busca en <?=$GLOBALS['config']->tienda->SITE_NAME?>..." aria-describedby="térmnos de búsqueda">
 						<span class="input-group-btn">
 							<button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
 						</span>
 					</div>
 				</div>
-				<div class="col-xs-3 col-sm-2 col-md-4">
+				<div class="col-xs-4 col-sm-2 col-md-4">
 					<div id="divJqCesta" data-arr-items="<?=$jsonArrCestaItems?>"></div>
 					&nbsp;
 <?
@@ -36,9 +36,9 @@
 					$nombreAvatarMin=strtoupper($nombreAvatar[0]);
 ?>
 					<div class="btn-group" role="group" aria-label="...">
-						<button class="btnUserNav btn btn-primary btn-menu" type="button" data-toggle="tooltip" title="Área de usuario" data-placement="top" data-container="body">
+						<button class="btnUserNav btn btn-primary btn-menu btn-menu-xs" type="button" data-toggle="tooltip" title="Área de usuario" data-placement="top" data-container="body">
 							<span class="glyphicon glyphicon-user"></span>
-							<span class="badge visible-xs visible-sm"><?=$nombreAvatarMin?></span>
+							<!--<span class="badge visible-xs visible-sm"><?=$nombreAvatarMin?></span>-->
 							<span class="badge hidden-xs hidden-sm"><?=$nombreAvatar?></span>
 						</button>
 					</div>
@@ -98,7 +98,7 @@
 <?
 				} else {
 ?>
-						<button class="btnUserNav btn btn-success btn-menu hidden-md hidden-lg" type="button" data-toggle="tooltip" title="Accede / Regístrate" data-placement="top" data-container="body">
+						<button class="btnUserNav btn btn-success btn-menu hidden-md hidden-lg btn-menu-xs" type="button" data-toggle="tooltip" title="Accede / Regístrate" data-placement="top" data-container="body">
 							<span class="fa fa-user-plus"></span>
 						</button>
 
@@ -277,7 +277,7 @@
 					<div class="container-fluid">
 						<div class="row">
 							<div class="caracteristicas">
-								<div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
+								<div class="col-lg-2  col-md-2 col-sm-4 col-xs-12">
 									<h3><i class="fa fa-truck" aria-hidden="true"></i>  Entrega </h3>
 									<ul>
 										<li>Entrega: 24/48h </li>
@@ -285,7 +285,7 @@
 										<li>Seguimiento online del pedido</li>
 									</ul>
 								</div>
-								<div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
+								<div class="col-lg-2  col-md-2 col-sm-4 col-xs-12">
 									<h3><i class="fa fa-lock" aria-hidden="true"></i>  Pago seguro </h3>
 									<ul>
 										<li>Tarjeta, transferencia bancaria y contra reembolso</li>
@@ -293,7 +293,7 @@
 										<li>0% comisión contra reembolso</li>
 									</ul>
 								</div>
-								<div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
+								<div class="col-lg-2  col-md-2 col-sm-4 col-xs-12">
 									<h3><i class="fa fa-gavel" aria-hidden="true"></i>  Condiciones </h3>
 									<ul>
 										<li>Precios IVA incluído en euros</li>
@@ -302,18 +302,18 @@
 										<li><a href="<?=BASE_URL?>aviso_legal/">Condiciones de Uso y Política de Privacidad</a></li>
 									</ul>
 								</div>
-								<div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
+								<div class="col-lg-2  col-md-2 col-sm-4 col-xs-12">
 									<h3><i class="fa fa-building" aria-hidden="true"></i>  Empresa </h3>
 									<ul>
 										<li><?=$GLOBALS['config']->tienda->EMPRESA->NOMBRE?></li>
-										<li><a href="mailto:<?=$GLOBALS['config']->tienda->CONTACTO->EMAIL?>"><?=$GLOBALS['config']->tienda->CONTACTO->EMAIL?></a></li>
+										<li><a class="ellipsis" href="mailto:<?=$GLOBALS['config']->tienda->CONTACTO->EMAIL?>"><?=$GLOBALS['config']->tienda->CONTACTO->EMAIL?></a></li>
 										<li><a href="tel:<?=$GLOBALS['config']->tienda->CONTACTO->TLF?>"><?=$GLOBALS['config']->tienda->CONTACTO->TLF?></a></li>
 										<li><?=$GLOBALS['config']->tienda->EMPRESA->DIRECCION?></li>
 										<li><?=$GLOBALS['config']->tienda->EMPRESA->CIF?></li>
 									</ul>
 								</div>
 							</div>
-							<div class="col-lg-4  col-md-3 col-sm-6 col-xs-12 ">
+							<div class="col-lg-4  col-md-4 col-sm-6 col-xs-12 ">
 								<h3><i class="fa fa-rss" aria-hidden="true"></i>  Suscríbete </h3>
 								<ul>
 									<li>
