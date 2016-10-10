@@ -1,9 +1,19 @@
+SSLProxyEngine on
+
 ProxyRequests Off
 ProxyPass "/" "http://fed16.farmaciacelorrio.com/"
 ProxyPassReverse "/" "http://fed16.farmaciacelorrio.com/"
 ProxyPassReverseCookieDomain  "fed16.farmaciacelorrio.com"  "bebefarma.com"
 ProxyPassReverseCookiePath  "/"  "/"
 ProxyVia On
+
+ProxyRequests Off
+ProxyPass "/" "http://fed16.farmaciacelorrio.com/"
+ProxyPassReverse "/" "http://fed16.farmaciacelorrio.com/"
+ProxyPassReverseCookieDomain  "fed16.farmaciacelorrio.com"  "celorriofarma.com"
+ProxyPassReverseCookiePath  "/"  "/"
+ProxyVia On
+
 
 
 ################################################################################

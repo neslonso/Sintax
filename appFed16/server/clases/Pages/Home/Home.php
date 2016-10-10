@@ -142,20 +142,15 @@ class Home extends Error implements IPage {
 	}
 	public function acSearchOfers ($query) {
 		$db=\cDb::confByKey("celorriov3");
-		$like=implode("%", explode(" ",$query));
-		$where="
-			keyTienda='".$GLOBALS['config']->tienda->key."'
-			AND (
-				nombre LIKE '%".$like."%'
-			)
-		";
-		$arr=\Multi_ofertaVenta::getArray($db,$where,"","","arrKeys");
+		$arr=\Multi_ofertaVenta::textSearch($db,$GLOBALS['config']->tienda->key,$query);
 		$arrResults=array();
-		foreach ($arr as $idMulti_ofertaVenta) {
-			$objOferta=new \Multi_ofertaVenta ($db,$idMulti_ofertaVenta);
+		foreach ($arr as $objOferta) {
 			$std=$objOferta->toStdObj();
-			$std->idFoto=$objOferta->imgId();
+			$std->imgId=$objOferta->imgId();
+			$std->imgSrc=$objOferta->imgSrc(0,100,100);
+			//$std->descripcion=//parsear para quitar brs de mas
 			array_push($arrResults, $std);
+			$std->nombreHighlight=\Cadena::highlight(explode(' ',$query) ,$std->nombre,'highlight');
 		}
 		return $arrResults;
 	}

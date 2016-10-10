@@ -27,7 +27,6 @@
 		"bower-asset/fuelux": "dev-master",
 		"bower-asset/bootbox": "^4.4@dev",
 		"bower-asset/swiper": "^3.3@dev",
-		"bower-asset/jquery-typeahead": "^2.7@dev",
 		"abraham/twitteroauth": "dev-master"
 	},
 	"extra": {

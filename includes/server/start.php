@@ -12,14 +12,15 @@ date_default_timezone_set('Europe/Madrid');
 define('PHP_MIN_VERSION','5.4.0');
 define('SKEL_VERSION','1.0.0');
 
-define('PROTOCOL',((isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS']))?'https':'http'));
+define('PROTOCOL',((isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS']))?'https:':'http:'));
+//define('PROTOCOL','');//para agnostic protocol urls
 if (!defined('BASE_DOMAIN')) define('BASE_DOMAIN',(substr($_SERVER['HTTP_HOST'],0,4)=="www.")?substr($_SERVER['HTTP_HOST'],4):$_SERVER['HTTP_HOST']);
 define('BASE_DIR',
 	(dirname($_SERVER['SCRIPT_NAME'])=='/')?
 		dirname($_SERVER['SCRIPT_NAME']):
 		dirname($_SERVER['SCRIPT_NAME']).'/'
 );//Directorio del punto de entrada. Tiene que terminar en / obligatoriamente
-define('BASE_URL',PROTOCOL.'://'.BASE_DOMAIN.BASE_DIR);//URL hasta el directorio del punto de entrada
+define('BASE_URL',PROTOCOL.'//'.BASE_DOMAIN.BASE_DIR);//URL hasta el directorio del punto de entrada
 
 define('CACHE_DIR',SKEL_ROOT_DIR.'zCache/');
 define('TMP_UPLOAD_DIR',SKEL_ROOT_DIR.'zCache/tmpUpload/');

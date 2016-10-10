@@ -201,15 +201,6 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		$this->SETprecioMax($precioMax);
 	}
 
-	public function arrIdsCat() {
-		$sql="SELECT idMulti_categoria FROM multi_categoriaVARIOSmulti_ofertaVenta WHERE idMulti_ofertaVenta='".$this->GETid()."'";
-		$arr=array();
-		$rsl=$GLOBALS['db']->query($sql);
-		while ($data=$rsl->fetch_object()) {
-			array_push($arr,$data->idMulti_categoria);
-		}
-		return $arr;
-	}
 	public function tipoIva() {
 		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
 		$tipoIva=0;
@@ -260,7 +251,11 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 			$arrFotos=$objMProd->arrMulti_productoAdjunto("(mimeType LIKE 'image/%')","orden","0,1","arrKeys");
 			array_push($arrFotosPpalesOferta,$arrFotos[$i]);
 		}
-		$idMPA=$arrFotosPpalesOferta[$i];
+		if (isset($arrFotosPpalesOferta[$i])) {
+			$idMPA=$arrFotosPpalesOferta[$i];
+		} else {
+			$idMPA=NULL;
+		}
 		return $idMPA;
 	}
 	/**
@@ -292,6 +287,48 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 	public function vendible() {
 		return $this->GETvisible() && !$this->GETagotado();
 	}
+
+	public static function textSearch($db,$keyTienda,$q,$soloVisibles=true,$offset=0,$numResults=10) {
+		$sqlSoloVisibles=($soloVisibles)?" visible=1 AND ":"";
+		$matchAgainst=array();
+		//$matchList='`ean`,`referencia`,`nombre`,`descripcion`,`title`,`metaDescription`,`metaKeywords`';
+		$matchList='`referencia`,`nombre`,`descripcion`';
+		$matchAgainst[0]='MATCH('.$matchList.') AGAINST(\'"'.$db->real_escape_string($q).'"\' IN BOOLEAN MODE)';
+
+		$qWords=explode(" ",$q);
+
+		for ($z=0; $z < count($qWords); $z++) {
+			$qAct="";
+			for ($i=0; $i < count($qWords)-$z; $i++) {//Recorremos todas las palabras menos la ultima
+				$qAct.='+'.$qWords[$i].' ';
+			}
+			for ($i=count($qWords)-$z; $i < count($qWords); $i++) {//Recorremos todas las palabras menos la ultima
+				$qAct.=$qWords[$i].' ';
+			}
+			$qAct=substr($qAct, 0,-1);
+			array_push($matchAgainst,'MATCH('.$matchList.') AGAINST(\''.$db->real_escape_string($qAct).'*\' IN BOOLEAN MODE)');
+		}
+
+		$sql="";
+		foreach ($matchAgainst as $matchPart) {
+			$sql.="(SELECT id ".
+				"FROM multi_ofertaVentaFULLTEXT WHERE keyTienda='".$keyTienda."' AND ".$sqlSoloVisibles.
+				$matchPart.") ".
+				"UNION ";
+		}
+		$sql=substr($sql,0,-6);
+		$sql.="LIMIT ".$offset.",".$numResults;
+		$GLOBALS['firephp']->info('multi_ofertaVenta::textSearch::$sql='.$sql);
+		$rsl=$db->query($sql);
+		$arr=array();
+		while ($data=$rsl->fetch_object()) {
+			//$GLOBALS['firephp']->info('multi_ofertaVenta::textSearch::$data->score='.$data->score);
+			$obj=new self($db,$data->id);
+			array_push($arr,$obj);
+		}
+		return $arr;
+	}
+
 
 /******************************************************************************/
 }

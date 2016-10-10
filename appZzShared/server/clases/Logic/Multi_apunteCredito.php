@@ -70,7 +70,7 @@ class Multi_apunteCredito extends \Sintax\Core\Entity implements \Sintax\Core\IE
 	}
 	public function caducado() {
 		if (!is_null($this->GETcaducidad())) {
-				$caducidadUnix=Fecha::fromMysql($this->GETcaducidad());
+				$caducidadUnix=Fecha::fromMysql($this->GETcaducidad())->GETdate();
 			if ($caducidadUnix<time()) {
 				$result=true;
 			} else {

@@ -23,7 +23,7 @@ define ('ARR_TIENDAS',serialize(array (
 			'EMAIL' => 'atcioncliente@'.BASE_DOMAIN,
 			'TLF' => '982 20 30 08',
 		),
-		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/shop-logo.jpg',
+		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/cl-logo.jpg',
 		'MENU' => (object) array (
 			'FOTO_CATS_SEGUNDO_NIVEL' => false,//Si las cats de segundo nivel con hijos llevan foto
 			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
@@ -46,6 +46,11 @@ define ('ARR_TIENDAS',serialize(array (
 			),
 		),
 		'ANALYTICS' => 'UA-36657351-2',
+		'TEMA' => (object) array (
+			'COLOR_PRIMARIO' => '#345995',
+			'COLOR_SECUNDARIO' => '#EAC435',
+			'EFECTO_BANNER' => "loop:true,spaceBetween: 100,effect: 'coverflow',coverflow: {rotate: 0,stretch: 0,depth: 300,modifier: 1,slideShadows : false},slideToClickedSlide:true,",
+		),
 	),
 	'FD' => array (
 		'SITE_NAME' => '',
@@ -85,6 +90,11 @@ define ('ARR_TIENDAS',serialize(array (
 			),
 		),
 		'ANALYTICS' => 'UA-36657351-5',
+		'TEMA' => (object) array (
+			'COLOR_PRIMARIO' => '#CD5A91',
+			'COLOR_SECUNDARIO' => '#6c94be',
+			'EFECTO_BANNER' => "",
+		),
 	),
 	'FC' => array (
 		'SITE_NAME' => '',

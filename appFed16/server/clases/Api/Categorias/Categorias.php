@@ -222,38 +222,57 @@ class Categorias extends ApiService implements IApiService {
 		}
 		if (\Multi_categoria::existe($db,$idMulti_categoria)) {
 			$objCat=new \Multi_categoria($db,$idMulti_categoria);
-			$arrOfers=$objCat->arrMulti_ofertaVenta("","orden ASC","","arrKeys");
+			$arrOfers=$objCat->arrMulti_ofertaVenta("","RAND()","","arrKeys");
 		} else {
-			$arrOfers=\Multi_ofertaVenta::getArray($db,"keyTienda='".$keyTienda."'","","","arrKeys");
+			$arrOfers=\Multi_ofertaVenta::getArray($db,"keyTienda='".$keyTienda."'","RAND()","","arrKeys");
 			//throw new \Exception("arrOfersCustom idMulti_categoria [".$idMulti_categoria."] not exists", 1);
 		}
 		//$cuantosPorCat=ceil($cuantos/count($arrCats));
 		$totalInsertados=0;
 		$index=0;
-		//foreach ($arrCats as $objCat) {
-			//$insertadosEstaCat=0;
-			//$arrOfers=$objCat->arrMulti_ofertaVenta("","orden ASC","","arrKeys");
-			foreach ($arrOfers as $idMulti_ofertaVenta) {
-				if ($totalInsertados>=$cuantos) {break;}
-				//if ($insertadosEstaCat>=$cuantosPorCat) {break;}
-				$objOferta=new \Multi_ofertaVenta ($db,$idMulti_ofertaVenta);
-				if ($objOferta->vendible()) {
-					$arrInteres=$objCliente->arrInteres($objOferta);
-					if ($arrInteres!==false) {
-						foreach ($arrInteres as $soPesoReason) {
-							$reason=$soPesoReason->reason;
-						}
-						$obj=self::creaStdObjOferta($objOferta);
-						$obj->index=$index;
-						$obj->reason=$reason;
-						array_push($arr,$obj);
-						//$insertadosEstaCat++;
-						$totalInsertados++;
-						$index++;
+		foreach ($arrOfers as $idMulti_ofertaVenta) {
+			$objOferta=new \Multi_ofertaVenta ($db,$idMulti_ofertaVenta);
+			if ($objOferta->vendible()) {
+				$arrInteres=$objCliente->arrInteres($objOferta);
+				if ($arrInteres!==false) {
+					$reason="";
+					$interesTotal=0;
+					//$reason="<ul class='ulReasons'>";
+					foreach ($arrInteres as $soPesoReason) {
+						//$reason.='<li>';
+						$reason.=$soPesoReason->reason."<br />";
+						$interesTotal+=$soPesoReason->peso;
+						//$reason.='</li>';
 					}
+					//$reason.='</ul>';
+					$obj=self::creaStdObjOferta($objOferta);
+					$obj->index=$index;
+					//$obj->tooltip=$interesTotal.".-".$reason;
+					$obj->tooltip=$reason;
+					$obj->interesTotal=$interesTotal;
+					if (count($arrInteres)>1) {
+						$GLOBALS['firephp']->error($arrInteres);
+						$GLOBALS['firephp']->error($obj);
+					}
+					array_push($arr,$obj);
+					$totalInsertados++;
+					$index++;
 				}
 			}
-		//}
+		}
+
+		usort($arr, function ($a, $b) {
+			$result=($a->interesTotal > $b->interesTotal)?-1:1;
+			$result=($a->interesTotal == $b->interesTotal)?0:$result;
+			return $result;
+		});
+
+		$arr=array_slice($arr, 0,$cuantos);
+
+		//Ordenar $arrInteresantes
+		//totalizar el peso de las razones
+		//ordenar las ofertas por la suma de los pesos de las razones
+		//devolver las $cuantos primeras
 		return $arr;
 	}
 /******************************************************************************/

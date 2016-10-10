@@ -254,102 +254,6 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 		return $result;
 	}
 
-
-/** Funciones de estructura V3, no reciben db y tiran de GLOBALS['db'] ********/
-	public static function lsProductos($where="",$order="",$limit="") {
-		$tInicial=microtime(true);
-		$rsl=static::lsProductosQuery($where,$order,$limit);
-		$arr=static::lsProductosBucle($rsl);
-		$tTotal=microtime(true)-$tInicial;
-		error_log ("/* lsProductos ejecutado en: ".round($tTotal,3)." segundos.");
-		return $arr;
-	}
-
-	public static function lsProductosQuery($where="",$order="",$limit="") {
-		$sqlWhere=($where!="")?" HAVING ".$where:'';
-		$sqlOrder=($order!="")?" ORDER BY ".$order:'';
-		$sqlLimit=($limit!="")?" LIMIT ".$limit:'';
-		$sql="
-			SELECT id, referencia, ean, nombre, precio,
-				(SELECT count(*) FROM multi_productoAdjunto mpa
-				WHERE mpa.idMulti_producto=mp.id) as adjuntos,
-				(SELECT GROUP_CONCAT(DISTINCT keyTienda SEPARATOR ' ')
-				FROM multi_ofertaVenta mov INNER JOIN multi_productoVARIOSmulti_ofertaVenta mpVmov ON mov.id=mpVmov.idMulti_ofertaVenta
-				WHERE mpVmov.idMulti_producto=mp.id) as tiendas,
-				(SELECT count(*)
-				FROM multi_ofertaVenta mov INNER JOIN multi_productoVARIOSmulti_ofertaVenta mpVmov ON mov.id=mpVmov.idMulti_ofertaVenta
-				WHERE mpVmov.idMulti_producto=mp.id) as ofertas,
-				(SELECT count(*)
-				FROM multi_ofertaVenta mov INNER JOIN multi_productoVARIOSmulti_ofertaVenta mpVmov ON mov.id=mpVmov.idMulti_ofertaVenta
-				WHERE mpVmov.idMulti_producto=mp.id AND mov.visible=1 ) as algunaOfertaVisible
-			FROM multi_producto mp
-		".$sqlWhere.$sqlOrder.$sqlLimit;
-		$tQuery=microtime(true);
-		//error_log ("/*** lsProductosQuery SQL: ".$sql);
-		$rsl=$GLOBALS['db']->query($sql);
-		$tTotalQuery=microtime(true)-$tQuery;
-		error_log ("/*** lsProductosQuery ejecutado en: ".round($tTotalQuery,3)." segundos.");
-		return $rsl;
-	}
-
-	public static function lsProductosBucle($rsl) {
-		$tBucle=microtime(true);
-		$arr=array();
-		while ($data=$rsl->fetch_object()) {
-			$obj=new stdClass();
-			foreach ($data as $field => $value) {
-				$obj->$field=$value;
-			}
-			array_push($arr,$obj);
-			unset ($obj);
-		}
-		$tTotalBucle=microtime(true)-$tBucle;
-		error_log ("/*** lsProductosBucle ejecutado en: ".round($tTotalBucle,3)." segundos.");
-		return $arr;
-	}
-/******************************************************************************/
-	public function lsOfers($where="",$order="",$limit="") {
-		$tInicial=microtime(true);
-		$rsl=$this->lsOfersQuery($where,$order,$limit);
-		$arr=$this->lsOfersBucle($rsl);
-		$tTotal=microtime(true)-$tInicial;
-		error_log ("/* lsOfers ejecutado en: ".round($tTotal,3)." segundos.");
-		return $arr;
-	}
-
-	public function lsOfersQuery($where="",$order="",$limit="") {
-		$whereProd="idMulti_producto='".$this->GETkeyValue()."'";
-		$sqlWhere=($where!="")?" WHERE ".$where.' AND '.$whereProd:' WHERE '.$whereProd;
-		$sqlOrder=($order!="")?" ORDER BY ".$order:'';
-		$sqlLimit=($limit!="")?" LIMIT ".$limit:'';
-		$sql="
-			SELECT id, referencia, nombre, mov.precio, precioMin, precioMax, visible, agotado, keyTienda
-			FROM multi_ofertaVenta mov INNER JOIN multi_productoVARIOSmulti_ofertaVenta mpVmov ON mov.id=mpVmov.idMulti_ofertaVenta
-		".$sqlWhere.$sqlOrder.$sqlLimit;
-		$tQuery=microtime(true);
-		//error_log ("/*** lsOfersQuery SQL: ".$sql);
-		$rsl=$GLOBALS['db']->query($sql);
-		$tTotalQuery=microtime(true)-$tQuery;
-		error_log ("/*** lsOfersQuery ejecutado en: ".round($tTotalQuery,3)." segundos.");
-		return $rsl;
-	}
-
-	public function lsOfersBucle($rsl) {
-		$tBucle=microtime(true);
-		$arr=array();
-		while ($data=$rsl->fetch_object()) {
-			$obj=new stdClass();
-			foreach ($data as $field => $value) {
-				$obj->$field=$value;
-			}
-			array_push($arr,$obj);
-			unset ($obj);
-		}
-		$tTotalBucle=microtime(true)-$tBucle;
-		error_log ("/*** lsOfersBucle ejecutado en: ".round($tTotalBucle,3)." segundos.");
-		return $arr;
-	}
-
 /******************************************************************************/
 	public static function AllToSelect ($db, $idSelected="", $id="", $class="", $multiple=false, $where="", $order="", $limit="") {
 		$multiple=($multiple)?'multiple="multiple"':'';
@@ -368,10 +272,10 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 		return $result;
 	}
 
-	public static function arrRandomProds($cuantos=10, $asObjectArray=true) {
-		$sql="SELECT id FROM Multi_producto ORDER BY RAND() LIMIT 0,".$cuantos;
+	public static function arrRandomProds($db, $cuantos=10, $asObjectArray=true) {
+		$sql="SELECT id FROM multi_producto ORDER BY RAND() LIMIT 0,".$cuantos;
 		$arr=array();
-		$rsl=$GLOBALS['db']->query($sql);
+		$rsl=$db->query($sql);
 		while ($data=$rsl->fetch_object()) {
 			if ($asObjectArray) {
 				$obj=new Multi_producto($data->id);
@@ -399,6 +303,40 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 
 	public function pvp(){
 		return round($this->pai()*(1+$this->tipoIVa()/100),2);
+	}
+
+	/* compisDePedido *************************************************
+	Devuelve un array asociativo que tiene como clave la una referencia
+	de producto y como dato el numero de veces que a compartido pedido
+	con la referencia de $this
+	**************************************************************/
+	public function compisDePedido ($keyTienda=NULL) {
+		//FALTA QUE SI $keyTienda!=NULL HAGA EL CALCULO SOBRE UNA SOLA TIENDA
+		$arrRefs=Array();
+		//seleccionar todos los pedidos en los que este la referencia de este prod
+		$rsl=$this->db->query ("SELECT p.id FROM multi_pedido p INNER JOIN multi_pedidoLinea pl ON p.id=pl.idPedido
+			WHERE referencia=".$this->db->real_escape_string($this->GETreferencia()));
+
+		$list="";
+		while ($pedidoData=$rsl->fetch_object()) {
+			$list.=$pedidoData->id.", ";
+		}
+		$list=substr ($list,0,-2);
+		if ($list!="") {
+			$rsl2=$this->db->query("SELECT mov.referencia FROM multi_pedidoLinea pl INNER JOIN multi_ofertaVenta mov ON pl.referencia=mov.referencia
+				WHERE idPedido IN (".$list.") AND mov.referencia<>'".$this->db->real_escape_string($this->GETreferencia())."' AND mov.visible=1");
+			while ($linData=$rsl2->fetch_object()) {
+				if (!isset($arrRefs[$linData->referencia])) $arrRefs[$linData->referencia]=0;
+				$arrRefs[$linData->referencia]+=1;
+			}
+
+			$rsl2->free_result();
+			//ordenamos el array
+			asort ($arrRefs, SORT_NUMERIC);
+			//asort hace orden ascendente, le pegamos la vuelta
+			$arrRefs=array_reverse ($arrRefs,true);
+		}
+		return $arrRefs;
 	}
 
 }

@@ -3,7 +3,7 @@
 $(document).ready(function() {
 	getLineas();
 
-	$('[data-toggle="tooltip"]').tooltip();
+	$('[data-toggle="tooltip"]').tooltip({container:'body',html:true});
 	/*$("body").tooltip({
 		selector: '[data-toggle="tooltip"]',
 		container: 'body',
@@ -461,7 +461,7 @@ function refreshTableLineas() {
 	var arrLineas=$('#tableLineas').data('arrLineas');
 	$('#tableLineas tbody tr').remove();
 	trsTableLineas(arrLineas);
-	$('[data-toggle="tooltip"]').tooltip();
+	$('[data-toggle="tooltip"]').tooltip({container:'body',html:true});
 }
 function trsTableLineas (arrLineas) {
 	for (var i = 0; i < arrLineas.length; i++) {
@@ -523,7 +523,7 @@ function getLineas () {
 		refreshTableLineas();
 		calculaTotales();
 		compruebaPanelCredito();
-		$('[data-toggle="tooltip"]').tooltip();
+		$('[data-toggle="tooltip"]').tooltip({container:'body',html:true});
 	});
 }
 
