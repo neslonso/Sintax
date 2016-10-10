@@ -147,12 +147,12 @@ $(document).ready(function() {
 			'comentarios'      : comentarios,
 		}
 		console.log(pedData);
-		if (confirm("¿Realizar el POST?")) {
+		//if (confirm("¿Realizar el POST?")) {
 			Post ('action','<?=BASE_DIR.FILE_APP?>',
 				'MODULE','actions','acClase','comprar_pedido','acMetodo','acGrabar','acTipo','stdAssoc',
 				'pedData',pedData,'session_name','<?=$GLOBALS['session_name']?>'
 			);
-		}
+		//}
 	});
 
 	$('input[type=radio][name=modoPago]').change(function() {
@@ -175,22 +175,26 @@ $(document).ready(function() {
 		if (credito>0) {
 			//muestraMsgModal('Crédito de cliente aplicado.','Se aplicarán '+credito+'€ de crédito de cliente.');
 			$('#divJqNotifications').data('jqNotifications')
-				.addNotification('Crédito de cliente.<br />Se aplicarán '+credito+'€ de crédito de cliente.', 'info');
+				.addNotification('Crédito de cliente.','Se aplicarán '+credito+'€ de crédito de cliente.', 'info');
 			ulDtosAdd('dtoCredito','Crédito de cliente','',credito);
 		} else {
 			//muestraMsgModal('Crédito de cliente aplicado.','No se aplicará crédito de cliente.');
+			/*
 			$('#divJqNotifications').data('jqNotifications')
 				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'add');
 			$('#divJqNotifications').data('jqNotifications')
 				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'del');
 			$('#divJqNotifications').data('jqNotifications')
 				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'other');
+			*/
 			$('#divJqNotifications').data('jqNotifications')
 				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'info');
+			/*
 			$('#divJqNotifications').data('jqNotifications')
 				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'warning');
 			$('#divJqNotifications').data('jqNotifications')
 				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'danger');
+			*/
 		}
 	});
 

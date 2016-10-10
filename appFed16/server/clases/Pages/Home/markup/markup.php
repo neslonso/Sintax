@@ -294,7 +294,7 @@
 									</ul>
 								</div>
 								<div class="col-lg-2  col-md-2 col-sm-4 col-xs-6">
-									<h3><i class="fa fa-gavel" aria-hidden="true"></i>  Cond. venta </h3>
+									<h3><i class="fa fa-gavel" aria-hidden="true"></i>  Condiciones </h3>
 									<ul>
 										<li>Precios IVA incluído en euros</li>
 										<li>Gastos de envío desglosados en cada pedido</li>
