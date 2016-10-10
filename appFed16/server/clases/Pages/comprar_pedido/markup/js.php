@@ -179,18 +179,22 @@ $(document).ready(function() {
 			ulDtosAdd('dtoCredito','Crédito de cliente','',credito);
 		} else {
 			//muestraMsgModal('Crédito de cliente aplicado.','No se aplicará crédito de cliente.');
+			/*
 			$('#divJqNotifications').data('jqNotifications')
 				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'add');
 			$('#divJqNotifications').data('jqNotifications')
 				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'del');
 			$('#divJqNotifications').data('jqNotifications')
 				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'other');
+			*/
 			$('#divJqNotifications').data('jqNotifications')
 				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'info');
+			/*
 			$('#divJqNotifications').data('jqNotifications')
 				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'warning');
 			$('#divJqNotifications').data('jqNotifications')
 				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'danger');
+			*/
 		}
 	});
 
