@@ -138,6 +138,7 @@ a.btn-comprar:hover{
 	background: @color-principal none repeat scroll 0 0;
 	color: #fff !important;
 }
+
 /* LG */
 @media (min-width: 1199px){
 

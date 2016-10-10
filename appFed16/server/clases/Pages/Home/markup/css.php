@@ -13,7 +13,7 @@
 @color-txt: #333333;
 
 @color-cabecera: #fff;
-@color-cuerpo: #ebeced;
+@color-cuerpo: #e9ebee;
 @color-sidebarMenu: #fff;
 @color-pie: #fff;
 
@@ -107,7 +107,11 @@ a.blanco{
 .navbar-default .navbar-nav > li > a {
 	padding-top: 15px !important;
 }
-
+.ellipsis{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
 /*
  * Row with equal height columns
  * --------------------------------------------------
@@ -219,4 +223,22 @@ a.blanco{
 	color: @color-principal;
 	font-size:large;
 	font-weight:bold;
+}
+/* SM */
+@media (min-width: 768px) and (max-width: 991px){
+	#container-cabecera .logo{
+		margin-top: 20px !important;
+	}
+}
+/* XS */
+@media (max-width: 767px){
+	.btn-menu, .divBuscador{
+		margin-top:30px;
+	}
+	.btn-menu-xs {
+	    border-radius: 3px;
+	    font-size: 12px;
+	    line-height: 1.5;
+	    padding: 1px 5px;
+	}
 }
