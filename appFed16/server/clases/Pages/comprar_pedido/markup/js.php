@@ -175,7 +175,7 @@ $(document).ready(function() {
 		if (credito>0) {
 			//muestraMsgModal('Crédito de cliente aplicado.','Se aplicarán '+credito+'€ de crédito de cliente.');
 			$('#divJqNotifications').data('jqNotifications')
-				.addNotification('Crédito de cliente.<br />Se aplicarán '+credito+'€ de crédito de cliente.', 'info');
+				.addNotification('Crédito de cliente.','Se aplicarán '+credito+'€ de crédito de cliente.', 'info');
 			ulDtosAdd('dtoCredito','Crédito de cliente','',credito);
 		} else {
 			//muestraMsgModal('Crédito de cliente aplicado.','No se aplicará crédito de cliente.');
