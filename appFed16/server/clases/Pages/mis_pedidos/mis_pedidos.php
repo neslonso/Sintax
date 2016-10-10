@@ -8,8 +8,7 @@ class mis_pedidos extends Home implements IPage {
 		parent::__construct($objUsr);
 	}
 	public function pageValida () {
-		$pageSustitucion="\\Sintax\\Pages\\Home";
-		//$pageSustitucion="\\Sintax\\Pages\\registro_y_acceso";
+		$pageSustitucion="\\Sintax\\Pages\\acceso_usuario";
 		if (is_null($this->objUsr)) {
 			$result=$pageSustitucion;
 			ReturnInfo::add('Debe identificarse como cliente para poder acceder a su área de datos.','Acceso no permitido.');
