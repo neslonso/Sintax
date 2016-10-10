@@ -1,35 +1,34 @@
 <?if (false) {?><style><?}?>
-#custom-search-input {
-	margin:0;
-	padding: 0;
-	width: 100%
+.ssSearchContainer {
+	border           : solid @color-bordes-contenedores 1px;
+	background-color : fade(@color-bg-cuerpo, 90%);
+	border-radius: 7px;
+	box-shadow       : 10px 10px 5px 0px rgba(0,0,0,0.75);
+	padding          : 13px;
 }
-#custom-search-input .search-query {
-	padding-right: 3px;
-	padding-right: 4px \9;
-	padding-left: 3px;
-	padding-left: 4px \9;
-	/* IE7-8 doesn't have border-radius, so don't indent the padding */
-	margin-bottom: 0;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
+
+.ssSearchItemContainer {
+	/*padding:7px;*/
 }
-#custom-search-input button {
-	border: 0;
-	background: none;
-	/** belows styles are working good */
-	padding: 2px 5px;
-	margin-top: 2px;
-	position: relative;
-	left: -28px;
-	/* IE7-8 doesn't have border-radius, so don't indent the padding */
-	margin-bottom: 0;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	color:@color-principal;
+.ssSearchItemContainer>div {
+	background-color : rgba(255,255,255,0.9);
+	margin  : 15px 0px 15px 0px;
+	padding : 13px;
+	border  : solid @color-principal 1px;
+	border-radius: 7px;
+	height: 180px;
 }
-.search-query:focus + button {
-	z-index: 3;
+.ssSearchItemContainer .nombre {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.ssSearchItemContainer .descripcion {
+	overflow: hidden;
+	height: 100px;
+}
+
+.ssSearchItemContainer .precio {
+	font-size: larger;
 }

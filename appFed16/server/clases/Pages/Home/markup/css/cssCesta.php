@@ -1,17 +1,13 @@
-@color-bg-cart: #fff;
+<?if (false) {?><style><?}?>
+@color-bg-cart: @color-bg-body;
 @color-font-ttlItem:  #000000;
 @color-font-unitItem:  #909090;
 @color-font-priceItem:  #909090;
 @color-bg-separatorItem:  #d3d3d3;
-@color-font-btnRemoveItem :#ffffff;
-@color-bg-btnRemoveItem: #CD5A91;
+@color-bg-btnRemoveItem: @color-terciario;
+@color-font-btnRemoveItem : #fff;
+@color-bg-itemsCart: @color-bg-cuerpo;
 
-@width-cesta: 400px;
-@color-bg-itemsCart: #f0f0f0;
-
-@color-principal: #CD5A91;
-@color-secundario: #6c94be;
-/*********  CESTA **********/
 /*  CESTA */
 .contentCart{
 	position: absolute;
@@ -124,17 +120,17 @@
 		transform: translateX(-@width-cesta);
 	}
 }
-.btn-comprar{
+.contentCart .btn-comprar{
 	background: @color-secundario none repeat scroll 0 0;
 	border: 1px solid #ffffff;
 	color: #ffffff !important;
 	transition: all 0.35s ease-in 0s;
 }
-a.btn-comprar{
+.contentCart .btn-comprar{
 	color: #fff !important;
 	transition: all 0.35s ease-in 0s;
 }
-a.btn-comprar:hover{
+.contentCart .btn-comprar:hover{
 	background: @color-principal none repeat scroll 0 0;
 	color: #fff !important;
 }

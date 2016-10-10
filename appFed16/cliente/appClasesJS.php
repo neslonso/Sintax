@@ -6,7 +6,6 @@
 ?>
 <!-- Cesta-->
 <script type="text/javascript" src="./appFed16/cliente/plugins/jquery.cesta/jquery.cesta.js"></script>
-<link rel='stylesheet' href='./appFed16/cliente/plugins/jquery.cesta/jquery.cesta.css' type='text/css' media='screen'>
 <!-- Notifications-->
 <script type="text/javascript" src="./appFed16/cliente/plugins/jquery.notifications/jquery.notifications.js"></script>
 <link rel='stylesheet' href='./appFed16/cliente/plugins/jquery.notifications/jquery.notifications.css' type='text/css' media='screen'>

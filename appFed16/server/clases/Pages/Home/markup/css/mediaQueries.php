@@ -43,12 +43,6 @@
 	#vertical .navbar-default .navbar-nav li .vertical-menu {
 		max-width: 500px !important;
 	}
-<<<<<<< .merge_file_a13724
-=======
-	#container-cabecera .logo{
-		margin-top: 20px !important;
-	}
->>>>>>> .merge_file_a00076
 }
 /* XS */
 @media (max-width: 767px){
