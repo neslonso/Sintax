@@ -18,7 +18,13 @@
     position: relative;
     top: 9px;
 }
-
+.icoClassExt.fa-info, .icoClassExt.fa-exclamation {
+    left: 9px;
+}
+.icoClassExt.fa-close {
+    left: -2px;
+    top: 5px;
+}
 /**/
 #divJqNotifications {
     position: fixed;

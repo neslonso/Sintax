@@ -21,14 +21,15 @@ try {
 			try {
 				$db=\cDb::confByKey('celorriov3');
 				list($tabla,$campoId,$valorId,$campoData)=explode('.',$_GET["fichero"]);
-				$sql="SELECT ".$campoId.", ".$campoData." FROM ".$tabla." WHERE id='".$db->real_escape_string($valorId)."'";
+				$sql="SELECT ".$campoId.", ".$campoData.", COALESCE(`update`,`insert`) as fecha FROM ".$tabla." WHERE id='".$db->real_escape_string($valorId)."'";
 				$rslSet=$db->query($sql);
 				if ($rslSet->num_rows>0) {
 					$data=$rslSet->fetch_object();
-					$data=$data->$campoData;
-					$objImg=Imagen::fromString($data);
+					$strImg=$data->$campoData;
+					$objImg=Imagen::fromString($strImg);
 					//$objImg->marcaAgua("");
 					//$objImg->marcaAgua("",1,1,"center");
+					$last_modified_time=Fecha::fromMysql($data->fecha)->GETdate();
 				} else {
 					throw new Exception("No encontrado registro con ID [".$valorId."]", 1);
 				}
@@ -47,6 +48,7 @@ try {
 				if ($usarCache) {
 					$objImg=Imagen::fromFile($filePath);
 					$ancho=$objImg->width();
+					$last_modified_time=filemtime($filePath);
 				} else {
 					$db=\cDb::confByKey('celorriov3');
 					$arrIds=explode(',',$listaIds);
@@ -68,6 +70,7 @@ try {
 						mkdir(dirname($filePath),0700,true);
 					}
 					file_put_contents($filePath, $objImg->toString($ancho,$alto,$modo,$formato,$calidad,$filtro));
+					$last_modified_time=time();
 				}
 //$tTotal=microtime(true)-$tInicial;
 //error_log('/** Excep. Timepo de JOIN de images: '.round($tTotal,4));
@@ -85,6 +88,7 @@ try {
 					$file=BASE_IMGS_DIR.$_GET['fichero'];
 				}
 				$objImg=Imagen::fromFile($file);
+				$last_modified_time=filemtime($file);
 			} catch (Exception $e) {
 				$firephp->error($e);
 				$file=BASE_IMGS_DIR.'imgErr.png';
@@ -95,7 +99,10 @@ try {
 
 	ob_clean();//limpiamos el buffer antes de mandar la imagen, no queremos nada más que la imagen
 
-	header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 60*60*24*364));
+	header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 60*60*24*14));
+	header("Last-Modified: ".gmdate("D, d M Y H:i:s \G\M\T", $last_modified_time));
+	$etag=sha1(print_r($_GET,true));
+	header("Etag: ".$etag);
 
 	$objImg->output($ancho,$alto,$modo,$formato,$cabecera,$calidad,$filtro);
 } catch (Exception $e) {

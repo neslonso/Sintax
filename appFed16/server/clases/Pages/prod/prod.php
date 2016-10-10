@@ -47,8 +47,8 @@ class prod extends Home implements IPage {
 		if(\Multi_ofertaVenta::existe (\cDb::gI(),$idProd)){
 			$objOferta=new \Multi_ofertaVenta(\cDb::gI(),$idProd);
 			$objCategoria = isset($objOferta->arrMulti_categoria()[0]) ? $objOferta->arrMulti_categoria()[0] : '';
-			$arrOfertasRelacionadas=\Sintax\ApiService\Productos::arrProductosRelacionados(50,$GLOBALS['config']->tienda->key);
-			$arrOfertasGama=\Sintax\ApiService\Productos::arrProductosGama(50,$GLOBALS['config']->tienda->key);
+			$arrOfertasRelacionadas=\Sintax\ApiService\Productos::arrProductosRelacionados(10,$GLOBALS['config']->tienda->key);
+			$arrOfertasGama=\Sintax\ApiService\Productos::arrProductosGama(10,$GLOBALS['config']->tienda->key);
 		}else{
 			throw new \Exception("El producto solicitado no se encuentra disponible en estos momentos. Disculpe las molestias");
 		}

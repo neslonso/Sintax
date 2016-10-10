@@ -73,7 +73,7 @@
 				container: 'body',
 			});
 			$element.append([
-				'<button type="button" class="hidden-md hidden-lg btn btn-default '+plugin.settings.linkCart.classBtn+' btnCart"></button>',
+				'<button type="button" class="hidden-md hidden-lg btn btn-default btn-menu-xs '+plugin.settings.linkCart.classBtn+' btnCart"></button>',
 				'<div class="btn-group hidden-xs hidden-sm" role="group" aria-label="Pedido">',
 					'<button type="button" class="btn btn-default '+plugin.settings.linkCart.classBtn+' btnCart"></button>',
 					'<button type="button" class="btn btn-default btn-warning '+plugin.settings.linkCart.classBtn+' btnCheckOrder" data-toggle="tooltip.jqCesta" title="Comprar ahora"></button>',
@@ -198,6 +198,7 @@
 			});
 			//btnCheckOrder handler
 			$('.btnCheckOrder',$element).click(function(event) {
+				console.log("Comprar");
 				$element.trigger("checkOrder.jqCesta",[$element.data('jqCesta').settings.arrItems]);
 			});
 		}
@@ -269,14 +270,14 @@
 
 			var cuerpoItem = [
 				'<div class="row itemCart" data-id="'+id+'">',
-					'<div class="col-xs-6 col-sm-4 col-md-3">',
+					'<div class="col-xs-4 col-sm-4 col-md-3">',
 						'<img class="img-responsive" src="' + src + '" alt="">',
 					'</div>',
-					'<div class="col-xs-6 col-sm-8 col-md-9">',
-						'<div class="ttl" data-toggle="tooltip.jqCesta" title="'+ ttl +'">' + ttl + '</div>',
-						'<div class="unit" style="float:left">' + spinbox + '</div>',
-						'<div class="price" ><span>' + parseFloat(total).toFixed(2) + '&euro;</span></div>',
-						'<a class="btn ' + plugin.settings.classBtnRemove + '" data-id="' + id + '"><span class="glyphicon glyphicon-trash"></span>&nbsp;Quitar</a>',
+					'<div class="col-xs-8 col-sm-8 col-md-9">',
+						'<div class="col-xs-12 col-sm-12 col-md-12"><div class="ttl" data-toggle="tooltip.jqCesta" title="'+ ttl +'">' + ttl + '</div></div>',
+						'<div class="col-xs-6 col-sm-6 col-md-6"><div class="unit" style="float:left">' + spinbox + '</div></div>',
+						'<div class="col-xs-6 col-sm-6 col-md-6"><div class="price" ><span>' + parseFloat(total).toFixed(2) + '&euro;</span></div></div>',
+						'<div class="col-xs-12 col-sm-12 col-md-12"><a class="btn ' + plugin.settings.classBtnRemove + '" data-id="' + id + '"><span class="glyphicon glyphicon-trash"></span>&nbsp;Quitar</a></div>',
 					'</div>',
 				'</div>',
 				'<div class="col-lg-12 col-md-12 col-sm-12 separator-item"></div>',

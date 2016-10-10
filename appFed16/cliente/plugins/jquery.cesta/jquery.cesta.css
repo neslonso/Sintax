@@ -87,7 +87,7 @@
 }*/
 /*sustitucion fuelux spinbox*/
 .itemCart .unit .inputUnit {
-  /*width: 30%;*/
+  width: 80% !important;
   margin: 4px;
 }
 /*estilos desplazamiento cesta*/
@@ -148,20 +148,33 @@ a.btn-comprar:hover{
 }
 /* SM */
 @media (min-width: 768px) and (max-width: 991px){
-	.content-cart{
-		top: 112px !important;
+	.contentCart{
+		top: 111px !important;
 	}
 }
 /* XS */
 @media (max-width: 768px){
-	.content-cart{
-		top: 111px  !important;
+	.contentCart{
+		top: 110px  !important;
 	}
 
 }
 
+/* XS */
+@media (max-width: 399px){
+	.contentCart{
+		width: 350px  !important;
+	}
 
-/* XS y SM*/
-@media (max-width: 991px){
+}
+
+/* XS */
+@media (max-width: 349px){
+	.contentCart{
+		width: 300px  !important;
+	}
+	.itemCart .unit .inputUnit {
+	  width: 90% !important;
+	}
 
 }

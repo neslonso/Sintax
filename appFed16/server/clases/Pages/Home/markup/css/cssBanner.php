@@ -5,7 +5,7 @@
 	padding: 25px 0;
 	box-shadow: inset 0 -7px 3px rgba(0, 0, 0, 0.3);
 
-	background: linear-gradient(90deg, #ffffff, @color-principal, #ffffff);
+	background: linear-gradient(90deg, #ffffff, fadeout(@color-principal,20%), #ffffff);
 	background-size: 600% 600%;
 	animation: bannerBackground 120s ease infinite;
 }
