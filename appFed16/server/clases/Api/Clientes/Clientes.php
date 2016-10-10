@@ -17,7 +17,7 @@ class Clientes extends ApiService implements IApiService {
 		if ($objCli!==false) {
 			//Ya conocemos al cliente, lo logeamos
 			$result=false;
-			$objCliUser=new \Multi_clienteUser($db);
+			$objCliUser=new \Multi_clienteUser(\cDb::gI());
 			$objCliUser->objEntity=$objCli;
 			$_SESSION['usuario']=$objCliUser;
 			$result=true;
