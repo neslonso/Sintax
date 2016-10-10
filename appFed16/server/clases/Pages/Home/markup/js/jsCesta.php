@@ -42,7 +42,7 @@ function updateCesta(acMetodo,item) {
 						$('#divJqNotifications').data('jqNotifications').addNotification('Producto añadido', 'Se ha añadido al pedido el producto <strong>'+item.descripcion+'</strong>', 'add');
 					} else {
 						$('#divJqNotifications').data('jqNotifications').addNotification('Error añadiendo producto', 'No fue psible añadir el producto <strong>'+item.descripcion+'</strong>.<br /><br />'+data.msg, 'other');
-						muestraMsgModal('No fue posible añadir el producto a su pedido',data.msg);
+						//muestraMsgModal('No fue posible añadir el producto a su pedido',data.msg);
 						//$('#divJqCesta').data('jqCesta').removeItem(item.id);
 					}
 				break;
@@ -51,7 +51,7 @@ function updateCesta(acMetodo,item) {
 						$('#divJqNotifications').data('jqNotifications').addNotification('Producto eliminado', 'Se ha eliminado del pedido el producto <strong>'+item.descripcion+'</strong>', 'del');
 					} else {
 						$('#divJqNotifications').data('jqNotifications').addNotification('Error eliminando producto', 'No fue psible eliminar el producto <strong>'+item.descripcion+'</strong>.<br /><br />'+data.msg, 'other');
-						muestraMsgModal('No fue posible eliminar el producto de su pedido',data.msg);
+						//muestraMsgModal('No fue posible eliminar el producto de su pedido',data.msg);
 						//$('#divJqCesta').data('jqCesta').addItem(item.id);
 					}
 				break;
