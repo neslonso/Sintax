@@ -33,7 +33,8 @@ class Home extends Error implements IPage {
 		}*/
 		$metaTags.='<meta property="og:title" content="'.$sitename.'" />';
 		$metaTags.='<meta property="og:description" content="'.$sitename.'" />';
-		$metaTags .= '<meta name="description" content="'.$sitename.'">';
+		$metaTags.='<meta name="description" content="'.$sitename.'">';
+		$metaTags.='<meta property="og:image" content="'.BASE_URL.'appFed16/binaries/imgs/ogImage.CL.png" />';
 		return $metaTags;
 	}
 	public function head() {
@@ -44,9 +45,8 @@ class Home extends Error implements IPage {
 		$keyTienda=$GLOBALS['config']->tienda->key;
 		$sitename=$GLOBALS['config']->tienda->SITE_NAME;
 		$TileColor='#2d89ef';//#00a300
-		$favIcon='';
 		//http://realfavicongenerator.net/
-		$favIcon.= '
+		echo '
 			<link rel="apple-touch-icon" sizes="180x180" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/apple-touch-icon.png?v=lkgMkggyvj">
 			<link rel="icon" type="image/png" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/favicon-32x32.png?v=lkgMkggyvj" sizes="32x32">
 			<link rel="icon" type="image/png" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/favicon-16x16.png?v=lkgMkggyvj" sizes="16x16">
@@ -59,9 +59,7 @@ class Home extends Error implements IPage {
 			<meta name="msapplication-TileImage" content="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/mstile-144x144.png?v=lkgMkggyvj">
 			<meta name="msapplication-config" content="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/browserconfig.xml?v=lkgMkggyvj">
 			<meta name="theme-color" content="#ffffff">
-			<meta property="og:image" content="'.BASE_URL.'zzWorkspace/favIcon.CL.300.png" />
 		';
-		echo $favIcon;
 	}
 	public function js() {
 		parent::js();
@@ -82,6 +80,7 @@ class Home extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssMenuUsr.php");
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssOferDetalle.php");
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssFooter.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssCesta.php");
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssMediaQueries.php");
 		\Sintax\ApiService\Categorias::listaFichaProductoResponsiveCss();
 		\Sintax\ApiService\Productos::fichaProductoDtoCss();
@@ -162,6 +161,7 @@ class Home extends Error implements IPage {
 		$arrResults=array();
 		foreach ($arr as $objOferta) {
 			$std=$objOferta->toStdObj();
+			$std->precio=$objOferta->pvp();
 			$std->imgId=$objOferta->imgId();
 			$std->imgSrc=$objOferta->imgSrc(0,100,100);
 			//$std->descripcion=//parsear para quitar brs de mas

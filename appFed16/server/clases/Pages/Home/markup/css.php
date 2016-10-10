@@ -1,6 +1,6 @@
 <?if (false) {?><style><?}?>
 <?="\n/*".get_class()."*/\n"?>
-/*********** DEFINICION DE VARIABLES ************/
+/*********** DEFINICION DE VARIABLES DE NEGOCIO ************/
 /* https://color.adobe.com/es/create/color-wheel/ */
 @color-principal: <?=$GLOBALS['config']->tienda->TEMA->COLOR_PRIMARIO?>; /*#ff94be*/
 @color-secundario: <?=$GLOBALS['config']->tienda->TEMA->COLOR_SECUNDARIO?>;
@@ -8,34 +8,35 @@
 @color-terciario: multiply(@color-principal, @color-secundario);
 @color-links: #304c71;
 @color-links-hover: #6c94be;
-
-@color-body: #fff;
 @color-txt: #333333;
+@color-bg-body: #fff; /*bg de la web (no del cuerpo de contenido central)*/
+@color-bg-cuerpo: #e9ebee; /*bg zona central de cuerpo */
+@color-bordes-contenedores: #a0a0a0; /*cajas contenedoras, fichas... etc*/
+@color-bg-contenedores: @color-bg-body; /*bg de cajas contenedoras, fichas... etc*/
+/**********************************************/
 
-@color-cabecera: #fff;
-@color-cuerpo: #e9ebee;
-@color-sidebarMenu: #fff;
-@color-pie: #fff;
 
+/* tamaños de zonas */
+@width-menu: 250px;
+@shop-item-container-fluid: 1170 + 17 + @width-menu; /*1170 del container + 17 de scroll*/
+@width-root-txt-menu: @width-menu - 63; /*espacio para img ico, flecha, margenes*/
+@zindex-sidebar: 1000;
+@zindex-shop-item-rebote: 900;
+@height-banner: 250px;
+@width-cesta: 400px;
+/* definiciones secundarias */
+@color-cabecera: @color-bg-body; /*bg de cabecera de web*/
+@color-sidebarMenu: @color-bg-body; /*bg menu lateral*/
+@color-pie: @color-bg-body; /* bg footer*/
 @color-banner-txt: @color-terciario;
-
-@color-borde-items: #a0a0a0;
-@color-bg-items: #fff;
+@color-borde-items: @color-bordes-contenedores;
+@color-bg-items: @color-bg-contenedores;
 @color-borde-items-over:@color-principal;
 @color-btn-items:@color-principal;
 @color-btn-items-border: #fff;
 @color-btn-items-bg-font: #fff;
 @color-btn-items-bg:@color-secundario;
 @color-items-precio:@color-txt;
-
-@width-menu: 250px;
-@shop-item-container-fluid: 1170 + 17 + @width-menu; /*1170 del container + 17 de scroll*/
-@width-root-txt-menu: @width-menu - 63; /*espacio para img ico, flecha, margenes*/
-
-@zindex-sidebar: 1000;
-@zindex-shop-item-rebote: 900;
-
-@height-banner: 250px;
 
 /**/
 /* http://stackoverflow.com/questions/19288546/how-can-i-prevent-body-scrollbar-and-shifting-when-twitter-bootstrap-modal-dialo */
@@ -46,7 +47,7 @@
 /**/
 /*********** ZONAS GENERALES ************/
 body {
-	background-color: @color-body;
+	background-color: @color-bg-body;
 	color: @color-txt;
 	margin-top: 133px; /* ajuste de cuerpo debido a navbar fixed */
 }
@@ -86,7 +87,7 @@ a.blanco{
 	max-height: 110px;
 }
 #container-cuerpo {
-	background-color: @color-cuerpo;
+	background-color: @color-bg-cuerpo;
 }
 #container-pie {
 	background-color: @color-pie;
@@ -174,7 +175,7 @@ a.blanco{
 	width: 100%;
 	position: realtive;
 	/*padding: 15px;*/
-	background-color: @color-cuerpo !important;
+	background-color: @color-bg-cuerpo !important;
 }
 #wrapper.toggled #page-content-wrapper {
 	position: relative;
@@ -186,39 +187,6 @@ a.blanco{
 	background-color: @color-principal;
 	*/
 }
-
-.ssSearchContainer {
-	border           : solid rgba(0,0,0,0.9) 1px;
-	background-color : rgba(192,192,192,0.9);
-	box-shadow       : 10px 10px 5px 0px rgba(0,0,0,0.75);
-	padding          : 13px;
-}
-
-.ssSearchItemContainer {
-	/*padding:7px;*/
-}
-.ssSearchItemContainer>div {
-	background-color : rgba(255,255,255,0.9);
-	margin  : 15px 0px 15px 0px;
-	padding : 13px;
-	border  : solid black 1px;
-	height: 180px;
-}
-.ssSearchItemContainer .nombre {
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}
-
-.ssSearchItemContainer .descripcion {
-	overflow: hidden;
-	height: 100px;
-}
-
-.ssSearchItemContainer .precio {
-	font-size: larger;
-}
-
 .highlight {
 	color: @color-principal;
 	font-size:large;
