@@ -22,7 +22,8 @@
 								<div class="shop-item-desc"><?=$stdObjOfer->descripcion?></div>
 							</div>
 							<div class="shop-item-cart">
-								<a class="btn jqCst" data-id="<?=$stdObjOfer->id?>" data-ttl="<?=$stdObjOfer->nombre?>" data-unit="1" data-prc="<?=$stdObjOfer->precio?>" data-src="<?=$stdObjOfer->urlFotoPpal?>">Comprar</a>
+								<?=\Sintax\ApiService\Productos::btnComprar($stdObjOfer);?>
+								<!--<a class="btn jqCst" data-id="<?=$stdObjOfer->id?>" data-ttl="<?=$stdObjOfer->nombre?>" data-unit="1" data-prc="<?=$stdObjOfer->precio?>" data-src="<?=$stdObjOfer->urlFotoPpal?>">Comprar</a>-->
 							</div>
 						</div>
 						<?=$rebote?>

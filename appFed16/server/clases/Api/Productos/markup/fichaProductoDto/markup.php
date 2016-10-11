@@ -16,7 +16,8 @@
 			}
 ?>
 									<div>
-										<a class="btn jqCst banner-price-comprar" data-id="<?=$stdObjOfer->id?>" data-ttl="<?=$stdObjOfer->nombre?>" data-unit="1" data-prc="<?=$stdObjOfer->precio?>" data-src="<?=$stdObjOfer->urlFotoPpal?>">Comprar</a>
+										<?=\Sintax\ApiService\Productos::btnComprar($stdObjOfer,'banner-price-comprar');?>
+										<!--<a class="btn jqCst banner-price-comprar" data-id="<?=$stdObjOfer->id?>" data-ttl="<?=$stdObjOfer->nombre?>" data-unit="1" data-prc="<?=$stdObjOfer->precio?>" data-src="<?=$stdObjOfer->urlFotoPpal?>">Comprar</a>-->
 									</div>
 								</div>
 								<div class="banner-txt"><a href="<?=BASE_URL?>prod/<?=$stdObjOfer->id?>"><?=$stdObjOfer->nombre?></a></div>

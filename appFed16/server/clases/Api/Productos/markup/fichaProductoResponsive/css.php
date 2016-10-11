@@ -92,7 +92,7 @@
 	font-size: larger;
 	height: 100px;
 	position: absolute;
-	right: -13px;
+	right: 3px;
 	top: -33px;
 	width: 100px;
 	z-index: @zindex-shop-item-rebote;

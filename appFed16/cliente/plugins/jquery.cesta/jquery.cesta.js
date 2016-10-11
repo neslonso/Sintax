@@ -76,7 +76,7 @@
 				'<button type="button" class="hidden-md hidden-lg btn btn-default btn-menu-xs '+plugin.settings.linkCart.classBtn+' btnCart"></button>',
 				'<div class="btn-group hidden-xs hidden-sm" role="group" aria-label="Pedido">',
 					'<button type="button" class="btn btn-default '+plugin.settings.linkCart.classBtn+' btnCart"></button>',
-					'<button type="button" class="btn btn-default btn-warning '+plugin.settings.linkCart.classBtn+' btnCheckOrder" data-toggle="tooltip.jqCesta" title="Comprar ahora"></button>',
+					'<button type="button" class="btn btn-default btn-warning '+plugin.settings.linkCart.classBtn+' '+plugin.settings.cart.classBtnOrder+'" data-toggle="tooltip.jqCesta" title="Comprar ahora"></button>',
 				'</div>',
 				'<div class="contentCart">',
 					'<div class="totalCart">',
@@ -197,9 +197,10 @@
 				plugin.toggleCesta();
 			});
 			//btnCheckOrder handler
-			$('.btnCheckOrder',$element).click(function(event) {
-				console.log("Comprar");
-				$element.trigger("checkOrder.jqCesta",[$element.data('jqCesta').settings.arrItems]);
+			//$('.btnCheckOrder',$element).click(function(event) {
+			$('body').on('click.jqCesta', '.'+plugin.settings.cart.classBtnOrder, function(event) {
+				var arrItems = $element.data('jqCesta').settings.arrItems;
+				$element.trigger("checkOrder.jqCesta",[arrItems]);
 			});
 		}
 
@@ -313,9 +314,13 @@
 						'</div>',
 				].join('');
 
-				var btn= [
+				/*var btn= [
 						'<a  class="btn btn-lg btn-block btn-comprar btnCheckOrder" type="button" href="javascript:void(null)"><b>' + plugin.settings.cart.txtBtnOrder + '</b></a>',
+				].join('');*/
+				var btn= [
+						'<button type="button" class="btn btn-lg btn-block btn-comprar  '+plugin.settings.cart.classBtnOrder+'"><b>' + plugin.settings.cart.txtBtnOrder + '</b></button>',
 				].join('');
+
 
 				var cuerpoFirst=[
 					'<div class="col-lg-12">',

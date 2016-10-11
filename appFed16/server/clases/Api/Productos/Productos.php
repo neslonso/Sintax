@@ -40,6 +40,36 @@ class Productos extends ApiService implements IApiService {
 
 /******************************************************************************/
 /* FRAGMENTOS *****************************************************************/
+	public function btnComprar($stdObjOrClassObjOfer=NULL,$cssClasses='',$iconCssClasses='glyphicon glyphicon-shopping-cart',$text='Comprar ahora',$tag='a') {
+		$obj=NULL;
+		$vendible ='';
+		if (!is_null($stdObjOrClassObjOfer)) {
+			if (get_class($stdObjOrClassObjOfer)=='Multi_ofertaVenta') {
+				$obj=\Sintax\ApiService\Categorias::creaStdObjOferta($stdObjOrClassObjOfer);
+				$vendible = (!$obj->vendible) ? 'disabled' : '';
+			} else {
+				$vendible = (!$stdObjOrClassObjOfer->vendible) ? 'disabled' : '';
+			}
+		}
+		$strTemplate='<'.$tag.' '.$vendible.'
+			class="btn jqCst '.$cssClasses.'"
+			data-id="{{id}}"
+			data-ttl="{{nombre}}"
+			data-unit="1"
+			data-prc="{{precio}}"
+			data-src="{{imgSrc}}">
+				<i class="'.$iconCssClasses.'"></i> '.$text.'
+			</'.$tag.'>';
+		//$GLOBALS['firephp']->error("Excep: ".$strTemplate);
+		if (!is_null($obj)) {
+			foreach ($obj as $key => $value) {
+				$strTemplate=str_replace('{{'.$key.'}}', strip_tags($value), $strTemplate);
+			}
+		}
+		//$GLOBALS['firephp']->error("Excep2: ".$strTemplate);
+		return $strTemplate;
+	}
+/**/
 	public function fichaProductoResponsive($stdObjOfer) {
 		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/fichaProductoResponsive/markup.php');
 	}

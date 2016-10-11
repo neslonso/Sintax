@@ -11,7 +11,6 @@ $(document).ready(function() {
 		//var $swiperSlideToEdit=$('.swiper-slide-active',resultInitSwiper.$swiperTemplateClone);
 		var $swiperSlideToEdit=$('.swiper-slide',resultInitSwiper.$swiperTemplateClone);
 		$(window).on('resize.swiperOferDetalle', function(event) {
-			event.preventDefault();
 			var shopItemDataHeight=$swiperSlideToEdit.find('.shop-item').height()-(
 				$swiperSlideToEdit.find('.shop-item-cart').outerHeight(true)
 			);
