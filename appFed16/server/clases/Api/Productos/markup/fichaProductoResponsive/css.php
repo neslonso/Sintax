@@ -86,6 +86,17 @@
 	color:#fff !important;
 	background:transparent;
 }
+.shop-item-btn-info{
+	background:@color-terciario;
+	color:#fff;
+	border:1px solid @color-btn-items-border;
+}
+.shop-item-btn-info:hover{
+	background:transparent;
+	color:#fff;
+	border:1px solid @color-btn-items-border;
+}
+
 .shop-item-rebote{
 	background-image: url("./appFed16/binaries/imgs/shop-item-rebote.png");
 	cursor: pointer;

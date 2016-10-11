@@ -140,8 +140,6 @@ $(document).ready(function() {
 	});
 
 	$(document).on('click', function (event) {
-		console.log('CLICK DEL DOCUMENT');
-		console.log(event);
 		if (!$.contains($('#divJqCesta')[0],event.target) && $('.contentCart')[0]!=event.target && !$.contains($('.contentCart')[0],event.target)) {
 			if ($('.contentCart').hasClass('contentCartInside')) {
 				$('.contentCart')
@@ -157,11 +155,6 @@ $(document).ready(function() {
 			}
 		}
 	});
-	/*
-	$('#navUserMenu, .btnUserNav, #divJqCesta').click(function(event){
-		event.stopPropagation();
-	});
-	*/
 });
 
 function acLogin(email,pass,token) {
