@@ -46,10 +46,10 @@ class Productos extends ApiService implements IApiService {
 		if (!is_null($stdObjOrClassObjOfer)) {
 			if (get_class($stdObjOrClassObjOfer)=='Multi_ofertaVenta') {
 				$obj=\Sintax\ApiService\Categorias::creaStdObjOferta($stdObjOrClassObjOfer);
-				$vendible = (!$obj->vendible) ? 'disabled' : '';
 			} else {
-				$vendible = (!$stdObjOrClassObjOfer->vendible) ? 'disabled' : '';
+				$obj=$stdObjOrClassObjOfer;
 			}
+			$vendible = (!$obj->vendible) ? 'disabled' : '';
 		}
 		$strTemplate='<'.$tag.' '.$vendible.'
 			class="btn jqCst '.$cssClasses.'"
@@ -63,6 +63,7 @@ class Productos extends ApiService implements IApiService {
 		//$GLOBALS['firephp']->error("Excep: ".$strTemplate);
 		if (!is_null($obj)) {
 			foreach ($obj as $key => $value) {
+				error_log("Excep: ".$key.'=>'.$value);
 				$strTemplate=str_replace('{{'.$key.'}}', strip_tags($value), $strTemplate);
 			}
 		}
