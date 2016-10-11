@@ -102,12 +102,7 @@
  				$contentCart.removeClass('contentCartInside');
 				$contentCart.addClass('contentCartOutside');
 			} else {
-				if($('#navUserMenu').hasClass('nav-user-menu-inside')){
-					/* cerramos menu usuario*/
-					$('#navUserMenu').removeClass('nav-user-menu-inside');
-					$('#navUserMenu').addClass('nav-user-menu-outside');
-				}
- 				$contentCart.addClass('contentCartInside');
+				$contentCart.addClass('contentCartInside');
 				$contentCart.removeClass('contentCartOutside');
 			}
 		}
@@ -176,10 +171,11 @@
 			});
 			//remove handler
 			$('body').on('click.jqCesta', '.'+plugin.settings.classBtnRemove, function(event) {
+				console.log('on de jqremove');
 				$btn=$(this);
 				var id=$btn.data('id');
 				plugin.removeItem(id);
-				event.preventDefault();
+				event.stopPropagation();
 			});
 			//spinbox
 			/*$('body').on('changed.fu.spinbox', '.'+plugin.settings.classBtnSpinbox, function(event) {
@@ -187,11 +183,18 @@
 			  	var id=$spin.closest('.itemCart').data('id');
 				plugin.editItem(id, $spin.spinbox('getValue'));
 			})*/
-			$('body').on('change.jqCesta', '.'+plugin.settings.classBtnSpinbox, function(event) {
+
+			$('body').on('input', '.'+plugin.settings.classBtnSpinbox, function(event) {
+				$spin=$(this);
+				var id=$spin.closest('.itemCart').data('id');
+				if ($spin.spinbox('getValue')==1 && plugin.settings.arrItems[id].quantity==1) {return;}
+				plugin.editItem(id, $spin.spinbox('getValue'));
+			})
+			/*$('body').on('change.jqCesta', '.'+plugin.settings.classBtnSpinbox, function(event) {
 				$spin=$(this);
 				var id=$(this).closest('.itemCart').data('id');
 				plugin.editItem(id, $spin[0].value);
-			});
+			});*/
 			//btnCart handler
 			$('.btnCart',$element).click(function(event) {
 				plugin.toggleCesta();
@@ -229,6 +232,7 @@
 			//$('.badgeCart',element).html(plugin.settings.arrItems.length);
 			$('.badgeCart',element).html(summarize('quantity'));
 			$('.itemsCart',$element).html(html_items);
+			$('.'+plugin.settings.classBtnSpinbox).spinbox({min: plugin.settings.cart.valMinQuantity, max: plugin.settings.cart.valMaxQuantity});
 		}
 		var emptyTemplate = function() {
 			var cuerpoItem = [
@@ -250,10 +254,10 @@
 			var unit=objItem.quantity;
 			var prc=objItem.precio;
 			var total = unit * prc;
-			var spinbox=[
-				'<input type="number" class="inputUnit ' + plugin.settings.classBtnSpinbox + '" min="' + plugin.settings.cart.valMinQuantity + '" max="' + plugin.settings.cart.valMaxQuantity + '" value="' + unit + '">',
-			].join('');
 			/*var spinbox=[
+				'<input type="number" class="inputUnit ' + plugin.settings.classBtnSpinbox + '" min="' + plugin.settings.cart.valMinQuantity + '" max="' + plugin.settings.cart.valMaxQuantity + '" value="' + unit + '">',
+			].join('');*/
+			var spinbox=[
 				'<div class="fuelux" style="display:inline-block">',
 					'<div class="spinbox ' + plugin.settings.classBtnSpinbox + '" data-initialize="spinbox">',
 						'<input type="text" class="form-control input-mini spinbox-input" value="' + unit + '">',
@@ -267,7 +271,7 @@
 						'</div>',
 					'</div>',
 				'</div>',
-			].join('');*/
+			].join('');
 
 			var cuerpoItem = [
 				'<div class="row itemCart" data-id="'+id+'">',

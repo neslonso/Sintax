@@ -17,9 +17,6 @@ class Multi_productoGama extends Sintax\Core\Entity implements Sintax\Core\IEnti
 			"update" => NULL,
 			"nombre" => NULL,
 			"nombreTTS" => NULL,
-			"tipoDescuento" => NULL,
-			"momentoInicio" => NULL,
-			"momentoFin" => NULL,
 		);
 		parent::__construct($db,$keyValue);
 	}
@@ -27,7 +24,9 @@ class Multi_productoGama extends Sintax\Core\Entity implements Sintax\Core\IEnti
 	public function noReferenciado() {
 		$sql="SELECT idMulti_productoGama FROM multi_producto WHERE idMulti_productoGama='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$noReferenciadoEnMulti_producto=($this->db()->get_num_rows($sql)==0)?true:false;
-		$result=($noReferenciadoEnMulti_producto)?true:false;
+		$sql="SELECT idMulti_productoGama FROM multi_productoGamaDescuento WHERE idMulti_productoGama='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$noReferenciadoEnMulti_productoGamaDescuento=($this->db()->get_num_rows($sql)==0)?true:false;
+		$result=($noReferenciadoEnMulti_producto && $noReferenciadoEnMulti_productoGamaDescuento)?true:false;
 		return $result;
 	}
 	public function GETkeyValue ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData[static::$keyField],ENT_QUOTES,"UTF-8"):$this->arrDbData[static::$keyField];}
@@ -49,15 +48,6 @@ class Multi_productoGama extends Sintax\Core\Entity implements Sintax\Core\IEnti
 	public function GETnombreTTS ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["nombreTTS"],ENT_QUOTES,"UTF-8"):$this->arrDbData["nombreTTS"];}
 	public function SETnombreTTS ($nombreTTS,$entity_encode=false) {$this->arrDbData["nombreTTS"]=($entity_encode)?htmlentities($nombreTTS,ENT_QUOTES,"UTF-8"):$nombreTTS;}
 
-	public function GETtipoDescuento ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["tipoDescuento"],ENT_QUOTES,"UTF-8"):$this->arrDbData["tipoDescuento"];}
-	public function SETtipoDescuento ($tipoDescuento,$entity_encode=false) {$this->arrDbData["tipoDescuento"]=($entity_encode)?htmlentities($tipoDescuento,ENT_QUOTES,"UTF-8"):$tipoDescuento;}
-
-	public function GETmomentoInicio ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["momentoInicio"],ENT_QUOTES,"UTF-8"):$this->arrDbData["momentoInicio"];}
-	public function SETmomentoInicio ($momentoInicio,$entity_encode=false) {$this->arrDbData["momentoInicio"]=($entity_encode)?htmlentities($momentoInicio,ENT_QUOTES,"UTF-8"):$momentoInicio;}
-
-	public function GETmomentoFin ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["momentoFin"],ENT_QUOTES,"UTF-8"):$this->arrDbData["momentoFin"];}
-	public function SETmomentoFin ($momentoFin,$entity_encode=false) {$this->arrDbData["momentoFin"]=($entity_encode)?htmlentities($momentoFin,ENT_QUOTES,"UTF-8"):$momentoFin;}
-
 /******************************************************************************/
 
 /* Funciones FkFrom ***********************************************************/
@@ -65,6 +55,7 @@ class Multi_productoGama extends Sintax\Core\Entity implements Sintax\Core\IEnti
 
 /* Funciones FkTo *************************************************************/
 
+	//OJO!!!!, cuando se cubre una relacion varios a varios, no está en la consulta la tabla del extremo opuesto de la relacion y no se puede flitrar por sus datos.
 	public function arrMulti_producto($where="",$order="",$limit="",$tipo="arrStdObjs") {
 		$sqlWhere=($where!="")?" WHERE idMulti_productoGama='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_productoGama='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
@@ -77,6 +68,34 @@ class Multi_productoGama extends Sintax\Core\Entity implements Sintax\Core\IEnti
 				case "arrKeys": array_push($arr,$data->{\Multi_producto::GETkeyField()});break;
 				case "arrClassObjs":
 					$obj=new \Multi_producto($this->db(),$data->{\Multi_producto::GETkeyField()});
+					array_push($arr,$obj);
+					unset($obj);
+				break;
+				case "arrStdObjs":
+					$obj=new \stdClass();
+					foreach ($data as $field => $value) {
+						$obj->$field=$value;
+					}
+					array_push($arr,$obj);
+					unset ($obj);
+				break;
+			}
+		}
+		return $arr;
+	}
+	//OJO!!!!, cuando se cubre una relacion varios a varios, no está en la consulta la tabla del extremo opuesto de la relacion y no se puede flitrar por sus datos.
+	public function arrMulti_productoGamaDescuento($where="",$order="",$limit="",$tipo="arrStdObjs") {
+		$sqlWhere=($where!="")?" WHERE idMulti_productoGama='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_productoGama='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
+		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
+		$sql="SELECT * FROM multi_productoGamaDescuento".$sqlWhere.$sqlOrder.$sqlLimit;
+		$arr=array();
+		$rsl=$this->db()->query($sql);
+		while ($data=$rsl->fetch_object()) {
+			switch ($tipo) {
+				case "arrKeys": array_push($arr,$data->{\Multi_productoGamaDescuento::GETkeyField()});break;
+				case "arrClassObjs":
+					$obj=new \Multi_productoGamaDescuento($this->db(),$data->{\Multi_productoGamaDescuento::GETkeyField()});
 					array_push($arr,$obj);
 					unset($obj);
 				break;

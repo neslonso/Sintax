@@ -138,6 +138,30 @@ $(document).ready(function() {
 			'json');
 		}
 	});
+
+	$(document).on('click', function (event) {
+		console.log('CLICK DEL DOCUMENT');
+		console.log(event);
+		if (!$.contains($('#divJqCesta')[0],event.target) && $('.contentCart')[0]!=event.target && !$.contains($('.contentCart')[0],event.target)) {
+			if ($('.contentCart').hasClass('contentCartInside')) {
+				$('.contentCart')
+				.removeClass('contentCartInside')
+				.addClass('contentCartOutside');
+			}
+		}
+		if ($('.btnUserNav')[0]!=event.target && $('.btnUserNav')[1]!=event.target && $('#navUserMenu')[0]!=event.target && !$.contains($('#navUserMenu')[0],event.target)) {
+			if ($('#navUserMenu').hasClass('nav-user-menu-inside')) {
+				$('#navUserMenu')
+				.removeClass('nav-user-menu-inside')
+				.addClass('nav-user-menu-outside');
+			}
+		}
+	});
+	/*
+	$('#navUserMenu, .btnUserNav, #divJqCesta').click(function(event){
+		event.stopPropagation();
+	});
+	*/
 });
 
 function acLogin(email,pass,token) {
