@@ -65,6 +65,7 @@ a.banner-price-comprar:hover{
 	overflow: hidden;
 	white-space: nowrap;
 	height: 49px;
+	cursor:pointer;
 }
 .banner-txt > a{
 	color: #fff !important;
