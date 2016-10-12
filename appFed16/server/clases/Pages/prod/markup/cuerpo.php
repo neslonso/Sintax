@@ -96,7 +96,7 @@ if($objOferta->GETtipoDevolucionCredito()>0){
 			</div>
 		</div><!--ofertas-->
 	</div><!--item detail-->
-
+<?/*
 	<!--swiper articulos relacionados-->
 	<div class="row item-relacionados">
 		<div class="col-lg-12">
@@ -150,7 +150,7 @@ if($objOferta->GETtipoDevolucionCredito()>0){
 
 		</div>
 	</div>
-
+*/?>
 
 
 	<div class="row item-desc">
