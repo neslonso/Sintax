@@ -24,6 +24,12 @@ class Categorias extends ApiService implements IApiService {
 		$obj->imgId=$objOferta->imgId();
 		$obj->rebote=$objOferta->GETtipoDevolucionCredito();
 		$obj->vendible=$objOferta->vendible();
+		if ($objOferta->tipoDescuentoGama()>0) {
+			$obj->gama=new \stdClass();
+			$obj->gama->nombre=$objOferta->objMulti_productoGama()->GETnombre();
+			$obj->gama->tipoDescuentoGama=$objOferta->tipoDescuentoGama();
+			$obj->gama->momentoFin=\Fecha::fromMysql($objOferta->objMulti_productoGama()->momentoFin($objOferta->GETkeyTienda()))->toFechaEs(true);
+		}
 		return $obj;
 	}
 

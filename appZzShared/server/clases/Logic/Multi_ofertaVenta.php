@@ -217,11 +217,11 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
 		$tipoDescuentoGama=0;
 		if (count($arrProds)==1) {
-			$tipoDescuentoGama=$arrProds[0]->tipoDescuentoGama();
+			$tipoDescuentoGama=$arrProds[0]->tipoDescuentoGama($this->GETkeyTienda());
 		} else {
 			//TODO: Imprescindible, saber que hacer aquí
 			throw new Exception("No sabemos que hacer con los packs de productos", 1);
-			$tipoDescuentoGama=$arrProds[0]->tipoDescuentoGama();
+			$tipoDescuentoGama=$arrProds[0]->tipoDescuentoGama($this->GETkeyTienda());
 		}
 		return $tipoDescuentoGama;
 	}
@@ -345,6 +345,7 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		$sql=substr($sql,0,-6);
 		$sql.="LIMIT ".$offset.",".$numResults;
 		$GLOBALS['firephp']->info('multi_ofertaVenta::textSearch::$sql='.$sql);
+		error_log("Excep:".$sql);
 		$rsl=$db->query($sql);
 		$arr=array();
 		while ($data=$rsl->fetch_object()) {

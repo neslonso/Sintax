@@ -3,15 +3,26 @@
 $(document).ready(function() {
 
 	$('#ssSearch').ssSearch({
-		ajax: {
-			url: '<?=BASE_URL.FILE_APP?>',
-			data: {
-				'MODULE':'actions',
-				'acClase':'Home',
-				'acMetodo':'acSearchOfers',
-				'acTipo':'ajax',
+		data: {
+			limit: '0,25',
+			ajax: {
+				url: '<?=BASE_URL.FILE_APP?>',
+				data: {
+					'MODULE':'actions',
+					'acClase':'Home',
+					'acMetodo':'acSearchOfers',
+					'acTipo':'ajax',
+				},
+				paths:{
+					results: 'data.arrResults',
+					xtraInfo: 'data',
+				}
 			},
-			path:'data',
+		},
+		input: {
+			loading: {
+				cssClasses: 'fa fa-spinner fa-ssSearch-spin fa-1x fa-fw'
+			},
 		},
 		container: {
 			cssClasses:'',

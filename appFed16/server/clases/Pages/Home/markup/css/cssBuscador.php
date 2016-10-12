@@ -32,3 +32,8 @@
 .ssSearchItemContainer .precio {
 	font-size: larger;
 }
+
+.fa-ssSearch-spin {
+	-webkit-animation: fa-spin 0.3s infinite linear;
+	animation: fa-spin 0.3s infinite linear;
+}

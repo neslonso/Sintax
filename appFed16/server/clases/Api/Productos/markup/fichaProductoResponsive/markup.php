@@ -8,6 +8,22 @@
 			if (!isset($stdObjOfer->tooltip)) {$stdObjOfer->tooltip=$stdObjOfer->nombre;}
 ?>
 					<div class="shop-item-wrapper" data-id="<?=$stdObjOfer->id?>" data-index="<?=($stdObjOfer->index)?>">
+<?
+if (isset($stdObjOfer->gama)) {
+?>
+						<div class="shop-item-dto-gama stamp" style="display:none;">
+							<div><div>
+								<div class="dto stroke"><?=$stdObjOfer->gama->tipoDescuentoGama?>%</div>
+								<div>
+									Descuento en gama
+									<div class="gama"><?=$stdObjOfer->gama->nombre?></div>
+								</div>
+								<div class="text-right"><small>válido hasta <?=$stdObjOfer->gama->momentoFin?></small></div>
+							</div></div>
+						</div>
+<?
+}
+?>
 						<div class="shop-item" data-toggle="tooltip" title="<?=$stdObjOfer->tooltip?>" data-index="<?=($stdObjOfer->index)?>">
 							<div class="shop-item-data">
 								<div class="shop-item-img">

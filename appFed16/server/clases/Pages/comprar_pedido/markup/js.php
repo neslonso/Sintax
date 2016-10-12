@@ -468,6 +468,10 @@ function refreshTableLineas() {
 	$('[data-toggle="tooltip"]').tooltip({container:'body',html:true});
 }
 function trsTableLineas (arrLineas) {
+	if (arrLineas.length==0) {
+		$('<tr class="trEmpty"><td colspan="999"><h1 class="text-danger text-center">Su pedido no contiene ningún producto</h1></td></tr>').appendTo('#tableLineas tbody');
+		return;
+	}
 	for (var i = 0; i < arrLineas.length; i++) {
 		var oLinea=arrLineas[i];
 		var trHtml=[

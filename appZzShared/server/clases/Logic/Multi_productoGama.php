@@ -55,7 +55,6 @@ class Multi_productoGama extends Sintax\Core\Entity implements Sintax\Core\IEnti
 
 /* Funciones FkTo *************************************************************/
 
-	//OJO!!!!, cuando se cubre una relacion varios a varios, no está en la consulta la tabla del extremo opuesto de la relacion y no se puede flitrar por sus datos.
 	public function arrMulti_producto($where="",$order="",$limit="",$tipo="arrStdObjs") {
 		$sqlWhere=($where!="")?" WHERE idMulti_productoGama='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_productoGama='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
@@ -83,7 +82,7 @@ class Multi_productoGama extends Sintax\Core\Entity implements Sintax\Core\IEnti
 		}
 		return $arr;
 	}
-	//OJO!!!!, cuando se cubre una relacion varios a varios, no está en la consulta la tabla del extremo opuesto de la relacion y no se puede flitrar por sus datos.
+
 	public function arrMulti_productoGamaDescuento($where="",$order="",$limit="",$tipo="arrStdObjs") {
 		$sqlWhere=($where!="")?" WHERE idMulti_productoGama='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_productoGama='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
@@ -111,5 +110,26 @@ class Multi_productoGama extends Sintax\Core\Entity implements Sintax\Core\IEnti
 		}
 		return $arr;
 	}
+/******************************************************************************/
+	public function tipoDescuento($keyTienda) {
+		$result=0;
+		$arrDtos=$this->arrMulti_productoGamaDescuento("keyTienda='".$keyTienda."'","","","arrClassObjs");
+		foreach ($arrDtos as $objDto) {
+			if ($objDto->enVigor()) {
+				$result+=$objDto->GETtipoDescuento();
+			}
+		}
+		return $result;
+	}
+
+	public function momentoFin($keyTienda) {
+		$result=null;
+		$arrDtos=$this->arrMulti_productoGamaDescuento("keyTienda='".$keyTienda."'","","","arrClassObjs");
+		if (count($arrDtos)>0) {
+			$result=$arrDtos[0]->GETmomentoFin();
+		}
+		return $result;
+	}
+
 }
 ?>

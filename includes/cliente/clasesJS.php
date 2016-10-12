@@ -1,5 +1,6 @@
 <script type="text/javascript" src="./includes/cliente/clases/Function.js"></script>
 <script type="text/javascript" src="./includes/cliente/clases/Array.js"></script>
+<script type="text/javascript" src="./includes/cliente/clases/Object.js"></script>
 
 <script type="text/javascript" src="./includes/cliente/clases/Date.js"></script>
 <script type="text/javascript" src="./includes/cliente/clases/DateFormat.js"></script>

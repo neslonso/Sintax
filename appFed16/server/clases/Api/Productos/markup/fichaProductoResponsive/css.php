@@ -1,3 +1,4 @@
+<?if (false) {?><style><?}?>
 /*********  LISTADO DE PRODUCTOS **********/
 .swiper-slide .shop-item-wrapper {
 	height: 100%;
@@ -156,3 +157,83 @@
 }.shop-item-desc {
 	outline: 1px solid blue;
 }*/
+.shop-item-dto-gama>div {
+	width: 200px;
+	height: 200px;
+}
+.shop-item-dto-gama>div>div {
+	padding: 1em;
+
+}
+.shop-item-dto-gama .dto {
+	font-size: xx-large;
+}
+.shop-item-dto-gama .gama {
+	font-size: xx-large;
+	font-variant: small-caps;
+}
+/*Stamp*/
+.stamp {
+	width: auto;
+	height: auto;
+	display: inline-block;
+	padding: 10px;
+	background: white;
+	position: relative;
+	-webkit-filter: drop-shadow(0px 0px 10px rgba(0,0,0,0.5));
+	/*The stamp cutout will be created using crisp radial gradients*/
+	background: radial-gradient(
+		transparent 0px,
+		transparent 4px,
+		#000 4px,
+		#000
+	);
+	background: radial-gradient(
+		transparent 0px,
+		transparent 4px,
+		@color-principal 7px,
+		@color-principal 10px,
+		#fff 10px,
+		#fff
+	);
+
+	/*reducing the gradient size*/
+	background-size: 20px 20px;
+	/*Offset to move the holes to the edge*/
+	background-position: -10px -10px;
+	cursor:default;
+}
+.stamp:after {
+	content: '';
+	position: absolute;
+	/*We can shrink the pseudo element here to hide the shadow edges*/
+	left: 5px; top: 5px; right: 5px; bottom: 5px;
+	/*Shadow - doesn't look good because of the stamp cutout. We can still move this into another pseudo element behind the .stamp main element*/
+
+	/*box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.5);*/
+	/*pushing it back*/
+	z-index: -1;
+}
+.stampRotate {
+	-ms-transform: rotate(-30deg); /* IE 9 */
+	-webkit-transform: rotate(-30deg); /* Chrome, Safari, Opera */
+	transform: rotate(-30deg);
+}
+
+.stroke {
+    color: white;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+.stamp>div {
+	display:table-cell;
+	vertical-align:middle;
+	text-align:center;
+	/*width:60px;
+	height:60px;*/
+	background-color: #f0f0f0;
+}
+/**/

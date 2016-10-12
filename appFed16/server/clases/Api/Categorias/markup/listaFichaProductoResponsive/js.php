@@ -1,5 +1,28 @@
 <?if(false) {?><script><?}?>
 $(document).ready(function() {
+	$('.listaFichaProductoResponsive .shop-item-wrapper').hover(
+		function(event) {
+			$dtoGama=$('.shop-item-dto-gama',$(this)).clone().appendTo('body').css({position:'fixed'});
+
+			$dtoGama.show();
+			var left   = Math.floor($(window).width()/2 - $dtoGama.outerWidth()/2);
+			var top    = Math.floor($(window).height()/2 - $dtoGama.outerHeight()/2);
+			$dtoGama.hide();
+
+			$dtoGama.css({
+				'position' : 'fixed',
+				'left'     : left,
+				'top'      : top,
+				'z-index'  : 999999999,
+			}).fadeIn(400);
+		},
+		function(event) {
+			$('body>.shop-item-dto-gama').fadeOut('slow', function() {$(this).remove();});
+		}
+	);
+
+
+
 	$('.listaFichaProductoResponsive .shop-item-link').on('click',function(event) {
 		event.preventDefault();
 		$thisShopItemElto=$(this).closest('.shop-item');

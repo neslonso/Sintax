@@ -24,37 +24,33 @@
 		// plugin's default options
 		// this is private property and is  accessible only from inside the plugin
 		var defaults = {
-			limit: 25,
-			itemTemplate: '',
-			ajax: {
-				url: '',//url para $.ajax
-				data: {},//data para $.ajax, será extendido con el parametro q
-				path: null,//donde encontrar los results dentro de la response ajax
+			data: {
+				limit: '0,25',
+				paths:{
+					results: 'data.arrResults',
+					xtraInfo: 'data',
+				},
+				ajax: {
+					url: '',//url para $.ajax
+					data: {},//data para $.ajax, será extendido con el parametro q
+					path: null,//donde encontrar los results dentro de la response ajax
+				},
 			},
 			input: {
 				loading: {
-					cssClasses:'fa fa-spinner fa-spin fa-3x fa-fw',
-					text: 'Buscando...',
-				}
+					cssClasses:'fa fa-spinner fa-spin fa-1x fa-fw',
+					html: '<i>',
+				},
+				minQueryLen: 3,
 			},
 			container: {
 				appendTo: 'body',
 				cssClasses: '',
 				css: {},
 				template: [
-					'<div class="container-fluid">',
-						'<div class="row">',
-						'</div>',
-					'</div>',
 				].join(''),
 				emptyTemplate:[
-						'<div style="height:13px; background-color: #a0a0a0;"></div>',
-						'<div style="text-align:center;">',
-							'No se encontraron resultado para la búsqueda "{{sQuery}}"',
-						'</div>',
-						'<div style="height:13px; background-color: #a0a0a0;"></div>',
 				].join(''),
-
 			},
 			item: {
 				appendTo: '*:not(:has("*"))',//append la coleccion de items a los elementos de la template de container que no tengan hijos
@@ -80,10 +76,11 @@
 
 		// the "constructor" method that gets called when the object is created
 		plugin.init = function() {
-			// the plugin's final properties are the merged default and
-			// user-provided options (if any)
 			plugin.settings = $.extend(true,{}, defaults, options);
-			// code goes here
+
+			plugin.state=new Object
+			plugin.state.loading=false;
+
 			initCache();
 			setHandlers();
 		}
@@ -110,7 +107,9 @@
 				plugin.getResultsTimeout=setTimeout((function ($element,limit) {
 					return function() {
 						sQuery=$.trim($element.val());
-						getResults(sQuery,limit);
+						if (sQuery.length>=plugin.settings.input.minQueryLen) {
+							getResults(sQuery,limit);
+						}
 					}
 				})($(this),plugin.settings.limit),300);
 			});
@@ -128,26 +127,27 @@
 
 		var getResults = function (sQuery,limit) {
 			startLoading();
-			var cacheQuery=getCache(sQuery);
-			if (Array.isArray(cacheQuery)) {
+			var cacheObj=getCache(sQuery);
+			if (Object.isObject(cacheObj)) {
 				console.log ('ACIERTO DE CACHE ssSearch')
 				renderResults(sQuery);
 			} else {
-				var ajaxData=$.extend(true,{}, plugin.settings.ajax.data, {'q': sQuery});
+				if (!plugin.state.loading) {
+					startLoading();
+				}
+				var ajaxData=$.extend(true,{}, plugin.settings.data.ajax.data, {'q': sQuery});
 				$.ajax({
-					url: plugin.settings.ajax.url,
+					url: plugin.settings.data.ajax.url,
 					type: 'POST',
 					dataType: 'json',
 					data: ajaxData,
 				})
 				.done(function(data, textStatus, jqXHR) {
-					var arrResults;
-					if (Array.isArray(data[plugin.settings.ajax.path])) {
-						arrResults=data[plugin.settings.ajax.path];
-					} else {
-						arrResults=data;
-					}
-					setCache(sQuery,arrResults);
+					var cacheObj=new Object;
+					cacheObj.arrResults=Object.byString(data,plugin.settings.data.ajax.paths.results);
+					cacheObj.xtraInfo=Object.byString(data,plugin.settings.data.ajax.paths.xtraInfo);
+
+					setCache(sQuery,cacheObj);
 					renderResults(sQuery);
 					console.log("success");
 				})
@@ -163,7 +163,7 @@
 		}
 
 		var renderResults = function (sQuery) {
-			var arrResults=getCache(sQuery);//A la hora de render ya están en cache los resultado, se hayan tenido que consultar o no
+			var arrResults=getCache(sQuery).arrResults;//A la hora de render ya están en cache los resultado, se hayan tenido que consultar o no
 			var offset=new Object;
 			var size=new Object;
 			var $measuredElement=$element;
@@ -231,9 +231,7 @@
 				if (item.hasOwnProperty(property)) {
 					var value=item[property];
 					var token='{{'+property+'}}';
-					//itemHtml=itemHtml.replace(token,value);
 					itemHtml=itemHtml.replace(new RegExp(token,'g'),value);
-					//console.log(token+' reemplazado por '+value+' en '+itemHtml);
 				}
 			}
 
@@ -256,20 +254,51 @@
 			} else {
 				// Sorry! No Web Storage support..
 			}
-			plugin.cache=[];
+			plugin.state.cache=[];
 		}
 		var getCache = function (sQuery) {
-			return plugin.cache[sQuery];
+			return plugin.state.cache[sQuery];
 		}
 		var setCache = function (sQuery,arrResults) {
-			plugin.cache[sQuery]=arrResults;
+			plugin.state.cache[sQuery]=arrResults;
 		}
 
 		var startLoading = function () {
+			plugin.state.loading=$loading=$(plugin.settings.input.loading.html).first().addClass(plugin.settings.input.loading.cssClasses)
+			.css({
+				'position' : 'absolute',
+				'z-index'  : '9999999999999',
+				'display'  : 'none',
+			})
+			.appendTo($element.parent());
+			var elementMeasures=new Object;
+			elementMeasures.left = $element.position().left//-$(window).scrollLeft();
+			elementMeasures.top  = $element.position().top//-$(window).scrollTop();
+			elementMeasures.width  = $element.outerWidth();
+			elementMeasures.height = $element.outerHeight();
 
+			$loading.show();
+			var loadingMeasures=new Object;
+			loadingMeasures.width  = $loading.outerWidth();
+			loadingMeasures.height = $loading.outerHeight();
+			$loading.hide();
+
+			var left = elementMeasures.left + elementMeasures.width - (loadingMeasures.width * 1.30)
+			var top = elementMeasures.top + (elementMeasures.height/2) - (loadingMeasures.height/2)
+console.log(elementMeasures);
+console.log(loadingMeasures);
+console.log(left);
+console.log(top);
+			$loading.css({
+				'left':left+'px',
+				'top':top+'px',
+			}).show();
 		}
 		var stopLoading = function () {
-
+			plugin.state.loading.fadeOut('slow', function() {
+				$(this).remove();
+			});
+			plugin.state.loading=false;
 		}
 		// call the "constructor" method
 		plugin.init();

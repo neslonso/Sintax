@@ -99,7 +99,7 @@ class Home extends Error implements IPage {
 	$tInicial=microtime(true);
 		$arrCatsRoots=\Sintax\ApiService\Categorias::arrCatsRootsMenu($GLOBALS['config']->tienda->key);
 	$tTotal=microtime(true)-$tInicial;
-	error_log('/** Excep. arrCatsRootsMenu: '.round($tTotal,4));
+	//error_log('/** Excep. arrCatsRootsMenu: '.round($tTotal,4));
 		//$db=\cDb::confByKey("celorriov3");
 	//$GLOBALS['firephp']->error($db->ping(),"post arrCatsRootsMenu");
 		$objCesta=$this->ensureCesta($db);
@@ -158,6 +158,9 @@ class Home extends Error implements IPage {
 	public function acSearchOfers ($query) {
 		$db=\cDb::confByKey("celorriov3");
 		$arr=\Multi_ofertaVenta::textSearch($db,$GLOBALS['config']->tienda->key,$query);
+		$foundRows=$db->get_var("SELECT FOUND_ROWS()");
+		$objSearch=new \stdClass();
+		$objSearch->foundRows=$foundRows;
 		$arrResults=array();
 		foreach ($arr as $objOferta) {
 			$std=$objOferta->toStdObj();
@@ -168,7 +171,8 @@ class Home extends Error implements IPage {
 			array_push($arrResults, $std);
 			$std->nombreHighlight=\Cadena::highlight(explode(' ',$query) ,$std->nombre,'highlight');
 		}
-		return $arrResults;
+		$objSearch->arrResults=$arrResults;
+		return $objSearch;
 	}
 
 	protected function ensureCesta($db) {

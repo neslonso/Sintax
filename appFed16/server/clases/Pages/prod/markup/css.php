@@ -63,9 +63,6 @@
   width: 50px;
   line-height: 10px;
 }
-.item-detail .btnAddCart, .item-detail .btnOrder{
-	width: 100%;
-}
 
 /*relacionados*/
 .item-relacionados{

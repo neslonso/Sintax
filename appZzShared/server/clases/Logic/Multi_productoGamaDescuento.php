@@ -1,5 +1,5 @@
 <?
-class Multi_productoGamaDescuento extends Entity implements IEntity {
+class Multi_productoGamaDescuento extends Sintax\Core\Entity implements Sintax\Core\IEntity {
 	protected static $table="multi_productoGamaDescuento";
 	protected static $keyField="id";
 	protected static $insertField="insert";
@@ -64,7 +64,11 @@ class Multi_productoGamaDescuento extends Entity implements IEntity {
 		return new \Multi_productoGama($this->db(),$this->arrDbData["idMulti_productoGama"]);
 	}
 
-/* Funciones FkTo *************************************************************/
-
+/******************************************************************************/
+	public function enVigor() {
+		return
+			time()> \Fecha::fromMysql($this->GETmomentoInicio())->GETdate() &&
+			time()< \Fecha::fromMysql($this->GETmomentoFin())->GETdate();
+	}
 }
 ?>

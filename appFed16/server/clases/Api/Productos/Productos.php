@@ -63,8 +63,9 @@ class Productos extends ApiService implements IApiService {
 		//$GLOBALS['firephp']->error("Excep: ".$strTemplate);
 		if (!is_null($obj)) {
 			foreach ($obj as $key => $value) {
-				error_log("Excep: ".$key.'=>'.$value);
-				$strTemplate=str_replace('{{'.$key.'}}', strip_tags($value), $strTemplate);
+				if (!is_object($value)) {
+					$strTemplate=str_replace('{{'.$key.'}}', strip_tags($value), $strTemplate);
+				}
 			}
 		}
 		//$GLOBALS['firephp']->error("Excep2: ".$strTemplate);

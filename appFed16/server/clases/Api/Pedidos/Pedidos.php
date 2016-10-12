@@ -63,10 +63,11 @@ class Pedidos extends ApiService implements IApiService {
 			$arrDtosLineas=array();
 			$arrProdsEnOferta=$objOferta->arrMulti_producto("","","","arrClassObjs");
 			foreach ($arrProdsEnOferta as $objProd) {
-				if ($objProd->tipoDescuentoGama()>0) {
+				$tipoDescuentoGama=$objProd->tipoDescuentoGama($GLOBALS['config']->tienda->key);
+				if ($tipoDescuentoGama>0) {
 					$stdObjDto=new \stdClass();
 					$stdObjDto->importe=NULL;
-					$stdObjDto->tipoDescuento=$objProd->tipoDescuentoGama();
+					$stdObjDto->tipoDescuento=$tipoDescuentoGama;
 					$stdObjDto->concepto='Descuento gama: '.$objProd->objMulti_productoGama()->GETnombre();
 					array_push($arrDtosLineas,$stdObjDto);
 					unset ($stdObjDto);
