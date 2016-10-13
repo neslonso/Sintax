@@ -35,10 +35,9 @@
 					}
 					$nombreAvatarMin=strtoupper($nombreAvatar[0]);
 ?>
-					<div class="btn-group" role="group" aria-label="...">
+					<div class="btn-group" id="divBtnUserNav" role="group" aria-label="...">
 						<button class="btnUserNav btn btn-primary btn-menu btn-menu-xs" type="button" data-toggle="tooltip" title="Área de usuario" data-placement="top" data-container="body">
 							<span class="glyphicon glyphicon-user"></span>
-							<!--<span class="badge visible-xs visible-sm"><?=$nombreAvatarMin?></span>-->
 							<span class="badge hidden-xs hidden-sm"><?=$nombreAvatar?></span>
 						</button>
 					</div>
@@ -98,6 +97,7 @@
 <?
 				} else {
 ?>
+					<div id="divBtnUserNav">
 						<button class="btnUserNav btn btn-success btn-menu hidden-md hidden-lg btn-menu-xs" type="button" data-toggle="tooltip" title="Accede / Regístrate" data-placement="top" data-container="body">
 							<span class="fa fa-user-plus"></span>
 						</button>
@@ -113,7 +113,7 @@
 								<span class="fa fa fa-twitter"></span>
 							</button>
 						</div>
-
+					</div>
 					<div id="navUserMenu" class="nav-user-menu">
 						<div class="row">
 							<div class="col-xs-12">

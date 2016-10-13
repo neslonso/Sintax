@@ -147,7 +147,7 @@ $(document).ready(function() {
 				.addClass('contentCartOutside');
 			}
 		}
-		if ($('.btnUserNav')[0]!=event.target && $('.btnUserNav')[1]!=event.target && $('#navUserMenu')[0]!=event.target && !$.contains($('#navUserMenu')[0],event.target)) {
+		if (!$.contains($('#divBtnUserNav')[0],event.target) && $('#navUserMenu')[0]!=event.target && !$.contains($('#navUserMenu')[0],event.target)) {
 			if ($('#navUserMenu').hasClass('nav-user-menu-inside')) {
 				$('#navUserMenu')
 				.removeClass('nav-user-menu-inside')
@@ -155,6 +155,7 @@ $(document).ready(function() {
 			}
 		}
 	});
+
 });
 
 function acLogin(email,pass,token) {
