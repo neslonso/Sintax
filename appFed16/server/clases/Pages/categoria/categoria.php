@@ -18,7 +18,19 @@ class categoria extends Home implements IPage {
 		return parent::title();
 	}
 	public function metaTags() {
-		return parent::metaTags();
+		//$metaTags=parent::metaTags();
+		$metaTags="";
+		$idCategoria=(isset($_REQUEST['id']))?$_REQUEST['id']:NULL;
+		if(\Multi_categoria::existe (\cDb::confByKey('celorriov3'),$idCategoria)){
+			$objCategoria=new \Multi_categoria(\cDb::confByKey('celorriov3'),$idCategoria);
+			$metaTags .= '<meta name="description" content="'.$objCategoria->GETmetaDescription().'">';
+			$metaTags .= '<meta name="title" content="'.$objCategoria->GETtitle().'">';
+			$metaTags .= '<meta name="keywords" content="'.$objCategoria->GETmetaKeywords().'">';
+		}else{
+			throw new \Exception("El producto solicitado no se encuentra disponible en estos momentos. Disculpe las molestias");
+		}
+		return $metaTags;
+
 	}
 	public function head() {
 		parent::head();
