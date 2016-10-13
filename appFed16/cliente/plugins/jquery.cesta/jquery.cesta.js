@@ -178,18 +178,17 @@
 				event.stopPropagation();
 			});
 			//spinbox
-			/*$('body').on('changed.fu.spinbox', '.'+plugin.settings.classBtnSpinbox, function(event) {
+			$('body').on('changed.fu.spinbox', '.'+plugin.settings.classBtnSpinbox, function(event) {
 			  	$spin=$(this);
-			  	var id=$spin.closest('.itemCart').data('id');
-				plugin.editItem(id, $spin.spinbox('getValue'));
-			})*/
-
-			$('body').on('input', '.'+plugin.settings.classBtnSpinbox, function(event) {
-				$spin=$(this);
-				var id=$spin.closest('.itemCart').data('id');
-				if ($spin.spinbox('getValue')==1 && plugin.settings.arrItems[id].quantity==1) {return;}
-				plugin.editItem(id, $spin.spinbox('getValue'));
+		  	    var id=$spin.closest('.itemCart').data('id');
+			  	var idxOfId = plugin.settings.arrItems.getIndexBy("id", id);
+			  	if ($spin.spinbox('getValue')==1 && plugin.settings.arrItems[idxOfId].quantity==1) {
+			  		//
+			  	}else{
+			  		plugin.editItem(id, $spin.spinbox('getValue'));
+			  	}
 			})
+
 			/*$('body').on('change.jqCesta', '.'+plugin.settings.classBtnSpinbox, function(event) {
 				$spin=$(this);
 				var id=$(this).closest('.itemCart').data('id');

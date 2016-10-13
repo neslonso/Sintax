@@ -3,7 +3,6 @@ $tInicial=microtime(true);
 ?>
 <?
 define ('SKEL_ROOT_DIR',realpath(__DIR__.'/'.'./').'/');
-$module='';
 try {
 	//var_dump(getallheaders());
 	$X_FORWARDED_HOST=(isset($_SERVER['HTTP_X_FORWARDED_HOST']))?$_SERVER['HTTP_X_FORWARDED_HOST']:'';
@@ -46,5 +45,6 @@ try {
 	echo ("CATCH RAIZ: ".$e->getMessage());
 }
 $tTotal=microtime(true)-$tInicial;
+if (!isset($module)) {$module='[NINGUN MODULO SET]';}
 error_log (basename(__FILE__)."?".$module." ejecutado en: ".round($tTotal,3)." segundos.");
 ?>

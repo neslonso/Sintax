@@ -163,13 +163,12 @@ class Home extends Error implements IPage {
 		$objSearch->foundRows=$foundRows;
 		$arrResults=array();
 		foreach ($arr as $objOferta) {
-			$std=$objOferta->toStdObj();
-			$std->precio=$objOferta->pvp();
-			$std->imgId=$objOferta->imgId();
+			$std=\Sintax\ApiService\Categorias::creaStdObjOferta($objOferta);
 			$std->imgSrc=$objOferta->imgSrc(0,100,100);
 			//$std->descripcion=//parsear para quitar brs de mas
 			array_push($arrResults, $std);
 			$std->nombreHighlight=\Cadena::highlight(explode(' ',$query) ,$std->nombre,'highlight');
+			$std->btnComprar=\Sintax\ApiService\Productos::btnComprar($objOferta,'banner-price-comprar','','Comprar');
 		}
 		$objSearch->arrResults=$arrResults;
 		return $objSearch;

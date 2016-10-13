@@ -40,19 +40,17 @@ class Productos extends ApiService implements IApiService {
 
 /******************************************************************************/
 /* FRAGMENTOS *****************************************************************/
-	public function btnComprar($stdObjOrClassObjOfer=NULL,$cssClasses='',$iconCssClasses='glyphicon glyphicon-shopping-cart',$text='Comprar ahora',$tag='a') {
-		$obj=NULL;
-		$vendible ='';
-		if (!is_null($stdObjOrClassObjOfer)) {
-			if (get_class($stdObjOrClassObjOfer)=='Multi_ofertaVenta') {
-				$obj=\Sintax\ApiService\Categorias::creaStdObjOferta($stdObjOrClassObjOfer);
-			} else {
-				$obj=$stdObjOrClassObjOfer;
-			}
-			$vendible = (!$obj->vendible) ? 'disabled' : '';
+	public function btnComprar($stdObjOrClassObjOfer,$cssClasses='',$iconCssClasses='glyphicon glyphicon-shopping-cart',$text='Comprar ahora',$tag='a') {
+		if (get_class($stdObjOrClassObjOfer)=='Multi_ofertaVenta') {
+			$obj=\Sintax\ApiService\Categorias::creaStdObjOferta($stdObjOrClassObjOfer);
+		} else {
+			$obj=$stdObjOrClassObjOfer;
 		}
+		$vendible = (!$obj->vendible) ? 'disabled' : '';
+		$jqCst =($obj->vendible)?'jqCst':'';
+
 		$strTemplate='<'.$tag.' '.$vendible.'
-			class="btn jqCst '.$cssClasses.'"
+			class="btn '.$jqCst.' '.$cssClasses.'"
 			data-id="{{id}}"
 			data-ttl="{{nombre}}"
 			data-unit="1"
