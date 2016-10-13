@@ -17,10 +17,11 @@ class prod extends Home implements IPage {
 		return parent::title();
 	}
 	public function metaTags() {
-		$metaTags= parent::metaTags();
-		$idProd = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
-		if(\Multi_ofertaVenta::existe (\cDb::confByKey('celorriov3'),$idProd)){
-			$objOferta=new \Multi_ofertaVenta(\cDb::confByKey('celorriov3'),$idProd);
+		//$metaTags= parent::metaTags();
+		$metaTags="";
+		$idOfer = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
+		if(\Multi_ofertaVenta::existe (\cDb::confByKey('celorriov3'),$idOfer)){
+			$objOferta=new \Multi_ofertaVenta(\cDb::confByKey('celorriov3'),$idOfer);
 			$metaTags .= '<meta name="description" content="'.$objOferta->GETmetaDescription().'">';
 			$metaTags .= '<meta name="title" content="'.$objOferta->GETtitle().'">';
 			$metaTags .= '<meta name="keywords" content="'.$objOferta->GETmetaKeywords().'">';
@@ -43,9 +44,9 @@ class prod extends Home implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
 	public function cuerpo() {
-		$idProd = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
-		if(\Multi_ofertaVenta::existe (\cDb::gI(),$idProd)){
-			$objOferta=new \Multi_ofertaVenta(\cDb::gI(),$idProd);
+		$idOfer = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
+		if(\Multi_ofertaVenta::existe (\cDb::gI(),$idOfer)){
+			$objOferta=new \Multi_ofertaVenta(\cDb::gI(),$idOfer);
 			$objCategoria = isset($objOferta->arrMulti_categoria()[0]) ? $objOferta->arrMulti_categoria()[0] : '';
 			$arrOfertasRelacionadas=\Sintax\ApiService\Productos::arrProductosRelacionados(10,$GLOBALS['config']->tienda->key);
 			$arrOfertasGama=\Sintax\ApiService\Productos::arrProductosGama(10,$GLOBALS['config']->tienda->key);

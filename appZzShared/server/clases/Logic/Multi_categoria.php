@@ -62,20 +62,33 @@ class Multi_categoria extends \Sintax\Core\Entity implements \Sintax\Core\IEntit
 	public function GETabierto ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["abierto"],ENT_QUOTES,"UTF-8"):$this->arrDbData["abierto"];}
 	public function SETabierto ($abierto,$entity_encode=false) {$this->arrDbData["abierto"]=($entity_encode)?htmlentities($abierto,ENT_QUOTES,"UTF-8"):$abierto;}
 
-	public function GETtitle ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["title"],ENT_QUOTES,"UTF-8"):$this->arrDbData["title"];}
+	public function GETtitle ($entity_decode=false) {
+		$result=$this->parseTokens($this->arrDbData["title"]);
+		return ($entity_decode)?html_entity_decode($result,ENT_QUOTES,"UTF-8"):$result;
+	}
 	public function SETtitle ($title,$entity_encode=false) {$this->arrDbData["title"]=($entity_encode)?htmlentities($title,ENT_QUOTES,"UTF-8"):$title;}
 
-	public function GETmetaDescription ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["metaDescription"],ENT_QUOTES,"UTF-8"):$this->arrDbData["metaDescription"];}
+	public function GETmetaDescription ($entity_decode=false) {
+		$result=$this->parseTokens($this->arrDbData["metaDescription"]);
+		return ($entity_decode)?html_entity_decode($result,ENT_QUOTES,"UTF-8"):$result;
+	}
 	public function SETmetaDescription ($metaDescription,$entity_encode=false) {$this->arrDbData["metaDescription"]=($entity_encode)?htmlentities($metaDescription,ENT_QUOTES,"UTF-8"):$metaDescription;}
 
-	public function GETmetaKeywords ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["metaKeywords"],ENT_QUOTES,"UTF-8"):$this->arrDbData["metaKeywords"];}
+	public function GETmetaKeywords ($entity_decode=false) {
+		$result=$this->parseTokens($this->arrDbData["metaKeywords"]);
+		return ($entity_decode)?html_entity_decode($result,ENT_QUOTES,"UTF-8"):$result;
+	}
 	public function SETmetaKeywords ($metaKeywords,$entity_encode=false) {$this->arrDbData["metaKeywords"]=($entity_encode)?htmlentities($metaKeywords,ENT_QUOTES,"UTF-8"):$metaKeywords;}
 
 	public function GETkeyTienda ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData["keyTienda"],ENT_QUOTES,"UTF-8"):$this->arrDbData["keyTienda"];}
 	public function SETkeyTienda ($keyTienda,$entity_encode=false) {$this->arrDbData["keyTienda"]=($entity_encode)?htmlentities($keyTienda,ENT_QUOTES,"UTF-8"):$keyTienda;}
 
 /******************************************************************************/
-
+	private function parseTokens($str) {
+		$str=str_replace("%NOMBRE%", $this->GETnombre(), $str);
+		$str=str_replace("%PRECIO%", '', $str);
+		return $str;
+	}
 /* Funciones FkFrom ***********************************************************/
 
 
