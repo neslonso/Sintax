@@ -4,7 +4,7 @@ $(document).ready(function() {
 
 	$('#ssSearch').ssSearch({
 		data: {
-			limit: '0,25',
+			maxResults: '12',
 			ajax: {
 				url: '<?=BASE_URL.FILE_APP?>',
 				data: {
@@ -13,11 +13,16 @@ $(document).ready(function() {
 					'acMetodo':'acSearchOfers',
 					'acTipo':'ajax',
 				},
-				paths:{
-					results: 'data.arrResults',
-					xtraInfo: 'data',
-				}
 			},
+			cache: {
+				type: 'memory',//memory, localStorage, sessionStorage
+				duration  : 60,//seconds
+			},
+			paths:{
+				results: 'data.arrResults',
+				xtraInfo: 'data',
+			},
+
 		},
 		input: {
 			loading: {
@@ -42,7 +47,7 @@ $(document).ready(function() {
 			].join(''),
 		},
 		item: {
-			cssClasses:'col-xs-12 col-md-6',
+			cssClasses:'col-xs-12 col-sm-6 col-md-4',
 			template: [
 				'<div>',
 					'<div class="row">',

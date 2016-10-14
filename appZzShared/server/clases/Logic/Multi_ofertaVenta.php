@@ -327,7 +327,7 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		return $this->GETvisible() && !$this->GETagotado();
 	}
 
-	public static function textSearch($db,$keyTienda,$q,$soloVisibles=true,$offset=0,$numResults=10) {
+	public static function textSearch($db,$keyTienda,$q,$limit='0,10',$soloVisibles=true) {
 		$sqlSoloVisibles=($soloVisibles)?" visible=1 AND ":"";
 		$matchAgainst=array();
 		//$matchList='`ean`,`referencia`,`nombre`,`descripcion`,`title`,`metaDescription`,`metaKeywords`';
@@ -356,7 +356,7 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 				"UNION ";
 		}
 		$sql=substr($sql,0,-6);
-		$sql.="LIMIT ".$offset.",".$numResults;
+		$sql.="LIMIT ".$db->real_escape_string($limit);
 		$GLOBALS['firephp']->info('multi_ofertaVenta::textSearch::$sql='.$sql);
 		error_log("Excep:".$sql);
 		$rsl=$db->query($sql);

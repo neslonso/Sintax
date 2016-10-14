@@ -155,9 +155,9 @@ class Home extends Error implements IPage {
 		}
 		return $result;
 	}
-	public function acSearchOfers ($query) {
+	public function acSearchOfers ($query,$limit) {
 		$db=\cDb::confByKey("celorriov3");
-		$arr=\Multi_ofertaVenta::textSearch($db,$GLOBALS['config']->tienda->key,$query);
+		$arr=\Multi_ofertaVenta::textSearch($db,$GLOBALS['config']->tienda->key,$query,$limit);
 		$foundRows=$db->get_var("SELECT FOUND_ROWS()");
 		$objSearch=new \stdClass();
 		$objSearch->foundRows=$foundRows;

@@ -24,39 +24,41 @@
 		// plugin's default options
 		// this is private property and is  accessible only from inside the plugin
 		var defaults = {
-			data: {
-				limit: '0,25',
-				paths:{
-					results: 'data.arrResults',
-					xtraInfo: 'data',
+			data:  {
+				maxResults    : '10',
+				paths: {
+					results   : 'data.arrResults',
+					xtraInfo  : 'data',
 				},
 				ajax: {
-					url: '',//url para $.ajax
-					data: {},//data para $.ajax, será extendido con el parametro q
-					path: null,//donde encontrar los results dentro de la response ajax
+					url       : '',//url para $.ajax
+					data      : {},//data para $.ajax, será extendido con el parametro q
+					path      : null,//donde encontrar los results dentro de la response ajax
 				},
+				cache : {
+					type      : 'memory',//memory, localStorage, sessionStorage
+					duration  : 60*60*24,//seconds
+				}
 			},
 			input: {
-				loading: {
-					cssClasses:'fa fa-spinner fa-spin fa-1x fa-fw',
-					html: '<i>',
+				loading:  {
+					cssClasses: 'fa fa-spinner fa-spin fa-1x fa-fw',
+					html      : '<i>',
 				},
-				minQueryLen: 3,
+				minQueryLen   : 3,
 			},
 			container: {
-				appendTo: 'body',
-				cssClasses: '',
-				css: {},
-				template: [
-				].join(''),
-				emptyTemplate:[
-				].join(''),
+				appendTo      : 'body',
+				cssClasses    : '',
+				css           : {},
+				template      : [].join(''),
+				emptyTemplate : [].join(''),
 			},
 			item: {
-				appendTo: '*:not(:has("*"))',//append la coleccion de items a los elementos de la template de container que no tengan hijos
-				cssClasses:'col-xs-12',
-				css:'',
-				template:'{{nombre}}<br />{{precio}}',
+				appendTo      : '*:not(:has("*"))',//append la coleccion de items a los elementos de la template de container que no tengan hijos
+				cssClasses    : 'col-xs-12',
+				css           : '',
+				template      : '{{nombre}}<br />{{precio}}',
 			},
 		}
 
@@ -64,11 +66,7 @@
 		// current instance of the object
 		var plugin = this;
 
-		// this will hold the merged default, and user-provided options
-		// plugin's properties will be available through this object like:
-		// plugin.settings.propertyName from inside the plugin or
 		// element.data('ssSearch').settings.propertyName from outside the plugin,
-		// where "element" is the element the plugin is attached to;
 		plugin.settings = {}
 
 		var $element = $(element), // reference to the jQuery version of DOM element
@@ -79,7 +77,10 @@
 			plugin.settings = $.extend(true,{}, defaults, options);
 
 			plugin.state=new Object
+			plugin.state.currentQuery='';
 			plugin.state.loading=false;
+			plugin.state.offset=0;
+			plugin.state.scrollTop=0;
 
 			initCache();
 			setHandlers();
@@ -102,68 +103,122 @@
 
 		var setHandlers = function () {
 			//add handler
-			$element.on('input.ssSearch', function(event) {
+			$element.on('input.ssSearch focus.ssSearch', function(event) {
+				sQuery=$.trim($element.val());
+				if (plugin.state.currentQuery!=sQuery) {
+					plugin.state.currentQuery=sQuery;
+					plugin.state.offset=0;
+				}
+				var delay=(event.type=='focus')?50:300;
 				if (typeof plugin.getResultsTimeout!='undefined') {clearTimeout(plugin.getResultsTimeout);}
-				plugin.getResultsTimeout=setTimeout((function ($element,limit) {
+				plugin.getResultsTimeout=setTimeout((function ($element,maxResults) {
 					return function() {
-						sQuery=$.trim($element.val());
 						if (sQuery.length>=plugin.settings.input.minQueryLen) {
-							getResults(sQuery,limit);
+							getResults(sQuery,maxResults);
 						}
 					}
-				})($(this),plugin.settings.limit),300);
+				})($(this),plugin.settings.data.maxResults),delay);
 			});
 			$(window).on('resize.ssSearch', function(event) {
-				if (plugin.resultsContainer) {plugin.resultsContainer.remove();}
+				if (plugin.resultsContainer) {closeContainer();}
 			});
 			$(plugin.settings.container.appendTo).on('click.ssSearch', function(event) {
 				if (plugin.resultsContainer) {
-					if (event.target!=plugin.resultsContainer && !$.contains(plugin.resultsContainer[0],event.target) ) {
-						plugin.resultsContainer.remove();
+					if (
+						event.target!=element &&
+						!$.contains(element,event.target) &&
+						event.target!=plugin.resultsContainer &&
+						!$.contains(plugin.resultsContainer[0],event.target)
+					) {
+						closeContainer();
 					}
 				}
 			});
 		}
 
-		var getResults = function (sQuery,limit) {
-			startLoading();
+		var getResults = function (sQuery,maxResults) {
+			console.log('getResults sQuery: '+sQuery);
+			console.log('getResults Offset: '+plugin.state.offset);
 			var cacheObj=getCache(sQuery);
-			if (Object.isObject(cacheObj)) {
-				console.log ('ACIERTO DE CACHE ssSearch')
-				renderResults(sQuery);
-			} else {
-				if (!plugin.state.loading) {
-					startLoading();
-				}
-				var ajaxData=$.extend(true,{}, plugin.settings.data.ajax.data, {'q': sQuery});
-				$.ajax({
-					url: plugin.settings.data.ajax.url,
-					type: 'POST',
-					dataType: 'json',
-					data: ajaxData,
-				})
-				.done(function(data, textStatus, jqXHR) {
-					var cacheObj=new Object;
-					cacheObj.arrResults=Object.byString(data,plugin.settings.data.ajax.paths.results);
-					cacheObj.xtraInfo=Object.byString(data,plugin.settings.data.ajax.paths.xtraInfo);
 
-					setCache(sQuery,cacheObj);
-					renderResults(sQuery);
-					console.log("success");
-				})
-				.fail(function(jqXHR, textStatus, errorThrown) {
-					console.log("error");
-				})
-				.always(function(dataOrJqXHR, textStatus, jqXHROrErrorThrown) {
-					stopLoading();
-					console.log("complete");
-				});
-				//.then(doneCallbacks, failCallbacks)
+			var source;
+			if (!Object.isObject(cacheObj)) {
+				source='net';
+				downloadResults(sQuery,maxResults);
+			} else if (Object.isObject(cacheObj) && cacheObj.offset>=plugin.state.offset) {
+				source='cache';
+				console.log('getResults cacheObj.offset: '+cacheObj.offset);
+				console.log('plugin.resultsContainer: '+plugin.resultsContainer);
+				if (!plugin.resultsContainer) {
+					renderContainer(sQuery);
+				} else {
+					plugin.state.itemAppendTo.empty();
+					appendResults(sQuery,cacheObj.arrResults);
+				}
+			} else {
+				source='merge';
+				//cacheObj
+				$promise=downloadResults(sQuery,maxResults);
+				//$promise.done(function(data, textStatus, jqXHR) {});
 			}
+			console.log('getResults Source: '+source);
 		}
 
-		var renderResults = function (sQuery) {
-			var arrResults=getCache(sQuery).arrResults;//A la hora de render ya están en cache los resultado, se hayan tenido que consultar o no
+		var downloadResults= function (sQuery,maxResults) {
+			var limit=plugin.state.offset+','+maxResults;
+			if (!plugin.state.loading) {
+				startLoading();
+			}
+			var ajaxData=$.extend(true,{}, plugin.settings.data.ajax.data, {'q': sQuery, 'limit':limit});
+			var $promise=$.ajax({
+				url: plugin.settings.data.ajax.url,
+				type: 'POST',
+				dataType: 'json',
+				data: ajaxData,
+			})
+			.done(function(data, textStatus, jqXHR) {
+				var cacheObj=getCache(sQuery);
+				if (Object.isObject(cacheObj)) {
+					//merge
+					var newResults=Object.byString(data,plugin.settings.data.paths.results)
+					cacheObj.timestamp=(new Date).getTime();
+					cacheObj.arrResults=$.merge(
+						cacheObj.arrResults,
+						newResults);
+					cacheObj.xtraInfo=Object.byString(data,plugin.settings.data.paths.xtraInfo);
+					cacheObj.offset=plugin.state.offset;
+					setCache(sQuery,cacheObj);
+					if (!plugin.resultsContainer) {
+						renderContainer(sQuery);
+					} else {
+						appendResults(sQuery,newResults);
+					}
+				} else {
+					cacheObj=new Object;
+					cacheObj.timestamp=(new Date).getTime();
+					cacheObj.arrResults=Object.byString(data,plugin.settings.data.paths.results);
+					cacheObj.xtraInfo=Object.byString(data,plugin.settings.data.paths.xtraInfo);
+					cacheObj.offset=plugin.state.offset;
+					setCache(sQuery,cacheObj);
+					if (!plugin.resultsContainer) {
+						renderContainer(sQuery);
+					} else {
+						plugin.state.itemAppendTo.empty();
+						appendResults(sQuery,cacheObj.arrResults);
+					}
+				}
+			})
+			.fail(function(jqXHR, textStatus, errorThrown) {
+				console.log("error");
+			})
+			.always(function(dataOrJqXHR, textStatus, jqXHROrErrorThrown) {
+				stopLoading();
+			});
+			//.then(doneCallbacks, failCallbacks)
+			return $promise;
+		}
+
+		var getCsscontainer = function() {
 			var offset=new Object;
 			var size=new Object;
 			var $measuredElement=$element;
@@ -173,31 +228,42 @@
 			size.height = $measuredElement.outerHeight();
 
 			var widthModifier=33;
-			var left   = offset.left-(offset.left*widthModifier/100);//Math.floor($(window).width()*0.2);
+
+			var left   = Math.floor($(window).width()*0.2);
+			//var left   = offset.left-(offset.left*widthModifier/100);//Math.floor($(window).width()*0.2);
 			var top    = offset.top+size.height;//Math.floor($(window).height()*0.2);
-			//var right  = offset.left+size.width;//Math.floor($(window).width()*0.2);
-			var width  = size.width+(2*size.width*widthModifier/100);
+			var right  = Math.floor($(window).width()*0.2);
+			//var width  = size.width+(2*size.width*widthModifier/100);
 			var bottom = Math.floor($(window).height()*0.2);
 
 			var cssContainer=$.extend(true,{},
 			{
-				'display'    : 'block',
+				'display'    : 'none',
 				'position'   : 'fixed',
 				'z-index'    : 9999999,
 				'overflow'   : 'auto',
 				//'outline'  : 'solid black 3px',
 				'left'       : left,
 				'top'        : top,
-				'width'      : width,
-				//'right'      : right,
+				//'width'      : width,
+				'right'      : right,
 				'bottom'     : bottom,
 			},
 			plugin.settings.container.css);
+			return cssContainer;
+		}
 
-			if (plugin.resultsContainer) {
-				plugin.resultsContainer.remove();
+		var renderContainer = function (sQuery) {
+			var arrResults=[];
+			var cacheObj=getCache(sQuery);//A la hora de render ya están en cache los resultados, se hayan tenido que consultar o no
+			if (cacheObj) {
+				arrResults=cacheObj.arrResults;
+				//plugin.state.offset=arrResults.length;
 			}
 
+			var cssContainer=getCsscontainer();
+
+			console.log('renderContainer arrResults.length: '+arrResults.length);
 			if (arrResults.length==0) {
 				cssContainer.bottom='auto';
 				var htmlEmpty=plugin.settings.container.emptyTemplate.replace('{{sQuery}}',sQuery);
@@ -212,17 +278,32 @@
 				.addClass('ssSearchContainer')
 				.addClass(plugin.settings.container.cssClasses)
 				.html(plugin.settings.container.template);
-
-				var collection=[];
-				for (var i = 0; i < arrResults.length; i++) {
-					var item=arrResults[i];
-					$item=renderItem(item);
-					collection.push($item);
-				}
-				plugin.resultsContainer.find(plugin.settings.item.appendTo).append(collection);
 			}
 
 			plugin.resultsContainer.appendTo(plugin.settings.container.appendTo);
+			plugin.state.itemAppendTo=$(plugin.settings.item.appendTo);//Nos guardamos el nodo sobre el que tenemos que hacer append de los items, para asegurarnos de que no cambia en futuros appends
+			appendResults(sQuery,arrResults);
+			plugin.resultsContainer.fadeIn('400', function() {});
+
+			plugin.resultsContainer.on('scroll', function(event) {
+				$scrollante=$(this);
+				plugin.state.scrollTop=$scrollante.scrollTop();
+				if($scrollante.scrollTop() + $scrollante.innerHeight() == $scrollante[0].scrollHeight) {
+					getResults(plugin.state.currentQuery,plugin.settings.data.maxResults);
+				}
+			});
+			//setTimeout(function() {plugin.resultsContainer.scrollTop(plugin.state.scrollTop);},100);
+		}
+
+		var appendResults = function(sQuery,arrResults) {
+			var collection=[];
+			for (var i = 0; i < arrResults.length; i++) {
+				var item=arrResults[i];
+				$item=renderItem(item);
+				collection.push($item);
+			}
+			plugin.resultsContainer.find(plugin.state.itemAppendTo).append(collection);
+			plugin.state.offset+=arrResults.length;
 		}
 
 		var renderItem = function (item) {
@@ -248,21 +329,60 @@
 			return $item;
 		}
 
-		var initCache = function () {
-			if (typeof(Storage) !== "undefined") {
-				// Code for localStorage/sessionStorage.
-			} else {
-				// Sorry! No Web Storage support..
+		var closeContainer = function() {
+			if (plugin.resultsContainer) {
+				plugin.resultsContainer.fadeOut('400', function() {
+					$(this).remove();
+					plugin.resultsContainer=null;
+				});
 			}
-			plugin.state.cache=[];
-		}
-		var getCache = function (sQuery) {
-			return plugin.state.cache[sQuery];
-		}
-		var setCache = function (sQuery,arrResults) {
-			plugin.state.cache[sQuery]=arrResults;
+			plugin.state.offset=0;
 		}
 
+		/** CACHE ***************************************************************/
+		var initCache = function () {
+			var storage=typeof(Storage) !== "undefined";
+			if (storage && plugin.settings.data.cache.type!='memory') {
+				if (plugin.settings.data.cache.type=='sessionStorage') {
+					plugin.state.cache=window.sessionStorage;
+				} else {
+					plugin.state.cache=window.localStorage;
+				}
+			} else {
+				// No hay soporte para Web Storage, fallback to memory
+				plugin.settings.data.cache.type='memory';
+				plugin.state.cache={
+					items: {},
+					setItem: function (name,value) {
+						this.items[name]=value;
+					},
+					getItem: function (name) {
+						return this.items[name];
+					},
+					removeItem: function  (name) {
+						delete items[name];
+					}
+				};
+			}
+		}
+		var getCache = function (sQuery) {
+			var cacheItem=plugin.state.cache.getItem(btoa(sQuery));
+			if (cacheItem) {
+				var cacheObj=JSON.parse(cacheItem);
+				if ((new Date).getTime() - cacheObj.timestamp<plugin.settings.data.cache.duration*1000) {
+					return cacheObj;
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		}
+		var setCache = function (sQuery,cacheItem) {
+			plugin.state.cache.setItem(btoa(sQuery),JSON.stringify(cacheItem));
+		}
+
+		/* LOADING ************************************************************/
 		var startLoading = function () {
 			plugin.state.loading=$loading=$(plugin.settings.input.loading.html).first().addClass(plugin.settings.input.loading.cssClasses)
 			.css({
@@ -285,19 +405,21 @@
 
 			var left = elementMeasures.left + elementMeasures.width - (loadingMeasures.width * 1.30)
 			var top = elementMeasures.top + (elementMeasures.height/2) - (loadingMeasures.height/2)
-console.log(elementMeasures);
-console.log(loadingMeasures);
-console.log(left);
-console.log(top);
+			//console.log(elementMeasures);
+			//console.log(loadingMeasures);
+			//console.log(left);
+			//console.log(top);
 			$loading.css({
 				'left':left+'px',
 				'top':top+'px',
 			}).show();
 		}
 		var stopLoading = function () {
-			plugin.state.loading.fadeOut('slow', function() {
-				$(this).remove();
-			});
+			if (plugin.state.loading) {
+				plugin.state.loading.fadeOut('slow', function() {
+					$(this).remove();
+				});
+			}
 			plugin.state.loading=false;
 		}
 		// call the "constructor" method
