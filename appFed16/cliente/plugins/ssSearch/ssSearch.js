@@ -251,7 +251,7 @@
 			var bottom = Math.floor($(window).height()*0.05);
 
 			var cssPosition={
-				'position'   : 'absolute',
+				'position'   : 'fixed',
 				'z-index'    : 9999999,
 				'overflow'   : 'auto',
 				//'outline'  : 'solid black 3px',
