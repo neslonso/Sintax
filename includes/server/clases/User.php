@@ -47,6 +47,7 @@ class AnonymousUser extends User implements IUser {
 			case 'Sintax\Pages\prod':
 			case 'Sintax\Pages\registro_usuario':
 			case 'Sintax\Pages\acceso_usuario':
+			case 'Sintax\Pages\busqueda':
 				$result=true;
 				break;
 		}
