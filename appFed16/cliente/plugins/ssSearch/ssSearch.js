@@ -120,7 +120,8 @@
 				})($(this),plugin.settings.data.maxResults),delay);
 			});
 			$(window).on('resize.ssSearch', function(event) {
-				if (plugin.resultsContainer) {closeContainer();}
+				//if (plugin.resultsContainer) {closeContainer();}
+				positionContainer();
 			});
 			$(plugin.settings.container.appendTo).on('click.ssSearch', function(event) {
 				if (plugin.resultsContainer) {
@@ -219,6 +220,16 @@
 		}
 
 		var getCsscontainer = function() {
+
+			var cssContainer=$.extend(true,{},
+			{
+				'display'    : 'none',
+			},
+			plugin.settings.container.css);
+			return cssContainer;
+		}
+
+		var positionContainer = function () {
 			var offset=new Object;
 			var size=new Object;
 			var $measuredElement=$element;
@@ -227,19 +238,21 @@
 			size.width  = $measuredElement.outerWidth();
 			size.height = $measuredElement.outerHeight();
 
-			var widthModifier=33;
+			var widthModifier=20;
 
-			var left   = Math.floor($(window).width()*0.2);
-			//var left   = offset.left-(offset.left*widthModifier/100);//Math.floor($(window).width()*0.2);
+			var leftELement   = offset.left-(offset.left*widthModifier/100);//Math.floor($(window).width()*0.2);
+			var leftWindow   = Math.floor($(window).width()*0.1);
+			var left=leftELement;
+			if (left<0) {
+				left=leftWindow;
+			}
 			var top    = offset.top+size.height;//Math.floor($(window).height()*0.2);
-			var right  = Math.floor($(window).width()*0.2);
+			var right  = Math.floor($(window).width()*0.1);
 			//var width  = size.width+(2*size.width*widthModifier/100);
-			var bottom = Math.floor($(window).height()*0.2);
+			var bottom = Math.floor($(window).height()*0.1);
 
-			var cssContainer=$.extend(true,{},
-			{
-				'display'    : 'none',
-				'position'   : 'fixed',
+			var cssPosition={
+				'position'   : 'absolute',
 				'z-index'    : 9999999,
 				'overflow'   : 'auto',
 				//'outline'  : 'solid black 3px',
@@ -248,9 +261,9 @@
 				//'width'      : width,
 				'right'      : right,
 				'bottom'     : bottom,
-			},
-			plugin.settings.container.css);
-			return cssContainer;
+			}
+
+			plugin.resultsContainer.css(cssPosition);
 		}
 
 		var renderContainer = function (sQuery) {
@@ -278,10 +291,11 @@
 				.addClass('ssSearchContainer')
 				.addClass(plugin.settings.container.cssClasses)
 				.html(plugin.settings.container.template);
+				positionContainer();
 			}
 
 			plugin.resultsContainer.appendTo(plugin.settings.container.appendTo);
-			plugin.state.itemAppendTo=$(plugin.settings.item.appendTo);//Nos guardamos el nodo sobre el que tenemos que hacer append de los items, para asegurarnos de que no cambia en futuros appends
+			plugin.state.itemAppendTo=$(plugin.settings.item.appendTo,'.ssSearchContainer');//Nos guardamos el nodo sobre el que tenemos que hacer append de los items, para asegurarnos de que no cambia en futuros appends
 			appendResults(sQuery,arrResults);
 			plugin.resultsContainer.fadeIn('400', function() {});
 
