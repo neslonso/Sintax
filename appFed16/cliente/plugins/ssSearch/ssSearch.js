@@ -157,12 +157,7 @@
 				console.log('getResults cacheObj.offset: '+cacheObj.offset);
 				console.log('getResults plugin.resultsContainer: ');
 				console.log(plugin.resultsContainer);
-				if (!plugin.resultsContainer) {
-					renderContainer(sQuery);
-				} else {
-					plugin.state.itemAppendTo.empty();
-					appendResults(sQuery,cacheObj.arrResults);
-				}
+				renderContainer(sQuery,null);
 			} else {
 				source='merge';
 				downloadResults(sQuery,maxResults);
@@ -194,11 +189,7 @@
 					cacheObj.xtraInfo=Object.byString(data,plugin.settings.data.paths.xtraInfo);
 					cacheObj.offset=plugin.state.offset;
 					setCache(sQuery,cacheObj);
-					if (!plugin.resultsContainer) {
-						renderContainer(sQuery);
-					} else {
-						appendResults(sQuery,newResults);
-					}
+					renderContainer(sQuery,newResults);
 				} else {
 					cacheObj=new Object;
 					cacheObj.timestamp=(new Date).getTime();
@@ -206,12 +197,7 @@
 					cacheObj.xtraInfo=Object.byString(data,plugin.settings.data.paths.xtraInfo);
 					cacheObj.offset=plugin.state.offset;
 					setCache(sQuery,cacheObj);
-					if (!plugin.resultsContainer) {
-						renderContainer(sQuery);
-					} else {
-						plugin.state.itemAppendTo.empty();
-						appendResults(sQuery,cacheObj.arrResults);
-					}
+					renderContainer(sQuery,null);
 				}
 			})
 			.fail(function(jqXHR, textStatus, errorThrown) {
@@ -279,48 +265,59 @@
 			plugin.resultsContainer.css(cssPosition);
 		}
 
-		var renderContainer = function (sQuery) {
+		var renderContainer = function (sQuery,arrResultsToAppend) {
 			var arrResults=[];
-			var cacheObj=getCache(sQuery);//A la hora de render ya están en cache los resultados, se hayan tenido que consultar o no
-			if (cacheObj) {
-				arrResults=cacheObj.arrResults;
-				//plugin.state.offset=arrResults.length;
+			if (arrResultsToAppend) {
+				arrResults=arrResultsToAppend;
+				console.log('renderContainer append arrResults.length: '+arrResults.length);
+			} else {
+				closeContainer();
+				var cacheObj=getCache(sQuery);
+				if (cacheObj) {
+					arrResults=cacheObj.arrResults;
+					//plugin.state.offset=arrResults.length;
+				}
+				console.log('renderContainer cache arrResults.length: '+arrResults.length);
 			}
 
 			var cssContainer=getCsscontainer();
+			console.log('renderContainer plugin.resultsContainer: ');
+			console.log(plugin.resultsContainer);
+			if (!plugin.resultsContainer) {
+				if (arrResults.length==0) {
+					cssContainer.bottom='auto';
+					var htmlEmpty=plugin.settings.container.emptyTemplate.replace('{{sQuery}}',sQuery);
+					plugin.resultsContainer=$('<div>')
+					.css(cssContainer)
+					.addClass('ssSearchContainer empty')
+					.addClass(plugin.settings.container.cssClasses)
+					.html(htmlEmpty);
+					positionContainer();
+				} else {
+					plugin.resultsContainer=$('<div>')
+					.css(cssContainer)
+					.addClass('ssSearchContainer')
+					.addClass(plugin.settings.container.cssClasses)
+					.html(plugin.settings.container.template);
+					positionContainer();
+				}
 
-			console.log('renderContainer arrResults.length: '+arrResults.length);
-			if (arrResults.length==0) {
-				cssContainer.bottom='auto';
-				var htmlEmpty=plugin.settings.container.emptyTemplate.replace('{{sQuery}}',sQuery);
-				plugin.resultsContainer=$('<div>')
-				.css(cssContainer)
-				.addClass('ssSearchContainer empty')
-				.addClass(plugin.settings.container.cssClasses)
-				.html(htmlEmpty);
-				positionContainer();
-			} else {
-				plugin.resultsContainer=$('<div>')
-				.css(cssContainer)
-				.addClass('ssSearchContainer')
-				.addClass(plugin.settings.container.cssClasses)
-				.html(plugin.settings.container.template);
-				positionContainer();
+				plugin.resultsContainer.appendTo(plugin.settings.container.appendTo);
+				plugin.state.itemAppendTo=$(plugin.settings.item.appendTo,'.ssSearchContainer');//Nos guardamos el nodo sobre el que tenemos que hacer append de los items, para asegurarnos de que no cambia en futuros appends
+
+				plugin.resultsContainer.on('scroll', function(event) {
+					$scrollante=$(this);
+					plugin.state.scrollTop=$scrollante.scrollTop();
+					if($scrollante.scrollTop() + $scrollante.innerHeight() == $scrollante[0].scrollHeight) {
+						getResults(plugin.state.currentQuery,plugin.settings.data.maxResults);
+					}
+				});
 			}
 
-			plugin.resultsContainer.appendTo(plugin.settings.container.appendTo);
-			plugin.state.itemAppendTo=$(plugin.settings.item.appendTo,'.ssSearchContainer');//Nos guardamos el nodo sobre el que tenemos que hacer append de los items, para asegurarnos de que no cambia en futuros appends
 			appendResults(sQuery,arrResults);
-			plugin.resultsContainer.fadeIn('400', function() {});
-
-			plugin.resultsContainer.on('scroll', function(event) {
-				$scrollante=$(this);
-				plugin.state.scrollTop=$scrollante.scrollTop();
-				if($scrollante.scrollTop() + $scrollante.innerHeight() == $scrollante[0].scrollHeight) {
-					getResults(plugin.state.currentQuery,plugin.settings.data.maxResults);
-				}
-			});
-			//setTimeout(function() {plugin.resultsContainer.scrollTop(plugin.state.scrollTop);},100);
+			if (!arrResultsToAppend) {
+				plugin.resultsContainer.fadeIn('400', function() {});
+			}
 		}
 
 		var appendResults = function(sQuery,arrResults) {
@@ -361,8 +358,8 @@
 			if (plugin.resultsContainer) {
 				plugin.resultsContainer.fadeOut('400', function() {
 					$(this).remove();
-					plugin.resultsContainer=null;
 				});
+				plugin.resultsContainer=null;
 			}
 			plugin.state.offset=0;
 		}
