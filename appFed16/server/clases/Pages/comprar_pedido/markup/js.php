@@ -146,7 +146,7 @@ $(document).ready(function() {
 			'dtos'             : dtos,
 			'comentarios'      : comentarios,
 		}
-		console.log(pedData);
+		//console.log(pedData);
 		//if (confirm("¿Realizar el POST?")) {
 			Post ('action','<?=BASE_DIR.FILE_APP?>',
 				'MODULE','actions','acClase','comprar_pedido','acMetodo','acGrabar','acTipo','stdAssoc',
@@ -173,36 +173,14 @@ $(document).ready(function() {
 		var credito=$('#creditoAplicar').data('creditoAplicar');
 		ulDtosDel('dtoCredito');
 		if (credito>0) {
-			//muestraMsgModal('Crédito de cliente aplicado.','Se aplicarán '+credito+'€ de crédito de cliente.');
 			$('#divJqNotifications').data('jqNotifications')
 				.addNotification('Crédito de cliente.','Se aplicarán '+credito+'€ de crédito de cliente.', 'info');
 			ulDtosAdd('dtoCredito','Crédito de cliente','',credito);
 		} else {
-			//muestraMsgModal('Crédito de cliente aplicado.','No se aplicará crédito de cliente.');
-			/*
-			$('#divJqNotifications').data('jqNotifications')
-				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'add');
-			$('#divJqNotifications').data('jqNotifications')
-				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'del');
-			$('#divJqNotifications').data('jqNotifications')
-				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'other');
-			*/
-			$('#divJqNotifications').data('jqNotifications')
-				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'info');
-			/*
 			$('#divJqNotifications').data('jqNotifications')
 				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'warning');
-			$('#divJqNotifications').data('jqNotifications')
-				.addNotification('Crédito de cliente.','No se aplicará crédito de cliente.', 'danger');
-			*/
 		}
 	});
-
-	/*
-	$('#cuponCombo').on('changed.fu.combobox', function (evt, data) {
-		$(this).data('dirty',true);
-	});
-	*/
 
 	$('#addCupon').on('click', function () {
 		ulDtosDel('dtoCupon');
@@ -220,8 +198,8 @@ $(document).ready(function() {
 				'session_name':'<?=$GLOBALS['session_name']?>'
 			},
 			function (response) {
-				console.log('Response cupon');
-				console.log(response);
+				//console.log('Response cupon');
+				//console.log(response);
 				if (!response.exito){
 					muestraMsgModal('Error validando cupon','Se ha producido el siguiente error durante la validación del cupón:<br/>'+response.msg);
 				} else {
@@ -302,7 +280,7 @@ $(document).ready(function() {
 						'session_name': '<?=$GLOBALS['session_name']?>'
 					},
 					function (response) {
-						console.log(response);
+						//console.log(response);
 						if (!response.exito){
 							muestraMsgModal('Error añadiendo dirección',response.msg);
 						} else {
@@ -444,8 +422,8 @@ function aplicaDtoVolumen() {
 	var volumen=$('#spTotalLineas').data('totalLineas');
 	var tipoDto=0;
 
-	console.log(arrDtos);
-	console.log(volumen);
+	//console.log(arrDtos);
+	//console.log(volumen);
 
 	for (i = 0; i < arrDtos.length; i++) {
 		objDto=arrDtos[i];
@@ -522,7 +500,9 @@ function getLineas () {
 			if (totalRebotes>0) {$('#spTotalRebotes').closest('h4').show();} else {$('#spTotalRebotes').closest('h4').hide();}
 
 			$('#panelCredito').data('creditoMaximoAplicable',creditoMaximoAplicable);
-			$('#credito').val(creditoMaximoAplicable).attr({max:creditoMaximoAplicable});
+			$('#credito').attr({max:creditoMaximoAplicable}).val(creditoMaximoAplicable);
+			$('#credito').trigger('input');
+			$('#creditoMaximoAplicable').html(creditoMaximoAplicable+'€');
 		}
 	},
 	'json')
@@ -571,13 +551,11 @@ function calculaTotales() {
 				var portes=parseFloat($('#spPortes').data('portes'));
 				$('#spPortes').html(portes.toFixed(2));
 
-				/*
-				console.log('totalLineas: ' + totalLineas);
-				console.log('dtoImporte: ' + dtoImporte);
-				console.log('baseDtosPorcentuales: ' + baseDtosPorcentuales);
-				console.log('dtoMonto: ' + dtoMonto);
-				console.log('portes: ' + portes);
-				*/
+				//console.log('totalLineas: ' + totalLineas);
+				//console.log('dtoImporte: ' + dtoImporte);
+				//console.log('baseDtosPorcentuales: ' + baseDtosPorcentuales);
+				//console.log('dtoMonto: ' + dtoMonto);
+				//console.log('portes: ' + portes);
 
 				var total=totalLineas-dtoMonto-dtoImporte+portes;
 				total=(Math.round(total*100)/100).toFixed(2);

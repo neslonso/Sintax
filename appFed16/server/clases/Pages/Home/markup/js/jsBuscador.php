@@ -4,7 +4,7 @@ $(document).ready(function() {
 
 	$('#ssSearch').ssSearch({
 		data: {
-			maxResults: '12',
+			maxResults: '4',
 			ajax: {
 				url: '<?=BASE_URL.FILE_APP?>',
 				data: {
@@ -71,4 +71,19 @@ $(document).ready(function() {
 			].join(''),
 		}
 	});
+
+	$('#ssSearch').keypress(function(event) {
+		if (event.which==13) {
+			var query=$.trim($(this).val()).toLowerCase();
+			//url=seoUrl('<?=BASE_URL?>busqueda/'+query);
+			url=seoUrl('<?=BASE_URL?>'+query+'/busqueda/');
+			window.location.href=url;
+		}
+	});
+
+	function seoUrl(url) {
+		url=url.replace(new RegExp(/[\s-]+/,'g'),' ');
+		url=url.replace(new RegExp(/[\s_]/,'g'),'-');
+		return url;
+	}
 });

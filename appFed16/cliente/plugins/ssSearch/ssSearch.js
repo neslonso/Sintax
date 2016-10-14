@@ -41,11 +41,11 @@
 				}
 			},
 			input: {
+				minQueryLen   : 3,
 				loading:  {
 					cssClasses: 'fa fa-spinner fa-spin fa-1x fa-fw',
 					html      : '<i>',
 				},
-				minQueryLen   : 3,
 			},
 			container: {
 				appendTo      : 'body',
@@ -104,12 +104,16 @@
 		var setHandlers = function () {
 			//add handler
 			$element.on('input.ssSearch focus.ssSearch', function(event) {
+				console.log('Evento recibido: '+event.type);
 				sQuery=$.trim($element.val());
 				if (plugin.state.currentQuery!=sQuery) {
 					plugin.state.currentQuery=sQuery;
 					plugin.state.offset=0;
+					if (plugin.resultsContainer) {
+						plugin.resultsContainer.scrollTop(0);
+					}
 				}
-				var delay=(event.type=='focus')?50:300;
+				var delay=(event.type=='focus')?50:3000;
 				if (typeof plugin.getResultsTimeout!='undefined') {clearTimeout(plugin.getResultsTimeout);}
 				plugin.getResultsTimeout=setTimeout((function ($element,maxResults) {
 					return function() {
@@ -120,8 +124,10 @@
 				})($(this),plugin.settings.data.maxResults),delay);
 			});
 			$(window).on('resize.ssSearch', function(event) {
-				//if (plugin.resultsContainer) {closeContainer();}
-				positionContainer();
+				if (plugin.resultsContainer) {
+					//closeContainer();
+					positionContainer();
+				}
 			});
 			$(plugin.settings.container.appendTo).on('click.ssSearch', function(event) {
 				if (plugin.resultsContainer) {
@@ -149,7 +155,8 @@
 			} else if (Object.isObject(cacheObj) && cacheObj.offset>=plugin.state.offset) {
 				source='cache';
 				console.log('getResults cacheObj.offset: '+cacheObj.offset);
-				console.log('plugin.resultsContainer: '+plugin.resultsContainer);
+				console.log('getResults plugin.resultsContainer: ');
+				console.log(plugin.resultsContainer);
 				if (!plugin.resultsContainer) {
 					renderContainer(sQuery);
 				} else {
@@ -158,9 +165,7 @@
 				}
 			} else {
 				source='merge';
-				//cacheObj
-				$promise=downloadResults(sQuery,maxResults);
-				//$promise.done(function(data, textStatus, jqXHR) {});
+				downloadResults(sQuery,maxResults);
 			}
 			console.log('getResults Source: '+source);
 		}
@@ -210,7 +215,7 @@
 				}
 			})
 			.fail(function(jqXHR, textStatus, errorThrown) {
-				console.log("error");
+				//console.log("error");
 			})
 			.always(function(dataOrJqXHR, textStatus, jqXHROrErrorThrown) {
 				stopLoading();
@@ -230,26 +235,34 @@
 		}
 
 		var positionContainer = function () {
+			var elementWidthModifier=38;
 			var offset=new Object;
 			var size=new Object;
 			var $measuredElement=$element;
 			offset.left = $measuredElement.offset().left-$(window).scrollLeft();
 			offset.top  = $measuredElement.offset().top-$(window).scrollTop();
-			size.width  = $measuredElement.outerWidth();
+			size.width  = $measuredElement.outerWidth() + elementWidthModifier;
 			size.height = $measuredElement.outerHeight();
 
-			var widthModifier=20;
-
-			var leftELement   = offset.left-(offset.left*widthModifier/100);//Math.floor($(window).width()*0.2);
-			var leftWindow   = Math.floor($(window).width()*0.1);
-			var left=leftELement;
-			if (left<0) {
-				left=leftWindow;
+			var positionRespectElement=true;
+			var positionRespectWindow=false;
+			if (positionRespectElement) {
+				var widthModifier=70;
+				var left  = offset.left-(offset.left*widthModifier/100);//Math.floor($(window).width()*0.2);
+				var right = 'auto';
+				var width = size.width+(2*size.width*widthModifier/100);
 			}
+			if (left+width>$(window).width()) {
+				positionRespectWindow=true;
+			}
+			if (positionRespectWindow) {
+				var left  = Math.floor($(window).width()*0.05);
+				var right = Math.floor($(window).width()*0.05);
+				var width = 'auto';
+			}
+
 			var top    = offset.top+size.height;//Math.floor($(window).height()*0.2);
-			var right  = Math.floor($(window).width()*0.1);
-			//var width  = size.width+(2*size.width*widthModifier/100);
-			var bottom = Math.floor($(window).height()*0.1);
+			var bottom = Math.floor($(window).height()*0.05);
 
 			var cssPosition={
 				'position'   : 'absolute',
@@ -258,7 +271,7 @@
 				//'outline'  : 'solid black 3px',
 				'left'       : left,
 				'top'        : top,
-				//'width'      : width,
+				'width'      : width,
 				'right'      : right,
 				'bottom'     : bottom,
 			}
@@ -285,6 +298,7 @@
 				.addClass('ssSearchContainer empty')
 				.addClass(plugin.settings.container.cssClasses)
 				.html(htmlEmpty);
+				positionContainer();
 			} else {
 				plugin.resultsContainer=$('<div>')
 				.css(cssContainer)
