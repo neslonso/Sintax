@@ -4,7 +4,7 @@ $(document).ready(function() {
 
 	$('#ssSearch').ssSearch({
 		data: {
-			maxResults: '4',
+			maxResults: '12',
 			ajax: {
 				url: '<?=BASE_URL.FILE_APP?>',
 				data: {

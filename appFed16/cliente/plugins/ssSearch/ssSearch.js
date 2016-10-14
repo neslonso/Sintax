@@ -113,7 +113,7 @@
 						plugin.resultsContainer.scrollTop(0);
 					}
 				}
-				var delay=(event.type=='focus')?50:3000;
+				var delay=(event.type=='focus')?50:300;
 				if (typeof plugin.getResultsTimeout!='undefined') {clearTimeout(plugin.getResultsTimeout);}
 				plugin.getResultsTimeout=setTimeout((function ($element,maxResults) {
 					return function() {
