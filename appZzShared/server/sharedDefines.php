@@ -97,7 +97,7 @@ define ('ARR_TIENDAS',serialize(array (
 		),
 	),
 	'FC' => array (
-		'SITE_NAME' => 'Celorriofarma',
+		'SITE_NAME' => 'Farmacia Celorrio',
 		'CONTACTO' => (object) array(
 			'EMAIL' => 'atcioncliente@'.BASE_DOMAIN,
 			'TLF' => '982 20 30 08',

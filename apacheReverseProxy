@@ -1,5 +1,4 @@
 ProxyRequests Off
-ProxyPass "/error_docs" "!"
 
 ProxyPass "/error_docs" "!"
 ProxyPass "/plesk-stat" "!"
@@ -9,9 +8,9 @@ ProxyPass "/ftpstat" "!"
 ProxyPass "/anon_ftpstat" "!"
 ProxyPass "/awstats-icon" "!"
 
-ProxyPass "/" "http://fed16.farmaciacelorrio.com/"
-ProxyPassReverse "/" "http://fed16.farmaciacelorrio.com/"
-ProxyPassReverseCookieDomain  "fed16.farmaciacelorrio.com"  "bebefarma.com"
+ProxyPass "/" "http://scv.farmaciacelorrio.com/"
+ProxyPassReverse "/" "http://scv.farmaciacelorrio.com/"
+ProxyPassReverseCookieDomain  "scv.farmaciacelorrio.com"  "farmaciacelorrio.com"
 ProxyPassReverseCookiePath  "/"  "/"
 ProxyVia On
 
@@ -26,10 +25,9 @@ ProxyPass "/ftpstat" "!"
 ProxyPass "/anon_ftpstat" "!"
 ProxyPass "/awstats-icon" "!"
 
-ProxyPass "/error_docs" "!"
-ProxyPass "/" "http://fed16.farmaciacelorrio.com/"
-ProxyPassReverse "/" "http://fed16.farmaciacelorrio.com/"
-ProxyPassReverseCookieDomain  "fed16.farmaciacelorrio.com"  "bebefarma.com"
+ProxyPass "/" "https://scv.farmaciacelorrio.com/"
+ProxyPassReverse "/" "https://scv.farmaciacelorrio.com/"
+ProxyPassReverseCookieDomain  "scv.farmaciacelorrio.com"  "farmaciacelorrio.com"
 ProxyPassReverseCookiePath  "/"  "/"
 ProxyVia On
 
