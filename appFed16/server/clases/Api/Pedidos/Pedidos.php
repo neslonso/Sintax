@@ -39,7 +39,7 @@ class Pedidos extends ApiService implements IApiService {
 
 		$subService='storeData';
 		$store=$GLOBALS['config']->tienda->key;
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store='.$store.'&hash='.$hash;
+		$urlAPI='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store='.$store.'&hash='.$hash;
 		$result=file_get_contents($urlAPI);
 		$storeData=json_decode($result);
 		return $storeData;

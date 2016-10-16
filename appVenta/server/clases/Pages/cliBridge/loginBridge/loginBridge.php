@@ -36,7 +36,7 @@ class loginBridge extends Bridge implements IPage {
 		$keyTienda=$data->store;
 		if (isset($_SESSION['usuario'])) {
 			$arrayMulti['id']=$_SESSION['usuario']->id;
-			$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliData';
+			$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliData';
 			$options = array(
 			    'http' => array(
 			        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -54,7 +54,7 @@ class loginBridge extends Bridge implements IPage {
 	public function acLogin() {
 		//POST a la API de V3
 		$arrayMulti=$_REQUEST;
-		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliLogin';
+		$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliLogin';
 		// use key 'http' even if you send the request to https://...
 		$options = array(
 		    'http' => array(

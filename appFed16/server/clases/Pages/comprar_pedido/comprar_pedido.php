@@ -69,7 +69,7 @@ class comprar_pedido extends Home implements IPage {
 		$arrayMulti=$_REQUEST;
 		$arrayMulti['keyTienda']=$GLOBALS['config']->tienda->key;
 		$arrayMulti['pedData']['idMulti_cliente']=$objCli->GETid();
-		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&&subService=newPed';
+		$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&&subService=newPed';
 		// use key 'http' even if you send the request to https://...
 		$options = array(
 		    'http' => array(
@@ -263,7 +263,7 @@ class comprar_pedido extends Home implements IPage {
 		$arrayMulti['importe']=$_REQUEST['importe'];
 		$arrayMulti['idDireccion']=$_REQUEST['idDireccion'];
 		//$arrayMulti['idMulti_cliente']=$_SESSION['usuario']->id;
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE';
+		$urlAPI='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE';
 		// use key 'http' even if you send the request to https://...
 		$options = array(
 			'http' => array(

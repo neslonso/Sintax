@@ -128,7 +128,7 @@ define ('ARR_TIENDAS',serialize(array (
 		'TEMA' => (object) array (
 			'COLOR_PRIMARIO' => '#FF9933',
 			'COLOR_SECUNDARIO' => '#3399FF',
-			'EFECTO_BANNER' => "loop:true,spaceBetween: 100,effect: 'coverflow',coverflow: {rotate: 50,stretch: 0,depth: 100,modifier: 1,slideShadows : false},slideToClickedSlide:true,",
+			'EFECTO_BANNER' => "loop:true,spaceBetween: 100,effect: 'coverflow',coverflow: {rotate: 30,stretch: 0,depth: 100,modifier: 1,slideShadows : false},slideToClickedSlide:true,freeMode:false,",
 		),
 	),
 )));

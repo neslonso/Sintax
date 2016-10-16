@@ -74,7 +74,7 @@ class newPedBridge extends Bridge implements IPage {
 		$store=$newPedBridgeData->store;
 		$idDirPredeterminada=(isset($datosCli->arrDirecciones[0]))?$datosCli->arrDirecciones[0]->id:NULL;
 
-		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=paises';
+		$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=paises';
 		$options = array(
 		    'http' => array(
 		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -104,7 +104,7 @@ class newPedBridge extends Bridge implements IPage {
 		//POST a la API de V3 para añadir el pedido a la multi
 		$arrayMulti=$_REQUEST;
 		$arrayMulti['keyTienda']=$newPedBridgeData->store;
-		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&&subService=newPed';
+		$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&&subService=newPed';
 		// use key 'http' even if you send the request to https://...
 		$options = array(
 		    'http' => array(
@@ -279,7 +279,7 @@ class newPedBridge extends Bridge implements IPage {
 		$arrayMulti=$_REQUEST;
 		$arrayMulti['keyTienda']=$newPedBridgeData->store;
 		$arrayMulti['idMulti_cliente']=$_SESSION['usuario']->id;
-		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&&cliService=cliEditDir';
+		$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&&cliService=cliEditDir';
 		// use key 'http' even if you send the request to https://...
 		$options = array(
 		    'http' => array(
@@ -313,7 +313,7 @@ class newPedBridge extends Bridge implements IPage {
 		$arrayMulti['importe']=$_REQUEST['importe'];
 		$arrayMulti['idDireccion']=$_REQUEST['idDireccion'];
 		//$arrayMulti['idMulti_cliente']=$_SESSION['usuario']->id;
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE';
+		$urlAPI='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE';
 		// use key 'http' even if you send the request to https://...
 		$options = array(
 			'http' => array(
@@ -341,7 +341,7 @@ class newPedBridge extends Bridge implements IPage {
 		$arrayMulti['cuponCode']=$_REQUEST['codigo'];
 		$arrayMulti['idUser']=$datosCli->id;
 
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE';
+		$urlAPI='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE';
 
 		$options = array(
 			'http' => array(
@@ -374,7 +374,7 @@ class newPedBridge extends Bridge implements IPage {
 		$hash='';
 
 		$subService='arrModosPago';
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&hash='.$hash;
+		$urlAPI='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&hash='.$hash;
 		$result=file_get_contents($urlAPI);
 		$arrModosPago=json_decode($result);
 		return $arrModosPago;
@@ -387,7 +387,7 @@ class newPedBridge extends Bridge implements IPage {
 
 		$subService='datosCli';
 		$idCli=$this->objUsr->id;
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store=&idCli='.$idCli.'&hash='.$hash;
+		$urlAPI='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store=&idCli='.$idCli.'&hash='.$hash;
 		$result=file_get_contents($urlAPI);
 		$datosCli=json_decode($result);
 		return $datosCli;
@@ -401,7 +401,7 @@ class newPedBridge extends Bridge implements IPage {
 
 		$subService='storeData';
 		$store=$newPedBridgeData->store;
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store='.$store.'&hash='.$hash;
+		$urlAPI='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store='.$store.'&hash='.$hash;
 		$result=file_get_contents($urlAPI);
 		$storeData=json_decode($result);
 		return $storeData;

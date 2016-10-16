@@ -16,7 +16,7 @@ class mis_pedidos extends Home implements IPage {
 			$usrPermitido=$this->objUsr->pagePermitida($this);
 			$result=($usrPermitido)?true:$pageSustitucion;
 			if ($result!==true) {
-				ReturnInfo::add('No dispone de permiso para acceder a ['.get_class($this).'].','Acceso no permitido.');
+				ReturnInfo::add('Debe identificarse para acceder a su información de pedidos.','Acceso no permitido.');
 			}
 		}
 		return $result;
@@ -55,7 +55,7 @@ class mis_pedidos extends Home implements IPage {
 		$idUser=$objCli->GETid();
 		$store=$objCli->GETkeyTienda();
 
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=storeUserPeds&store='.$store.'&campo='.$campo.'&value='.$idUser;
+		$urlAPI='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=storeUserPeds&store='.$store.'&campo='.$campo.'&value='.$idUser;
 		$result=file_get_contents($urlAPI);
 		$pedidos=json_decode($result);
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");

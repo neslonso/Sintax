@@ -39,7 +39,7 @@ class newCliBridge extends Bridge implements IPage {
 	public function acGrabar(){
 		//POST a la API de V3 para modificar los datos
 		$arrayPost=$_REQUEST;
-		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliAdd';
+		$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliAdd';
 		// use key 'http' even if you send the request to https://...
 		$options = array(
 		    'http' => array(

@@ -38,13 +38,13 @@ class datosCliBridge extends Bridge implements IPage {
 	}
 	public function markup() {
 		/*
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliDetalle';
+		$urlAPI='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliDetalle';
 		$result=file_get_contents($urlAPI);
 		$arrCliente=json_decode($result);*/
 		//MIGRACION CLIENTES : pasar el id multi cliente adecuado, ahora mismo puesto a capón.
 		$idUser=$_SESSION['usuario']->id;
 		$arrayPost['id']=$idUser;
-		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliDetalle';
+		$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliDetalle';
 		// use key 'http' even if you send the request to https://...
 		$options = array(
 		    'http' => array(
@@ -61,7 +61,7 @@ class datosCliBridge extends Bridge implements IPage {
 	public function acGrabarPerfil () {
 		//POST a la API de V3 para modificar los datos
 		$arrayPost=$_REQUEST;
-		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliEditPerfil';
+		$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliEditPerfil';
 		// use key 'http' even if you send the request to https://...
 		$options = array(
 		    'http' => array(
@@ -78,7 +78,7 @@ class datosCliBridge extends Bridge implements IPage {
 	public function acGrabarDireccion () {
 		//POST a la API de V3 para modificar los datos
 		$arrayPost=$_REQUEST;
-		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliEditDir';
+		$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliEditDir';
 		// use key 'http' even if you send the request to https://...
 		$options = array(
 		    'http' => array(
@@ -95,7 +95,7 @@ class datosCliBridge extends Bridge implements IPage {
 	public function borrarDireccion(){
 		//POST a la API de V3 para modificar los datos
 		$arrayPost=$_REQUEST;
-		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliDelDir';
+		$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliDelDir';
 		// use key 'http' even if you send the request to https://...
 		$options = array(
 		    'http' => array(
@@ -111,7 +111,7 @@ class datosCliBridge extends Bridge implements IPage {
 	public function cambiarPass () {
 		//POST a la API de V3 para modificar los datos
 		$arrayPost=$_REQUEST;
-		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliChangePass';
+		$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=cliChangePass';
 		// use key 'http' even if you send the request to https://...
 		$options = array(
 		    'http' => array(
@@ -128,7 +128,7 @@ class datosCliBridge extends Bridge implements IPage {
 	public function acCheckCP(){
 		//POST a la API de V3 para modificar los datos
 		$arrayPost=$_REQUEST;
-		$url='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=checkCP';
+		$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_CLI&cliService=checkCP';
 		$GLOBALS['firephp']->info(http_build_query($arrayPost),"content");
 		// use key 'http' even if you send the request to https://...
 		$options = array(

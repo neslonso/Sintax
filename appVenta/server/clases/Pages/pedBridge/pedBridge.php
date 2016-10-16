@@ -54,7 +54,7 @@ class pedBridge extends Bridge implements IPage {
 				$idMulti_cliente='';
 			}
 		}
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=pedDetalle'.
+		$urlAPI='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=pedDetalle'.
 			'&idPedidoOrigen='.$idPedidoOrigen.
 			'&store='.$store.
 			'&idMulti_pedido='.$idMulti_pedido.

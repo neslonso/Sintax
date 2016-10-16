@@ -70,7 +70,7 @@ class lsPedsBridge extends Bridge implements IPage {
 		}
 		$store=$datosCli->keyTienda;
 
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=storeUserPeds&store='.$store.'&campo='.$campo.'&value='.$value;
+		$urlAPI='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=storeUserPeds&store='.$store.'&campo='.$campo.'&value='.$value;
 		$result=file_get_contents($urlAPI);
 		$pedidos=json_decode($result);
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
@@ -80,13 +80,13 @@ class lsPedsBridge extends Bridge implements IPage {
 	}
 	/*
 	public function ls() {
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=allPeds';
+		$urlAPI='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=allPeds';
 		$pedidos=file_get_contents($urlAPI);
 		return json_decode($pedidos);
 	}*/
 	private function getDatosCli($store,$idEnStore,$hash) {
 		$subService='datosCli';
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store='.$store.'&idCli='.$idEnStore.'&hash='.$hash;
+		$urlAPI='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store='.$store.'&idCli='.$idEnStore.'&hash='.$hash;
 		$result=file_get_contents($urlAPI);
 		$datosCli=json_decode($result);
 		return $datosCli;

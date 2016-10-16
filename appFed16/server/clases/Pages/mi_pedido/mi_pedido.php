@@ -54,7 +54,7 @@ class mi_pedido extends Home implements IPage {
 		$arr=explode('::', $_REQUEST['id']);
 		$idMulti_pedido=$arr[0];
 		$popup=(isset($arr[1]))?true:false;
-		$urlAPI='http://farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=pedDetalle'.
+		$urlAPI='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=MULTI_PEDS&pedService=pedDetalle'.
 			'&idPedidoOrigen='.
 			'&store='.
 			'&idMulti_pedido='.$idMulti_pedido.
