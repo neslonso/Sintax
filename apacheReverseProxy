@@ -1,20 +1,37 @@
-SSLProxyEngine on
-
 ProxyRequests Off
+ProxyPass "/error_docs" "!"
+
+ProxyPass "/error_docs" "!"
+ProxyPass "/plesk-stat" "!"
+ProxyPass "/webstat" "!"
+ProxyPass "/webstat-ssl" "!"
+ProxyPass "/ftpstat" "!"
+ProxyPass "/anon_ftpstat" "!"
+ProxyPass "/awstats-icon" "!"
+
 ProxyPass "/" "http://fed16.farmaciacelorrio.com/"
 ProxyPassReverse "/" "http://fed16.farmaciacelorrio.com/"
 ProxyPassReverseCookieDomain  "fed16.farmaciacelorrio.com"  "bebefarma.com"
 ProxyPassReverseCookiePath  "/"  "/"
 ProxyVia On
 
+SSLProxyEngine on
 ProxyRequests Off
+
+ProxyPass "/error_docs" "!"
+ProxyPass "/plesk-stat" "!"
+ProxyPass "/webstat" "!"
+ProxyPass "/webstat-ssl" "!"
+ProxyPass "/ftpstat" "!"
+ProxyPass "/anon_ftpstat" "!"
+ProxyPass "/awstats-icon" "!"
+
+ProxyPass "/error_docs" "!"
 ProxyPass "/" "http://fed16.farmaciacelorrio.com/"
 ProxyPassReverse "/" "http://fed16.farmaciacelorrio.com/"
-ProxyPassReverseCookieDomain  "fed16.farmaciacelorrio.com"  "celorriofarma.com"
+ProxyPassReverseCookieDomain  "fed16.farmaciacelorrio.com"  "bebefarma.com"
 ProxyPassReverseCookiePath  "/"  "/"
 ProxyVia On
-
-
 
 ################################################################################
 # NO USAREMOS MOD_PROXY_HTML, NO REESCRIBE TODO Y DA PROBLEMAS CON EL AJAX

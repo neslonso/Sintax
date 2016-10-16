@@ -74,13 +74,17 @@ $(document).ready(function() {
 
 	$('#ssSearch').keypress(function(event) {
 		if (event.which==13) {
-			var query=$.trim($(this).val()).toLowerCase();
-			//url=seoUrl('<?=BASE_URL?>busqueda/'+query);
-			url=seoUrl('<?=BASE_URL?>'+query+'/busqueda/');
-			window.location.href=url;
+			navigateToSearch();
 		}
 	});
-
+	$('#ssSearch').parent().find('.btn').click(function(event) {
+		navigateToSearch();
+	});
+	function navigateToSearch() {
+		var query=$.trim($('#ssSearch').val()).toLowerCase();
+		url=seoUrl('<?=BASE_URL?>'+query+'/busqueda/');
+		window.location.href=url;
+	}
 	function seoUrl(url) {
 		url=url.replace(new RegExp(/[\s-]+/,'g'),' ');
 		url=url.replace(new RegExp(/[\s_]/,'g'),'-');

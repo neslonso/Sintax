@@ -18,6 +18,7 @@
 	.shop-item;
 	border:2px solid @color-borde-items;
 }
+.shop-item.hover,
 .shop-item:hover{
 	border:2px solid @color-borde-items-over;
 }
@@ -57,12 +58,13 @@
 .shop-item-container .shop-item .shop-item-cart {
 	position: absolute;
 	top: 100%;
-	-webkit-transition: all 0.35s ease-in;
-	-moz-transition: all 0.35s ease-in;
-	-ms-transition: all 0.35s ease-in;
-	-o-transition: all 0.35s ease-in;
-	transition: all 0.35s ease-in;
+	-webkit-transition: all 0.15s ease-in;
+	-moz-transition: all 0.15s ease-in;
+	-ms-transition: all 0.15s ease-in;
+	-o-transition: all 0.15s ease-in;
+	transition: all 0.15s ease-in;
 }
+.shop-item-container .shop-item.hover .shop-item-cart,
 .shop-item-container .shop-item:hover .shop-item-cart {
 	margin-top: -50px;
 }
@@ -158,12 +160,12 @@
 	outline: 1px solid blue;
 }*/
 .shop-item-dto-gama>div {
-	width: 200px;
-	height: 200px;
+	width: 240px;
+	height: 240px;
+	overflow: hidden;
 }
 .shop-item-dto-gama>div>div {
 	padding: 1em;
-
 }
 .shop-item-dto-gama .dto {
 	font-size: xx-large;
