@@ -1,7 +1,8 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
-	$('[data-toggle="tooltip"]').tooltip({container:'body',html:true});
+	$('[data-toggle="tooltip"]','#container-cabecera').tooltip({container:'body',html:true});
+	$('[data-toggle="tooltip"]','#wrapper').tooltip({container:'#wrapper',html:true});
 	$('#divJqNotifications').jqNotifications();
 	$("#menu-toggle").click(function(e) {
 		e.preventDefault();

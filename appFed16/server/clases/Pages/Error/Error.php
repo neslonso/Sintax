@@ -43,12 +43,13 @@ class Error extends Page implements IPage {
 					if (!in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
 						$this->setMsg('Error no especificado, use IPS_DEV');
 					} else {
-						$this->setMsg('<pre>'.print_r(debug_backtrace(),true).'</pre>');
+						$this->setMsg('<br />debug_backtrace<pre>'.print_r(debug_backtrace(),true).'</pre>');
 					}
 				}
 			}
 			if (in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
-				//$this->msg.='<pre>'.print_r(debug_backtrace(),true).'</pre>';
+				$this->msg.='<br />getallheaders<pre>'.print_r(getallheaders(),true).'</pre>';
+				$this->msg.='<br />debug_backtrace<pre>'.print_r(debug_backtrace(),true).'</pre>';
 			}
 
 		} catch (Exception $e) {

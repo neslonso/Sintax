@@ -26,6 +26,15 @@ FileETag MTime Size
 			RewriteRule  .+  -  [L]
 	################################################################################
 
+	# Compatibilidad con URLs antiguas #############################################
+		#Formato v2
+			ReWriteRule (.*)/([^/]*)__[b|c|p]II([0-9]+)(/?)$ /$2/busqueda/ [R=301,L]
+		#Formato v1
+			ReWriteRule (.*)__[b|c|p]([0-9]+)(/?)$ /$1/busqueda/ [R=301,L]
+		#Formato v3 (URL rewriting v1)
+			#Pendiente
+	################################################################################
+
 	# Pages URL rewriting V2 #######################################################
 	# Barra (/) al final
 		RewriteRule ^(.*[^/])$ $1/ [L,R=301,E=nocache:1] //Poner

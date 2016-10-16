@@ -1,5 +1,4 @@
 //Biblioteca de pequeños plugins y funciones globales
-
 function muestraMsgModalBootstrap3(title, msg) {
 	var $div=$([
 		'<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">',
@@ -127,3 +126,20 @@ function muestraMsgModalBootstrap3(title, msg) {
 	};
 })(jQuery);
 //
+//bootstrap plugin vieport.
+;(function($) {
+	$(document).ready(function() {
+		$('body').append([
+			'<div class="device-xs visible-xs"></div>',
+			'<div class="device-sm visible-sm"></div>',
+			'<div class="device-md visible-md"></div>',
+			'<div class="device-lg visible-lg"></div>',
+		].join(''));
+	});
+
+	$.viewport= {
+		is: function(alias) {
+			return $('.device-' + alias).is(':visible');
+		}
+	};
+})(jQuery);
