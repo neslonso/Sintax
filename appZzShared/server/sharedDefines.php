@@ -102,7 +102,7 @@ define ('ARR_TIENDAS',serialize(array (
 			'EMAIL' => 'atcioncliente@'.BASE_DOMAIN,
 			'TLF' => '982 20 30 08',
 		),
-		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.FC.jpg',
+		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.FC.png',
 		'MENU' => (object) array (
 			'FOTO_CATS_SEGUNDO_NIVEL' => true,//Si las cats de segundo nivel con hijos llevan foto
 			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
