@@ -97,7 +97,39 @@ define ('ARR_TIENDAS',serialize(array (
 		),
 	),
 	'FC' => array (
-		'SITE_NAME' => '',
+		'SITE_NAME' => 'Celorriofarma',
+		'CONTACTO' => (object) array(
+			'EMAIL' => 'atcioncliente@'.BASE_DOMAIN,
+			'TLF' => '982 20 30 08',
+		),
+		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.FC.jpg',
+		'MENU' => (object) array (
+			'FOTO_CATS_SEGUNDO_NIVEL' => true,//Si las cats de segundo nivel con hijos llevan foto
+			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
+		),
+		'EMPRESA' => (object) array (
+			'NOMBRE' => 'Celorriofarma S.L.',
+			'DIRECCION' => 'Avada. A Coruña 195, 27003 Lugo',
+			'CIF' => 'B27232859',
+			'REGISTRO' => 'tomo 257 libro 0 folio 192 hoja LU5912 inscripción 3',
+		),
+		'SOCIAL' => (object) array (
+			'FB' => (object) array (
+				'URL' => '',
+				'APP_ID' => '',
+			),
+			'TW' => (object) array (
+				'URL' => '',
+				'CONSUMER_KEY' => '',
+				'CONSUMER_SECRET' => '',
+			),
+		),
+		'ANALYTICS' => 'UA-36657351-1',
+		'TEMA' => (object) array (
+			'COLOR_PRIMARIO' => '#FF9933',
+			'COLOR_SECUNDARIO' => '#3399FF',
+			'EFECTO_BANNER' => "loop:true,spaceBetween: 100,effect: 'coverflow',coverflow: {rotate: 50,stretch: 0,depth: 100,modifier: 1,slideShadows : false},slideToClickedSlide:true,",
+		),
 	),
 )));
 
