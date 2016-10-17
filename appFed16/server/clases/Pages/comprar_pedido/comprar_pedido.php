@@ -349,10 +349,15 @@ class comprar_pedido extends Home implements IPage {
 		//$totalRebotesDesc=htmlspecialchars($totalRebotesDesc,ENT_QUOTES,'UTF-8');
 
 		$totalLineas=$this->totalLineas($arrLineas);
-		$creditoMaximoAplicable=
-			($this->totalLineas($arrLineas)>$datosCli->saldoCredito)
-			?$datosCli->saldoCredito
-			:$this->totalLineas($arrLineas);
+		$storeData=\Sintax\ApiService\Pedidos::getStoreData();
+		if ($this->totalLineas($arrLineas) >= $storeData->IMPORTE_MINIMO_APLICACION_CREDITO) {
+			$creditoMaximoAplicable=
+				($this->totalLineas($arrLineas)>$datosCli->saldoCredito)
+				?$datosCli->saldoCredito
+				:$this->totalLineas($arrLineas);
+		} else {
+			$creditoMaximoAplicable=0;
+		}
 
 		$result=array();
 		$result['arrLineas']=$arrLineasProcesado;

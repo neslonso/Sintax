@@ -1,0 +1,13 @@
+{
+	"name": "Farmaciacelorrio",
+	"icons": [
+		{
+			"src": "appFed16\/binaries\/imgs\/favIcon\/android-chrome-192x192.png?v=A0RER7rYp6",
+			"sizes": "192x192",
+			"type": "image\/png"
+		}
+	],
+	"theme_color": "#ffffff",
+	"start_url": "http:\/\/farmaciacelorrio.com",
+	"display": "standalone"
+}

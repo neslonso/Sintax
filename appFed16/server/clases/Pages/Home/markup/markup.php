@@ -3,7 +3,7 @@
 <nav class="navbar navbar-default navbar-fixed-top">
 	<header id="container-cabecera">
 		<div class="bandaSuperior navbar-fixed-top hidden-xs hidden-sm">
-			Bienvenido a <?=$GLOBALS['config']->tienda->SITE_NAME?>, parafarmacia online. Distribución y venta online de las mejores marcas de laboratorios de farmacia y parafarmacia.
+			<?=$GLOBALS['config']->tienda->BIENVENIDA?>
 		</div>
 		<div class="container-fluid container-cabecera-barraLogo">
 			<div class="row vertical-align">

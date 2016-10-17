@@ -19,6 +19,7 @@ define ('ARR_DOMAINS',serialize(array (
 define ('ARR_TIENDAS',serialize(array (
 	'CL' => array (
 		'SITE_NAME' => 'Celorriofarma',
+		'BIENVENIDA' => 'Bienvenido a Celorriofarma, parafarmacia online.',
 		'CONTACTO' => (object) array(
 			'EMAIL' => 'atcioncliente@'.BASE_DOMAIN,
 			'TLF' => '982 20 30 08',
@@ -63,6 +64,7 @@ define ('ARR_TIENDAS',serialize(array (
 	),
 	'BF' => array (
 		'SITE_NAME' => 'Bebefarma',
+		'BIENVENIDA' => 'Bienvenido a Bebefarma, parafarmacia online. Distribución y venta online de las mejores marcas de laboratorios de farmacia y parafarmacia.',
 		'CONTACTO' => (object) array(
 			'EMAIL' => 'atcioncliente@'.BASE_DOMAIN,
 			'TLF' => '982 215 630',
@@ -98,6 +100,7 @@ define ('ARR_TIENDAS',serialize(array (
 	),
 	'FC' => array (
 		'SITE_NAME' => 'Farmacia Celorrio',
+		'BIENVENIDA' => 'Bienvenido a farmaciacelorrio.com. Las mejores marcas de laboratorios de farmacia y parafarmacia.',
 		'CONTACTO' => (object) array(
 			'EMAIL' => 'atcioncliente@'.BASE_DOMAIN,
 			'TLF' => '982 20 30 08',
@@ -116,7 +119,7 @@ define ('ARR_TIENDAS',serialize(array (
 		'SOCIAL' => (object) array (
 			'FB' => (object) array (
 				'URL' => '',
-				'APP_ID' => '',
+				'APP_ID' => '395892783792521',
 			),
 			'TW' => (object) array (
 				'URL' => '',
@@ -127,8 +130,8 @@ define ('ARR_TIENDAS',serialize(array (
 		'ANALYTICS' => 'UA-36657351-1',
 		'TEMA' => (object) array (
 			'COLOR_PRIMARIO' => '#FF9933',
-			'COLOR_SECUNDARIO' => '#3399FF',
-			'EFECTO_BANNER' => "loop:true,spaceBetween: 100,effect: 'coverflow',coverflow: {rotate: 30,stretch: 0,depth: 100,modifier: 1,slideShadows : false},slideToClickedSlide:true,freeMode:false,",
+			'COLOR_SECUNDARIO' => '#9933ff',
+			'EFECTO_BANNER' => "loop:true,spaceBetween: 100,effect: 'coverflow',coverflow: {rotate: 50,stretch: 0,depth: 100,modifier: 1,slideShadows : false},slideToClickedSlide:true,freeMode:false,speed:4000,autoplay: 1000,",
 		),
 	),
 )));
