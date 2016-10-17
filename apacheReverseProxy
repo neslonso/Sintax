@@ -10,7 +10,7 @@ ProxyPass "/awstats-icon" "!"
 
 ProxyPass "/" "http://scv.farmaciacelorrio.com/"
 ProxyPassReverse "/" "http://scv.farmaciacelorrio.com/"
-ProxyPassReverseCookieDomain  "scv.farmaciacelorrio.com"  "farmaciacelorrio.com"
+ProxyPassReverseCookieDomain  "scv.farmaciacelorrio.com"  "parafarmaciasolocosmetica.com"
 ProxyPassReverseCookiePath  "/"  "/"
 ProxyVia On
 
@@ -27,41 +27,6 @@ ProxyPass "/awstats-icon" "!"
 
 ProxyPass "/" "https://scv.farmaciacelorrio.com/"
 ProxyPassReverse "/" "https://scv.farmaciacelorrio.com/"
-ProxyPassReverseCookieDomain  "scv.farmaciacelorrio.com"  "farmaciacelorrio.com"
+ProxyPassReverseCookieDomain  "scv.farmaciacelorrio.com"  "parafarmaciasolocosmetica.com"
 ProxyPassReverseCookiePath  "/"  "/"
 ProxyVia On
-
-################################################################################
-# NO USAREMOS MOD_PROXY_HTML, NO REESCRIBE TODO Y DA PROBLEMAS CON EL AJAX
-################################################################################
-ProxyHTMLURLMap "http://fed16.farmaciacelorrio.com" "http://bebefarma.com"
-ProxyHTMLEnable On
-ProxyHTMLBufSize  102400
-ProxyHTMLExtended On
-ProxyHTMLStripComments Off
-ProxyHTMLDocType "<!DOCTYPE html>"
-ProxyHTMLMeta On
-
-ProxyHTMLLinks 		a					href
-ProxyHTMLLinks 		area				href
-ProxyHTMLLinks 		link				href
-ProxyHTMLLinks 		img					src longdesc usemap
-ProxyHTMLLinks 		object				classid codebase data usemap
-ProxyHTMLLinks 		q					cite
-ProxyHTMLLinks 		blockquote			cite
-ProxyHTMLLinks 		ins					cite
-ProxyHTMLLinks 		del					cite
-ProxyHTMLLinks 		form				action
-ProxyHTMLLinks 		input				src usemap
-ProxyHTMLLinks 		head				profile
-ProxyHTMLLinks 		base				href
-ProxyHTMLLinks 		script				src for
-ProxyHTMLLinks 		iframe				src longdesc
-#ProxyHTMLLinks 		frame				src longdesc
-#ProxyHTMLLinks 		body				background
-#ProxyHTMLLinks 		applet				codebase
-
-ProxyHTMLEvents onclick ondblclick onmousedown onmouseup \
-				onmouseover onmousemove onmouseout onkeypress \
-				onkeydown onkeyup onfocus onblur onload \
-				onunload onsubmit onreset onselect onchange

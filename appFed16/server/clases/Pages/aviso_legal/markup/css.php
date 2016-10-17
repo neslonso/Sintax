@@ -50,7 +50,7 @@
 	overflow: hidden;
 }
 #navegadores li {
-	background: url("http://celorriofarma.com/images/sprite_navegadores.jpg") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+	background: url("<?=BASE_URL?>/binaries/imgs/lib/logosBrowsers/sprite_navegadores.jpg") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
 	float: left;
 	font-size: 12px;
 	height: 150px;
