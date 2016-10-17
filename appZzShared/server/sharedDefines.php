@@ -54,13 +54,112 @@ define ('ARR_TIENDAS',serialize(array (
 		),
 	),
 	'FD' => array (
-		'SITE_NAME' => '',
+		'SITE_NAME' => 'Farmadiscount',
+		'BIENVENIDA' => 'Bienvenido a Farmadiscount.com, parafarmacia al descuento. Venta al descuento de farmacia y parafarmacia.',
+		'CONTACTO' => (object) array(
+			'EMAIL' => 'atcioncliente@'.BASE_DOMAIN,
+			'TLF' => '982 215 630',
+		),
+		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.FD.png',
+		'MENU' => (object) array (
+			'FOTO_CATS_SEGUNDO_NIVEL' => true,//Si las cats de segundo nivel con hijos llevan foto
+			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
+		),
+		'EMPRESA' => (object) array (
+			'NOMBRE' => 'Farmamas S.L.',
+			'DIRECCION' => 'Axel López Pérez, nº10, 4ºB, 27003 Lugo',
+			'CIF' => 'B27275841',
+			'REGISTRO' => 'tomo 257 libro 0 folio 192 hoja LU5912 inscripción 3',
+		),
+		'SOCIAL' => (object) array (
+			'FB' => (object) array (
+				'URL' => 'javascript:void(null);',
+				'APP_ID' => '103205986428008',
+			),
+			'TW' => (object) array (
+				'URL' => '',
+				'CONSUMER_KEY' => '',
+				'CONSUMER_SECRET' => '',
+			),
+		),
+		'ANALYTICS' => '',
+		'TEMA' => (object) array (
+			'COLOR_PRIMARIO' => '#008B44',
+			'COLOR_SECUNDARIO' => '#FFBD7B',
+			'EFECTO_BANNER' => "",
+		),
 	),
 	'SB' => array (
-		'SITE_NAME' => '',
+		'SITE_NAME' => 'Solo bebés',
+		'BIENVENIDA' => 'Bienvenido a Parafarmacia Solo Bebés. Distribución de farmacia y parafarmacia.',
+		'CONTACTO' => (object) array(
+			'EMAIL' => 'atcioncliente@'.BASE_DOMAIN,
+			'TLF' => '982 20 30 08',
+		),
+		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.SB.png',
+		'MENU' => (object) array (
+			'FOTO_CATS_SEGUNDO_NIVEL' => false,//Si las cats de segundo nivel con hijos llevan foto
+			'NUM_OFERS_MAS_VENDIDAS' => 2,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
+		),
+		'EMPRESA' => (object) array (
+			'NOMBRE' => 'Celorriofarma S.L.',
+			'DIRECCION' => 'Avada. A Coruña 195, 27003 Lugo',
+			'CIF' => 'B27232859',
+			'REGISTRO' => 'tomo 257 libro 0 folio 192 hoja LU5912 inscripción 3',
+		),
+		'SOCIAL' => (object) array (
+			'FB' => (object) array (
+				'URL' => '',
+				'APP_ID' => '',
+			),
+			'TW' => (object) array (
+				'URL' => '',
+				'CONSUMER_KEY' => '',
+				'CONSUMER_SECRET' => '',
+			),
+		),
+		'ANALYTICS' => 'UA-36657351-3',
+		'TEMA' => (object) array (
+			'COLOR_PRIMARIO' => '#F87A8B',
+			'COLOR_SECUNDARIO' => '#df9aa3',
+			'EFECTO_BANNER' => "loop:true,spaceBetween: 100, slideToClickedSlide:true,freeMode:true,speed:1000,autoplay: 4000,",
+		),
 	),
 	'SC' => array (
-		'SITE_NAME' => '',
+		'SITE_NAME' => 'Solo cosmética',
+		'BIENVENIDA' => 'Parafarmacia Solo cosmética. Las mejores marcas al mejor precio.',
+		'CONTACTO' => (object) array(
+			'EMAIL' => 'atcioncliente@'.BASE_DOMAIN,
+			'TLF' => '982 20 30 08',
+		),
+		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.SC.png',
+		'MENU' => (object) array (
+			'FOTO_CATS_SEGUNDO_NIVEL' => false,//Si las cats de segundo nivel con hijos llevan foto
+			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
+		),
+		'EMPRESA' => (object) array (
+			'NOMBRE' => 'Celorriofarma S.L.',
+			'DIRECCION' => 'Avada. A Coruña 195, 27003 Lugo',
+			'CIF' => 'B27232859',
+			'REGISTRO' => 'tomo 257 libro 0 folio 192 hoja LU5912 inscripción 3',
+		),
+		'SOCIAL' => (object) array (
+			'FB' => (object) array (
+				'URL' => '',
+				'APP_ID' => '',
+			),
+			'TW' => (object) array (
+				'URL' => '',
+				'CONSUMER_KEY' => '',
+				'CONSUMER_SECRET' => '',
+			),
+		),
+		'ANALYTICS' => 'UA-36657351-4',
+		'TEMA' => (object) array (
+			'COLOR_PRIMARIO' => '#FFCEB4',
+			'COLOR_SECUNDARIO' => '#AB9DCB',
+			'EFECTO_BANNER' => "loop:true,spaceBetween: 100, slideToClickedSlide:true,freeMode:false,speed:4000,autoplay: 4000,",
+		),
 	),
 	'BF' => array (
 		'SITE_NAME' => 'Bebefarma',

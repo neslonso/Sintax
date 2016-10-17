@@ -1,0 +1,13 @@
+{
+	"name": "Farmadiscount",
+	"icons": [
+		{
+			"src": "appFed16\/binaries\/imgs\/favIcon\/FD\/android-chrome-192x192.png?v=qAqg3lYGK0",
+			"sizes": "192x192",
+			"type": "image\/png"
+		}
+	],
+	"theme_color": "#008b44",
+	"start_url": "http:\/\/farmadiscount.com",
+	"display": "standalone"
+}

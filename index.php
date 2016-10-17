@@ -12,7 +12,10 @@ try {
 
 	//$defaultDomain='bebefarma.com';
 	//$defaultDomain='celorriofarma.com';
-	$defaultDomain='farmaciacelorrio.com';
+	//$defaultDomain='farmaciacelorrio.com';
+	//$defaultDomain='parafarmaciasolobebes.com';
+	//$defaultDomain='parafarmaciasolocosmetica.com';
+	$defaultDomain='farmadiscount.com';
 	$activeDomain=($X_FORWARDED_HOST!='')?$X_FORWARDED_HOST:$defaultDomain;
 	if ($X_FORWARDED_HOST!='') {define('BASE_DOMAIN',$activeDomain);}
 

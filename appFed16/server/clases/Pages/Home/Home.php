@@ -44,7 +44,8 @@ class Home extends Error implements IPage {
 	public function favIcon() {
 		$keyTienda=$GLOBALS['config']->tienda->key;
 		$sitename=$GLOBALS['config']->tienda->SITE_NAME;
-		$TileColor='#2d89ef';//#00a300
+		$TileColor='#2d89ef';//#00a300//SC:#ffceb4 o mejor #ffffff//FD:008B44
+		$themeColor='#ffffff';//SC:#ffceb4//FD:#008B44
 		//http://realfavicongenerator.net/
 		echo '
 			<link rel="apple-touch-icon" sizes="180x180" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/apple-touch-icon.png?v=lkgMkggyvj">
@@ -58,7 +59,7 @@ class Home extends Error implements IPage {
 			<meta name="msapplication-TileColor" content="'.$TileColor.'">
 			<meta name="msapplication-TileImage" content="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/mstile-144x144.png?v=lkgMkggyvj">
 			<meta name="msapplication-config" content="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/browserconfig.xml?v=lkgMkggyvj">
-			<meta name="theme-color" content="#ffffff">
+			<meta name="theme-color" content="'.$themeColor.'">
 		';
 	}
 	public function js() {

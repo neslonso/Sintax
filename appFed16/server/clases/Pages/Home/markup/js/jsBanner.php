@@ -18,6 +18,7 @@ $(document).ready(function() {
 		loop: false,
 		slidesPerView: 'auto', //auto debe ir con loopedSlides
 		freeMode:true,
+		grabCursor: true,
 		//centeredSlides: true,
 		spaceBetween: 30,
 		//mousewheelControl: true,

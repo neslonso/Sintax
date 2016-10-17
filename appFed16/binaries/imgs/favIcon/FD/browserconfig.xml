@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+  <msapplication>
+    <tile>
+      <square150x150logo src="appFed16/binaries/imgs/favIcon/FD/mstile-150x150.png?v=qAqg3lYGK0"/>
+      <TileColor>#008b44</TileColor>
+    </tile>
+  </msapplication>
+</browserconfig>
