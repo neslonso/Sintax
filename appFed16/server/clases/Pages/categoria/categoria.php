@@ -62,7 +62,7 @@ class categoria extends Home implements IPage {
 			$arrCatsHijas=$objCat->arrMulti_categoriaHija("fff.visible='1'","","","arrClassObjs");
 		} else {
 			//error o redireccion a Home
-			throw new Exception("Categoría No disponible.");
+			throw new \Exception("Categoría No disponible.");
 		}
 		require_once( str_replace('//','/',dirname(__FILE__).'/') .'markup/cuerpo.php');
 	}

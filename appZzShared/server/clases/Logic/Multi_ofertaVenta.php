@@ -287,7 +287,9 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
 		foreach ($arrProds as $objMProd) {
 			$arrFotos=$objMProd->arrMulti_productoAdjunto("(mimeType LIKE 'image/%')","orden","0,1","arrKeys");
-			array_push($arrFotosPpalesOferta,$arrFotos[$i]);
+			if (isset($arrFotos[$i])) {
+				array_push($arrFotosPpalesOferta,$arrFotos[$i]);
+			}
 		}
 		if (isset($arrFotosPpalesOferta[$i])) {
 			$idMPA=$arrFotosPpalesOferta[$i];
