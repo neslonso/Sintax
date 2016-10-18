@@ -9,6 +9,32 @@ use \Abraham\TwitterOAuth\TwitterOAuth;
 class Home extends Error implements IPage {
 	public function __construct(User $objUsr) {
 		parent::__construct($objUsr);
+		//procesamientos de fragmentos de tienda
+		if (isset($GLOBALS['config']->tienda->TEMA->FRAGMENTOS) && is_array($GLOBALS['config']->tienda->TEMA->FRAGMENTOS)) {
+			foreach ($GLOBALS['config']->tienda->TEMA->FRAGMENTOS as $keyFragmento => $objData) {
+				if (method_exists($this,$objData->hueco) && class_exists($objData->class)) {
+					$obj=new $objData->class($this);
+					$func=$objData->hueco;
+					$this->$func($obj);
+				}
+			}
+		}
+	}
+	private function hueco1 ($objData=null) {
+		static $objHuecoData=null;
+		if (is_null($objHuecoData)) {
+			$objHuecoData=new \stdClass();
+			$objHuecoData->markup='';
+			$objHuecoData->style='';
+			$objHuecoData->code='';
+		}
+
+		if (!is_null($objData)) {
+			$objHuecoData->markup=$objData->markup();
+			$objHuecoData->style=$objData->style();
+			$objHuecoData->code=$objData->code();
+		}
+		return $objHuecoData;
 	}
 	public function pageValida () {
 		//return $this->objUsr->pagePermitida($this);

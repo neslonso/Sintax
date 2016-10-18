@@ -12,6 +12,7 @@
 				</div>
 				<div class="col-xs-2 col-sm-1">
 					<a href="#menu-toggle" class="btn btn-default btn-menu" id="menu-toggle"><span class="glyphicon glyphicon-align-justify"></span></a>
+					<?=$this->hueco1()->markup;?>
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-4">
 					<div class="input-group divBuscador">

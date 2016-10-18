@@ -49,7 +49,7 @@ class Error extends Page implements IPage {
 			}
 			if (in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
 				//$this->msg.='<br />getallheaders<pre>'.print_r(getallheaders(),true).'</pre>';
-				$this->msg.='<br />debug_backtrace<pre>'.print_r(debug_backtrace(),true).'</pre>';
+				//$this->msg.='<br />debug_backtrace<pre>'.print_r(debug_backtrace(),true).'</pre>'; //<- No sirve, la exception original no esta en esta traza
 			}
 
 		} catch (Exception $e) {

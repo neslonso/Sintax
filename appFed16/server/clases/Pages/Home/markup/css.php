@@ -38,6 +38,7 @@
 @color-btn-items-bg:@color-secundario;
 @color-items-precio:@color-txt;
 
+<?=$this->hueco1()->style?>;
 /**/
 /* http://stackoverflow.com/questions/19288546/how-can-i-prevent-body-scrollbar-and-shifting-when-twitter-bootstrap-modal-dialo */
 .modal-open {

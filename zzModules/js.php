@@ -1,5 +1,8 @@
 <?
 $minify=true;//true no funciona del todo bien, debe existir algun problema en la clase JSMin
+if (in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
+	$minify=false;
+}
 ob_start();
 ?>
 <?

@@ -87,6 +87,12 @@ define ('ARR_TIENDAS',serialize(array (
 			'COLOR_PRIMARIO' => '#008B44',
 			'COLOR_SECUNDARIO' => '#FFBD7B',
 			'EFECTO_BANNER' => "",
+			'FRAGMENTOS' => array (
+				'INFO_DTOS_VOLUMEN' => (object) array (
+					'class' => '\InfoDtosVolumen',
+					'hueco' => 'hueco1',
+				),
+			),
 		),
 	),
 	'SB' => array (
@@ -159,6 +165,8 @@ define ('ARR_TIENDAS',serialize(array (
 			'COLOR_PRIMARIO' => '#FFCEB4',
 			'COLOR_SECUNDARIO' => '#AB9DCB',
 			'EFECTO_BANNER' => "loop:true,spaceBetween: 100, slideToClickedSlide:true,freeMode:false,speed:4000,autoplay: 4000,",
+			'FRAGMENTOS' => array (
+			),
 		),
 	),
 	'BF' => array (

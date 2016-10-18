@@ -1,6 +1,7 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
+	<?=$this->hueco1()->code?>;
 	$('[data-toggle="tooltip"]','#container-cabecera').tooltip({container:'body',html:true});
 	$('[data-toggle="tooltip"]','#wrapper').tooltip({container:'#wrapper',html:true});
 	$('#divJqNotifications').jqNotifications();
