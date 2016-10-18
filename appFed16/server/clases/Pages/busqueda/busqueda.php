@@ -52,7 +52,7 @@ class busqueda extends Home implements IPage {
 		$objBusqueda->SETidMulti_cliente($idCliente);
 		$objBusqueda->SETquery($txtBusqueda);
 		$objBusqueda->grabar();
-		$busqueda=$this->acSearchOfers($txtBusqueda, 18);
+		$busqueda=$this->acSearchOfers($txtBusqueda, 180);
 		$arrOfers=$busqueda->arrResults;
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
 	}
