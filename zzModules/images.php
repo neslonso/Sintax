@@ -99,7 +99,7 @@ try {
 				}
 			} catch (Exception $e) {
 				$firephp->error($e);
-				$file=BASE_IMGS_DIR.'imgErr.png';
+				$file=BASE_IMGS_DIR.'prodNoFoto.png';
 				$objImg=Imagen::fromFile($file);
 			}
 		break;
@@ -123,6 +123,7 @@ try {
 	ob_clean();//limpiamos el buffer antes de mandar la imagen, no queremos nada más que la imagen
 
 	header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 60*60*24*14));
+	if (!isset($last_modified_time)) {$last_modified_time=time();}
 	header("Last-Modified: ".gmdate("D, d M Y H:i:s \G\M\T", $last_modified_time));
 	$etag=sha1(print_r($_GET,true));
 	header("Etag: ".$etag);
