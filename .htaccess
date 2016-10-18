@@ -32,7 +32,7 @@ FileETag MTime Size
 		#Formato v1
 			ReWriteRule (.*)__[b|c|p]([0-9]+)(/?)$ /$1/busqueda/ [R=301,L]
 		#Formato v3 (Pages URL rewriting v1)
-			#ReWriteRule ^(.*?[^/])/(.*)/([0-9]+)(/?)$ /$2/busqueda/ [R=301,L]
+			ReWriteRule ^([cat|prod]+?[^/])/(.*)/([0-9]+)(/?)$ /$2/busqueda/ [R=301,L]
 			ReWriteCond %{QUERY_STRING} ^q=(.*)$
 				ReWriteRule .* /%1/busqueda/? [R=301,L]
 	################################################################################

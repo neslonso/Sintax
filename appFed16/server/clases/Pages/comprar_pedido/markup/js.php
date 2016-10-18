@@ -422,8 +422,8 @@ function aplicaDtoVolumen() {
 	var volumen=$('#spTotalLineas').data('totalLineas');
 	var tipoDto=0;
 
-	console.log(arrDtos);
-	console.log('Volumen pedido: '+volumen);
+	//console.log(arrDtos);
+	//console.log('Volumen pedido: '+volumen);
 
 	for (i = 0; i < arrDtos.length; i++) {
 		objDto=arrDtos[i];
@@ -434,7 +434,7 @@ function aplicaDtoVolumen() {
 			break;
 		}
 	}
-	console.log('Dto volumen: '+tipoDto);
+	//console.log('Dto volumen: '+tipoDto);
 	if ($('#newPedWizard').data('tipoDtoCliente')<=0 || $('#newPedWizard').data('dtoClienteCompatibleDtoVolumen')) {
 		if (tipoDto!=0) {
 			//muestraMsgModal('Descuento por volumen aplicado.','Se aplicará un '+tipoDto+'% de descuento por volumen.');
