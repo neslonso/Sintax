@@ -51,7 +51,7 @@ $(document).ready(function() {
 		var ultimoPaso=$(this).find('.steps li').length;
 		if (data.step==ultimoPaso-1) {
 			$('#addCredito').click();
-			aplicaDtoVolumen();
+			//aplicaDtoVolumen();
 		}
 		if (data.step==ultimoPaso) {
 			calculaTotales();
@@ -422,18 +422,24 @@ function aplicaDtoVolumen() {
 	var volumen=$('#spTotalLineas').data('totalLineas');
 	var tipoDto=0;
 
-	//console.log(arrDtos);
-	//console.log(volumen);
+	console.log(arrDtos);
+	console.log('Volumen pedido: '+volumen);
 
 	for (i = 0; i < arrDtos.length; i++) {
 		objDto=arrDtos[i];
-		if (objDto.volumen <= volumen) {
+		var volumenDto=parseFloat(objDto.volumen);
+		//if (volumenDto <= volumen) {
+		if (volumenDto > volumen) {
 			tipoDto=objDto.tipo;
+			break;
 		}
 	}
+	console.log('Dto volumen: '+tipoDto);
 	if ($('#newPedWizard').data('tipoDtoCliente')<=0 || $('#newPedWizard').data('dtoClienteCompatibleDtoVolumen')) {
 		if (tipoDto!=0) {
-			muestraMsgModal('Descuento por volumen aplicado.','Se aplicará un '+tipoDto+'% de descuento por volumen.');
+			//muestraMsgModal('Descuento por volumen aplicado.','Se aplicará un '+tipoDto+'% de descuento por volumen.');
+			$('#divJqNotifications').data('jqNotifications')
+				.addNotification('Descuento por volumen aplicado.','Se aplicará un '+tipoDto+'% de descuento por volumen.', 'info');
 			ulDtosAdd('dtoVolumen','Descuento por volumen',tipoDto,'');
 		}
 	}
@@ -503,6 +509,7 @@ function getLineas () {
 			$('#credito').attr({max:creditoMaximoAplicable}).val(creditoMaximoAplicable);
 			$('#credito').trigger('input');
 			$('#creditoMaximoAplicable').html(creditoMaximoAplicable+'€');
+			aplicaDtoVolumen();
 		}
 	},
 	'json')
