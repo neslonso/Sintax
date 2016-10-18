@@ -37,7 +37,7 @@ class busqueda extends Home implements IPage {
 	public function cuerpo() {
 		$txtBusqueda=$_SERVER['SCRIPT_URL'];
 		$txtBusqueda=str_replace("busqueda","",$txtBusqueda);
-		$txtBusqueda=str_replace("/","",$txtBusqueda);
+		$txtBusqueda=str_replace("/"," ",$txtBusqueda);
 		$txtBusqueda=str_replace("-"," ",$txtBusqueda);
 		$logueado=false;
 		$db=\cDb::confByKey('celorriov3');
