@@ -6,6 +6,8 @@
 @color-secundario: <?=$GLOBALS['config']->tienda->TEMA->COLOR_SECUNDARIO?>;
 /*@color-terciario: spin(@color-principal, 210%);*/
 @color-terciario: multiply(@color-principal, @color-secundario);
+@color-cabecera: <?=$GLOBALS['config']->tienda->TEMA->COLOR_HEADER?>; /*bg de cabecera de web*/
+@color-pie: <?=$GLOBALS['config']->tienda->TEMA->COLOR_FOOTER?>; /* bg footer*/
 @color-links: #304c71;
 @color-links-hover: #6c94be;
 @color-txt: #333333;
@@ -25,9 +27,7 @@
 @height-banner: 250px;
 @width-cesta: 400px;
 /* definiciones secundarias */
-@color-cabecera: @color-bg-body; /*bg de cabecera de web*/
-@color-sidebarMenu: @color-bg-body; /*bg menu lateral*/
-@color-pie: @color-bg-body; /* bg footer*/
+@color-sidebarMenu: #fff; /*bg menu lateral*/
 @color-banner-txt: @color-terciario;
 @color-borde-items: @color-bordes-contenedores;
 @color-bg-items: @color-bg-contenedores;

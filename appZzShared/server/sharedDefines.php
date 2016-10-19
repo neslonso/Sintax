@@ -50,6 +50,8 @@ define ('ARR_TIENDAS',serialize(array (
 		'TEMA' => (object) array (
 			'COLOR_PRIMARIO' => '#345995',
 			'COLOR_SECUNDARIO' => '#EAC435',
+			'COLOR_HEADER' => '#FFF',
+			'COLOR_FOOTER' => '#FFF',
 			'EFECTO_BANNER' => "loop:true,spaceBetween: 100,effect: 'coverflow',coverflow: {rotate: 0,stretch: 0,depth: 300,modifier: 1,slideShadows : false},slideToClickedSlide:true,",
 		),
 	),
@@ -86,6 +88,8 @@ define ('ARR_TIENDAS',serialize(array (
 		'TEMA' => (object) array (
 			'COLOR_PRIMARIO' => '#008B44',
 			'COLOR_SECUNDARIO' => '#FFBD7B',
+			'COLOR_HEADER' => '#FFF',
+			'COLOR_FOOTER' => '#FFF',
 			'EFECTO_BANNER' => "",
 			'FRAGMENTOS' => array (
 				'INFO_DTOS_VOLUMEN' => (object) array (
@@ -128,6 +132,8 @@ define ('ARR_TIENDAS',serialize(array (
 		'TEMA' => (object) array (
 			'COLOR_PRIMARIO' => '#F87A8B',
 			'COLOR_SECUNDARIO' => '#df9aa3',
+			'COLOR_HEADER' => '#FFF',
+			'COLOR_FOOTER' => '#FFF',
 			'EFECTO_BANNER' => "loop:true,spaceBetween: 100, slideToClickedSlide:true,freeMode:true,speed:1000,autoplay: 4000,",
 		),
 	),
@@ -164,6 +170,8 @@ define ('ARR_TIENDAS',serialize(array (
 		'TEMA' => (object) array (
 			'COLOR_PRIMARIO' => '#FFCEB4',
 			'COLOR_SECUNDARIO' => '#AB9DCB',
+			'COLOR_HEADER' => '#FFF',
+			'COLOR_FOOTER' => '#FFF',
 			'EFECTO_BANNER' => "loop:true,spaceBetween: 100, slideToClickedSlide:true,freeMode:false,speed:4000,autoplay: 4000,",
 			'FRAGMENTOS' => array (
 			),
@@ -202,6 +210,8 @@ define ('ARR_TIENDAS',serialize(array (
 		'TEMA' => (object) array (
 			'COLOR_PRIMARIO' => '#CD5A91',
 			'COLOR_SECUNDARIO' => '#6c94be',
+			'COLOR_HEADER' => '#FFF',
+			'COLOR_FOOTER' => '#FFF',
 			'EFECTO_BANNER' => "",
 		),
 	),
@@ -238,6 +248,8 @@ define ('ARR_TIENDAS',serialize(array (
 		'TEMA' => (object) array (
 			'COLOR_PRIMARIO' => '#FF9933',
 			'COLOR_SECUNDARIO' => '#9933ff',
+			'COLOR_HEADER' => '#FFF',
+			'COLOR_FOOTER' => '#FFF',
 			'EFECTO_BANNER' => "loop:true,spaceBetween: 100,effect: 'coverflow',coverflow: {rotate: 50,stretch: 0,depth: 100,modifier: 1,slideShadows : false},slideToClickedSlide:true,freeMode:false,speed:4000,autoplay: 1000,",
 		),
 	),

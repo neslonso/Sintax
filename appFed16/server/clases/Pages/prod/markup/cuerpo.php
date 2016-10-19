@@ -82,7 +82,7 @@ if($objOferta->GETtipoDevolucionCredito()>0){
 			</div>
 			<div class="card-item-white">
 				<div class="row">
-					<div class="col-md-6 col-md-push-3 hidden-xs">
+					<div class="col-md-6 col-md-push-3 hidden-xs text-center">
 						<?=\Sintax\ApiService\Productos::btnComprar($objOferta,'banner-price-comprar');?>
 					</div>
 					<!--<div class="col-md-6 hidden-xs">
@@ -92,6 +92,13 @@ if($objOferta->GETtipoDevolucionCredito()>0){
 					</div>
 					<!--<div class="col-xs-6 visible-xs">
 					</div>-->
+					<div class="col-xs-12 text-right cajaRefEan">
+						<span class="text-muted">
+							Ref: <?=$objOferta->GETreferencia()?>
+							<br>
+							EAN: <?=$objOferta->codigoEan()?>
+						</span>
+					</div>
 				</div>
 			</div>
 		</div><!--ofertas-->
@@ -150,7 +157,10 @@ if($objOferta->GETtipoDevolucionCredito()>0){
 
 		</div>
 	</div>
-*/?>
+*/
+	//echo '<audio src="' . $voice['response'] . '" autoplay="autoplay"></audio>';
+	//print_r($voice);
+?>
 
 
 	<div class="row item-desc">

@@ -277,6 +277,17 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		$dif=$pvpCatalogo-$this->pvp();
 		return round(($dif/$pvpCatalogo)*100,2);
 	}
+	public function codigoEAN(){
+		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
+		$codigoEAN="";
+		if (count($arrProds)==1) {
+			$codigoEAN=$arrProds[0]->GETean();
+		} else {
+			throw new Exception("No sabemos que hacer con los packs de productos", 1);
+			$codigoEAN=$arrProds[0]->GETean();
+		}
+		return $codigoEAN;
+	}
 	/**
 	 * [imgSrc description]
 	 * @param  integer $i [description]
@@ -308,6 +319,27 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		//$src=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB&fichero=multi_productoAdjunto.id.'.$idMPA.'.data&ancho='.$ancho.'&alto='.$alto.'&modo='.Imagen::OUTPUT_MODE_FILL;
 		$src=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB_MOV&fichero='.$this->GETid().'.data&ancho='.$ancho.'&alto='.$alto.'&modo='.Imagen::OUTPUT_MODE_FILL;
 		return $src;
+	}
+
+	public function ruta($separador, $incluyeThis=false, $conEnlace=false, $claseCssEnlace="") {
+		$result=$this->GETnombre();
+		return $result;
+	}
+
+	public function url($relative=false,$seoFriendly=true) {
+		if ($relative) {
+			if ($seoFriendly) {
+				return BASE_DIR.Cadena::toUrlString($this->ruta("/",true))."/prod/".$this->GETid()."/";
+			} else {
+				return BASE_DIR.FILE_APP."?page=prod&id=".$this->GETid();
+			}
+		} else {
+			if ($seoFriendly) {
+				return BASE_URL.Cadena::toUrlString($this->ruta("/",true))."/prod/".$this->GETid()."/";
+			} else {
+				return BASE_URL.FILE_APP."?page=prod&id=".$this->GETid();
+			}
+		}
 	}
 
 	public static function arrIdsMayorDescuento($db,$keyTienda,$limit=10) {

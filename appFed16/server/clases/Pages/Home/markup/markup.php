@@ -107,12 +107,22 @@
 							<button class="btnUserNav btn btn-success btn-menu" type="button" data-toggle="tooltip" title="Accede / Regístrate" data-placement="top" data-container="body">
 								<span class="fa fa-user-plus"></span>
 							</button>
+<?
+					if ($activarFB){
+?>
 							<button class="FbLogin btn btn-primary btn-menu" type="button" disabled="disabled" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
 								<span class="fa fa-facebook-square"></span>
 							</button>
+<?
+					}
+					if ($activarTW){
+?>
 							<button class="TwLogin btn btn-info btn-menu" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
 								<span class="fa fa fa-twitter"></span>
 							</button>
+<?
+					}
+?>
 						</div>
 					</div>
 					<div id="navUserMenu" class="nav-user-menu">
@@ -137,12 +147,22 @@
 											<a id="btnRegistro" href="<?=BASE_URL?>registro_usuario" class="btn btn-warning btn-sm blanco">
 												<span class="glyphicon glyphicon-plus"></span> Registrate
 											</a>
+<?
+					if ($activarFB){
+?>
 											<button class="FbLogin btn btn-primary btn-sm" type="button" disabled="disabled" data-toggle="tooltip" title="Accede con Facebook" data-placement="top" data-container="body">
 												<span class="fa fa-facebook-square"></span>
 											</button>
+<?
+					}
+					if ($activarTW){
+?>
 											<button class="TwLogin btn btn-info btn-sm" type="button" data-toggle="tooltip" title="Accede con Twitter" data-placement="top" data-container="body">
 												<span class="fa fa fa-twitter"></span>
 											</button>
+<?
+					}
+?>
 											<a id="btnLogin" href="#" class="btn btn-primary btn-sm blanco">
 												<span class="glyphicon glyphicon-ok"></span> Entrar
 											</a>
@@ -340,8 +360,18 @@
 									</li>
 								</ul>
 								<ul class="social">
+<?
+							if ($linkTiendaFB){
+?>
 									<li> <a href="<?=$GLOBALS['config']->tienda->SOCIAL->FB->URL?>"> <i class=" fa fa-facebook">   </i> </a> </li>
+<?
+							}
+							if ($linkTiendaTW){
+?>
 									<li> <a href="<?=$GLOBALS['config']->tienda->SOCIAL->TW->URL?>"> <i class="fa fa-twitter">   </i> </a> </li>
+<?
+							}
+?>
 								<!--
 									<li> <a href="#"> <i class="fa fa-google-plus">   </i> </a> </li>
 									<li> <a href="#"> <i class="fa fa-pinterest">   </i> </a> </li>

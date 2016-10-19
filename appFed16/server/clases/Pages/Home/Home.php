@@ -122,6 +122,10 @@ class Home extends Error implements IPage {
 			$cliente=$objCli->toStdObj();
 			$cliente->saldo=$objCli->saldoCredito();
 		}
+		$activarTW=($GLOBALS['config']->tienda->SOCIAL->TW->CONSUMER_KEY!="")?true:false;
+		$activarFB=($GLOBALS['config']->tienda->SOCIAL->FB->APP_ID!="")?true:false;
+		$linkTiendaTW=($GLOBALS['config']->tienda->SOCIAL->TW->URL!="")?true:false;
+		$linkTiendaFB=($GLOBALS['config']->tienda->SOCIAL->FB->URL!="")?true:false;
 	//$GLOBALS['firephp']->error($db->ping(),"pre arrCatsRootsMenu");
 	$tInicial=microtime(true);
 		$arrCatsRoots=\Sintax\ApiService\Categorias::arrCatsRootsMenu($GLOBALS['config']->tienda->key);
