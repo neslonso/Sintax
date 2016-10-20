@@ -20,7 +20,7 @@
 										<!--<a class="btn jqCst banner-price-comprar" data-id="<?=$stdObjOfer->id?>" data-ttl="<?=$stdObjOfer->nombre?>" data-unit="1" data-prc="<?=$stdObjOfer->precio?>" data-src="<?=$stdObjOfer->urlFotoPpal?>">Comprar</a>-->
 									</div>
 								</div>
-								<div onclick="window.location='<?=BASE_URL?>prod/<?=$stdObjOfer->id?>'" class="banner-txt"><a href="<?=BASE_URL?>prod/<?=$stdObjOfer->id?>"><?=$stdObjOfer->nombre?></a></div>
+								<div onclick="window.location='<?=$stdObjOfer->url?>'" class="banner-txt"><a href="<?=$stdObjOfer->url?>"><?=$stdObjOfer->nombre?></a></div>
 							</div>
 						</div>
 					</div>

@@ -24,6 +24,7 @@ class Categorias extends ApiService implements IApiService {
 		$obj->imgId=$objOferta->imgId();
 		$obj->rebote=$objOferta->GETtipoDevolucionCredito();
 		$obj->vendible=$objOferta->vendible();
+		$obj->url=$objOferta->url();
 		if ($objOferta->tipoDescuentoGama()>0) {
 			$obj->gama=new \stdClass();
 			$obj->gama->nombre=$objOferta->objMulti_productoGama()->GETnombre();

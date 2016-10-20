@@ -163,9 +163,9 @@ class Multi_productoGama extends Sintax\Core\Entity implements Sintax\Core\IEnti
 			if ($momentoFin!='') {
 				//$objMomentoFin=new Fecha ($this->momentoFin($keyTienda),'mysql');
 				$objMomentoFin=new Fecha ('2016-10-24 23:51:00','mysql');
-				$ttsQuery.='. Oferta válida ';
+				$ttsQuery.='. Oferta vÃ¡lida ';
 				$laLas=($objMomentoFin->date('h')>1)?'las':'la';
-				$amPm=($objMomentoFin->date('a')=="am")?'de la mañana':'de la tarde';
+				$amPm=($objMomentoFin->date('a')=="am")?'de la maÃ±ana':'de la tarde';
 				if ($objMomentoFin->GETdate()-time()<24*60*60) {
 					//Quedan menos de 24 h
 					$ttsQuery.='hasta '.$laLas.' '.$objMomentoFin->date('h i').' '.$amPm;
@@ -173,12 +173,12 @@ class Multi_productoGama extends Sintax\Core\Entity implements Sintax\Core\IEnti
 					//Quedan menos de 7 dias
 					$currentLocale=setlocale(LC_ALL, 0);
 					setlocale(LC_ALL, 'es_ES');
-					$ttsQuery.='hasta el próximo '.utf8_encode(strftime ('%A',$objMomentoFin->GETdate()));
+					$ttsQuery.='hasta el prÃ³ximo '.utf8_encode(strftime ('%A',$objMomentoFin->GETdate()));
 					$ttsQuery.=' a '.$laLas.' '.$objMomentoFin->date('h i').' '.$amPm;
 					setlocale(LC_ALL, $currentLocale);
 				} elseif ($objMomentoFin->GETdate()-time()<31*24*60*60) {
 					//Quden menos de 31 dias
-					$ttsQuery.='hasta el día '.$objMomentoFin->date('d');
+					$ttsQuery.='hasta el dÃ­a '.$objMomentoFin->date('d');
 					$ttsQuery.=' a '.$laLas.' '.$objMomentoFin->date('h i').' '.$amPm;
 				} elseif ($objMomentoFin->GETdate()-time()<365*24*60*60) {
 					//Quedan menos de 365 dias
@@ -188,10 +188,10 @@ class Multi_productoGama extends Sintax\Core\Entity implements Sintax\Core\IEnti
 					$ttsQuery.=' a '.$laLas.' '.$objMomentoFin->date('h i').' '.$amPm;
 					setlocale(LC_ALL, $currentLocale);
 				} else {
-					//Quedan mas de 365 días
+					//Quedan mas de 365 dÃ­as
 					$ttsQuery.=' hasta el '.$objMomentoFin->toFechaES(NULL,false).' ';
 					$ttsQuery.=' '.$objMomentoFin->date('h i').' '.$amPm;
-					//$ttsQuery.='. Oferta válida hasta '.$objMomentoFin->toAgo(NULL,NULL,3);
+					//$ttsQuery.='. Oferta vÃ¡lida hasta '.$objMomentoFin->toAgo(NULL,NULL,3);
 				}
 				//$GLOBALS['firephp']->info($ttsQuery);
 				//$GLOBALS['firephp']->info($objMomentoFin->toAgo(NULL,NULL,3));

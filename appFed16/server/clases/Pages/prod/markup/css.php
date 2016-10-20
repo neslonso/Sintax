@@ -15,7 +15,9 @@
     /*color: #bababa;*/
     /*padding-left: 20px;*/
 }
-
+.cajaRefEan{
+    line-height: 18px;
+}
 /*item detail*/
 .item-detail .shop-item-rebote {
     top:-4px;

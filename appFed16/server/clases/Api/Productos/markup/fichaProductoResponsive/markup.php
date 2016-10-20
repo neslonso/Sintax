@@ -39,7 +39,7 @@ if (isset($stdObjOfer->gama)) {
 							</div>
 							<div class="shop-item-cart">
 								<?=\Sintax\ApiService\Productos::btnComprar($stdObjOfer,'','','Comprar');?>
-								<button onclick="window.location='<?=BASE_URL?>prod/<?=$stdObjOfer->id?>'" class="btn btn-default shop-item-btn-info">+Info</button>
+								<button onclick="window.location='<?=$stdObjOfer->url?>'" class="btn btn-default shop-item-btn-info">+Info</button>
 							</div>
 						</div>
 						<?=$rebote?>

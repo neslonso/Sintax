@@ -103,6 +103,22 @@ try {
 				$objImg=Imagen::fromFile($file);
 			}
 		break;
+		case 'VOICE':
+			$speechText="Bienvenido";
+			$tts = new \VoiceRSS_tts;
+			$voice = $tts->speech([
+			    'key' => 'ea8bf255fb8c4f2ca6f039f993b94321',
+			    'hl' => 'es-es',
+			    'src' => ''.$speechText.'',
+			    'r' => '0',// jugaremos con -1,0,1
+			    'c' => 'mp3',
+			    'f' => '44khz_16bit_stereo',
+			    'ssml' => 'false',
+			    'b64' => 'false' //true en b64, false en binary
+			]);
+			//$voice['response']; //respuesta
+			//...
+		break;
 		default:
 			try {
 				if (defined($_GET['almacen'])) {
