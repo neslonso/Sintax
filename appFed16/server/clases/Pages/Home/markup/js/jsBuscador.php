@@ -16,7 +16,7 @@ $(document).ready(function() {
 			},
 			cache: {
 				type: 'memory',//memory, localStorage, sessionStorage
-				duration  : 600,//seconds
+				duration  : 60,//seconds
 			},
 			paths:{
 				results: 'data.arrResults',

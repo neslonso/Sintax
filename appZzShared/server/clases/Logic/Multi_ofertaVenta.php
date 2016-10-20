@@ -277,6 +277,17 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		$dif=$pvpCatalogo-$this->pvp();
 		return round(($dif/$pvpCatalogo)*100,2);
 	}
+	public function codigoEAN(){
+		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
+		$codigoEAN="";
+		if (count($arrProds)==1) {
+			$codigoEAN=$arrProds[0]->GETean();
+		} else {
+			throw new Exception("No sabemos que hacer con los packs de productos", 1);
+			$codigoEAN=$arrProds[0]->GETean();
+		}
+		return $codigoEAN;
+	}
 	/**
 	 * [imgSrc description]
 	 * @param  integer $i [description]
@@ -310,6 +321,22 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		return $src;
 	}
 
+	public function url($relative=false,$seoFriendly=true) {
+		if ($relative) {
+			if ($seoFriendly) {
+				return BASE_DIR.Cadena::toUrlString($this->GETnombre())."/prod/".$this->GETid()."/";
+			} else {
+				return BASE_DIR.FILE_APP."?page=prod&id=".$this->GETid();
+			}
+		} else {
+			if ($seoFriendly) {
+				return BASE_URL.Cadena::toUrlString($this->GETnombre())."/prod/".$this->GETid()."/";
+			} else {
+				return BASE_URL.FILE_APP."?page=prod&id=".$this->GETid();
+			}
+		}
+	}
+
 	public static function arrIdsMayorDescuento($db,$keyTienda,$limit=10) {
 		$sql="
 			SELECT mov.id, (1-mov.precio/mp.precio)*100 AS dto FROM multi_producto mp
@@ -329,7 +356,30 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		return $this->GETvisible() && !$this->GETagotado();
 	}
 
-	public static function textSearch($db,$keyTienda,$q,$limit='0,10',$soloVisibles=true) {
+	public static function textSearch($db,$keyTienda,$q,$offset=0,$limit=10,$soloVisibles=true) {
+		//$qWords=explode(" ",$q);
+		$sql=
+			"SELECT * FROM idxMulti_ofertaVenta WHERE query='"
+				.$q.";"
+				."mode=extended;"
+				."filter=keyTienda,".crc32($keyTienda).";"
+				."filter=visible,1;"
+				."offset=".$offset.";"
+				."limit=".$limit.";"
+				."fieldweights=referencia,5,nombre,3,descripcion,1;"
+			."';"
+		;
+		error_log("Sphinx: ".$sql);
+		$rsl=$db->query($sql);
+		$arr=array();
+		while ($data=$rsl->fetch_object()) {
+			$obj=new self($db,$data->id);
+			if ($obj->GETkeyTienda()==$keyTienda) {
+				array_push($arr,$obj);
+			}
+		}
+		return $arr;
+		/*
 		$sqlSoloVisibles=($soloVisibles)?" visible=1 AND ":"";
 		$matchAgainst=array();
 		//$matchList='`ean`,`referencia`,`nombre`,`descripcion`,`title`,`metaDescription`,`metaKeywords`';
@@ -369,6 +419,7 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 			array_push($arr,$obj);
 		}
 		return $arr;
+		*/
 	}
 
 

@@ -25,7 +25,7 @@ $(document).ready(function() {
 		if (data.step==1 && data.direction=='next') {
 			$dirRadioChecked=$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl');
 			if (!$dirRadioChecked.length>0) {
-				muestraMsgModal('Dirección de entega','Debe seleccionar una dirección de entrega para su pedido.');
+				muestraMsgModal('Dirección de entrega','Debe seleccionar una dirección de entrega para su pedido.');
 				//$('#newPedWizard').wizard('selectedItem', {step:1});
 				var veces=0;
 				var intervalId=setInterval(function() {
@@ -428,10 +428,8 @@ function aplicaDtoVolumen() {
 	for (i = 0; i < arrDtos.length; i++) {
 		objDto=arrDtos[i];
 		var volumenDto=parseFloat(objDto.volumen);
-		//if (volumenDto <= volumen) {
-		if (volumenDto > volumen) {
+		if (volumenDto <= volumen) {
 			tipoDto=objDto.tipo;
-			break;
 		}
 	}
 	//console.log('Dto volumen: '+tipoDto);

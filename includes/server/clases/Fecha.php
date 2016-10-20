@@ -63,6 +63,14 @@ class Fecha {
 	 */
 	public function GETsegundo () {return date("s",$this->dateUnix);}
 	/**
+	 * Devuelve el resultado de la funcion date
+	 * @param  string $format cadena de formato de date
+	 * @return string         string que representa la fecha formateada
+	 */
+	public function date($format="YmdHis") {
+		error_log("Fecha::date dateunix: ".$this->dateUnix);
+		return date($format,$this->dateUnix);}
+	/**
 	 * Crea un objeto fecha a partir de una fecha MySQL (AAAA-MM-DD HH-MM-SS / AAAAMMDDHHMMSS)
 	 * @param  string $date fecha en formato MySQL
 	 * @return object self Instancia de self

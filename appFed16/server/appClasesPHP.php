@@ -8,7 +8,7 @@ spl_autoload_register(function ($clase) {
 		}
 	}
 	$fileList=Filesystem::folderSearch(dirname(__FILE__).DIRECTORY_SEPARATOR.
-		'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'appZzShared'.DIRECTORY_SEPARATOR.'server'.DIRECTORY_SEPARATOR.'clases'.DIRECTORY_SEPARATOR,
+		'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'appZzShared'.DIRECTORY_SEPARATOR.'server'.DIRECTORY_SEPARATOR,
 		'/.*\/'.$clase.'.php$/');
 	foreach ($fileList as $filePath) {
 		if (file_exists($filePath)) {

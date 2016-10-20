@@ -150,6 +150,7 @@
 
 			var source;
 			if (!Object.isObject(cacheObj)) {
+				plugin.state.offset=0;
 				source='net';
 				downloadResults(sQuery,maxResults);
 			} else if (Object.isObject(cacheObj) && cacheObj.offset>=plugin.state.offset) {
@@ -157,7 +158,11 @@
 				console.log('getResults cacheObj.offset: '+cacheObj.offset);
 				console.log('getResults plugin.resultsContainer: ');
 				console.log(plugin.resultsContainer);
-				renderContainer(sQuery,null);
+				if (!plugin.resultsContainer) {
+					renderContainer(sQuery,null);
+				} else {
+					renderContainer(sQuery,[]);
+				}
 			} else {
 				source='merge';
 				downloadResults(sQuery,maxResults);
@@ -166,11 +171,12 @@
 		}
 
 		var downloadResults= function (sQuery,maxResults) {
-			var limit=plugin.state.offset+','+maxResults;
+			var offset=plugin.state.offset;
+			var limit=maxResults;
 			if (!plugin.state.loading) {
 				startLoading();
 			}
-			var ajaxData=$.extend(true,{}, plugin.settings.data.ajax.data, {'q': sQuery, 'limit':limit});
+			var ajaxData=$.extend(true,{}, plugin.settings.data.ajax.data, {'q': sQuery, 'offset':offset, 'limit':limit});
 			var $promise=$.ajax({
 				url: plugin.settings.data.ajax.url,
 				type: 'POST',

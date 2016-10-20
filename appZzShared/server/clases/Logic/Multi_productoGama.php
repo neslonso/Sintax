@@ -122,6 +122,15 @@ class Multi_productoGama extends Sintax\Core\Entity implements Sintax\Core\IEnti
 		return $result;
 	}
 
+	public function momentoInicio($keyTienda) {
+		$result=null;
+		$arrDtos=$this->arrMulti_productoGamaDescuento("keyTienda='".$keyTienda."'","","","arrClassObjs");
+		if (count($arrDtos)>0) {
+			$result=$arrDtos[0]->GETmomentoInicio();
+		}
+		return $result;
+	}
+
 	public function momentoFin($keyTienda) {
 		$result=null;
 		$arrDtos=$this->arrMulti_productoGamaDescuento("keyTienda='".$keyTienda."'","","","arrClassObjs");
@@ -129,6 +138,67 @@ class Multi_productoGama extends Sintax\Core\Entity implements Sintax\Core\IEnti
 			$result=$arrDtos[0]->GETmomentoFin();
 		}
 		return $result;
+	}
+
+	public function speechText($keyTienda){
+		$nombre=$this->GETnombre();
+		$nombreTTS=$this->GETnombreTTS();
+		$tipoDescuento=$this->tipoDescuento($keyTienda);
+		$momentoInicio=($this->momentoInicio($keyTienda)!='')?
+			Fecha::fromMysql($this->momentoInicio($keyTienda))->toFechaES():
+			'';
+		$momentoFin=($this->momentoFin($keyTienda)!='')?
+			Fecha::fromMysql($this->momentoFin($keyTienda))->toFechaES():
+			'';
+		//$productos=$arrCampos['productos'];
+		$ttsQuery='';
+		if ($tipoDescuento!=0) {
+			$nombreQueryTTS=($nombreTTS!="")?$nombreTTS:$nombre;
+			$ttsQuery=$tipoDescuento."% en ".$nombreQueryTTS;
+			if ($momentoInicio!='') {
+				//$objMomentoInicio=new Fecha ($arrCampos['momentoInicio'],'Mysql');
+				//$ttsQuery.=' desde el '.$objMomentoInicio->toFechaES(NULL,false).' ';
+				//$ttsQuery.=' '.$objMomentoInicio->date('h:i a');
+			}
+			if ($momentoFin!='') {
+				//$objMomentoFin=new Fecha ($this->momentoFin($keyTienda),'mysql');
+				$objMomentoFin=new Fecha ('2016-10-24 23:51:00','mysql');
+				$ttsQuery.='. Oferta válida ';
+				$laLas=($objMomentoFin->date('h')>1)?'las':'la';
+				$amPm=($objMomentoFin->date('a')=="am")?'de la mañana':'de la tarde';
+				if ($objMomentoFin->GETdate()-time()<24*60*60) {
+					//Quedan menos de 24 h
+					$ttsQuery.='hasta '.$laLas.' '.$objMomentoFin->date('h i').' '.$amPm;
+				} elseif ($objMomentoFin->GETdate()-time()<7*24*60*60) {
+					//Quedan menos de 7 dias
+					$currentLocale=setlocale(LC_ALL, 0);
+					setlocale(LC_ALL, 'es_ES');
+					$ttsQuery.='hasta el próximo '.utf8_encode(strftime ('%A',$objMomentoFin->GETdate()));
+					$ttsQuery.=' a '.$laLas.' '.$objMomentoFin->date('h i').' '.$amPm;
+					setlocale(LC_ALL, $currentLocale);
+				} elseif ($objMomentoFin->GETdate()-time()<31*24*60*60) {
+					//Quden menos de 31 dias
+					$ttsQuery.='hasta el día '.$objMomentoFin->date('d');
+					$ttsQuery.=' a '.$laLas.' '.$objMomentoFin->date('h i').' '.$amPm;
+				} elseif ($objMomentoFin->GETdate()-time()<365*24*60*60) {
+					//Quedan menos de 365 dias
+					$currentLocale=setlocale(LC_ALL, 0);
+					setlocale(LC_ALL, 'es_ES');
+					$ttsQuery.='hasta el '.$objMomentoFin->date('d').' de '.utf8_encode(strftime ('%B',$objMomentoFin->GETdate()));
+					$ttsQuery.=' a '.$laLas.' '.$objMomentoFin->date('h i').' '.$amPm;
+					setlocale(LC_ALL, $currentLocale);
+				} else {
+					//Quedan mas de 365 días
+					$ttsQuery.=' hasta el '.$objMomentoFin->toFechaES(NULL,false).' ';
+					$ttsQuery.=' '.$objMomentoFin->date('h i').' '.$amPm;
+					//$ttsQuery.='. Oferta válida hasta '.$objMomentoFin->toAgo(NULL,NULL,3);
+				}
+				//$GLOBALS['firephp']->info($ttsQuery);
+				//$GLOBALS['firephp']->info($objMomentoFin->toAgo(NULL,NULL,3));
+			}
+//			$ttsQuery=urlencode($ttsQuery);
+		}
+		return $ttsQuery;
 	}
 
 }

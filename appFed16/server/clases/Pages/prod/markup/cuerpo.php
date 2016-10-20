@@ -9,15 +9,6 @@
 				<div class="img-item">
 					<img src="<?=$objOferta->imgSrc(0, 350, 350)?>" class="img-responsive">
 				</div>
-
-			</div>
-		</div><!--img-->
-		<div class="col-xs-12 col-sm-12 col-md-6">
-			<div class="card-item-white">
-				<div class="name">
-					<h1 class="h4"><strong><?=$objOferta->GETnombre()?></strong></h1>
-				</div>
-				<!--<p class="text-muted hidden-sm-down m-b-0"><?=$objOferta->GETnombre()?></p>-->
 <?
 if($objOferta->GETtipoDevolucionCredito()>0){
 			$rebote = '<div class="shop-item-rebote" data-toggle="tooltip" title="Con la compra de '.$objOferta->GETnombre().' recibirá el '.$objOferta->GETtipoDevolucionCredito().'% de su importe como crédito para futuras compras" data-index="-1"><div>'.$objOferta->GETtipoDevolucionCredito().'%</div></div>';
@@ -27,6 +18,14 @@ if($objOferta->GETtipoDevolucionCredito()>0){
 <?
 }
 ?>
+			</div>
+		</div><!--img-->
+		<div class="col-xs-12 col-sm-12 col-md-6">
+			<div class="card-item-white">
+				<div class="name">
+					<h1 class="h4"><strong><?=$objOferta->GETnombre()?></strong></h1>
+				</div>
+				<!--<p class="text-muted hidden-sm-down m-b-0"><?=$objOferta->GETnombre()?></p>-->
 				<div class="row">
 					<div class="col-xs-12">
 						<div class="">
@@ -38,6 +37,18 @@ if($objOferta->GETtipoDevolucionCredito()>0){
 				</div>
 			</div>
 		</div><!--headFich-->
+		<div class="col-xs-12 col-sm-12 col-md-6 pull-md-right">
+			<div class="card-item-white">
+				<div class="row">
+					<div class="col-xs-12 col-sm-6 text-left">
+						<span class="text-muted">Ref: <?=$objOferta->GETreferencia()?></span>
+					</div>
+					<div class="col-xs-12 col-sm-6 text-right">
+						<span class="text-muted">EAN: <?=$objOferta->codigoEan()?></span>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="col-xs-12 col-sm-12 col-md-6 pull-md-right">
 			<div class="card-item-white">
 				<div class="row">
@@ -82,7 +93,7 @@ if($objOferta->GETtipoDevolucionCredito()>0){
 			</div>
 			<div class="card-item-white">
 				<div class="row">
-					<div class="col-md-6 col-md-push-3 hidden-xs">
+					<div class="col-md-6 col-md-push-3 hidden-xs text-center">
 						<?=\Sintax\ApiService\Productos::btnComprar($objOferta,'banner-price-comprar');?>
 					</div>
 					<!--<div class="col-md-6 hidden-xs">
@@ -150,7 +161,8 @@ if($objOferta->GETtipoDevolucionCredito()>0){
 
 		</div>
 	</div>
-*/?>
+*/
+?>
 
 
 	<div class="row item-desc">
@@ -162,10 +174,11 @@ if($objOferta->GETtipoDevolucionCredito()>0){
 			<div class="card-item-white">
 				<div class="item-desc-text">
 <?
-	$descripcion = str_replace ( '<br /><br />' , '<br />' , $objOferta->GETdescripcion());
-	//$descripcion = str_replace ( '<br />\n<br />' , '<br />' , $descripcion);
+	$descripcion = $objOferta->GETdescripcion();
+	$descripcion = preg_replace('#^\s*<br />\s*$#m', '', $descripcion);
+	$descripcion = preg_replace('#^\s*(<br />)+\s*$#m', '<hr />', $descripcion);
 ?>
-					<p><?=trim($objOferta->GETdescripcion())?></p>
+					<p><?=trim($descripcion)?></p>
 				</div>
 			</div>
 		</div><!--descripcion-->
