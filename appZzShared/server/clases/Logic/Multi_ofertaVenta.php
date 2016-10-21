@@ -216,25 +216,31 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 
 	public function objMulti_productoGama() {
 		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
-		$objMulti_productoGama=0;
-		if (count($arrProds)==1) {
-			$objMulti_productoGama=$arrProds[0]->objMulti_productoGama();
-		} else {
-			//TODO: Imprescindible, saber que hacer aquí
-			throw new Exception("No sabemos que hacer con los packs de productos", 1);
-			$objMulti_productoGama=$arrProds[0]->objMulti_productoGama();
+		$objMulti_productoGama=null;
+		switch (count($arrProds)) {
+			case 0:
+				break;
+			case 1:
+				$objMulti_productoGama=$arrProds[0]->objMulti_productoGama();
+				break;
+			default:
+				throw new Exception("No sabemos que hacer con los packs de productos", 1);
+				break;
 		}
 		return $objMulti_productoGama;
 	}
 	public function tipoDescuentoGama() {
 		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
 		$tipoDescuentoGama=0;
-		if (count($arrProds)==1) {
-			$tipoDescuentoGama=$arrProds[0]->tipoDescuentoGama($this->GETkeyTienda());
-		} else {
-			//TODO: Imprescindible, saber que hacer aquí
-			throw new Exception("No sabemos que hacer con los packs de productos", 1);
-			$tipoDescuentoGama=$arrProds[0]->tipoDescuentoGama($this->GETkeyTienda());
+		switch (count($arrProds)) {
+			case 0:
+				break;
+			case 1:
+				$tipoDescuentoGama=$arrProds[0]->tipoDescuentoGama($this->GETkeyTienda());
+				break;
+			default:
+				throw new Exception("No sabemos que hacer con los packs de productos", 1);
+				break;
 		}
 		return $tipoDescuentoGama;
 	}
@@ -242,12 +248,15 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 	public function tipoIva() {
 		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
 		$tipoIva=0;
-		if (count($arrProds)==1) {
-			$tipoIva=$arrProds[0]->tipoIva();
-		} else {
-			//TODO: Imprescindible, saber que hacer aquí
-			throw new Exception("No sabemos que hacer con los packs de productos", 1);
-			$tipoIva=$arrProds[0]->tipoIva();
+		switch (count($arrProds)) {
+			case 0:
+				break;
+			case 1:
+				$tipoIva=$arrProds[0]->tipoIva();
+				break;
+			default:
+				throw new Exception("No sabemos que hacer con los packs de productos", 1);
+				break;
 		}
 		return $tipoIva;
 	}
@@ -257,12 +266,15 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 	public function paiCatalogo() {
 		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
 		$pvpCatalogo=0;
-		if (count($arrProds)==1) {
-			$pvpCatalogo=$arrProds[0]->pai();
-		} else {
-			//TODO: Imprescindible, saber que hacer aquí, tendremos q sumar los precios de los pai de catalogo
-			throw new Exception("No sabemos que hacer con los packs de productos", 1);
-			$pvpCatalogo=$arrProds[0]->pai();
+		switch (count($arrProds)) {
+			case 0:
+				break;
+			case 1:
+				$pvpCatalogo=$arrProds[0]->pai();
+				break;
+			default:
+				throw new Exception("No sabemos que hacer con los packs de productos", 1);
+				break;
 		}
 		return $pvpCatalogo;
 	}
@@ -274,17 +286,25 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 	}
 	public function descuentoOferta(){
 		$pvpCatalogo=$this->pvpCatalogo();
-		$dif=$pvpCatalogo-$this->pvp();
-		return round(($dif/$pvpCatalogo)*100,2);
+		if ($pvpCatalogo!=0) {
+			$dif=$pvpCatalogo-$this->pvp();
+			return round(($dif/$pvpCatalogo)*100,2);
+		} else {
+			return 0;
+		}
 	}
 	public function codigoEAN(){
 		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
 		$codigoEAN="";
-		if (count($arrProds)==1) {
-			$codigoEAN=$arrProds[0]->GETean();
-		} else {
-			throw new Exception("No sabemos que hacer con los packs de productos", 1);
-			$codigoEAN=$arrProds[0]->GETean();
+		switch (count($arrProds)) {
+			case 0:
+				break;
+			case 1:
+				$codigoEAN=$arrProds[0]->GETean();
+				break;
+			default:
+				throw new Exception("No sabemos que hacer con los packs de productos", 1);
+				break;
 		}
 		return $codigoEAN;
 	}
