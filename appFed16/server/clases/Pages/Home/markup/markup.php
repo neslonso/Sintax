@@ -209,6 +209,9 @@
 															<div id="tabs5-pane1" class="tab-pane active">
 																<div class="row">
 																	<div class="col-xs-12">
+																		<div class="tituloBox">
+																			<a href="<?=$cat->url?>"><?=$cat->nombre?></a>
+																		</div>
 																		<div class="col-subMenu">
 <?
 																$arrCatsHijas=$this->subMenu($cat->id);

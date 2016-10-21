@@ -69,3 +69,13 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+
+.ttmenu-content .row div.tituloBox {
+	border-bottom: solid 1px;
+}
+.ttmenu-content .row div.tituloBox a {
+	font-weight: bold;
+	font-size: larger;
+	border:none;
+	padding: 0px !important;
+}

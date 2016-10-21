@@ -8,7 +8,16 @@ class prod extends Home implements IPage {
 		parent::__construct($objUsr);
 	}
 	public function pageValida () {
-		return $this->objUsr->pagePermitida($this);
+		$idOfer = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
+		if(\Multi_ofertaVenta::existe (\cDb::confByKey("celorriov3"),$idOfer)){
+			$objOferta=new \Multi_ofertaVenta(\cDb::gI(),$idOfer);
+			if ($objOferta->GETvisible()) {
+				return $this->objUsr->pagePermitida($this);
+			} else {
+				ReturnInfo::add('El producto solicitado no se encuentra disponible en estos momentos. Disculpe las molestias','Producto no disponible');
+				return "Sintax\Pages\Home";
+			}
+		}
 	}
 	public function accionValida($metodo) {
 		return $this->objUsr->accionPermitida($this,$metodo);
@@ -45,14 +54,10 @@ class prod extends Home implements IPage {
 	}
 	public function cuerpo() {
 		$idOfer = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
-		if(\Multi_ofertaVenta::existe (\cDb::gI(),$idOfer)){
-			$objOferta=new \Multi_ofertaVenta(\cDb::gI(),$idOfer);
-			$objCategoria = isset($objOferta->arrMulti_categoria()[0]) ? $objOferta->arrMulti_categoria()[0] : '';
-			$arrOfertasRelacionadas=\Sintax\ApiService\Productos::arrProductosRelacionados(10,$GLOBALS['config']->tienda->key);
-			$arrOfertasGama=\Sintax\ApiService\Productos::arrProductosGama(10,$GLOBALS['config']->tienda->key);
-		}else{
-			throw new \Exception("El producto solicitado no se encuentra disponible en estos momentos. Disculpe las molestias");
-		}
+		$objOferta=new \Multi_ofertaVenta(\cDb::gI(),$idOfer);
+		$objCategoria = isset($objOferta->arrMulti_categoria()[0]) ? $objOferta->arrMulti_categoria()[0] : '';
+		$arrOfertasRelacionadas=\Sintax\ApiService\Productos::arrProductosRelacionados(10,$GLOBALS['config']->tienda->key);
+		$arrOfertasGama=\Sintax\ApiService\Productos::arrProductosGama(10,$GLOBALS['config']->tienda->key);
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
 	}
 }

@@ -373,7 +373,7 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 	}
 
 	public function vendible() {
-		return $this->GETvisible() && !$this->GETagotado();
+		return $this->GETvisible() && !$this->GETagotado() && $this->pvp()>0;
 	}
 
 	public static function textSearch($db,$keyTienda,$q,$offset=0,$limit=10,$soloVisibles=true) {
