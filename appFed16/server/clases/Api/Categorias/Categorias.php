@@ -43,7 +43,7 @@ class Categorias extends ApiService implements IApiService {
 		//$db=\cDb::confByKey("celorriov3");
 		$db=\cDb::gI();
 		$arr=array();
-		$arrCatsRoot=\Multi_categoria::getRoots($db,"keyTienda='".$keyTienda."' AND visible='1'","","","arrClassObjs");
+		$arrCatsRoot=\Multi_categoria::getRoots($db,"keyTienda='".$keyTienda."' AND visible='1'","orden ASC","","arrClassObjs");
 		$listaIdsFotosMenu='';
 		$listaIdsFotosMenu=self::listaIdsFotosMenu($GLOBALS['config']->tienda->key);
 		foreach ($arrCatsRoot as $objCat) {
