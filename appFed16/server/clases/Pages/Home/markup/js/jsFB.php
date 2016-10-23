@@ -10,7 +10,20 @@ $(document).ready(function() {
 			version : 'v2.7' // or v2.0, v2.1, v2.2, v2.3
 		});
 		$('.FbLogin').removeAttr('disabled');
+
+		FB.Event.subscribe('auth.statusChange', function(response) {
+			switch (responseLogin.status) {
+				case "connected":
+					console.log('usuario loogeado en FB y aplicación autorizada');
+					FB.api('/me/?fields=id,email,first_name,last_name,gender,birthday,picture', function(responseApiMe) {
+						console.log(responseApiMe);
+						acLogin(responseApiMe.email,'',responseLogin.authResponse.accessToken);
+					});
+				break;
+			}
+		});
 	});
+
 	$('.FbLogin').click(function () {
 		$.overlay();
 		FB.login(function(responseLogin) {
@@ -22,37 +35,6 @@ $(document).ready(function() {
 					FB.api('/me/?fields=id,email,first_name,last_name,gender,birthday,picture', function(responseApiMe) {
 						console.log(responseApiMe);
 						acLogin(responseApiMe.email,'',responseLogin.authResponse.accessToken);
-						/*
-						<? //Tratamos de loggear el email que viene de FB?>
-						$.post('./actions.php',{
-							'APP':'appTienda',
-							'acClase':'Home',
-							'acMetodo':'usrLoginFb',
-							'acTipo':'ajaxAssoc',
-							'accessToken': responseLogin.authResponse.accessToken,
-							'email': responseApiMe.email
-						},
-						function (data,textStatus,jqXHR) {
-							console.log (data);
-							if (data.exito) {
-								if (data.data.logged) {
-									//loggeado, recargamos
-									window.location.reload();
-								} else {
-									//no existe email-> mandarlo a newUsr con los datos rellenos
-									var pictureURL=(responseApiMe.picture.data.is_silhouette)?'':responseApiMe.picture.data.url;
-									Post('action','<?=BASE_DIR?>actions.php',
-										'APP','appTienda','acClase','newUsr','acMetodo','rellenaDatosFb','acTipo','stdAssoc',
-										'email',responseApiMe.email,'first_name',responseApiMe.first_name,'last_name',responseApiMe.last_name,
-										'gender',responseApiMe.gender,'birthday',responseApiMe.birthday,'pictureURL',pictureURL
-									);
-								}
-							} else {
-								muestraMsgModal('Fallo realizando acceso mediante facebook',data.msg);
-							}
-						},
-						'json');
-						*/
 					});
 				break;
 				case "not_authorized":
