@@ -43,13 +43,14 @@ class Categorias extends ApiService implements IApiService {
 		//$db=\cDb::confByKey("celorriov3");
 		$db=\cDb::gI();
 		$arr=array();
-		$arrCatsRoot=\Multi_categoria::getRoots($db,"keyTienda='".$keyTienda."' AND visible='1'","","","arrClassObjs");
+		$arrCatsRoot=\Multi_categoria::getRoots($db,"keyTienda='".$keyTienda."' AND visible='1'","orden ASC","","arrClassObjs");
 		$listaIdsFotosMenu='';
 		$listaIdsFotosMenu=self::listaIdsFotosMenu($GLOBALS['config']->tienda->key);
 		foreach ($arrCatsRoot as $objCat) {
 			$obj=new \stdClass();
 			$obj->id=$objCat->GETid();
 			$obj->nombre=$objCat->GETnombre();
+			$obj->url=$objCat->url();
 			//$obj->ico=$objCat->icoSrc();
 			$obj->ico=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB_MPA_JOIN&fichero='.$listaIdsFotosMenu.'&ancho=30&alto=30&formato=jpg';
 			$obj->img=$objCat->imgSrc(200,200);
@@ -68,7 +69,7 @@ class Categorias extends ApiService implements IApiService {
 		//$db=\cDb::confByKey("celorriov3");
 		$db=\cDb::gI();
 		$objMCat=new \Multi_categoria($db,$idPadre);
-		$arrCatsHijas=$objMCat->arrMulti_categoriaHija("fff.visible='1'","","","arrClassObjs");
+		$arrCatsHijas=$objMCat->arrMulti_categoriaHija("fff.visible='1'","orden ASC","","arrClassObjs");
 		$arr=array();
 		foreach ($arrCatsHijas as $objCat) {
 			$obj=new \stdClass();
@@ -76,7 +77,7 @@ class Categorias extends ApiService implements IApiService {
 			$obj->nombre=$objCat->GETnombre();
 			$obj->img='';
 			$obj->url=$objCat->url();
-			$arrCatsNietas=$objCat->arrMulti_categoriaHija("fff.visible='1'","","","arrClassObjs");
+			$arrCatsNietas=$objCat->arrMulti_categoriaHija("fff.visible='1'","orden ASC","","arrClassObjs");
 			$arrNietos=array();
 			if (!empty($arrCatsNietas)) {
 				foreach ($arrCatsNietas as $objCatNieto) {
@@ -177,7 +178,8 @@ class Categorias extends ApiService implements IApiService {
 		$arrOfers=$objCat->arrMulti_ofertaVenta("","orden ASC","","arrClassObjs");
 		$i=0;
 		foreach ($arrOfers as $objOferta) {
-			if ($objOferta->vendible()) {
+			if ($objOferta->GETvisible()) {
+			//if ($objOferta->GETvisible() && $objOferta->GETkeyTienda()==$objCat->GETkeyTienda()) {
 				$obj=self::creaStdObjOferta($objOferta);
 				$obj->index=$i;
 				array_push($arr,$obj);
