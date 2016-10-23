@@ -11,6 +11,9 @@ $(document).ready(function() {
 		});
 		$('.FbLogin').removeAttr('disabled');
 
+<?
+if (!isset($_SESSION['usuario'])){
+?>
 		FB.Event.subscribe('auth.statusChange', function(response) {
 			switch (response.status) {
 				case "connected":
@@ -22,6 +25,9 @@ $(document).ready(function() {
 				break;
 			}
 		});
+<?
+}
+?>
 	});
 
 	$('.FbLogin').click(function () {
