@@ -11,8 +11,8 @@ try {
 	//$X_FORWARDED_SERVER=(isset($_SERVER['X_FORWARDED_SERVER']))?$_SERVER['X_FORWARDED_SERVER']:NULL;
 
 	//$defaultDomain='bebefarma.com';
-	$defaultDomain='celorriofarma.com';
-	//$defaultDomain='farmaciacelorrio.com';
+	//$defaultDomain='celorriofarma.com';
+	$defaultDomain='farmaciacelorrio.com';
 	//$defaultDomain='parafarmaciasolobebes.com';
 	//$defaultDomain='parafarmaciasolocosmetica.com';
 	//$defaultDomain='farmadiscount.com';

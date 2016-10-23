@@ -56,7 +56,7 @@ if($objOferta->GETtipoDevolucionCredito()>0){
 						<strong>Categoría:</strong>
 					</div>
 					<div class="col-xs-12 col-sm-9">
-						<span class="text-muted"><?=$objCategoria->nombre?></span>
+						<span class="text-muted"><?=(isset($objCategoria) && is_object($objCategoria))?$objCategoria->nombre:'';?></span>
 					</div>
 <?
 					//if producto rebote
