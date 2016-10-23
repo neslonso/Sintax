@@ -12,12 +12,12 @@ $(document).ready(function() {
 		$('.FbLogin').removeAttr('disabled');
 
 		FB.Event.subscribe('auth.statusChange', function(response) {
-			switch (responseLogin.status) {
+			switch (response.status) {
 				case "connected":
 					console.log('usuario loogeado en FB y aplicación autorizada');
 					FB.api('/me/?fields=id,email,first_name,last_name,gender,birthday,picture', function(responseApiMe) {
 						console.log(responseApiMe);
-						acLogin(responseApiMe.email,'',responseLogin.authResponse.accessToken);
+						acLogin(responseApiMe.email,'',response.authResponse.accessToken);
 					});
 				break;
 			}
