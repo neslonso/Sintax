@@ -137,15 +137,15 @@
 	height: 50px;
 	width: 50px;
 	position: absolute;
-	left: 0px;
-	top: 0px;
+	left: -4px;
+	top: -2px;
 	z-index: @zindex-shop-item-rebote+1;
-	font-size: 11px;
+	font-size: 1.5em;
 	color: @color-btn-items-bg-font;
 	-webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-    padding-top: 8px;
-    font-weight: bold;
+	transform: rotate(-45deg);
+	padding-top: 8px;
+	font-weight: bold;
 }
 .shop-item-dto-triangle{
 	width: 0;
@@ -260,12 +260,12 @@
 }
 
 .stroke {
-    color: white;
-    text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
+	color: white;
+	text-shadow:
+	-1px -1px 0 #000,
+	1px -1px 0 #000,
+	-1px 1px 0 #000,
+	1px 1px 0 #000;
 }
 .stamp>div {
 	display:table-cell;
