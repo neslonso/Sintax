@@ -24,7 +24,32 @@
     right: 29px;
 }
 .item-detail .shop-item-rebote > div {
-    top: 51px;
+    top: 23px;
+}
+.shop-item-dto{
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: @zindex-shop-item-rebote+1;
+    font-size: 11px;
+    color: @color-btn-items-bg-font;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    padding-top: 8px;
+    font-weight: bold;
+}
+.shop-item-dto-triangle{
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 50px 50px 0 0;
+    border-color: @color-btn-items-bg transparent transparent transparent;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: @zindex-shop-item-rebote;
 }
 .price-ahora{
 	color: rgba(205, 90, 145, 0.6);

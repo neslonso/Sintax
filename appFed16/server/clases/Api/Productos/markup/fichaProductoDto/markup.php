@@ -3,7 +3,7 @@
 							<div>
 								<div class="banner-price">
 <?
-			if ($stdObjOfer->precioCatalogo!=$stdObjOfer->precio){
+			if ($stdObjOfer->tipoDtoRespectoCatalogo>0){
 ?>
 									<div class="banner-price-antes">Antes: <?=$stdObjOfer->precioCatalogo?> €</div>
 									<div class="banner-price-ahora">Ahora: <?=$stdObjOfer->precio?> €</div>
