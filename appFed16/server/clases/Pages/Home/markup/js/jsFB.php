@@ -12,6 +12,7 @@ $(document).ready(function() {
 		$('.FbLogin').removeAttr('disabled');
 
 <?
+/*
 if (!isset($_SESSION['usuario'])){
 ?>
 		FB.Event.subscribe('auth.statusChange', function(response) {
@@ -27,6 +28,7 @@ if (!isset($_SESSION['usuario'])){
 		});
 <?
 }
+*/
 ?>
 	});
 
