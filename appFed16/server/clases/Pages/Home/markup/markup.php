@@ -2,7 +2,7 @@
 <?="\n<!-- /".get_class()." -->\n"?>
 <nav class="navbar navbar-default navbar-fixed-top">
 	<header id="container-cabecera">
-		<div class="bandaSuperior navbar-fixed-top hidden-xs hidden-sm">
+		<div class="bandaSuperior hidden-xs hidden-sm">
 			<?=$GLOBALS['config']->tienda->BIENVENIDA?>
 		</div>
 		<div class="container-fluid container-cabecera-barraLogo">
@@ -178,6 +178,11 @@
 
 				</div>
 			</div>
+		</div>
+		<div class="container-fluid container-cabecera-ticker">
+			<ul id="cabecera-ticker">
+				<?=$tickerContent?>
+			</ul>
 		</div>
 	</header>
 </nav>

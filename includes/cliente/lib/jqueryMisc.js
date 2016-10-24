@@ -275,7 +275,7 @@ jQuery.fn.exists = function(){return jQuery(this).length>0;};
 
 					$(window).bind('resize.blockTicker'+$(this).attr('id'), (function(context) {return function() {methods.calculateDimensions.apply(context);}})(this));
 					methods.calculateDimensions.apply(this);
-					methods.play.call(this,73);
+					methods.play.call(this,17);
 				}
 			});
 		},
@@ -346,7 +346,7 @@ jQuery.fn.exists = function(){return jQuery(this).length>0;};
 			})
 			.hover(
 				function() {methods.stop.call(self);},
-				function() {methods.play.call(self,73);}
+				function() {methods.play.call(self,17);}
 			);
 			self.totalWidth=totalWidth;
 			//methods.play.call(this,73);
@@ -366,7 +366,7 @@ jQuery.fn.exists = function(){return jQuery(this).length>0;};
 				default:
 					if ($self.position().left*-1>=self.totalWidth) {var newLeft=0-amount;}
 					else {var newLeft=($self.position().left-amount);}
-					$self.css({left:newLeft+"px"});
+					$self.css({left:Math.round(newLeft)+"px"});
 			}
 		},
 		play:function (pps) {

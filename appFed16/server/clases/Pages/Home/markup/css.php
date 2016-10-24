@@ -26,6 +26,10 @@
 @zindex-shop-item-rebote: 900;
 @height-banner: 250px;
 @width-cesta: 400px;
+@height-banda-superior:18px;
+@container-cabecera-barraLogo: 110px;
+@height-ticker:35px;
+
 /* definiciones secundarias */
 @color-sidebarMenu: #fff; /*bg menu lateral*/
 @color-banner-txt: @color-terciario;
@@ -38,7 +42,29 @@
 @color-btn-items-bg:@color-secundario;
 @color-items-precio:@color-txt;
 
+/* Falta buscarles un sitio ***************************************************/
 <?=$this->hueco1()->style?>;
+.container-cabecera-ticker {
+	font-size:1.5em;
+	background-color: #000;
+	font-family: monospace;
+	color: @color-secundario;
+	padding: 0.17em 0em;
+}
+#cabecera-ticker li {
+	cursor: default;
+	margin-left:2em;
+}
+#cabecera-ticker li:hover {
+	font-weight: bold;
+}
+#cabecera-ticker .gama {
+	font-weight:bold;
+}
+#cabecera-ticker li small {
+	font-size: 0.75em;
+}
+
 /**/
 /* http://stackoverflow.com/questions/19288546/how-can-i-prevent-body-scrollbar-and-shifting-when-twitter-bootstrap-modal-dialo */
 .modal-open {
@@ -50,7 +76,7 @@
 body {
 	background-color: @color-bg-body;
 	color: @color-txt;
-	margin-top: 133px; /* ajuste de cuerpo debido a navbar fixed */
+	margin-top: @height-banda-superior + @container-cabecera-barraLogo + @height-ticker; /* ajuste de cuerpo debido a navbar fixed */
 }
 a{
 	color: @color-links !important;
@@ -75,10 +101,10 @@ a.blanco{
 #container-cabecera {
 	background-color: @color-cabecera;
 	box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.25);
-	height: 115px;
+	height: @height-banda-superior + @container-cabecera-barraLogo + @height-ticker;
 }
 .container-cabecera-barraLogo{
-	margin-top: 18px !important;
+	/*margin-top: 18px !important;*/
 }
 #container-banners{
 	height: @height-banner;
