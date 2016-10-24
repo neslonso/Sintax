@@ -1,6 +1,8 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
+	$("#cabecera-ticker").blockTicker();
+	//$("#cabecera-ticker").blockTicker('stop');
 	<?=$this->hueco1()->code?>;
 	$('[data-toggle="tooltip"]','#container-cabecera').tooltip({container:'body',html:true});
 	$('[data-toggle="tooltip"]','#wrapper').tooltip({container:'#wrapper',html:true});

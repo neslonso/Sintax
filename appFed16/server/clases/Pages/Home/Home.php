@@ -137,6 +137,25 @@ class Home extends Error implements IPage {
 		$arrCestaItems=$objCesta->arrItemsJqCesta();
 		$jsonArrCestaItems=htmlspecialchars(json_encode($arrCestaItems),ENT_QUOTES,'UTF-8');
 
+		$arrDtosGama=\Multi_productoGamaDescuento::getArray($db,"keyTienda='".$GLOBALS['config']->tienda->key."'","","","arrClassObjs");
+		$tickerContent='';
+		foreach ($arrDtosGama as $objDtoGama) {
+			if ($objDtoGama->enVigor()) {
+				$objGama=$objDtoGama->objMulti_productoGama();
+				$tickerContent.='
+					<li class="tickerBlock"><span>
+						<i class="fa fa-info-circle"></i>
+						<span class="dto">'.$objDtoGama->GETtipoDescuento().'%</span>
+						<span>
+							Descuento en gama
+							<span class="gama">'.$objGama->GETnombre().'</span>
+						</span>
+						<span><small>válido hasta '.\Fecha::fromMysql($objDtoGama->GETmomentoFin())->date('d/m H:i').'</small></span>
+					</span></li>
+				';
+			}
+		}
+
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
 	}
 
