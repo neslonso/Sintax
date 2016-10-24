@@ -288,7 +288,7 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		$pvpCatalogo=$this->pvpCatalogo();
 		if ($pvpCatalogo!=0) {
 			$dif=$pvpCatalogo-$this->pvp();
-			return round(($dif/$pvpCatalogo)*100,2);
+			return floor(($dif/$pvpCatalogo)*100);
 		} else {
 			return 0;
 		}

@@ -1,6 +1,7 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
+	$("#cabecera-ticker").css({display:'inline'});
 	$("#cabecera-ticker").blockTicker();
 	//$("#cabecera-ticker").blockTicker('stop');
 	<?=$this->hueco1()->code?>;

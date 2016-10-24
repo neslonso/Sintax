@@ -11,11 +11,10 @@
 				</div>
 <?
 if($objOferta->GETtipoDevolucionCredito()>0){
-			$rebote = '<div class="shop-item-rebote" data-toggle="tooltip" title="Con la compra de '.$objOferta->GETnombre().' recibirá el '.$objOferta->GETtipoDevolucionCredito().'% de su importe como crédito para futuras compras" data-index="-1"><div>'.$objOferta->GETtipoDevolucionCredito().'%</div></div>';
-?>
-				<?=$rebote?>
-
-<?
+			echo '<div class="shop-item-rebote" data-toggle="tooltip" title="Con la compra de '.$objOferta->GETnombre().' recibirá el '.$objOferta->GETtipoDevolucionCredito().'% de su importe como crédito para futuras compras" data-index="-1"><div>'.$objOferta->GETtipoDevolucionCredito().'%</div></div>';
+}
+if ($objOferta->descuentoOferta()>0){
+			echo '<div class="shop-item-dto-triangle"></div><div class="shop-item-dto">-'.$objOferta->descuentoOferta().'%</div>';
 }
 ?>
 			</div>
@@ -29,9 +28,18 @@ if($objOferta->GETtipoDevolucionCredito()>0){
 				<div class="row">
 					<div class="col-xs-12">
 						<div class="">
+<?
+if ($objOferta->descuentoOferta()>0){
+?>
 							<span class="price-ahora"><strong>Ahora&nbsp;<?=$objOferta->pvp()?></strong><strong class="euro">€</strong></span>
 							<span class="price-antes text-muted"><small>Antes&nbsp;<?=$objOferta->pvpCatalogo()?><span class="euro">€</span></small></span>
-							<div class="price-descuento"><span class="badge">- <?=$objOferta->descuentoOferta()?> %</span></div>
+<?
+} else {
+?>
+							<span class="price-ahora"><strong><?=$objOferta->pvp()?></strong><strong class="euro">€</strong></span>
+<?
+}
+?>
 						</div>
 					</div>
 				</div>

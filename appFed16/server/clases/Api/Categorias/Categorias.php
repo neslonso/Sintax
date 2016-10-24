@@ -15,7 +15,13 @@ class Categorias extends ApiService implements IApiService {
 		$obj->id=$objOferta->GETid();
 		//$obj->nombre=$objOferta->GETid().'.- '.$objOferta->GETnombre();
 		$obj->nombre=$objOferta->GETnombre();
-		$obj->descripcion=$objOferta->GETdescripcion();
+
+		$descripcion = $objOferta->GETdescripcion();
+		$descripcion = preg_replace('#^\s*<br />\s*$#m', '', $descripcion);
+		$descripcion = preg_replace('#^\s*(<br />)+\s*$#m', '<hr />', $descripcion);
+		$descripcion = preg_replace('#\s+([,;.:¿?¡!])#', '$1', $descripcion);
+		$obj->descripcion=$descripcion;
+
 		$obj->precio=$objOferta->pvp();
 		$obj->precioCatalogo=$objOferta->pvpCatalogo();
 		$obj->tipoDtoRespectoCatalogo=floor($objOferta->descuentoOferta());
