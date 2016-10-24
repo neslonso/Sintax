@@ -104,20 +104,28 @@ try {
 			}
 		break;
 		case 'VOICE':
+			//$src=BASE_URL.FILE_APP.'?MODULE=images&almacen=VOICE&fichero='.urlencode('Hola mundo');
 			$speechText="Bienvenido";
+			$formato='mp3';
 			$tts = new \VoiceRSS_tts;
 			$voice = $tts->speech([
 			    'key' => 'ea8bf255fb8c4f2ca6f039f993b94321',
 			    'hl' => 'es-es',
 			    'src' => ''.$speechText.'',
 			    'r' => '0',// jugaremos con -1,0,1
-			    'c' => 'mp3',
+			    'c' => ''.$formato.'',
 			    'f' => '44khz_16bit_stereo',
 			    'ssml' => 'false',
 			    'b64' => 'false' //true en b64, false en binary
 			]);
-			//$voice['response']; //respuesta
-			//...
+			$nombreArchivo=base64_encode($speechText).".".$formato;
+			$contenidoArchivo=$voice['response'];
+			$filePath=CACHE_DIR."media".DIRECTORY_SEPARATOR."voices".DIRECTORY_SEPARATOR.$nombreArchivo;
+			if (!is_dir(dirname($filePath))) {
+				mkdir(dirname($filePath),0700,true);
+			}
+			file_put_contents($filePath, $contenidoArchivo);
+			die();
 		break;
 		default:
 			try {

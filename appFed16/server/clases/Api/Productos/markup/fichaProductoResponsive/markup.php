@@ -5,25 +5,16 @@
 				$zIndex=$stdObjOfer->index-1;
 				$rebote = '<div class="shop-item-rebote" data-toggle="tooltip" title="Con la compra de '.$stdObjOfer->nombre.' recibirá el '.$stdObjOfer->rebote.'% de su importe como crédito para futuras compras" data-index="'.$zIndex.'"><div>'.$stdObjOfer->rebote.'%</div></div>';
 			}
+			$dto="";
+			$precio=$stdObjOfer->precio."€";
+			if ($stdObjOfer->precioCatalogo!=$stdObjOfer->precio){
+				$dto='<div class="shop-item-dto-triangle"></div><div class="shop-item-dto">-'.$stdObjOfer->tipoDtoRespectoCatalogo.'%</div>';
+				$precio='<span class="shop-item-price-antes">'.$stdObjOfer->precioCatalogo."€</span>
+						<span> ".$stdObjOfer->precio."€</span>";
+			}
 			if (!isset($stdObjOfer->tooltip)) {$stdObjOfer->tooltip=$stdObjOfer->nombre;}
 ?>
 					<div class="shop-item-wrapper" data-id="<?=$stdObjOfer->id?>" data-index="<?=($stdObjOfer->index)?>">
-<?
-if (isset($stdObjOfer->gama)) {
-?>
-						<div class="shop-item-dto-gama stamp" style="display:none;">
-							<div><div>
-								<div class="dto stroke"><?=$stdObjOfer->gama->tipoDescuentoGama?>%</div>
-								<div>
-									Descuento en gama
-									<div class="gama"><?=$stdObjOfer->gama->nombre?></div>
-								</div>
-								<div class="text-right"><small>válido hasta <?=$stdObjOfer->gama->momentoFin?></small></div>
-							</div></div>
-						</div>
-<?
-}
-?>
 						<div class="shop-item" data-toggle="tooltip" title="<?=$stdObjOfer->tooltip?>" data-index="<?=($stdObjOfer->index)?>">
 							<div class="shop-item-data">
 								<div class="shop-item-img">
@@ -33,7 +24,7 @@ if (isset($stdObjOfer->gama)) {
 								</div>
 								<div class="shop-item-dtls">
 									<h4><a class="shop-item-link"><div class="shop-item-name"><?=$stdObjOfer->nombre?></div></a></h4>
-									<span class="shop-item-price"><?=$stdObjOfer->precio?>€</span>
+									<span class="shop-item-price"><?=$precio?></span>
 								</div>
 								<div class="shop-item-desc"><?=$stdObjOfer->descripcion?></div>
 							</div>
@@ -41,6 +32,7 @@ if (isset($stdObjOfer->gama)) {
 								<?=\Sintax\ApiService\Productos::btnComprar($stdObjOfer,'','','Comprar');?>
 								<button onclick="window.location='<?=$stdObjOfer->url?>'" class="btn btn-default shop-item-btn-info">+Info</button>
 							</div>
+							<?=$dto?>
 						</div>
 						<?=$rebote?>
 					</div>
