@@ -162,7 +162,6 @@ class Home extends Error implements IPage {
 	public function cuerpo() {
 		//$objPageCategoria=new categoria($this->objUsr);
 		//$objPageCategoria->cuerpo();
-
 		$arrOfersBanner=\Sintax\ApiService\Categorias::arrOfersMayorDescuento($GLOBALS['config']->tienda->key,13);
 		$arrOfersCuerpo=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,24);
 		if (isset($_SESSION['usuario'])){
@@ -216,11 +215,11 @@ class Home extends Error implements IPage {
 		foreach ($arr as $objOferta) {
 			$std=\Sintax\ApiService\Categorias::creaStdObjOferta($objOferta);
 			$std->imgSrc=$objOferta->imgSrc(0,100,100);
-			//$std->descripcion=//parsear para quitar brs de mas
 			$std->index=$idx;
 			array_push($arrResults, $std);
 			$std->nombreHighlight=\Cadena::highlight(explode(' ',$query) ,$std->nombre,'highlight');
-			$std->btnComprar=\Sintax\ApiService\Productos::btnComprar($objOferta,'banner-price-comprar','','Comprar');
+			$std->btnComprar=\Sintax\ApiService\Productos::btnComprar($objOferta,'fa fa-shopping-cart','','Comprar');
+			$std->btnMasInfo=\Sintax\ApiService\Productos::btnMasInfo($objOferta,'shop-item-btn-info');
 		}
 		$objSearch->arrResults=$arrResults;
 		return $objSearch;

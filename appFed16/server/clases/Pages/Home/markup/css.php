@@ -45,11 +45,18 @@
 /* Falta buscarles un sitio ***************************************************/
 <?=$this->hueco1()->style?>;
 .container-cabecera-ticker {
+	position:absolute;
+	bottom: 0px;
+	width:100%;
 	font-size:1.5em;
 	background-color: #000;
 	font-family: monospace;
 	color: @color-secundario;
 	padding: 0.17em 0em;
+}
+#cabecera-ticker {
+	display: none;
+	white-space: nowrap;
 }
 #cabecera-ticker li {
 	cursor: default;
@@ -216,7 +223,7 @@ a.blanco{
 }
 .highlight {
 	color: @color-principal;
-	font-size:large;
+	font-size:1em;
 	font-weight:bold;
 }
 /* SM */

@@ -7,7 +7,7 @@
 			}
 			$dto="";
 			$precio=$stdObjOfer->precio."€";
-			if ($stdObjOfer->precioCatalogo!=$stdObjOfer->precio){
+			if ($stdObjOfer->tipoDtoRespectoCatalogo>0){
 				$dto='<div class="shop-item-dto-triangle"></div><div class="shop-item-dto">-'.$stdObjOfer->tipoDtoRespectoCatalogo.'%</div>';
 				$precio='<span class="shop-item-price-antes">'.$stdObjOfer->precioCatalogo."€</span>
 						<span> ".$stdObjOfer->precio."€</span>";
@@ -30,7 +30,7 @@
 							</div>
 							<div class="shop-item-cart">
 								<?=\Sintax\ApiService\Productos::btnComprar($stdObjOfer,'','','Comprar');?>
-								<button onclick="window.location='<?=$stdObjOfer->url?>'" class="btn btn-default shop-item-btn-info">+Info</button>
+								<?=\Sintax\ApiService\Productos::btnMasInfo($stdObjOfer,'shop-item-btn-info');?>
 							</div>
 							<?=$dto?>
 						</div>
