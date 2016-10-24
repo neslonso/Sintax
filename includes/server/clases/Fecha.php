@@ -68,7 +68,6 @@ class Fecha {
 	 * @return string         string que representa la fecha formateada
 	 */
 	public function date($format="YmdHis") {
-		error_log("Fecha::date dateunix: ".$this->dateUnix);
 		return date($format,$this->dateUnix);}
 	/**
 	 * Crea un objeto fecha a partir de una fecha MySQL (AAAA-MM-DD HH-MM-SS / AAAAMMDDHHMMSS)

@@ -50,12 +50,40 @@ class Productos extends ApiService implements IApiService {
 		$jqCst =($obj->vendible)?'jqCst':'';
 
 		$strTemplate='<'.$tag.' '.$vendible.'
-			class="btn '.$jqCst.' '.$cssClasses.'"
+			class="btn btn-default '.$jqCst.' '.$cssClasses.'"
 			data-id="{{id}}"
 			data-ttl="{{nombre}}"
 			data-unit="1"
 			data-prc="{{precio}}"
 			data-src="{{imgSrc}}">
+				<i class="'.$iconCssClasses.'"></i> '.$text.'
+			</'.$tag.'>';
+		//$GLOBALS['firephp']->error("Excep: ".$strTemplate);
+		if (!is_null($obj)) {
+			foreach ($obj as $key => $value) {
+				if (!is_object($value)) {
+					$strTemplate=str_replace('{{'.$key.'}}', strip_tags($value), $strTemplate);
+				}
+			}
+		}
+		//$GLOBALS['firephp']->error("Excep2: ".$strTemplate);
+		return $strTemplate;
+	}
+	public function btnMasInfo($stdObjOrClassObjOfer,$cssClasses='',$iconCssClasses='fa fa-info-circle',$text='+Info',$tag='button') {
+		if (get_class($stdObjOrClassObjOfer)=='Multi_ofertaVenta') {
+			$obj=\Sintax\ApiService\Categorias::creaStdObjOferta($stdObjOrClassObjOfer);
+		} else {
+			$obj=$stdObjOrClassObjOfer;
+		}
+		$strTemplate='<'.$tag.'
+			class="btn btn-default '.$cssClasses.'"
+			data-id="{{id}}"
+			data-ttl="{{nombre}}"
+			data-unit="1"
+			data-prc="{{precio}}"
+			data-src="{{imgSrc}}"
+			onclick="window.location=\''.$obj->url.'\'"
+			>
 				<i class="'.$iconCssClasses.'"></i> '.$text.'
 			</'.$tag.'>';
 		//$GLOBALS['firephp']->error("Excep: ".$strTemplate);

@@ -85,6 +85,10 @@
 	color:@color-btn-items-bg-font !important;
 	background:@color-btn-items-bg;
 }
+.shop-item .shop-item-cart  a.btn:hover{
+	color:#fff !important;
+	background:@color-principal;
+}
 .shop-item-link{
 	cursor: pointer;
 }
@@ -97,17 +101,13 @@
 .shop-item-desc {
 	display: none;
 }
-.shop-item .shop-item-cart  a.btn:hover{
-	color:#fff !important;
-	background:transparent;
-}
 .shop-item-btn-info{
 	background:@color-terciario;
 	color:#fff;
 	border:1px solid @color-btn-items-border;
 }
 .shop-item-btn-info:hover{
-	background:transparent;
+	background:@color-principal;
 	color:#fff;
 	border:1px solid @color-btn-items-border;
 }
@@ -146,6 +146,7 @@
 	transform: rotate(-45deg);
 	padding-top: 8px;
 	font-weight: bold;
+	text-align: center;
 }
 .shop-item-dto-triangle{
 	width: 0;
