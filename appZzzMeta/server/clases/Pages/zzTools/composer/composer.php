@@ -12,7 +12,7 @@ class composer extends Error implements IPage {
 	public function __construct(User $objUsr=NULL) {
 		parent::__construct($objUsr);
 		//$this->php='php';
-		$this->php='/opt/plesk/php/5.6/bin/php';
+		$this->php='/opt/plesk/php/5.6/bin/php -c '.php_ini_loaded_file();
 	}
 	public function pageValida () {
 		return $this->objUsr->pagePermitida($this);

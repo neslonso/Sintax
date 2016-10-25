@@ -48,6 +48,7 @@ define ('ARR_TIENDAS',serialize(array (
 		),
 		'ANALYTICS' => 'UA-36657351-2',
 		'TEMA' => (object) array (
+			'ARMONIA' => 'analogous+complementary', //3 colores: analogous, triadic, split. 4 Colores: tetradic, analogous+complementary. 5 colores: analogous+split
 			'COLOR_PRIMARIO' => '#345995',
 			'COLOR_SECUNDARIO' => '#EAC435',
 			'COLOR_HEADER' => '#FFF',
@@ -86,6 +87,7 @@ define ('ARR_TIENDAS',serialize(array (
 		),
 		'ANALYTICS' => '',
 		'TEMA' => (object) array (
+			'ARMONIA' => 'analogous+complementary',
 			'COLOR_PRIMARIO' => '#008B44',
 			'COLOR_SECUNDARIO' => '#FFBD7B',
 			'COLOR_HEADER' => '#FFF',
@@ -130,6 +132,7 @@ define ('ARR_TIENDAS',serialize(array (
 		),
 		'ANALYTICS' => 'UA-36657351-3',
 		'TEMA' => (object) array (
+			'ARMONIA' => 'analogous+complementary',
 			'COLOR_PRIMARIO' => '#F87A8B',
 			'COLOR_SECUNDARIO' => '#df9aa3',
 			'COLOR_HEADER' => '#FFF',
@@ -168,6 +171,7 @@ define ('ARR_TIENDAS',serialize(array (
 		),
 		'ANALYTICS' => 'UA-36657351-4',
 		'TEMA' => (object) array (
+			'ARMONIA' => 'analogous+complementary',
 			'COLOR_PRIMARIO' => '#FFCEB4',
 			'COLOR_SECUNDARIO' => '#AB9DCB',
 			'COLOR_HEADER' => '#FFF',
@@ -208,6 +212,7 @@ define ('ARR_TIENDAS',serialize(array (
 		),
 		'ANALYTICS' => 'UA-36657351-5',
 		'TEMA' => (object) array (
+			'ARMONIA' => 'analogous+complementary',
 			'COLOR_PRIMARIO' => '#CD5A91',
 			'COLOR_SECUNDARIO' => '#6c94be',
 			'COLOR_HEADER' => '#FFF',
@@ -246,6 +251,7 @@ define ('ARR_TIENDAS',serialize(array (
 		),
 		'ANALYTICS' => 'UA-36657351-1',
 		'TEMA' => (object) array (
+			'ARMONIA' => 'analogous+complementary',
 			'COLOR_PRIMARIO' => '#FF9933',
 			'COLOR_SECUNDARIO' => '#9933ff',
 			'COLOR_HEADER' => '#FFF',

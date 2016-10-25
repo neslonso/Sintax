@@ -28,16 +28,18 @@
 }
 .banner-price-comprar{
 	background: @color-secundario none repeat scroll 0 0;
-    border: 1px solid #ffffff;
-    color: #ffffff !important;
+    border: 1px solid lighten(@color-secundario,10%);
+    color: contrast(@color-secundario) !important;
     transition: all 0.35s ease-in 0s;
 }
 a.banner-price-comprar{
-	color: #fff !important;
+	color: solid contrast(@color-secundario) !important;
 	transition: all 0.35s ease-in 0s;
 }
 a.banner-price-comprar:hover{
-	background: @color-principal none repeat scroll 0 0;
+	background: lighten(@color-secundario, 10%) none repeat scroll 0 0;
+	border:1px solid @color-secundario;
+	color:contrast(lighten(@color-secundario, 10%)) !important;
 }
 .banner-price-descuento{
 	margin-top: 5px;
@@ -45,6 +47,7 @@ a.banner-price-comprar:hover{
 }
 .banner-price-descuento > .badge{
 	background-color: @color-principal !important;
+	color:contrast(@color-principal) !important;
 	font-size: 18px !important;
 }
 .banner-txt{
@@ -52,8 +55,7 @@ a.banner-price-comprar:hover{
 	font: bold Helvetica, Sans-Serif;
 	font-size: 20px;
 	font-weight: bold;
-	background: rgb(0, 0, 0);
-	background: @color-banner-txt;
+	background: @color-terciario;
 	padding: 5px;
 	padding-top: 10px;
 	border-bottom-left-radius: 7px;
@@ -68,5 +70,5 @@ a.banner-price-comprar:hover{
 	cursor:pointer;
 }
 .banner-txt > a{
-	color: #fff !important;
+	color: contrast(@color-terciario) !important;
 }

@@ -11,11 +11,11 @@ try {
 	//$X_FORWARDED_SERVER=(isset($_SERVER['X_FORWARDED_SERVER']))?$_SERVER['X_FORWARDED_SERVER']:NULL;
 
 	//$defaultDomain='bebefarma.com';
-	$defaultDomain='celorriofarma.com';
+	//$defaultDomain='celorriofarma.com';
 	//$defaultDomain='farmaciacelorrio.com';
 	//$defaultDomain='parafarmaciasolobebes.com';
 	//$defaultDomain='parafarmaciasolocosmetica.com';
-	//$defaultDomain='farmadiscount.com';
+	$defaultDomain='farmadiscount.com';
 	$activeDomain=($X_FORWARDED_HOST!='')?$X_FORWARDED_HOST:$defaultDomain;
 	if ($X_FORWARDED_HOST!='') {define('BASE_DOMAIN',$activeDomain);}
 

@@ -78,9 +78,10 @@
 	.container-cabecera-barraLogo{
 		margin-top: 0px !important;
 	}
+	/*
 	body {
-		margin-top: 115px; /* ajuste de cuerpo debido a navbar fixed */
-	}
+		margin-top: 115px;
+	}*/
 	.col-subMenu{
 		-moz-column-count: 1;
 		-webkit-column-count: 1;

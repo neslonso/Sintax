@@ -18,41 +18,30 @@
 .cajaRefEan{
     line-height: 18px;
 }
-/*item detail*/
+/*colocamos rebote*/
 .item-detail .shop-item-rebote {
-    top:-4px;
-    right: 29px;
+    top:-16px;
+    right: 7px;
+    height: 80px;
+    width: 80px;
 }
 .item-detail .shop-item-rebote > div {
+    top: 35px;
+}
+/* colocamos triangulo descuento*/
+.item-detail .shop-item-dto{
+    width: 100px;
+    left: 9px;
     top: 23px;
+    font-size: 2.5em;
 }
-.shop-item-dto{
-    height: 50px;
-    width: 50px;
-    position: absolute;
-    left: 0px;
+.item-detail .shop-item-dto-triangle{
+    border-width: 100px 100px 0 0;
+    left: 14px;
     top: 0px;
-    z-index: @zindex-shop-item-rebote+1;
-    font-size: 11px;
-    color: @color-btn-items-bg-font;
-    -webkit-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-    padding-top: 8px;
-    font-weight: bold;
-}
-.shop-item-dto-triangle{
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 50px 50px 0 0;
-    border-color: @color-btn-items-bg transparent transparent transparent;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    z-index: @zindex-shop-item-rebote;
 }
 .price-ahora{
-	color: rgba(205, 90, 145, 0.6);
+	color: @color-principal;
     font-size: 28px;
     line-height: 20px;
 }
@@ -80,7 +69,7 @@
     padding: 5px;
     position: relative;
     text-align: center;
-    min-height: 332px;
+    /*min-height: 332px;*/
 }
 .item-detail img{
 	display: inline-block !important;
