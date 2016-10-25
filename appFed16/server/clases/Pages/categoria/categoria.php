@@ -15,7 +15,13 @@ class categoria extends Home implements IPage {
 		return $this->objUsr->accionPermitida($this,$metodo);
 	}
 	public function title() {
-		return parent::title();
+		$title=$GLOBALS['config']->tienda->SITE_NAME;
+		$idCategoria=(isset($_REQUEST['id']))?$_REQUEST['id']:NULL;
+		if(\Multi_categoria::existe (\cDb::confByKey('celorriov3'),$idCategoria)){
+			$objCategoria=new \Multi_categoria(\cDb::confByKey('celorriov3'),$idCategoria);
+			$title=$objCategoria->ruta(' / ').' &bull; '.$GLOBALS['config']->tienda->SITE_NAME;
+		}
+		return $title;
 	}
 	public function metaTags() {
 		//$metaTags=parent::metaTags();
@@ -26,8 +32,6 @@ class categoria extends Home implements IPage {
 			$metaTags .= '<meta name="description" content="'.$objCategoria->GETmetaDescription().'">';
 			$metaTags .= '<meta name="title" content="'.$objCategoria->GETtitle().'">';
 			$metaTags .= '<meta name="keywords" content="'.$objCategoria->GETmetaKeywords().'">';
-		}else{
-			throw new \Exception("El producto solicitado no se encuentra disponible en estos momentos. Disculpe las molestias");
 		}
 		return $metaTags;
 

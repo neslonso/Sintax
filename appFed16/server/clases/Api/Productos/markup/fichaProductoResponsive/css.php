@@ -111,7 +111,7 @@
 	color:#fff;
 	border:1px solid @color-btn-items-border;
 }
-
+/* estilos rebote */
 .shop-item-rebote{
 	background-image: url("./appFed16/binaries/imgs/shop-item-rebote.png");
 	background-size: cover;
@@ -133,20 +133,20 @@
 	top: 33px;
 	width: 100%;
 }
+/*estilos triangulo dto*/
 .shop-item-dto{
-	height: 50px;
-	width: 50px;
 	position: absolute;
-	left: -4px;
-	top: -2px;
 	z-index: @zindex-shop-item-rebote+1;
 	font-size: 1.5em;
 	color: @color-btn-items-bg-font;
 	-webkit-transform: rotate(-45deg);
 	transform: rotate(-45deg);
-	padding-top: 8px;
 	font-weight: bold;
 	text-align: center;
+	height: 50px;
+	width: 50px;
+	left: 2px;
+	top: 3px;
 }
 .shop-item-dto-triangle{
 	width: 0;
@@ -159,7 +159,7 @@
 	top: 0px;
 	z-index: @zindex-shop-item-rebote;
 }
-/**/
+/*****/
 .cloneAnimatedToSlider,
 .swiper-slide .shop-item {
 	.shop-item;
@@ -212,68 +212,3 @@
 	font-size: xx-large;
 	font-variant: small-caps;
 }
-/*Stamp*/
-.stamp {
-	width: auto;
-	height: auto;
-	display: inline-block;
-	padding: 10px;
-	background: white;
-	position: relative;
-	-webkit-filter: drop-shadow(0px 0px 10px rgba(0,0,0,0.5));
-	/*The stamp cutout will be created using crisp radial gradients*/
-	background: radial-gradient(
-		transparent 0px,
-		transparent 4px,
-		#000 4px,
-		#000
-	);
-	background: radial-gradient(
-		transparent 0px,
-		transparent 4px,
-		@color-principal 7px,
-		@color-principal 10px,
-		#fff 10px,
-		#fff
-	);
-
-	/*reducing the gradient size*/
-	background-size: 20px 20px;
-	/*Offset to move the holes to the edge*/
-	background-position: -10px -10px;
-	cursor:default;
-}
-.stamp:after {
-	content: '';
-	position: absolute;
-	/*We can shrink the pseudo element here to hide the shadow edges*/
-	left: 5px; top: 5px; right: 5px; bottom: 5px;
-	/*Shadow - doesn't look good because of the stamp cutout. We can still move this into another pseudo element behind the .stamp main element*/
-
-	/*box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.5);*/
-	/*pushing it back*/
-	z-index: -1;
-}
-.stampRotate {
-	-ms-transform: rotate(-30deg); /* IE 9 */
-	-webkit-transform: rotate(-30deg); /* Chrome, Safari, Opera */
-	transform: rotate(-30deg);
-}
-
-.stroke {
-	color: white;
-	text-shadow:
-	-1px -1px 0 #000,
-	1px -1px 0 #000,
-	-1px 1px 0 #000,
-	1px 1px 0 #000;
-}
-.stamp>div {
-	display:table-cell;
-	vertical-align:middle;
-	text-align:center;
-	/*width:60px;
-	height:60px;*/
-	background-color: #f0f0f0;
-}
-/**/

@@ -47,10 +47,11 @@ $(document).ready(function() {
 			].join(''),
 		},
 		item: {
-			cssClasses:'col-xs-12 col-sm-6 col-md-4',
+			cssClasses:'col-xs-12 col-sm-12 col-md-6',
 			template: [
 				'<div>',
-					'<div class="shop-item-dto-triangle"></div><div class="shop-item-dto">-{{tipoDtoRespectoCatalogo}}%</div>',
+					'<div>{{infoDtoCatalogo}}</div>',
+					'<div>{{infoDtoRebote}}</div>',
 					'<div class="row">',
 						'<div class="col-xs-12">',
 							'<div class="nombre">{{nombreHighlight}}</div>',
@@ -62,7 +63,7 @@ $(document).ready(function() {
 							'<div class="descripcion">{{descripcion}}</div>',
 						'</div>',
 						'<div class="col-xs-4">',
-							'<div class="precio">{{precio}} €</div>',
+							'<div class="precio"><div>{{infoDtoGama}}</div>{{precio}} €</div>',
 						'</div>',
 						'<div class="col-xs-8 text-right">',
 							'<div class="btns">{{btnComprar}} {{btnMasInfo}}</div>',

@@ -36,6 +36,7 @@
 }
 
 .ssSearchItemContainer .precio {
+	position: absolute;
 	text-align: center;
 	font-size: 1.5em;
 	font-weight: bold;
@@ -47,16 +48,14 @@
 }
 .ssSearchItemContainer .btns>*:first-child:hover{
 	color:#fff !important;
-	background:@color-principal;
+	background:lighten(@color-principal,10%);
 }
 
 .ssSearchItemContainer .shop-item-dto{
-	.shop-item-dto;
-	left: 11px;
-	top: 13px;
+	left: 18px;
+	top: 18px;
 }
 .ssSearchItemContainer .shop-item-dto-triangle{
-	.shop-item-dto-triangle;
 	left: 16px;
 	top: 16px;
 }
@@ -67,4 +66,29 @@
 }
 
 .ssSearchContainer .ssSearchItemContainer {
+}
+
+.ssSearchContainer .stamp {
+	position: absolute;
+	bottom: 7px;
+	left: 73px;
+	z-index:999999;
+}
+.ssSearchContainer .stamp>div {
+	width:40px;
+	height:20px;
+	font-weight: bold;
+	line-height: 0;
+
+}
+.ssSearchContainer .shop-item-rebote {
+	position: absolute;
+	top:-10px;
+	right: -5px;
+}
+
+@media (max-width: 767px){
+	.ssSearchItemContainer>div {
+		height: auto !important;
+	}
 }

@@ -1,11 +1,27 @@
 <?if (false) {?><style><?}?>
 <?="\n/*".get_class()."*/\n"?>
 /*********** DEFINICION DE VARIABLES DE NEGOCIO ************/
+
+/* USO */
+.bandaSuperior{
+	background-color: @color-principal !important;
+	color: contrast(@color-principal) !important;
+}
+
+/*
+@sombra: darken(@color-principal, 10%);
+@luz: lighten(@color-principal, 30%);
+@color-principal-saturado: saturate(@color-principal, 30%);
+@color-principal-desaturado: desaturate(@color-principal, 40%);
+@color-principal-fade: fade(@color-principal,50%);
+@color-principal-grey: greyscale(@color-principal);
+*/
+
 /* https://color.adobe.com/es/create/color-wheel/ */
-@color-principal: <?=$GLOBALS['config']->tienda->TEMA->COLOR_PRIMARIO?>; /*#ff94be*/
-@color-secundario: <?=$GLOBALS['config']->tienda->TEMA->COLOR_SECUNDARIO?>;
+/*@color-principal: <?=$GLOBALS['config']->tienda->TEMA->COLOR_PRIMARIO?>;*/ /*#ff94be*/
+/*@color-secundario: <?=$GLOBALS['config']->tienda->TEMA->COLOR_SECUNDARIO?>;*/
 /*@color-terciario: spin(@color-principal, 210%);*/
-@color-terciario: multiply(@color-principal, @color-secundario);
+/*@color-terciario: multiply(@color-principal, @color-secundario);*/
 @color-cabecera: <?=$GLOBALS['config']->tienda->TEMA->COLOR_HEADER?>; /*bg de cabecera de web*/
 @color-pie: <?=$GLOBALS['config']->tienda->TEMA->COLOR_FOOTER?>; /* bg footer*/
 @color-links: #304c71;
@@ -27,7 +43,7 @@
 @height-banner: 250px;
 @width-cesta: 400px;
 @height-banda-superior:18px;
-@container-cabecera-barraLogo: 110px;
+@height-container-cabecera-barraLogo: 110px;
 @height-ticker:35px;
 
 /* definiciones secundarias */
@@ -49,9 +65,9 @@
 	bottom: 0px;
 	width:100%;
 	font-size:1.5em;
-	background-color: #000;
+	background-color: contrast(lighten(@color-secundario,40%));
 	font-family: monospace;
-	color: @color-secundario;
+	color: lighten(@color-secundario,40%);
 	padding: 0.17em 0em;
 }
 #cabecera-ticker {
@@ -83,7 +99,7 @@
 body {
 	background-color: @color-bg-body;
 	color: @color-txt;
-	margin-top: @height-banda-superior + @container-cabecera-barraLogo + @height-ticker; /* ajuste de cuerpo debido a navbar fixed */
+	margin-top: @height-banda-superior + @height-container-cabecera-barraLogo + @height-ticker; /* ajuste de cuerpo debido a navbar fixed */
 }
 a{
 	color: @color-links !important;
@@ -108,7 +124,7 @@ a.blanco{
 #container-cabecera {
 	background-color: @color-cabecera;
 	box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.25);
-	height: @height-banda-superior + @container-cabecera-barraLogo + @height-ticker;
+	height: @height-banda-superior + @height-container-cabecera-barraLogo + @height-ticker;
 }
 .container-cabecera-barraLogo{
 	/*margin-top: 18px !important;*/

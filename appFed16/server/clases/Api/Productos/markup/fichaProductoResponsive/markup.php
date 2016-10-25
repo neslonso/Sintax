@@ -30,7 +30,7 @@
 							</div>
 							<div class="shop-item-cart">
 								<?=\Sintax\ApiService\Productos::btnComprar($stdObjOfer,'','','Comprar');?>
-								<?=\Sintax\ApiService\Productos::btnMasInfo($stdObjOfer,'shop-item-btn-info');?>
+								<?=\Sintax\ApiService\Productos::btnMasInfo($stdObjOfer,'shop-item-btn-info','');?>
 							</div>
 							<?=$dto?>
 						</div>
