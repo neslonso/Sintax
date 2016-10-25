@@ -207,8 +207,8 @@ body {}
 	display:table-cell;
 	vertical-align:middle;
 	text-align:center;
-	/*width:60px;
-	height:60px;*/
+	width:100%;
+	height:100%;
 	background-color: #f0f0f0;
 }
 /**/

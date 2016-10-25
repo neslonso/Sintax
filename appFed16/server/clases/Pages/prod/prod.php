@@ -23,7 +23,13 @@ class prod extends Home implements IPage {
 		return $this->objUsr->accionPermitida($this,$metodo);
 	}
 	public function title() {
-		return parent::title();
+		$title=$GLOBALS['config']->tienda->SITE_NAME;
+		$idOfer = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
+		if(\Multi_ofertaVenta::existe (\cDb::confByKey('celorriov3'),$idOfer)){
+			$objOferta=new \Multi_ofertaVenta(\cDb::confByKey('celorriov3'),$idOfer);
+			$title=$objOferta->GETnombre().' &bull; '.$GLOBALS['config']->tienda->SITE_NAME;
+		}
+		return $title;
 	}
 	public function metaTags() {
 		//$metaTags= parent::metaTags();
@@ -34,8 +40,6 @@ class prod extends Home implements IPage {
 			$metaTags .= '<meta name="description" content="'.$objOferta->GETmetaDescription().'">';
 			$metaTags .= '<meta name="title" content="'.$objOferta->GETtitle().'">';
 			$metaTags .= '<meta name="keywords" content="'.$objOferta->GETmetaKeywords().'">';
-		}else{
-			throw new \Exception("El producto solicitado no se encuentra disponible en estos momentos. Disculpe las molestias");
 		}
 		return $metaTags;
 	}

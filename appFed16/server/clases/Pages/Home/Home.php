@@ -45,7 +45,7 @@ class Home extends Error implements IPage {
 	}
 	public function title() {
 		//return parent::title();
-		return $GLOBALS['config']->tienda->SITE_NAME;
+		return $GLOBALS['config']->tienda->BIENVENIDA;
 	}
 	public function metaTags() {
 		$sitename=$GLOBALS['config']->tienda->SITE_NAME;
@@ -220,6 +220,20 @@ class Home extends Error implements IPage {
 			$std->nombreHighlight=\Cadena::highlight(explode(' ',$query) ,$std->nombre,'highlight');
 			$std->btnComprar=\Sintax\ApiService\Productos::btnComprar($objOferta,'fa fa-shopping-cart','','Comprar');
 			$std->btnMasInfo=\Sintax\ApiService\Productos::btnMasInfo($objOferta,'shop-item-btn-info');
+			$std->infoDtoCatalogo='';
+			if ($std->tipoDtoRespectoCatalogo>0) {
+				$std->infoDtoCatalogo='<div class="shop-item-dto-triangle"></div><div class="shop-item-dto">-'.$std->tipoDtoRespectoCatalogo.'%</div>';
+			}
+			$std->infoDtoGama='';
+			if (isset($std->gama)) {
+				$std->infoDtoGama='<div class="stamp stampRotate"><div>-'.$std->gama->tipoDescuentoGama.'%</div></div>';
+				//$std->gama->nombre;
+				//$std->gama->momentoFin;
+			}
+			$std->infoDtoRebote='';
+			if ($std->rebote>0) {
+				$std->infoDtoRebote='<div class="shop-item-rebote"><div>'.$std->rebote.'%</div></div>';
+			}
 		}
 		$objSearch->arrResults=$arrResults;
 		return $objSearch;
