@@ -426,7 +426,7 @@
 </div>
 <!-- /#wrapper -->
 <div id="divJqNotifications"></div>
-<ul id="contextMenu" class="dropdown-menu" role="menu">
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none; z-index: 9999;">
     <li><a tabindex="-1" href="<?=BASE_URL?>"><i class="fa fa-home"></i> <span class="option">Inicio</span></a></li>
 <?
 	if ($logueado){

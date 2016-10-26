@@ -210,10 +210,6 @@ a.blanco{
 	font-size:1em;
 	font-weight:bold;
 }
-#contextMenu{
-	display:none;
-	z-index: 9999;
-}
 #contextMenu .option{
     border-left: 1px solid greyscale(@color-principal);
     margin-left: 10px;
