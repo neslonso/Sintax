@@ -1,38 +1,14 @@
 <?if (false) {?><style><?}?>
 <?="\n/*".get_class()."*/\n"?>
 /*********** DEFINICION DE VARIABLES DE NEGOCIO ************/
-
-/* USO */
-.bandaSuperior{
-	background-color: @color-principal !important;
-	color: contrast(@color-principal) !important;
-}
-
-/*
-@sombra: darken(@color-principal, 10%);
-@luz: lighten(@color-principal, 30%);
-@color-principal-saturado: saturate(@color-principal, 30%);
-@color-principal-desaturado: desaturate(@color-principal, 40%);
-@color-principal-fade: fade(@color-principal,50%);
-@color-principal-grey: greyscale(@color-principal);
-*/
-
-/* https://color.adobe.com/es/create/color-wheel/ */
-/*@color-principal: <?=$GLOBALS['config']->tienda->TEMA->COLOR_PRIMARIO?>;*/ /*#ff94be*/
-/*@color-secundario: <?=$GLOBALS['config']->tienda->TEMA->COLOR_SECUNDARIO?>;*/
-/*@color-terciario: spin(@color-principal, 210%);*/
-/*@color-terciario: multiply(@color-principal, @color-secundario);*/
 @color-cabecera: <?=$GLOBALS['config']->tienda->TEMA->COLOR_HEADER?>; /*bg de cabecera de web*/
 @color-pie: <?=$GLOBALS['config']->tienda->TEMA->COLOR_FOOTER?>; /* bg footer*/
-@color-links: #304c71;
-@color-links-hover: #6c94be;
-@color-txt: #333333;
+@color-txt: grayscale(@color-principal);
 @color-bg-body: #fff; /*bg de la web (no del cuerpo de contenido central)*/
 @color-bg-cuerpo: #e9ebee; /*bg zona central de cuerpo */
 @color-bordes-contenedores: #a0a0a0; /*cajas contenedoras, fichas... etc*/
 @color-bg-contenedores: @color-bg-body; /*bg de cajas contenedoras, fichas... etc*/
 /**********************************************/
-
 
 /* tamaños de zonas */
 @width-menu: 250px;
@@ -101,21 +77,13 @@ body {
 	color: @color-txt;
 	margin-top: @height-banda-superior + @height-container-cabecera-barraLogo + @height-ticker; /* ajuste de cuerpo debido a navbar fixed */
 }
-a{
-	color: @color-links !important;
-	text-decoration: none;
-}
-a:hover, a:focus {
-	color: @color-links-hover !important;
-	text-decoration: dotted;
-}
 a.blanco{
 	color:#fff !important;
 }
 .bandaSuperior{
 	background-color: @color-principal;
+	color: contrast(@color-principal);
 	font-size: 12px;
-	color: #fff;
 	text-align: center;
 }
 .btn-menu{

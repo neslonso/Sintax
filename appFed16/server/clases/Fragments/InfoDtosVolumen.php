@@ -54,7 +54,7 @@ class InfoDtosVolumen {
 				margin-bottom: 0.5em;
 			}
 			#infoDropdown table th {
-				color: @color-secundario;
+				color: contrast(@color-principal);
 				background-color: @color-principal;
 				padding: 0.5em;
 			}
@@ -63,6 +63,7 @@ class InfoDtosVolumen {
 			}
 			#infoDropdown table tr:nth-child(even) {
 				background-color: @color-secundario;
+				color: contrast(@color-secundario);
 			}
 			#infoDropdown table th:nth-child(even),
 			#infoDropdown table td:nth-child(even) {
