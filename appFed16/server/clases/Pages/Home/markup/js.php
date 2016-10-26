@@ -163,6 +163,27 @@ $(document).ready(function() {
 
 });
 
+// Trigger action when the contexmenu is about to be shown
+$(document).bind("contextmenu", function (event) {
+    // Avoid the real one
+    event.preventDefault();
+    // Show contextmenu
+    $("#contextMenu").show(100).
+    // In the right position (the mouse)
+    css({
+        top: event.pageY + "px",
+        left: event.pageX + "px"
+    });
+});
+// If the document is clicked somewhere
+$(document).bind("mousedown", function (e) {
+    // If the clicked element is not the menu
+    if (!$(e.target).parents("#contextMenu").length > 0) {
+        // Hide it
+        $("#contextMenu").hide(100);
+    }
+});
+
 function acLogin(email,pass,token) {
 	if (typeof token == 'undefined') {token='';}
 	$.post('<?=BASE_DIR.FILE_APP?>',{

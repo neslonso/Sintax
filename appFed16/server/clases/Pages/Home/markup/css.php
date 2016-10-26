@@ -210,6 +210,34 @@ a.blanco{
 	font-size:1em;
 	font-weight:bold;
 }
+#contextMenu{
+	display:none;
+	z-index: 9999;
+}
+#contextMenu .option{
+    border-left: 1px solid greyscale(@color-principal);
+    margin-left: 10px;
+    padding-left: 10px;
+}
+#contextMenu .comprar .option{
+    border-left: 1px solid contrast(@color-secundario) !important;
+}
+.dropdown-menu > li.comprar > a {
+	background: @color-secundario !important;
+	color: contrast(@color-secundario) !important;
+}
+.dropdown-menu > li.comprar > a:hover,
+.dropdown-menu > li.comprar > a:focus {
+	color: contrast(lighten(@color-secundario,10%)) !important;
+    background: lighten(@color-secundario,10%) !important;
+}
+/*
+#contextMenu > .comprar > a{
+	color: contrast(@color-secundario) !important;
+}
+#contextMenu > .comprar > a:hover{
+	color: contrast(lighten(@color-secundario,10%)) !important;
+}*/
 /* SM */
 @media (min-width: 768px) and (max-width: 991px){
 	#container-cabecera .logo{
