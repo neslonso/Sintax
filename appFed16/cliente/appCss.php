@@ -130,6 +130,15 @@ a:active {color: lighten(@color-principal, 10%);}
 	border-color: @color-success !important;
 }
 
+*::-moz-selection{
+   background: @color-secundario;
+   color: contrast(@color-secundario);
+}
+*::selection {
+   background: @color-secundario;
+   color: contrast(@color-secundario);
+}
+
 /* estilos rebote */
 .shop-item-rebote{
 	background-image: url("./appFed16/binaries/imgs/shop-item-rebote.png");
