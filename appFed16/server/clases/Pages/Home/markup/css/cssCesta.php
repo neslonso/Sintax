@@ -122,17 +122,14 @@
 }
 .contentCart .btn-comprar{
 	background: @color-secundario none repeat scroll 0 0;
-	border: 1px solid #ffffff;
-	color: #ffffff !important;
-	transition: all 0.35s ease-in 0s;
-}
-.contentCart .btn-comprar{
-	color: #fff !important;
+	border:1px solid lighten(@color-secundario,10%);
+	color: contrast(@color-secundario) !important;
 	transition: all 0.35s ease-in 0s;
 }
 .contentCart .btn-comprar:hover{
-	background: @color-principal none repeat scroll 0 0;
-	color: #fff !important;
+	background: lighten(@color-secundario, 10%) none repeat scroll 0 0;
+	color:contrast(lighten(@color-secundario, 10%)) !important;
+	border:1px solid @color-secundario;
 }
 
 /* LG */
