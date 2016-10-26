@@ -437,7 +437,6 @@
 	} else {
 ?>
     <li><a tabindex="-1" href="<?=BASE_URL?>registro_usuario/"><i class="fa fa-plus"></i> <span class="option">Registrate</span></a></li>
-
 <?
 	}
 ?>
