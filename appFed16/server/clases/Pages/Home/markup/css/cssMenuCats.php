@@ -91,7 +91,7 @@
 }
 /*modificando los enlaces de submenus*/
 .ttmenu .navbar-default .dropdown-menu li a{
-	color: greyscale(@color-principal) !important;
+	color: #000000 !important;
 	text-decoration: none;
 }
 .ttmenu .navbar-default .dropdown-menu li a:hover,
