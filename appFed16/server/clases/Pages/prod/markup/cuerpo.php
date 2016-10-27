@@ -182,9 +182,9 @@ if ($objOferta->descuentoOferta()>0){
 			<div class="card-item-white">
 				<div class="item-desc-text">
 <?
-	$descripcion = $objOferta->GETdescripcion();
-	$descripcion = preg_replace('#^\s*<br />\s*$#m', '', $descripcion);
-	$descripcion = preg_replace('#^\s*(<br />)+\s*$#m', '<hr />', $descripcion);
+	$descripcion = nl2br($objOferta->GETdescripcion());
+	//$descripcion = preg_replace('#^\s*<br />\s*$#m', '', $descripcion);
+	//$descripcion = preg_replace('#^\s*(<br />)+\s*$#m', '<hr />', $descripcion);
 ?>
 					<p><?=trim($descripcion)?></p>
 				</div>
