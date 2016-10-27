@@ -1,5 +1,6 @@
 <?
 //https://www.sessions.edu/color-calculator/
+//https://color.adobe.com/es/create/color-wheel/
 switch ($GLOBALS['config']->tienda->TEMA->ARMONIA) {
 	case 'analogous': //3colores
 ?>
@@ -74,6 +75,30 @@ switch ($GLOBALS['config']->tienda->TEMA->ARMONIA) {
 }
 ?>
 
+/* links */
+@color-hover   : lighten(@color-principal, 10%);
+@color-focus   : darken(@color-principal, 10%);
+@color-disable : lightness(desaturate(@color-principal, 100%), 30%);
+
+/*
+@sombra: darken(@color-principal, 10%);
+@luz: lighten(@color-principal, 30%);
+@color-principal-saturado: saturate(@color-principal, 30%);
+@color-principal-desaturado: desaturate(@color-principal, 40%);
+@color-principal-fade: fade(@color-principal,50%);
+@color-principal-grey: greyscale(@color-principal);
+*/
+
+<?if (false) {?><style><?}?>
+
+html, body {}
+body {}
+/*Links*/
+a:link {color: @color-principal;text-decoration: none;}
+a:visited {color: @color-principal;}
+a:hover,a:focus {color: lighten(@color-principal, 10%);text-decoration:underline;}
+a:active {color: lighten(@color-principal, 10%);}
+
 /* bootstrap theme */
 @saturacion-principal : saturation(@color-principal);
 @brillo-principal : lightness(@color-principal);
@@ -84,21 +109,36 @@ switch ($GLOBALS['config']->tienda->TEMA->ARMONIA) {
 @color-danger: hsl(@rojo-hue, @saturacion-principal, @brillo-principal);
 @color-success: hsl(@verde-hue, @saturacion-principal, @brillo-principal);
 @color-warning : hsl(@naranja-hue, @saturacion-principal, @brillo-principal);
+.btn-warning{
+	background-color: @color-warning !important;
+	color: contrast(@color-warning) !important;
+	border-color: lighten(@color-warning,10%) !important;
+}
+.btn-success{
+	background-color: @color-success !important;
+	color: contrast(@color-success) !important;
+	border-color: lighten(@color-success,10%) !important;
+}
+.btn-warning:hover{
+	background-color: lighten(@color-warning,10%) !important;
+	color: contrast(lighten(@color-warning,10%)) !important;
+	border-color: @color-warning !important;
+}
+.btn-success:hover{
+	background-color: lighten(@color-success,10%) !important;
+	color: contrast(lighten(@color-success,10%)) !important;
+	border-color: @color-success !important;
+}
 
-/* links */
-@color-hover   : lighten(@color-principal, 10%);
-@color-focus   : darken(@color-principal, 10%);
-@color-disable : lightness(desaturate(@color-principal, 100%), 30%);
+*::-moz-selection{
+   background: @color-secundario;
+   color: contrast(@color-secundario);
+}
+*::selection {
+   background: @color-secundario;
+   color: contrast(@color-secundario);
+}
 
-<?if (false) {?><style><?}?>
-html, body {}
-body {}
-/*Links*/
-	a:link {color: rgb(142,11,0);text-decoration: none;}
-	a:visited {color: rgb(142,11,0);}
-	a:hover,a:focus {color: rgb(213,17,0);text-decoration:underline;}
-	a:active {color: rgb(213,17,0);}
-/**/
 /* estilos rebote */
 .shop-item-rebote{
 	background-image: url("./appFed16/binaries/imgs/shop-item-rebote.png");
@@ -211,4 +251,3 @@ body {}
 	height:100%;
 	background-color: #f0f0f0;
 }
-/**/

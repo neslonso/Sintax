@@ -426,3 +426,20 @@
 </div>
 <!-- /#wrapper -->
 <div id="divJqNotifications"></div>
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none; z-index: 9999;">
+    <li><a tabindex="-1" href="<?=BASE_URL?>"><i class="fa fa-home"></i> <span class="option">Inicio</span></a></li>
+<?
+	if ($logueado){
+?>
+    <li><a tabindex="-1" href="<?=BASE_URL?>mis_datos/"><i class="fa fa-pencil-square-o"></i> <span class="option">Mis datos</span></a></li>
+    <li><a tabindex="-1" href="<?=BASE_URL?>mis_pedidos/"><i class="fa fa-dropbox"></i> <span class="option">Mis pedidos</span></a></li>
+<?
+	} else {
+?>
+    <li><a tabindex="-1" href="<?=BASE_URL?>registro_usuario/"><i class="fa fa-plus"></i> <span class="option">Registrate</span></a></li>
+<?
+	}
+?>
+    <li class="divider"></li>
+    <li class="comprar"><a tabindex="-1" href="<?=BASE_URL?>comprar_pedido/"><i class="fa fa-shopping-cart"></i> <span class="option">Comprar ahora</span></a></li>
+</ul>

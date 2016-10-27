@@ -79,3 +79,26 @@
 	border:none;
 	padding: 0px !important;
 }
+.menu-color-gradient .navbar-default .navbar-nav > .open > a,
+.menu-color-gradient .navbar-default .navbar-nav > .open > a:hover,
+.menu-color-gradient .navbar-default .navbar-nav > .open > a:focus,
+.menu-color-gradient .navbar-default .navbar-nav > li > a:focus,
+.menu-color-gradient .navbar-default .navbar-nav > li > a:active,
+.menu-color-gradient .navbar-default .navbar-nav > li > a.active,
+.menu-color-gradient .navbar-default .navbar-nav > li > a:hover {
+    background: fade(@color-principal,50%) !important;
+    color: contrast(fade(@color-principal,50%)) !important;
+}
+/*modificando los enlaces de submenus*/
+.ttmenu .navbar-default .dropdown-menu li a{
+	color: greyscale(@color-principal) !important;
+	text-decoration: none;
+}
+.ttmenu .navbar-default .dropdown-menu li a:hover,
+.ttmenu .navbar-default .dropdown-menu li a:focus {
+	color: @color-principal !important;
+	text-decoration: dotted;
+}
+.menu-color-gradient .box ul li:hover .fa {
+    color: @color-principal !important;
+}
