@@ -399,50 +399,17 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 			}
 		}
 		return $arr;
-		/*
-		$sqlSoloVisibles=($soloVisibles)?" visible=1 AND ":"";
-		$matchAgainst=array();
-		//$matchList='`ean`,`referencia`,`nombre`,`descripcion`,`title`,`metaDescription`,`metaKeywords`';
-		$matchList='`referencia`,`nombre`,`descripcion`';
-		$matchAgainst[0]='MATCH('.$matchList.') AGAINST(\'"'.$db->real_escape_string($q).'"\' IN BOOLEAN MODE)';
-
-		$qWords=explode(" ",$q);
-
-		for ($z=0; $z < count($qWords); $z++) {
-			$qAct="";
-			for ($i=0; $i < count($qWords)-$z; $i++) {//Recorremos todas las palabras menos la ultima
-				$qAct.='+'.$qWords[$i].' ';
-			}
-			for ($i=count($qWords)-$z; $i < count($qWords); $i++) {//Recorremos todas las palabras menos la ultima
-				$qAct.=$qWords[$i].' ';
-			}
-			$qAct=substr($qAct, 0,-1);
-			array_push($matchAgainst,'MATCH('.$matchList.') AGAINST(\''.$db->real_escape_string($qAct).'*\' IN BOOLEAN MODE)');
-		}
-
-		$sql="";
-		foreach ($matchAgainst as $matchPart) {
-			$sql.="(SELECT id ".
-				"FROM multi_ofertaVentaFULLTEXT WHERE keyTienda='".$keyTienda."' AND ".$sqlSoloVisibles.
-				$matchPart.") ".
-				"UNION ";
-		}
-		$sql=substr($sql,0,-6);
-		$sql.="LIMIT ".$db->real_escape_string($limit);
-		$GLOBALS['firephp']->info('multi_ofertaVenta::textSearch::$sql='.$sql);
-		error_log("Excep:".$sql);
-		$rsl=$db->query($sql);
-		$arr=array();
-		while ($data=$rsl->fetch_object()) {
-			//$GLOBALS['firephp']->info('multi_ofertaVenta::textSearch::$data->score='.$data->score);
-			$obj=new self($db,$data->id);
-			array_push($arr,$obj);
-		}
-		return $arr;
-		*/
 	}
-
-
+/******************************************************************************/
+	public static function ofertasTag($db,$idTag,$where,$order,$limit,$tipo) {
+		$objTag=new \Multi_productoTag ($db,$idTag);
+		$arrProds=$objTag->arrMulti_producto("","ordenProducto ASC, idMUlti_producto ASC","","arrClassObjs");
+		$arrOfers=array();
+		foreach ($arrProds as $objProd) {
+			$arrOfers=array_merge($arrOfers,$objProd->arrMulti_ofertaVenta($where,$order,$limit,$tipo));
+		}
+		return $arrOfers;
+	}
 /******************************************************************************/
 }
 ?>
