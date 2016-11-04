@@ -172,6 +172,32 @@ class Categorias extends ApiService implements IApiService {
 	}
 
 	/**
+	 * [arrOfersTag description]
+	 * @param  [type]  $keyTienda [description]
+	 * @param  [type]  $nombreTag [description]
+	 * @param  integer $cuantos   [description]
+	 * @return [type]             [description]
+	 */
+	public static function arrOfersTag($keyTienda, $nombreTag, $cuantos=10) {
+		$db=\cDb::gI();
+		$arr=array();
+		$objTag=\Multi_productoTag::cargarPorNombre($db,$nombreTag);
+		if (is_object($objTag)) {
+			$arrOfersTag=\Multi_ofertaVenta::ofertasTag($db,$objTag->GETid(),"keyTienda='".$keyTienda."' AND visible='1'","","0,".$cuantos,"arrClassObjs");
+			$totalInsertados=0;
+			foreach ($arrOfersTag as $objOferta) {
+				if ($objOferta->vendible()) {
+					$obj=self::creaStdObjOferta($objOferta);
+					$obj->index=$totalInsertados;
+					array_push($arr,$obj);
+					$totalInsertados++;
+				}
+			}
+		}
+		return $arr;
+	}
+
+	/**
 	 * [arrOfersCat description]
 	 * @param  [type] $idMulti_categoria [description]
 	 * @return [type]                    [description]
