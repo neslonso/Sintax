@@ -54,7 +54,10 @@ class busqueda extends Home implements IPage {
 		$objBusqueda->grabar();
 		$terminoABuscar=$txtBusqueda;
 		$numResultados=0;
+		$uq=uniqid();
+		$vueltas=0;
 		while ($numResultados==0) {
+			$vueltas++;
 			$busqueda=$this->acSearchOfers($terminoABuscar, 0, 180);
 			$numResultados=count($busqueda->arrResults);
 			if ($numResultados>0 || $terminoABuscar==""){
@@ -62,6 +65,7 @@ class busqueda extends Home implements IPage {
 			} else {
 				$terminoABuscar = preg_replace('/\W\w+\s*(\W*)$/', '$1', $terminoABuscar);
 			}
+			error_log("busqueda::cuerpo::[".$uq."] Vueltas: ".$vueltas." Termino: [".$terminoABuscar."]");
 		}
 		$arrOfers=$busqueda->arrResults;
 
