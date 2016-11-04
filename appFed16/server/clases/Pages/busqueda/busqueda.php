@@ -63,7 +63,12 @@ class busqueda extends Home implements IPage {
 			if ($numResultados>0 || $terminoABuscar==""){
 				break;
 			} else {
-				$terminoABuscar = preg_replace('/\W\w+\s*(\W*)$/', '$1', $terminoABuscar);
+				$newTerminoABuscar = preg_replace('/\W\w+\s*(\W*)$/', '$1', $terminoABuscar);
+				if ($newTerminoABuscar!=$terminoABuscar) {
+					$terminoABuscar=$newTerminoABuscar;
+				} else {
+					$terminoABuscar="";
+				}
 			}
 			error_log("busqueda::cuerpo::[".$uq."] Vueltas: ".$vueltas." Termino: [".$terminoABuscar."]");
 		}
