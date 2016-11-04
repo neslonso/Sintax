@@ -163,7 +163,11 @@ class Home extends Error implements IPage {
 		//$objPageCategoria=new categoria($this->objUsr);
 		//$objPageCategoria->cuerpo();
 		$arrOfersBanner=\Sintax\ApiService\Categorias::arrOfersMayorDescuento($GLOBALS['config']->tienda->key,13);
-		$arrOfersCuerpo=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,24);
+		$storeData=\Sintax\ApiService\Pedidos::getStoreData();
+		$arrOfersCuerpo=\Sintax\ApiService\Categorias::arrOfersTag($GLOBALS['config']->tienda->key,$storeData->HOME_TAG,36);
+		if (count($arrOfersCuerpo)==0) {
+			$arrOfersCuerpo=\Sintax\ApiService\Categorias::arrOfersMasVendidas($GLOBALS['config']->tienda->key,24);
+		}
 		if (isset($_SESSION['usuario'])){
 			$objCli=$_SESSION['usuario']->objEntity;
 			$arrOfersCustom=\Sintax\ApiService\Categorias::arrOfersCustom($GLOBALS['config']->tienda->key,12,$objCli->GETid());
