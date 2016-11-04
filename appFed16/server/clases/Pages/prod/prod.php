@@ -23,12 +23,14 @@ class prod extends Home implements IPage {
 		return $this->objUsr->accionPermitida($this,$metodo);
 	}
 	public function title() {
-		$title=$GLOBALS['config']->tienda->SITE_NAME;
+		$title="";
 		$idOfer = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
 		if(\Multi_ofertaVenta::existe (\cDb::confByKey('celorriov3'),$idOfer)){
 			$objOferta=new \Multi_ofertaVenta(\cDb::confByKey('celorriov3'),$idOfer);
-			$title=$objOferta->GETnombre().' &bull; '.$GLOBALS['config']->tienda->SITE_NAME;
+			$title=str_replace("%NOMBRE%", $objOferta->GETnombre(), $objOferta->GETtitle());
+			$title=str_replace("%PRECIO%", $objOferta->pvp(), $title);
 		}
+		$title.=' &bull; '.$GLOBALS['config']->tienda->SITE_NAME;
 		return $title;
 	}
 	public function metaTags() {
