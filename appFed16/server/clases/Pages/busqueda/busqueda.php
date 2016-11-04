@@ -52,8 +52,19 @@ class busqueda extends Home implements IPage {
 		$objBusqueda->SETidMulti_cliente($idCliente);
 		$objBusqueda->SETquery($txtBusqueda);
 		$objBusqueda->grabar();
-		$busqueda=$this->acSearchOfers($txtBusqueda, 0, 180);
+		$terminoABuscar=$txtBusqueda;
+		$numResultados=0;
+		while ($numResultados==0) {
+			$busqueda=$this->acSearchOfers($terminoABuscar, 0, 180);
+			$numResultados=count($busqueda->arrResults);
+			if ($numResultados>0 || $terminoABuscar==""){
+				break;
+			} else {
+				$terminoABuscar = preg_replace('/\W\w+\s*(\W*)$/', '$1', $terminoABuscar);
+			}
+		}
 		$arrOfers=$busqueda->arrResults;
+
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
 	}
 }
