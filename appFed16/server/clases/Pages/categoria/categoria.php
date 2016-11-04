@@ -15,12 +15,14 @@ class categoria extends Home implements IPage {
 		return $this->objUsr->accionPermitida($this,$metodo);
 	}
 	public function title() {
-		$title=$GLOBALS['config']->tienda->SITE_NAME;
+		$title='';
 		$idCategoria=(isset($_REQUEST['id']))?$_REQUEST['id']:NULL;
 		if(\Multi_categoria::existe (\cDb::confByKey('celorriov3'),$idCategoria)){
-			$objCategoria=new \Multi_categoria(\cDb::confByKey('celorriov3'),$idCategoria);
-			$title=$objCategoria->ruta(' / ').' &bull; '.$GLOBALS['config']->tienda->SITE_NAME;
+			$objCat=new \Multi_categoria(\cDb::confByKey('celorriov3'),$idCategoria);
+			$title=str_replace("%NOMBRE%", $objCat->GETnombre(), $objCat->GETtitle());
+			$title=str_replace("%PRECIO%", "", $title);
 		}
+		$title.=' &bull; '.$GLOBALS['config']->tienda->SITE_NAME;
 		return $title;
 	}
 	public function metaTags() {
