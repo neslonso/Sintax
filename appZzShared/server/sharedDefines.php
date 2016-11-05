@@ -85,7 +85,7 @@ define ('ARR_TIENDAS',serialize(array (
 				'CONSUMER_SECRET' => '',
 			),
 		),
-		'ANALYTICS' => '',
+		'ANALYTICS' => 'UA-36657351-6',
 		'TEMA' => (object) array (
 			'ARMONIA' => 'analogous+complementary',
 			'COLOR_PRIMARIO' => '#008B44',
