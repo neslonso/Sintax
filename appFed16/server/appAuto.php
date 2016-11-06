@@ -10,7 +10,7 @@ define ('ARR_CRON_JOBS', serialize(array(
 		'comando' => 'log5Minutes();', //argumento para eval
 	),
 	'logHour' => array (
-		'activado' => true,
+		'activado' => false,
 		'minuto' => '0',
 		'hora' => '*',
 		'diaMes' => '*',
@@ -18,11 +18,108 @@ define ('ARR_CRON_JOBS', serialize(array(
 		'diaSemana' => '*',
 		'comando' => 'logHour();',
 	),
+	'sitemaps' => array (
+		'activado' => true,
+		'minuto' => '0',
+		'hora' => '7',
+		'diaMes' => '*',
+		'mes' => '*',
+		'diaSemana' => '7',
+		'comando' => 'sitemaps();',
+	),
 )));
 function log5Minutes () {
 	error_log('log5Minutes Job');
 }
 function logHour () {
 	error_log('Son las '.date ('H:i:s'));
+}
+
+function sitemaps() {
+	$arrTiendas=unserialize(ARR_TIENDAS);
+	foreach ($arrTiendas as $keyTienda => $config) {
+		sitemap($keyTienda, "./sitemap.".$keyTienda.".xml");
+	}
+}
+function sitemap($keyTienda, $file="./sitemap.xml") {
+	$arrDomains=unserialize(ARR_DOMAINS);
+	foreach ($arrDomains as $domain => $domainData) {
+		if ($domainData->keyTienda==$keyTienda) {
+			$BASE_DOMAIN=$domain;
+			break;
+		}
+	}
+	$db=\cDb::confByKey("celorriov3");
+	//define( "ENT_XML1",        16    );//Porque no conoce esto el PHP?????!!!!!
+	$sl="\n";
+	$sg="\t";
+	$fp=fopen ($file,"w");
+
+	$where="visible=1 AND keyTienda='".$keyTienda."'";$order="id asc";$limit="";$tipo="arrKeys";
+	$arrIdsProd=\Multi_ofertaVenta::getArray($db,$where,$order,$limit,$tipo);
+
+	$where="visible=1 AND keyTienda='".$keyTienda."'";$order="id asc";$limit="";$tipo="arrKeys";
+	$arrIdsCat=\Multi_categoria::getArray($db,$where,$order,$limit,$tipo);
+
+	$contents='<?xml version="1.0" encoding="UTF-8" ?>'.$sl;
+	$contents.='<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'.$sl;
+	foreach ($arrIdsCat as $idCat) {
+		$objCat=new \Multi_categoria($db,$idCat);
+		$contents.=$sg.'<url>'.$sl;
+
+		$contents.=$sg.$sg.'<loc>';
+		$contents.=str_replace("&", "&amp;", PROTOCOL.'//'.$BASE_DOMAIN.BASE_DIR.Cadena::toUrlString($objCat->ruta("/",true))."/categoria/".$objCat->GETid()."/" );
+		$contents.='</loc>'.$sl;
+
+		$contents.=$sg.$sg.'<lastmod>';
+		$contents.=Fecha::fromMysql($objCat->GETupdate())->toW3C();
+		$contents.='</lastmod>'.$sl;
+
+		$contents.=$sg.$sg.'<changefreq>';
+		$contents.="weekly";
+		$contents.='</changefreq>'.$sl;
+
+		$contents.=$sg.$sg.'<priority>';
+		$contents.='0.5';
+		$contents.='</priority>'.$sl;
+
+		$contents.=$sg.'</url>'.$sl;
+	}
+	foreach ($arrIdsProd as $idProd) {
+		$objProd=new \Multi_ofertaVenta($db,$idProd);
+		$contents.=$sg.'<url>'.$sl;
+
+		$contents.=$sg.$sg.'<loc>';
+		$contents.=str_replace("&", "&amp;", PROTOCOL.'//'.$BASE_DOMAIN.BASE_DIR.Cadena::toUrlString($objProd->GETnombre())."/prod/".$objProd->GETid()."/" );
+		$contents.='</loc>'.$sl;
+
+		$contents.=$sg.$sg.'<lastmod>';
+		$contents.=Fecha::fromMysql($objProd->GETupdate())->toW3C();
+		$contents.='</lastmod>'.$sl;
+
+		$contents.=$sg.$sg.'<changefreq>';
+		$contents.="weekly";
+		$contents.='</changefreq>'.$sl;
+
+		$contents.=$sg.$sg.'<priority>';
+		$contents.='0.5';
+		$contents.='</priority>'.$sl;
+
+		$contents.=$sg.'</url>'.$sl;
+	}
+	$contents.='</urlset>'.$sl;
+	fwrite ($fp,$contents);
+	fclose ($fp);
+	chmod ($file,0666);
+	//comprimirlo
+	$gzfile = $file.".gz";
+	// Open the gz file (w9 is the highest compression)
+	$fp = gzopen ($gzfile, 'w9');
+	// Compress the file
+	gzwrite ($fp, file_get_contents($file));
+	// Close the gz file and we are done
+	gzclose($fp);
+	chmod ($gzfile,0666);
+	unlink($file);
 }
 ?>
