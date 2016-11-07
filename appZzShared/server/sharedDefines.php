@@ -65,7 +65,7 @@ define ('ARR_TIENDAS',serialize(array (
 		),
 		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.FD.png',
 		'MENU' => (object) array (
-			'FOTO_CATS_SEGUNDO_NIVEL' => true,//Si las cats de segundo nivel con hijos llevan foto
+			'FOTO_CATS_SEGUNDO_NIVEL' => false,//Si las cats de segundo nivel con hijos llevan foto
 			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
 		),
 		'EMPRESA' => (object) array (
@@ -111,7 +111,7 @@ define ('ARR_TIENDAS',serialize(array (
 		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.SB.png',
 		'MENU' => (object) array (
 			'FOTO_CATS_SEGUNDO_NIVEL' => false,//Si las cats de segundo nivel con hijos llevan foto
-			'NUM_OFERS_MAS_VENDIDAS' => 2,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
+			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
 		),
 		'EMPRESA' => (object) array (
 			'NOMBRE' => 'Celorriofarma S.L.',
@@ -229,7 +229,7 @@ define ('ARR_TIENDAS',serialize(array (
 		),
 		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.FC.png',
 		'MENU' => (object) array (
-			'FOTO_CATS_SEGUNDO_NIVEL' => true,//Si las cats de segundo nivel con hijos llevan foto
+			'FOTO_CATS_SEGUNDO_NIVEL' => false,//Si las cats de segundo nivel con hijos llevan foto
 			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
 		),
 		'EMPRESA' => (object) array (
