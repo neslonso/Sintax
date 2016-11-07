@@ -6,6 +6,22 @@ $(document).ready(function() {
 		muestraMsgModal("Continuación del pedido",$("#txtPopup").html());
 		$('.modal').find('.btnPagar').attr('id', 'fakeId');
 	}
+	$('.btnPagar').click(function(event) {
+		if (false) {
+			//ReferenceError: ga is not defined
+			var eventCategory='btnPagar';
+			var eventAction='click';
+			var eventLabel=$('#containerPedido').data('pedidoNumero');
+			var eventValue=0;
+			ga('send', {
+				hitType: 'event',
+				eventCategory: eventCategory,
+				eventAction: eventAction,
+				eventLabel: eventLabel,
+				eventValue: eventValue,
+			});
+		}
+	});
 
 	setInterval(function() {
 		var _docHeight = (document.height !== undefined) ? document.height : document.body.offsetHeight;
