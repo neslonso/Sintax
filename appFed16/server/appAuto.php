@@ -21,10 +21,10 @@ define ('ARR_CRON_JOBS', serialize(array(
 	'sitemaps' => array (
 		'activado' => true,
 		'minuto' => '0',
-		'hora' => '7',
+		'hora' => '6',
 		'diaMes' => '*',
 		'mes' => '*',
-		'diaSemana' => '7',
+		'diaSemana' => '*',
 		'comando' => 'sitemaps();',
 	),
 )));
