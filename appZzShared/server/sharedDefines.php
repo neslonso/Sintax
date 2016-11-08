@@ -25,10 +25,6 @@ define ('ARR_TIENDAS',serialize(array (
 			'TLF' => '982 20 30 08',
 		),
 		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.CL.jpg',
-		'MENU' => (object) array (
-			'FOTO_CATS_SEGUNDO_NIVEL' => false,//Si las cats de segundo nivel con hijos llevan foto
-			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
-		),
 		'EMPRESA' => (object) array (
 			'NOMBRE' => 'Celorriofarma S.L.',
 			'DIRECCION' => 'Avada. A Coruña 195, 27003 Lugo',
@@ -64,10 +60,6 @@ define ('ARR_TIENDAS',serialize(array (
 			'TLF' => '982 215 630',
 		),
 		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.FD.png',
-		'MENU' => (object) array (
-			'FOTO_CATS_SEGUNDO_NIVEL' => false,//Si las cats de segundo nivel con hijos llevan foto
-			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
-		),
 		'EMPRESA' => (object) array (
 			'NOMBRE' => 'Farmamas S.L.',
 			'DIRECCION' => 'Axel López Pérez, nº10, 4ºB, 27003 Lugo',
@@ -109,10 +101,6 @@ define ('ARR_TIENDAS',serialize(array (
 			'TLF' => '982 20 30 08',
 		),
 		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.SB.png',
-		'MENU' => (object) array (
-			'FOTO_CATS_SEGUNDO_NIVEL' => false,//Si las cats de segundo nivel con hijos llevan foto
-			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
-		),
 		'EMPRESA' => (object) array (
 			'NOMBRE' => 'Celorriofarma S.L.',
 			'DIRECCION' => 'Avada. A Coruña 195, 27003 Lugo',
@@ -148,10 +136,6 @@ define ('ARR_TIENDAS',serialize(array (
 			'TLF' => '982 20 30 08',
 		),
 		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.SC.png',
-		'MENU' => (object) array (
-			'FOTO_CATS_SEGUNDO_NIVEL' => false,//Si las cats de segundo nivel con hijos llevan foto
-			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
-		),
 		'EMPRESA' => (object) array (
 			'NOMBRE' => 'Celorriofarma S.L.',
 			'DIRECCION' => 'Avada. A Coruña 195, 27003 Lugo',
@@ -189,10 +173,6 @@ define ('ARR_TIENDAS',serialize(array (
 			'TLF' => '982 215 630',
 		),
 		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.BF.jpg',
-		'MENU' => (object) array (
-			'FOTO_CATS_SEGUNDO_NIVEL' => false,//Si las cats de segundo nivel con hijos llevan foto
-			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
-		),
 		'EMPRESA' => (object) array (
 			'NOMBRE' => 'Farmamas S.L.',
 			'DIRECCION' => 'Axel López Pérez, nº10, 4ºB, 27003 Lugo',
@@ -228,10 +208,6 @@ define ('ARR_TIENDAS',serialize(array (
 			'TLF' => '982 20 30 08',
 		),
 		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.FC.png',
-		'MENU' => (object) array (
-			'FOTO_CATS_SEGUNDO_NIVEL' => false,//Si las cats de segundo nivel con hijos llevan foto
-			'NUM_OFERS_MAS_VENDIDAS' => 0,//Numero de ofertas que salen bajo las categorias de 2ºnivel sin hijos
-		),
 		'EMPRESA' => (object) array (
 			'NOMBRE' => 'Celorriofarma S.L.',
 			'DIRECCION' => 'Avada. A Coruña 195, 27003 Lugo',
