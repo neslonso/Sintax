@@ -443,7 +443,3 @@
     <li class="divider"></li>
     <li class="comprar"><a tabindex="-1" href="<?=BASE_URL?>comprar_pedido/"><i class="fa fa-shopping-cart"></i> <span class="option">Comprar ahora</span></a></li>
 </ul>
-<div id="audioWeb" class="audio" data-toggle="tooltip" title="Haga click para silenciar el audio" data-placement="top" data-container="body">
-	<img id="audioWebOn" onclick="$('#audioWeb').jqVoice().data('jqVoice').mute(true);" src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&alto=50&fichero=voiceOn.png" />
-	<img id="audioWebOff" onclick="$('#audioWeb').jqVoice().data('jqVoice').mute(false);" src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&alto=50&fichero=voiceOff.png" />
-</div>
