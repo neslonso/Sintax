@@ -155,7 +155,7 @@ class Home extends Error implements IPage {
 				';
 			}
 		}
-
+		$storeData=\Sintax\ApiService\Pedidos::getStoreData();
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
 	}
 

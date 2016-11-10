@@ -1,6 +1,15 @@
 <?="\n<!-- ".get_class()." -->\n"?>
 <?="\n<!-- /".get_class()." -->\n"?>
 <nav class="navbar navbar-default navbar-fixed-top">
+	<div class="ribbonBox hidden-md">
+		<div class="ribbon ribbon-topRight"><div>
+			<div class="ribbon-publicidad-portes">
+				<span>¡ENVÍO GRATIS!</span>
+				<br />
+				<span>desde <?=round($storeData->IMPORTE_PEDIDO_PORTES_GRATIS)?>€</span>
+			</div>
+		</div></div>
+	</div>
 	<header id="container-cabecera">
 		<div class="bandaSuperior hidden-xs hidden-sm">
 			<?=$GLOBALS['config']->tienda->BIENVENIDA?>
@@ -310,6 +319,7 @@
 									<h3><i class="fa fa-truck" aria-hidden="true"></i>  Entrega </h3>
 									<ul>
 										<li>Entrega: 24/48h </li>
+										<li>Envío gratis desde <?=round($storeData->IMPORTE_PEDIDO_PORTES_GRATIS)?>€</li>
 										<li>Tarifa plana portes</li>
 										<li>Seguimiento online del pedido</li>
 									</ul>
