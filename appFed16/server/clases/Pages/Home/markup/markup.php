@@ -1,7 +1,7 @@
 <?="\n<!-- ".get_class()." -->\n"?>
 <?="\n<!-- /".get_class()." -->\n"?>
 <nav class="navbar navbar-default navbar-fixed-top">
-	<div class="ribbonBox hidden-md">
+	<div class="ribbonBox hidden-xs hidden-sm hidden-md">
 		<div class="ribbon ribbon-topRight"><div>
 			<div class="ribbon-publicidad-portes">
 				<span>¡ENVÍO GRATIS!</span>
