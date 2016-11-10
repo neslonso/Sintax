@@ -10,7 +10,7 @@
 @color-bg-contenedores: @color-bg-body; /*bg de cajas contenedoras, fichas... etc*/
 /**********************************************/
 
-/* tamaños de zonas */
+/* tamaÃ±os de zonas */
 @width-menu: 250px;
 @shop-item-container-fluid: 1170 + 17 + @width-menu; /*1170 del container + 17 de scroll*/
 @width-root-txt-menu: @width-menu - 63; /*espacio para img ico, flecha, margenes*/
@@ -70,7 +70,86 @@
 	overflow: auto;
 	padding-right: 0px !important;
 }
+/**********************************************************************************/
+/* Ribbon */
+@ribbon-width-height:160px;
+@ribbon-div-height:45px;
+.ribbonBox {
+	position: relative;
+}
+.ribbon {
+	position: absolute;
+	z-index: 999999999999999999;
+	overflow: hidden;
+	width: @ribbon-width-height; height: @ribbon-width-height;
+}
+.ribbon.ribbon-topRight {
+	right: 0px; top: 0px;
+}
+.ribbon.ribbon-bottomLeft {
+	left: 0px; bottom: 0px;
+}
+.ribbon>div {
+	position: absolute;
+	color: #FFF;
+	/*
+	background: #79A70A;
+	background: linear-gradient(#F79E05 0%, #8F5408 100%);
+	*/
+	background: linear-gradient(@color-principal 0%, @color-secundario 100%);
+	box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+	transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	height: @ribbon-div-height;
+	width: @ribbon-width-height*2;
+}
+.ribbon.ribbon-topRight>div {
+	right:-@ribbon-width-height/2 - sin(45deg)*@ribbon-div-height/2;
+	top: @ribbon-width-height/2 - @ribbon-div-height/2 - sin(45deg)*@ribbon-div-height/2;
+}
+.ribbon.ribbon-bottomLeft>div {
+	right:-@ribbon-width-height/2 + sin(45deg)*@ribbon-div-height/2;
+	top: @ribbon-width-height/2 - @ribbon-div-height/2 + sin(45deg)*@ribbon-div-height/2;
+}
+
+.ribbon>div>div {
+	height:100%;
+	width:@ribbon-width-height;
+	margin:auto;
+	text-align: center;
+}
 /**/
+.ribbon-publicidad-portes {
+	color: contrast(@color-principal);
+	line-height: @ribbon-div-height/2;
+	font-weight: bold;
+}
+.ribbon-publicidad-portes>span:first-child {
+	font-size:1.2em;
+	animation: textShadow 2s ease infinite;
+}
+.ribbon-publicidad-portes>span:last-child {
+
+}
+@keyframes textShadow {
+	0%{text-shadow: none;}
+	50%{
+		text-shadow:
+			0 0 0.2em contrast(@color-principal),
+			0 0 0.5em contrast(@color-principal),
+			0 0 0.7em contrast(@color-principal),
+			0 0 1.0em @color-principal,
+			0 0 1.5em @color-principal,
+			0 0 2.0em @color-principal,
+			0 0 2.7em @color-principal,
+			0 0 3.7em @color-principal;
+/*#fff
+#49ff18*/
+	}
+	100%{text-shadow: none;}
+}
+
+
 /*********** ZONAS GENERALES ************/
 body {
 	background-color: @color-bg-body;
