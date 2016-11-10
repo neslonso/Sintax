@@ -305,13 +305,13 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 		return round($this->pai()*(1+$this->tipoIVa()/100),2);
 	}
 
-	/* compisDePedido *************************************************
-	Devuelve un array asociativo que tiene como clave la una referencia
-	de producto y como dato el numero de veces que a compartido pedido
-	con la referencia de $this
-	**************************************************************/
-	public function compisDePedido ($keyTienda=NULL) {
-		//FALTA QUE SI $keyTienda!=NULL HAGA EL CALCULO SOBRE UNA SOLA TIENDA
+	/**
+	 * [compisDePedido description]
+	 * @return array array asociativo que tiene como clave la una referencia
+	 * de producto y como dato el numero de veces que a compartido pedido
+	 * con la referencia de $this
+	 */
+	public function compisDePedido () {
 		$arrRefs=Array();
 		//seleccionar todos los pedidos en los que este la referencia de este prod
 		$rsl=$this->db->query ("SELECT p.id FROM multi_pedido p INNER JOIN multi_pedidoLinea pl ON p.id=pl.idPedido

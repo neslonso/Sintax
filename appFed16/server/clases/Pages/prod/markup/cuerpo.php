@@ -67,9 +67,7 @@ if ($objOferta->descuentoOferta()>0){
 						<span class="text-muted"><?=(isset($objCategoria) && is_object($objCategoria))?$objCategoria->nombre:'';?></span>
 					</div>
 <?
-					//if producto rebote
-	if($objOferta->GETtipoDevolucionCredito()>0){
-
+if($objOferta->GETtipoDevolucionCredito()>0){
 ?>
 					<div class="col-xs-12 col-sm-3">
 						<strong>Crédito:</strong>
@@ -92,8 +90,8 @@ if ($objOferta->descuentoOferta()>0){
 					</div>
 					<div class="col-xs-12 col-sm-9">
 <?
-	$disponibilidad = (!$objOferta->vendible()) ? 'No disponible' : 'Disponible';
-	$classText = (!$objOferta->vendible()) ? 'text-danger' : 'text-success';
+$disponibilidad = (!$objOferta->vendible()) ? 'No disponible' : 'Disponible';
+$classText = (!$objOferta->vendible()) ? 'text-danger' : 'text-success';
 ?>
 						<span class="<?=$classText?>"><?=$disponibilidad?></span>
 					</div>
@@ -115,64 +113,52 @@ if ($objOferta->descuentoOferta()>0){
 			</div>
 		</div><!--ofertas-->
 	</div><!--item detail-->
-<?/*
-	<!--swiper articulos relacionados-->
-	<div class="row item-relacionados">
-		<div class="col-lg-12">
-			<div class="card-item-white">
-				<p class="h4 titulo-encabezado">Productos relacionados<small class="text-muted p-l-1">Los usuarios también han comprado</small>
-				</p>
-			</div>
-			<div id="container-banners">
-				<div class="swiper-container">
-					<div class="swiper-wrapper">
+<?
+$arrRelBlocks=array();
+$objThc=new \stdClass();
+$objThc->title='Productos relacionados<small class="text-muted">Los usuarios que compraron '.$objOferta->GETnombre().' también han comprado:</small>';
+$objThc->arrStdObjOfer=$arrOfertasRelacionadas;
+array_push($arrRelBlocks,$objThc);
 
-			<?
-					foreach ($arrOfertasRelacionadas as $stdObjOfer) {
-			?>
-							<div class="swiper-slide">
-								<?\Sintax\ApiService\Productos::fichaProductoResponsive($stdObjOfer)?>
-							</div>
-			<?
-					}
-			?>
-					</div>
-				</div>
-			</div>
-
-		</div>
-	</div>
-
-	<!--swiper productos gama-->
-	<div class="row item-gama">
-		<div class="col-lg-12">
-			<div class="card-item-white">
-				<p class="h4 titulo-encabezado">Productos gama<small class="text-muted p-l-1"><?=$objOferta->GETnombre()?></small>
-				</p>
-			</div>
-			<div id="container-banners">
-				<div class="swiper-container">
-					<div class="swiper-wrapper">
-
-			<?
-					foreach ($arrOfertasGama as $stdObjOfer) {
-			?>
-							<div class="swiper-slide">
-								<?\Sintax\ApiService\Productos::fichaProductoResponsive($stdObjOfer)?>
-							</div>
-			<?
-					}
-			?>
-					</div>
-				</div>
-			</div>
-
-		</div>
-	</div>
-*/
+$objGama=$objOferta->objMulti_productoGama();
+if (is_object($objGama)) {
+	$objMismaGama=new \stdClass();
+	$objMismaGama->title='Productos de la misma gama<small class="text-muted">'.$objGama->GETnombre().':</small>';
+	$objMismaGama->arrStdObjOfer=$arrOfertasGama;
+	array_push($arrRelBlocks,$objMismaGama);
+}
+foreach ($arrRelBlocks as $key => $objConfig) {
 ?>
+	<div class="row relBlock">
+		<div class="col-lg-12">
+			<div class="card-item-white">
+				<p class="h4 titulo-encabezado"><?=$objConfig->title;?></p>
+			</div>
+		</div>
+		<div class="col-lg-12">
+			<div class="card-item-white">
+				<div class="swiper-button-prev"></div>
+				<div class="swiper-container">
+					<div class="swiper-wrapper">
 
-
+<?
+	foreach ($objConfig->arrStdObjOfer as $stdObjOfer) {
+?>
+						<div class="swiper-slide">
+							<?\Sintax\ApiService\Productos::fichaProductoResponsive($stdObjOfer)?>
+						</div>
+<?
+	}
+?>
+					</div>
+				</div>
+				<div class="swiper-button-next"></div>
+			</div>
+		</div>
+	</div>
+<?
+}
+?>
 	<div class="row item-desc">
 		<div class="col-xs-12 ">
 			<div class="card-item-white">
@@ -182,9 +168,9 @@ if ($objOferta->descuentoOferta()>0){
 			<div class="card-item-white">
 				<div class="item-desc-text">
 <?
-	$descripcion = nl2br($objOferta->GETdescripcion());
-	//$descripcion = preg_replace('#^\s*<br />\s*$#m', '', $descripcion);
-	//$descripcion = preg_replace('#^\s*(<br />)+\s*$#m', '<hr />', $descripcion);
+$descripcion = nl2br($objOferta->GETdescripcion());
+//$descripcion = preg_replace('#^\s*<br />\s*$#m', '', $descripcion);
+//$descripcion = preg_replace('#^\s*(<br />)+\s*$#m', '<hr />', $descripcion);
 ?>
 					<p><?=trim($descripcion)?></p>
 				</div>
