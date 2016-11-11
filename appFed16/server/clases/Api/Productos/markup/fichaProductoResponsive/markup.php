@@ -3,7 +3,7 @@
 			$rebote="";
 			if($stdObjOfer->rebote>0){
 				$zIndex=$stdObjOfer->index-1;
-				$rebote = '<div class="shop-item-rebote" data-toggle="tooltip" title="Con la compra de '.$stdObjOfer->nombre.' recibirá el '.$stdObjOfer->rebote.'% de su importe como crédito para futuras compras" data-index="'.$zIndex.'"><div>'.$stdObjOfer->rebote.'%</div></div>';
+				$rebote = '<div class="shop-item-rebote" data-toggle="tooltip" data-placement="bottom" title="Con la compra de '.$stdObjOfer->nombre.' recibirá el '.$stdObjOfer->rebote.'% de su importe como crédito para futuras compras" data-index="'.$zIndex.'"><div>'.$stdObjOfer->rebote.'%</div></div>';
 			}
 			$dto="";
 			$precio=$stdObjOfer->precio."€";
@@ -11,6 +11,11 @@
 				$dto='<div class="shop-item-dto-triangle"></div><div class="shop-item-dto">-'.$stdObjOfer->tipoDtoRespectoCatalogo.'%</div>';
 				$precio='<span class="shop-item-price-antes">'.$stdObjOfer->precioCatalogo."€</span>
 						<span> ".$stdObjOfer->precio."€</span>";
+			}
+			$infoDtoGama='';
+			if (isset($stdObjOfer->gama)) {
+				$infoDtoGama='<div class="shop-item-dto-gama">
+					<div class="stamp stampRotate" data-toggle="tooltip" data-placement="bottom" title="Desuento en toda la gama '.$stdObjOfer->gama->nombre.'"><div>-'.$stdObjOfer->gama->tipoDescuentoGama.'%</div></div></div>';
 			}
 			if (!isset($stdObjOfer->tooltip)) {$stdObjOfer->tooltip=$stdObjOfer->nombre;}
 ?>
@@ -35,4 +40,5 @@
 							<?=$dto?>
 						</div>
 						<?=$rebote?>
+						<?=$infoDtoGama?>
 					</div>

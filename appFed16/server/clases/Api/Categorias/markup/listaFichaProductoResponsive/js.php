@@ -1,42 +1,5 @@
 <?if(false) {?><script><?}?>
 $(document).ready(function() {
-	$('.listaFichaProductoResponsive .shop-item-wrapper').on('mouseenter focusin', function(event) {
-		$dtoGama=$('.shop-item-dto-gama',$(this)).clone().appendTo('#wrapper').addClass('shop-item-dto-gama-clone').css({position:'absolute'});
-
-		$dtoGama.show();
-		var left   = Math.floor($(window).width()/2 - $dtoGama.outerWidth()/2) + $(window).scrollLeft();
-		var top    = Math.floor($(window).height()/2 - $dtoGama.outerHeight()/2) + $(window).scrollTop();
-		$dtoGama.hide();
-
-		$dtoGama.css({
-			'position' : 'absolute',
-			'left'     : left,
-			'top'      : top,
-			'z-index'  : 999999999,
-		}).fadeIn(400);
-	}).on('mouseleave focusout', function(event) {
-		$('.shop-item-dto-gama-clone').fadeOut(400, function() {$(this).remove();});
-	});
-
-	/*
-	$('.listaFichaProductoResponsive .shop-item').on('touchstart',function(event) {
-		$(this).closest('.shop-item-wrapper').trigger('mouseenter');
-		$(this).trigger('mouseenter');
-		$(this).addClass('hover');
-	});
-	$('.listaFichaProductoResponsive .shop-item').on('touchmove',function(event) {
-		$(this).closest('.shop-item-wrapper').trigger('mouseleave');
-		$(this).trigger('mouseleave');
-		$(this).removeClass('hover');
-	});
-	$('.listaFichaProductoResponsive .shop-item').on('touchend',function(event) {
-		$(this).closest('.shop-item-wrapper').trigger('mouseleave');
-		$(this).trigger('mouseleave');
-		$(this).removeClass('hover');
-		event.preventDefault();
-	});
-	*/
-
 	$('.listaFichaProductoResponsive .shop-item-link').on('click',function(event) {
 		//if ($.viewport.is('xs')) {return;}
 		event.preventDefault();

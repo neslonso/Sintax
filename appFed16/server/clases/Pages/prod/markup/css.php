@@ -3,7 +3,6 @@
 .item-detail{
 	margin-top: 15px !important;
 	margin-bottom: 15px !important;
-
 }
 .card-item-white{
 	background: #ffffff;
@@ -80,22 +79,16 @@
   line-height: 10px;
 }
 
-/*relacionados*/
-.item-relacionados{
+/*relBlocks*/
+.relBlock {
 	margin-top: 15px !important;
 	margin-bottom: 15px !important;
 }
-.item-relacionados .text-muted{
+.relBlock .text-muted{
 	padding-left: 10px;
 }
-
-/*gama*/
-.item-gama{
-	margin-top: 15px !important;
-	margin-bottom: 15px !important;
-}
-.item-gama .text-muted{
-	padding-left: 10px;
+.relBlock .swiper-slide, {
+	width:250px;
 }
 
 /*descripcion*/
