@@ -7,7 +7,7 @@
 		<div class="col-xs-12 col-sm-12 col-md-6">
 			<div class="card-item-white">
 				<div class="img-item">
-					<img src="<?=$objOferta->imgSrc(0, 350, 350)?>" class="img-responsive">
+					<img src="<?=$objOferta->imgSrc(0, 350, 350)?>" alt="<?=$objOferta->GETnombre()?>" class="img-responsive">
 				</div>
 <?
 if($objOferta->GETtipoDevolucionCredito()>0){
