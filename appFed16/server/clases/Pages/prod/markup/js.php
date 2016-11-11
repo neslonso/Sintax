@@ -6,15 +6,17 @@ $(document).ready(function() {
 		$( ".item-detail .jqCst" ).data('unit' , $spin[0].value);
 	});
 
-	var mySwiper = new Swiper ('.swiper-container', {
-		direction: 'horizontal',
-		loop: false,
-		grabCursor: true,
-		nextButton: '.relBlock .swiper-button-next',
-		prevButton: '.relBlock .swiper-button-prev',
-		slidesPerView: 'auto',
-		spaceBetween: 30,
-		mousewheelControl: true,
+	$('.swiper-container').each(function(){
+		new Swiper($(this), {
+			direction: 'horizontal',
+			loop: false,
+			grabCursor: true,
+			slidesPerView: 'auto',
+			spaceBetween: 30,
+			mousewheelControl: true,
+			nextButton: $(this).closest('.relBlock').find('.swiper-button-next'),
+			prevButton: $(this).closest('.relBlock').find('.swiper-button-prev'),
+		});
 	});
 });
 
