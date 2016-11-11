@@ -79,7 +79,6 @@
 	height:20px;
 	font-weight: bold;
 	line-height: 0;
-
 }
 .ssSearchContainer .shop-item-rebote {
 	position: absolute;

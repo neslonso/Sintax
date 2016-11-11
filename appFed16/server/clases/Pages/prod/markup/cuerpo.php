@@ -11,10 +11,13 @@
 				</div>
 <?
 if($objOferta->GETtipoDevolucionCredito()>0){
-			echo '<div class="shop-item-rebote" data-toggle="tooltip" title="Con la compra de '.$objOferta->GETnombre().' recibirá el '.$objOferta->GETtipoDevolucionCredito().'% de su importe como crédito para futuras compras" data-index="-1"><div>'.$objOferta->GETtipoDevolucionCredito().'%</div></div>';
+	echo '<div class="shop-item-rebote" data-toggle="tooltip" data-placement="bottom" title="Con la compra de '.$objOferta->GETnombre().' recibirá el '.$objOferta->GETtipoDevolucionCredito().'% de su importe como crédito para futuras compras" data-index="-1"><div>'.$objOferta->GETtipoDevolucionCredito().'%</div></div>';
 }
 if ($objOferta->descuentoOferta()>0){
-			echo '<div class="shop-item-dto-triangle"></div><div class="shop-item-dto">-'.$objOferta->descuentoOferta().'%</div>';
+	echo '<div class="shop-item-dto-triangle"></div><div class="shop-item-dto">-'.$objOferta->descuentoOferta().'%</div>';
+}
+if ($objOferta->tipoDescuentoGama()>0) {
+	echo '<div class="shop-item-dto-gama"><div class="stamp stampRotate" data-toggle="tooltip" data-placement="bottom" title="Desuento en toda la gama '.$objOferta->objMulti_productoGama()->GETnombre().'"><div>-'.$objOferta->tipoDescuentoGama().'%</div></div></div>';
 }
 ?>
 			</div>
@@ -115,17 +118,21 @@ $classText = (!$objOferta->vendible()) ? 'text-danger' : 'text-success';
 	</div><!--item detail-->
 <?
 $arrRelBlocks=array();
-$objThc=new \stdClass();
-$objThc->title='Productos relacionados<small class="text-muted">Los usuarios que compraron '.$objOferta->GETnombre().' también han comprado:</small>';
-$objThc->arrStdObjOfer=$arrOfertasRelacionadas;
-array_push($arrRelBlocks,$objThc);
-
-$objGama=$objOferta->objMulti_productoGama();
-if (is_object($objGama)) {
-	$objMismaGama=new \stdClass();
-	$objMismaGama->title='Productos de la misma gama<small class="text-muted">'.$objGama->GETnombre().':</small>';
-	$objMismaGama->arrStdObjOfer=$arrOfertasGama;
-	array_push($arrRelBlocks,$objMismaGama);
+if (count($arrOfertasRelacionadas)>0) {
+	$objThc=new \stdClass();
+	$objThc->title='Productos relacionados<small class="text-muted">Los usuarios que compraron '.$objOferta->GETnombre().' también han comprado:</small>';
+	$objThc->arrStdObjOfer=$arrOfertasRelacionadas;
+	array_push($arrRelBlocks,$objThc);
+}
+if (count($arrOfertasGama)>0) {
+	$arrObjGama=$objOferta->arrMulti_productoGama();
+	if (count($arrObjGama)>0) {
+		$objMismaGama=new \stdClass();
+		$nombresGamas=implode(", ", array_map(function($objGama) {return $objGama->GETnombre();}, $arrObjGama));
+		$objMismaGama->title='Productos de la misma gama<small class="text-muted">'.$nombresGamas.':</small>';
+		$objMismaGama->arrStdObjOfer=$arrOfertasGama;
+		array_push($arrRelBlocks,$objMismaGama);
+	}
 }
 foreach ($arrRelBlocks as $key => $objConfig) {
 ?>

@@ -38,21 +38,60 @@ class Productos extends ApiService implements IApiService {
 		return $arr;
 	}
 
+	/**
+	 * [arrOfersRelacionadas description]
+	 * @param  [type]  $idOfer  [description]
+	 * @param  integer $cuantos [description]
+	 * @return [type]           [description]
+	 */
 	public static function arrOfersRelacionadas($idOfer,$cuantos=10){
 		$db=\cDb::confByKey("celorriov3");
-		$objOferta=new \Multi_ofertaVenta($idOfer);
+		$objOferta=new \Multi_ofertaVenta($db,$idOfer);
 		$arrRefs=array();
 		$arrProds = $objOferta->arrMulti_producto("","","","arrClassObjs");
 		foreach ($arrProds as $objProd) {
-			array_merge($arrRefs,$objProd->compisDePedido());
+			$arrRefs=array_merge($arrRefs,$objProd->compisDePedido());
 		}
 		asort ($arrRefs, SORT_NUMERIC);
 		$arrRefs=array_reverse ($arrRefs,true);
 		$arr=array();
 		$i=0;
 		foreach ($arrRefs as $ref => $vecesCompi) {
-			$objOfertaCompi=Multi_ofertaVenta::cargarPorRef($db,$objOferta->GETkeyTienda(),$ref);
-			$obj=\Sintax\ApiService\Categorias::creaStdObjOferta($objOfertaCompi);
+			$objOfertaCompi=\Multi_ofertaVenta::cargarPorRef($db,$objOferta->GETkeyTienda(),$ref);
+			if (is_object($objOfertaCompi)) {
+				if ($objOfertaCompi->GETvisible()) {
+					$obj=\Sintax\ApiService\Categorias::creaStdObjOferta($objOfertaCompi);
+					$obj->index=$i;
+					array_push($arr,$obj);
+					$i++;
+				}
+			}
+			if ($i>$cuantos) {break;}
+		}
+		return $arr;
+	}
+
+	/**
+	 * [arrOfersGama description]
+	 * @param  [type]  $idOfer  [description]
+	 * @param  integer $cuantos [description]
+	 * @return [type]           [description]
+	 */
+	public static function arrOfersGama($idOfer,$cuantos=10) {
+		$db=\cDb::confByKey("celorriov3");
+		$objOferta=new \Multi_ofertaVenta($db,$idOfer);
+		$arrOfersGamas=array();
+		$arrGamas=$objOferta->arrMulti_productoGama();
+		foreach ($arrGamas as $objGama) {
+			$arrProds=$objGama->arrMulti_producto("","","","arrClassObjs");
+			foreach ($arrProds as $objProd) {
+				$arrOfersGamas=array_merge($arrOfersGamas,$objProd->arrMulti_ofertaVenta("keyTienda='".$objOferta->GETkeyTienda()."' AND visible=1","","","arrClassObjs"));
+			}
+		}
+		$arr=array();
+		$i=0;
+		foreach ($arrOfersGamas as $objOfertaGama) {
+			$obj=\Sintax\ApiService\Categorias::creaStdObjOferta($objOfertaGama);
 			$obj->index=$i;
 			array_push($arr,$obj);
 			$i++;
@@ -60,20 +99,6 @@ class Productos extends ApiService implements IApiService {
 		}
 		return $arr;
 	}
-
-	public static function arrOfersGama($idOfer,$cuantos=10) {
-		$db=\cDb::confByKey("celorriov3");
-		$objOferta=new \Multi_ofertaVenta($idOfer);
-		$arrGamas=$objOferta->arrMulti_productoGama();
-		foreach ($arrGamas as $objGama) {
-			$arrProds=$objGama->arrMulti_producto
-			foreach ($arrProds as $objProd) {
-				$objProd->arrMulti_ofertaVenta
-			}
-			array_merge($arrRefs,$objGama->arrOfersGama());
-		}
-	}
-
 
 /******************************************************************************/
 /* FRAGMENTOS *****************************************************************/
