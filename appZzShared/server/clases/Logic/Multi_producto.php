@@ -35,7 +35,9 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 		$noReferenciadoEnMulti_productoAdjunto=($this->db()->get_num_rows($sql)==0)?true:false;
 		$sql="SELECT idMulti_producto FROM multi_productoVARIOSmulti_ofertaVenta WHERE idMulti_producto='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
 		$noReferenciadoEnMulti_productoVARIOSmulti_ofertaVenta=($this->db()->get_num_rows($sql)==0)?true:false;
-		$result=($noReferenciadoEnMulti_productoAdjunto && $noReferenciadoEnMulti_productoVARIOSmulti_ofertaVenta)?true:false;
+		$sql="SELECT idMulti_producto FROM multi_productoVARIOSmulti_productoTag WHERE idMulti_producto='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$noReferenciadoEnMulti_productoVARIOSmulti_productoTag=($this->db()->get_num_rows($sql)==0)?true:false;
+		$result=($noReferenciadoEnMulti_productoAdjunto && $noReferenciadoEnMulti_productoVARIOSmulti_ofertaVenta && $noReferenciadoEnMulti_productoVARIOSmulti_productoTag)?true:false;
 		return $result;
 	}
 	public function GETkeyValue ($entity_decode=false) {return ($entity_decode)?html_entity_decode($this->arrDbData[static::$keyField],ENT_QUOTES,"UTF-8"):$this->arrDbData[static::$keyField];}
@@ -140,6 +142,33 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 				case "arrKeys": array_push($arr,$data->{\Multi_ofertaVenta::GETkeyField()});break;
 				case "arrClassObjs":
 					$obj=new \Multi_ofertaVenta($this->db(),$data->{\Multi_ofertaVenta::GETkeyField()});
+					array_push($arr,$obj);
+					unset($obj);
+				break;
+				case "arrStdObjs":
+					$obj=new \stdClass();
+					foreach ($data as $field => $value) {
+						$obj->$field=$value;
+					}
+					array_push($arr,$obj);
+					unset ($obj);
+				break;
+			}
+		}
+		return $arr;
+	}
+	public function arrMulti_productoTag($where="",$order="",$limit="",$tipo="arrStdObjs") {
+		$sqlWhere=($where!="")?" WHERE idMulti_producto='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."' AND ".$where:" WHERE idMulti_producto='".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."'";
+		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
+		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
+		$sql="SELECT * FROM multi_productoVARIOSmulti_productoTag f INNER JOIN multi_productoTag ff ON f.idMulti_productoTag=ff.".\Multi_productoTag::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;
+		$arr=array();
+		$rsl=$this->db()->query($sql);
+		while ($data=$rsl->fetch_object()) {
+			switch ($tipo) {
+				case "arrKeys": array_push($arr,$data->{\Multi_productoTag::GETkeyField()});break;
+				case "arrClassObjs":
+					$obj=new \Multi_productoTag($this->db(),$data->{\Multi_productoTag::GETkeyField()});
 					array_push($arr,$obj);
 					unset($obj);
 				break;
@@ -305,13 +334,13 @@ class Multi_producto extends \Sintax\Core\Entity implements \Sintax\Core\IEntity
 		return round($this->pai()*(1+$this->tipoIVa()/100),2);
 	}
 
-	/* compisDePedido *************************************************
-	Devuelve un array asociativo que tiene como clave la una referencia
-	de producto y como dato el numero de veces que a compartido pedido
-	con la referencia de $this
-	**************************************************************/
-	public function compisDePedido ($keyTienda=NULL) {
-		//FALTA QUE SI $keyTienda!=NULL HAGA EL CALCULO SOBRE UNA SOLA TIENDA
+	/**
+	 * [compisDePedido description]
+	 * @return array array asociativo que tiene como clave la una referencia
+	 * de producto y como dato el numero de veces que a compartido pedido
+	 * con la referencia de $this
+	 */
+	public function compisDePedido () {
 		$arrRefs=Array();
 		//seleccionar todos los pedidos en los que este la referencia de este prod
 		$rsl=$this->db->query ("SELECT p.id FROM multi_pedido p INNER JOIN multi_pedidoLinea pl ON p.id=pl.idPedido

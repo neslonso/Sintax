@@ -229,6 +229,14 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		}
 		return $objMulti_productoGama;
 	}
+	public function arrMulti_productoGama() {
+		$arr=array();
+		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
+		foreach ($arrProds as $objProd) {
+			array_push($arr,$objProd->objMulti_productoGama());
+		}
+		return $arr;
+	}
 	public function tipoDescuentoGama() {
 		$arrProds=$this->arrMulti_producto("","","","arrClassObjs");
 		$tipoDescuentoGama=0;

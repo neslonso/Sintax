@@ -38,6 +38,68 @@ class Productos extends ApiService implements IApiService {
 		return $arr;
 	}
 
+	/**
+	 * [arrOfersRelacionadas description]
+	 * @param  [type]  $idOfer  [description]
+	 * @param  integer $cuantos [description]
+	 * @return [type]           [description]
+	 */
+	public static function arrOfersRelacionadas($idOfer,$cuantos=10){
+		$db=\cDb::confByKey("celorriov3");
+		$objOferta=new \Multi_ofertaVenta($db,$idOfer);
+		$arrRefs=array();
+		$arrProds = $objOferta->arrMulti_producto("","","","arrClassObjs");
+		foreach ($arrProds as $objProd) {
+			$arrRefs=array_merge($arrRefs,$objProd->compisDePedido());
+		}
+		asort ($arrRefs, SORT_NUMERIC);
+		$arrRefs=array_reverse ($arrRefs,true);
+		$arr=array();
+		$i=0;
+		foreach ($arrRefs as $ref => $vecesCompi) {
+			$objOfertaCompi=\Multi_ofertaVenta::cargarPorRef($db,$objOferta->GETkeyTienda(),$ref);
+			if (is_object($objOfertaCompi)) {
+				if ($objOfertaCompi->GETvisible()) {
+					$obj=\Sintax\ApiService\Categorias::creaStdObjOferta($objOfertaCompi);
+					$obj->index=$i;
+					array_push($arr,$obj);
+					$i++;
+				}
+			}
+			if ($i>$cuantos) {break;}
+		}
+		return $arr;
+	}
+
+	/**
+	 * [arrOfersGama description]
+	 * @param  [type]  $idOfer  [description]
+	 * @param  integer $cuantos [description]
+	 * @return [type]           [description]
+	 */
+	public static function arrOfersGama($idOfer,$cuantos=10) {
+		$db=\cDb::confByKey("celorriov3");
+		$objOferta=new \Multi_ofertaVenta($db,$idOfer);
+		$arrOfersGamas=array();
+		$arrGamas=$objOferta->arrMulti_productoGama();
+		foreach ($arrGamas as $objGama) {
+			$arrProds=$objGama->arrMulti_producto("","","","arrClassObjs");
+			foreach ($arrProds as $objProd) {
+				$arrOfersGamas=array_merge($arrOfersGamas,$objProd->arrMulti_ofertaVenta("keyTienda='".$objOferta->GETkeyTienda()."' AND visible=1","","","arrClassObjs"));
+			}
+		}
+		$arr=array();
+		$i=0;
+		foreach ($arrOfersGamas as $objOfertaGama) {
+			$obj=\Sintax\ApiService\Categorias::creaStdObjOferta($objOfertaGama);
+			$obj->index=$i;
+			array_push($arr,$obj);
+			$i++;
+			if ($i>$cuantos) {break;}
+		}
+		return $arr;
+	}
+
 /******************************************************************************/
 /* FRAGMENTOS *****************************************************************/
 	public function btnComprar($stdObjOrClassObjOfer,$cssClasses='',$iconCssClasses='glyphicon glyphicon-shopping-cart',$text='Comprar ahora',$tag='a') {
@@ -113,29 +175,5 @@ class Productos extends ApiService implements IApiService {
 		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/fichaProductoDto/css.php');
 	}
 /******************************************************************************/
-	/*funciones necesarias para prod.php*/
-	/**
-	 * [arrProductosRelacionados description]
-	 * @param  integer $cuantos       [description]
-	 * @param  string  $keyTienda     [description]
-	 * @param  boolean $asObjectArray [description]
-	 * @return [type]                 [description]
-	 */
-	public static function arrProductosRelacionados($cuantos=10, $keyTienda="", $asObjectArray=true){
-		$arr = \Sintax\ApiService\Productos::arrRandomOfertasVenta($cuantos,$keyTienda);
-		return $arr;
-	}
-
-	/**
-	 * [arrProductosGama description]
-	 * @param  integer $cuantos       [description]
-	 * @param  string  $keyTienda     [description]
-	 * @param  boolean $asObjectArray [description]
-	 * @return [type]                 [description]
-	 */
-	public static function arrProductosGama($cuantos=10, $keyTienda="", $asObjectArray=true){
-		$arr = \Sintax\ApiService\Productos::arrRandomOfertasVenta($cuantos,$keyTienda);
-		return $arr;
-	}
 }
 ?>

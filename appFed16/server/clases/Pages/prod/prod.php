@@ -62,8 +62,8 @@ class prod extends Home implements IPage {
 		$idOfer = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
 		$objOferta=new \Multi_ofertaVenta(\cDb::gI(),$idOfer);
 		$objCategoria = isset($objOferta->arrMulti_categoria()[0]) ? $objOferta->arrMulti_categoria()[0] : '';
-		$arrOfertasRelacionadas=\Sintax\ApiService\Productos::arrProductosRelacionados(10,$GLOBALS['config']->tienda->key);
-		$arrOfertasGama=\Sintax\ApiService\Productos::arrProductosGama(10,$GLOBALS['config']->tienda->key);
+		$arrOfertasRelacionadas=\Sintax\ApiService\Productos::arrOfersRelacionadas($idOfer,10);
+		$arrOfertasGama=\Sintax\ApiService\Productos::arrOfersGama($idOfer,10);
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/cuerpo.php");
 	}
 }

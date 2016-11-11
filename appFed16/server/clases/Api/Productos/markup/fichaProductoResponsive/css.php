@@ -150,18 +150,3 @@
 }.shop-item-desc {
 	outline: 1px solid blue;
 }*/
-.shop-item-dto-gama>div {
-	width: 240px;
-	height: 240px;
-	overflow: hidden;
-}
-.shop-item-dto-gama>div>div {
-	padding: 1em;
-}
-.shop-item-dto-gama .dto {
-	font-size: xx-large;
-}
-.shop-item-dto-gama .gama {
-	font-size: xx-large;
-	font-variant: small-caps;
-}

@@ -32,8 +32,8 @@ $(document).ready(function() {
 		loop: false,
 		mousewheelControl: false,
 		grabCursor: true,
-	    nextButton: '.swiper-recomendados-button-next',
-	    prevButton: '.swiper-recomendados-button-prev',
+		nextButton: '.swiper-recomendados-button-next',
+		prevButton: '.swiper-recomendados-button-prev',
 		slidesPerView: 'auto',
 		/*
 		breakpoints: {
