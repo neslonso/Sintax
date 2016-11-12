@@ -158,8 +158,9 @@ a:active {color: lighten(@color-principal, 10%);}
 	padding-left: 6px;
 	position: absolute;
 	text-align: center;
-	top: 33px;
+	top: 35px;
 	width: 100%;
+	line-height: 100%;
 }
 /*estilos triangulo dto*/
 .shop-item-dto{
@@ -186,6 +187,19 @@ a:active {color: lighten(@color-principal, 10%);}
 	left: 0px;
 	top: 0px;
 	z-index: @zindex-shop-item-rebote;
+}
+/*estilos sello dto gama*/
+.shop-item-dto-gama .stamp {
+	position: absolute;
+	top: 113px;
+	right: 22px;
+	z-index: 900;
+}
+.shop-item-dto-gama .stamp>div {
+	width: 40px;
+	height: 20px;
+	font-weight: bold;
+	line-height: 0;
 }
 /*Stamp*/
 .stamp {

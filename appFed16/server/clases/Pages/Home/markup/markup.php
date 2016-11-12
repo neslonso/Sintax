@@ -1,6 +1,15 @@
 <?="\n<!-- ".get_class()." -->\n"?>
 <?="\n<!-- /".get_class()." -->\n"?>
 <nav class="navbar navbar-default navbar-fixed-top">
+	<div class="ribbonBox hidden-xs hidden-sm hidden-md">
+		<div class="ribbon ribbon-topRight"><div>
+			<div class="ribbon-publicidad-portes">
+				<span>¡ENVÍO GRATIS!</span>
+				<br />
+				<span>desde <?=round($storeData->IMPORTE_PEDIDO_PORTES_GRATIS)?>€</span>
+			</div>
+		</div></div>
+	</div>
 	<header id="container-cabecera">
 		<div class="bandaSuperior hidden-xs hidden-sm">
 			<?=$GLOBALS['config']->tienda->BIENVENIDA?>
@@ -203,7 +212,7 @@
 ?>
 								<li class="dropdown ttmenu-full">
 									<a href="#" data-toggle="dropdown" class="dropdown-toggle rootMenu" >
-										<span class="rootMenu-ico" style="background-image:url('<?=$cat->ico?>'); background-position:<?=$x?>px 0px;"></span> <span class="txtMenuRoot"><?=$cat->nombre?> <b class="dropme"></b></span>
+										<span class="rootMenu-ico" style="background-image:url('<?=$cat->img?>'); /*background-position:<?=$x?>px 0px;*/ background-size: contain;"></span> <span class="txtMenuRoot"><?=$cat->nombre?> <b class="dropme"></b></span>
 									</a>
 									<ul class="dropdown-menu vertical-menu">
 										<li>
@@ -231,7 +240,7 @@
 																					$imgCat="";
 																					$imgProdsCat="";
 																					if ($tieneHijos) {
-																						if ($GLOBALS['config']->tienda->MENU->FOTO_CATS_SEGUNDO_NIVEL) {
+																						if (false) {
 																							$x-=30;
 																							$imgCat='<span style="background-image:url(\''.$cat->ico.'\'); background-position:'.$x.'px 0px;" class="img-cat-subMenu"></span>';
 																						}
@@ -310,6 +319,7 @@
 									<h3><i class="fa fa-truck" aria-hidden="true"></i>  Entrega </h3>
 									<ul>
 										<li>Entrega: 24/48h </li>
+										<li>Envío gratis desde <?=round($storeData->IMPORTE_PEDIDO_PORTES_GRATIS)?>€</li>
 										<li>Tarifa plana portes</li>
 										<li>Seguimiento online del pedido</li>
 									</ul>

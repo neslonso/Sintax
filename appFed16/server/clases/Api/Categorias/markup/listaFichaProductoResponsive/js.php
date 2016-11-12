@@ -1,42 +1,5 @@
 <?if(false) {?><script><?}?>
 $(document).ready(function() {
-	$('.listaFichaProductoResponsive .shop-item-wrapper').on('mouseenter focusin', function(event) {
-		$dtoGama=$('.shop-item-dto-gama',$(this)).clone().appendTo('#wrapper').addClass('shop-item-dto-gama-clone').css({position:'absolute'});
-
-		$dtoGama.show();
-		var left   = Math.floor($(window).width()/2 - $dtoGama.outerWidth()/2) + $(window).scrollLeft();
-		var top    = Math.floor($(window).height()/2 - $dtoGama.outerHeight()/2) + $(window).scrollTop();
-		$dtoGama.hide();
-
-		$dtoGama.css({
-			'position' : 'absolute',
-			'left'     : left,
-			'top'      : top,
-			'z-index'  : 999999999,
-		}).fadeIn(400);
-	}).on('mouseleave focusout', function(event) {
-		$('.shop-item-dto-gama-clone').fadeOut(400, function() {$(this).remove();});
-	});
-
-	/*
-	$('.listaFichaProductoResponsive .shop-item').on('touchstart',function(event) {
-		$(this).closest('.shop-item-wrapper').trigger('mouseenter');
-		$(this).trigger('mouseenter');
-		$(this).addClass('hover');
-	});
-	$('.listaFichaProductoResponsive .shop-item').on('touchmove',function(event) {
-		$(this).closest('.shop-item-wrapper').trigger('mouseleave');
-		$(this).trigger('mouseleave');
-		$(this).removeClass('hover');
-	});
-	$('.listaFichaProductoResponsive .shop-item').on('touchend',function(event) {
-		$(this).closest('.shop-item-wrapper').trigger('mouseleave');
-		$(this).trigger('mouseleave');
-		$(this).removeClass('hover');
-		event.preventDefault();
-	});
-	*/
-
 	$('.listaFichaProductoResponsive .shop-item-link').on('click',function(event) {
 		//if ($.viewport.is('xs')) {return;}
 		event.preventDefault();
@@ -53,7 +16,7 @@ $(document).ready(function() {
 				$swiperSlideToEdit.find('.shop-item-cart').outerHeight(true)
 			);
 			$swiperSlideToEdit.find('.shop-item-data').outerHeight(shopItemDataHeight);
-			cssFitContainer($swiperSlideToEdit.find('.shop-item-img'),$swiperSlideToEdit.find('.shop-item-img img'));
+			//cssFitContainer($swiperSlideToEdit.find('.shop-item-img'),$swiperSlideToEdit.find('.shop-item-img img'));
 			var shopItemDescHeight=shopItemDataHeight-(
 				$swiperSlideToEdit.find('.shop-item-img').outerHeight(true)+
 				$swiperSlideToEdit.find('.shop-item-dtls').outerHeight(true)
@@ -81,22 +44,25 @@ $(document).ready(function() {
 			"width"  : resultInitSwiper.size.width,
 			"height" : resultInitSwiper.size.height,
 		},{
-			duration: 370,
+			duration: 700,
 			complete: function() {
-				resultInitSwiper.$swiperTemplateClone.fadeIn(400, function() {
+				resultInitSwiper.$swiperTemplateClone.show();
 					var shopItemDataHeight=$swiperSlideToEdit.find('.shop-item').height()-(
 						$swiperSlideToEdit.find('.shop-item-cart').outerHeight(true)
 					);
 					$swiperSlideToEdit.find('.shop-item-data').height(shopItemDataHeight);
-					cssFitContainer($swiperSlideToEdit.find('.shop-item-img'),$swiperSlideToEdit.find('.shop-item-img img'));
-					$animationElementClone.fadeOut(400, function() {
-						$animationElementClone.remove();
-					});
+					//cssFitContainer($swiperSlideToEdit.find('.shop-item-img'),$swiperSlideToEdit.find('.shop-item-img img'));
 					var shopItemDescHeight=shopItemDataHeight-(
 						$swiperSlideToEdit.find('.shop-item-img').outerHeight(true)+
 						$swiperSlideToEdit.find('.shop-item-dtls').outerHeight(true)
 					);
 					$swiperSlideToEdit.find('.shop-item-desc').outerHeight(shopItemDescHeight);
+				resultInitSwiper.$swiperTemplateClone.hide();
+
+				resultInitSwiper.$swiperTemplateClone.fadeIn(400, function() {
+					$animationElementClone.fadeOut(400, function() {
+						$animationElementClone.remove();
+					});
 				});
 			},
 			progress: function(animation,progress,remainignMs) {
@@ -105,7 +71,7 @@ $(document).ready(function() {
 					$this.find('.shop-item-cart').outerHeight(true)
 				);
 				$this.find('.shop-item-data').height(shopItemDataHeight);
-				cssFitContainer($this.find('.shop-item-img'),$this.find('.shop-item-img img'));
+				//cssFitContainer($this.find('.shop-item-img'),$this.find('.shop-item-img img'));
 				var shopItemDescHeight=shopItemDataHeight-(
 					$this.find('.shop-item-img').outerHeight(true)+
 					$this.find('.shop-item-dtls').outerHeight(true)

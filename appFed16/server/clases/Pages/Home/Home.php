@@ -155,7 +155,7 @@ class Home extends Error implements IPage {
 				';
 			}
 		}
-
+		$storeData=\Sintax\ApiService\Pedidos::getStoreData();
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
 	}
 
@@ -234,8 +234,6 @@ class Home extends Error implements IPage {
 			$std->infoDtoGama='';
 			if (isset($std->gama)) {
 				$std->infoDtoGama='<div class="stamp stampRotate"><div>-'.$std->gama->tipoDescuentoGama.'%</div></div>';
-				//$std->gama->nombre;
-				//$std->gama->momentoFin;
 			}
 			$std->infoDtoRebote='';
 			if ($std->rebote>0) {

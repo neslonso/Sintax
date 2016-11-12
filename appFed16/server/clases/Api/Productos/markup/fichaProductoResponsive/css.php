@@ -120,6 +120,10 @@
 	height: 100%;
 	border:2px solid @color-borde-items-over;
 }
+.cloneAnimatedToSlider .shop-item-data,
+.swiper-slide .shop-item-data {
+	overflow: hidden;
+}
 .cloneAnimatedToSlider .shop-item-img,
 .swiper-slide .shop-item-img {
 	/*height:40%;*/
@@ -140,7 +144,7 @@
 
 /*
 .shop-item-data {
-	outline: 1px solid black;
+	outline: 5px solid black;
 }
 .shop-item-img {
 	outline: 1px solid red;
@@ -149,19 +153,5 @@
 	outline: 1px solid green;
 }.shop-item-desc {
 	outline: 1px solid blue;
-}*/
-.shop-item-dto-gama>div {
-	width: 240px;
-	height: 240px;
-	overflow: hidden;
 }
-.shop-item-dto-gama>div>div {
-	padding: 1em;
-}
-.shop-item-dto-gama .dto {
-	font-size: xx-large;
-}
-.shop-item-dto-gama .gama {
-	font-size: xx-large;
-	font-variant: small-caps;
-}
+*/

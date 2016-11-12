@@ -50,15 +50,14 @@ class Categorias extends ApiService implements IApiService {
 		$db=\cDb::gI();
 		$arr=array();
 		$arrCatsRoot=\Multi_categoria::getRoots($db,"keyTienda='".$keyTienda."' AND visible='1'","orden ASC","","arrClassObjs");
-		$listaIdsFotosMenu='';
-		$listaIdsFotosMenu=self::listaIdsFotosMenu($GLOBALS['config']->tienda->key);
+		//$listaIdsFotosMenu='';
+		//$listaIdsFotosMenu=self::listaIdsFotosMenu($GLOBALS['config']->tienda->key);
 		foreach ($arrCatsRoot as $objCat) {
 			$obj=new \stdClass();
 			$obj->id=$objCat->GETid();
 			$obj->nombre=$objCat->GETnombre();
 			$obj->url=$objCat->url();
-			//$obj->ico=$objCat->icoSrc();
-			$obj->ico=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB_MPA_JOIN&fichero='.$listaIdsFotosMenu.'&ancho=30&alto=30&formato=jpg';
+			//$obj->ico=BASE_URL.FILE_APP.'?MODULE=images&almacen=DB_MPA_JOIN&fichero='.$listaIdsFotosMenu.'&ancho=30&alto=30&formato=jpg';
 			$obj->img=$objCat->imgSrc(200,200);
 			array_push($arr,$obj);
 		}
@@ -95,7 +94,7 @@ class Categorias extends ApiService implements IApiService {
 				}
 			} else {
 				//$obj->arrOfersMasVendidas=array();
-				$obj->arrOfersMasVendidas=self::arrOfersMasVendidas($objCat->GETkeyTienda(), $GLOBALS['config']->tienda->MENU->NUM_OFERS_MAS_VENDIDAS, $objCat->GETid());
+				$obj->arrOfersMasVendidas=self::arrOfersMasVendidas($objCat->GETkeyTienda(), 0, $objCat->GETid());
 			}
 			$obj->arrNietos=$arrNietos;
 			array_push($arr,$obj);
@@ -120,9 +119,9 @@ class Categorias extends ApiService implements IApiService {
 			if (!empty($imgId)) array_push($arrIdsFotos, base_convert($imgId,10,36));
 			foreach ($arrCatsHijas as $objCatHija) {
 				$imgId=$objCatHija->imgId();
-				if (!empty($imgId) && $GLOBALS['config']->tienda->MENU->FOTO_CATS_SEGUNDO_NIVEL) array_push($arrIdsFotos, base_convert($imgId,10,36));
+				if (!empty($imgId) && false) array_push($arrIdsFotos, base_convert($imgId,10,36));
 				if (!$objCatHija->contieneCategorias()) {
-					$arrOfersMasVendidas=self::arrOfersMasVendidas($keyTienda, $GLOBALS['config']->tienda->MENU->NUM_OFERS_MAS_VENDIDAS, $objCatHija->GETid());
+					$arrOfersMasVendidas=self::arrOfersMasVendidas($keyTienda, 0, $objCatHija->GETid());
 					foreach ($arrOfersMasVendidas as $ofer) {
 						if (!empty($ofer->imgId)) array_push($arrIdsFotos, base_convert($ofer->imgId,10,36));
 					}
