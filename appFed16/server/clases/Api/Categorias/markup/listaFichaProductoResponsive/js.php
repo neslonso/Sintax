@@ -16,7 +16,7 @@ $(document).ready(function() {
 				$swiperSlideToEdit.find('.shop-item-cart').outerHeight(true)
 			);
 			$swiperSlideToEdit.find('.shop-item-data').outerHeight(shopItemDataHeight);
-			cssFitContainer($swiperSlideToEdit.find('.shop-item-img'),$swiperSlideToEdit.find('.shop-item-img img'));
+			//cssFitContainer($swiperSlideToEdit.find('.shop-item-img'),$swiperSlideToEdit.find('.shop-item-img img'));
 			var shopItemDescHeight=shopItemDataHeight-(
 				$swiperSlideToEdit.find('.shop-item-img').outerHeight(true)+
 				$swiperSlideToEdit.find('.shop-item-dtls').outerHeight(true)
@@ -44,22 +44,25 @@ $(document).ready(function() {
 			"width"  : resultInitSwiper.size.width,
 			"height" : resultInitSwiper.size.height,
 		},{
-			duration: 370,
+			duration: 700,
 			complete: function() {
-				resultInitSwiper.$swiperTemplateClone.fadeIn(400, function() {
+				resultInitSwiper.$swiperTemplateClone.show();
 					var shopItemDataHeight=$swiperSlideToEdit.find('.shop-item').height()-(
 						$swiperSlideToEdit.find('.shop-item-cart').outerHeight(true)
 					);
 					$swiperSlideToEdit.find('.shop-item-data').height(shopItemDataHeight);
-					cssFitContainer($swiperSlideToEdit.find('.shop-item-img'),$swiperSlideToEdit.find('.shop-item-img img'));
-					$animationElementClone.fadeOut(400, function() {
-						$animationElementClone.remove();
-					});
+					//cssFitContainer($swiperSlideToEdit.find('.shop-item-img'),$swiperSlideToEdit.find('.shop-item-img img'));
 					var shopItemDescHeight=shopItemDataHeight-(
 						$swiperSlideToEdit.find('.shop-item-img').outerHeight(true)+
 						$swiperSlideToEdit.find('.shop-item-dtls').outerHeight(true)
 					);
 					$swiperSlideToEdit.find('.shop-item-desc').outerHeight(shopItemDescHeight);
+				resultInitSwiper.$swiperTemplateClone.hide();
+
+				resultInitSwiper.$swiperTemplateClone.fadeIn(400, function() {
+					$animationElementClone.fadeOut(400, function() {
+						$animationElementClone.remove();
+					});
 				});
 			},
 			progress: function(animation,progress,remainignMs) {
@@ -68,7 +71,7 @@ $(document).ready(function() {
 					$this.find('.shop-item-cart').outerHeight(true)
 				);
 				$this.find('.shop-item-data').height(shopItemDataHeight);
-				cssFitContainer($this.find('.shop-item-img'),$this.find('.shop-item-img img'));
+				//cssFitContainer($this.find('.shop-item-img'),$this.find('.shop-item-img img'));
 				var shopItemDescHeight=shopItemDataHeight-(
 					$this.find('.shop-item-img').outerHeight(true)+
 					$this.find('.shop-item-dtls').outerHeight(true)

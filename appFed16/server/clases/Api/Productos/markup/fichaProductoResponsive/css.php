@@ -120,6 +120,10 @@
 	height: 100%;
 	border:2px solid @color-borde-items-over;
 }
+.cloneAnimatedToSlider .shop-item-data,
+.swiper-slide .shop-item-data {
+	overflow: hidden;
+}
 .cloneAnimatedToSlider .shop-item-img,
 .swiper-slide .shop-item-img {
 	/*height:40%;*/
@@ -140,7 +144,7 @@
 
 /*
 .shop-item-data {
-	outline: 1px solid black;
+	outline: 5px solid black;
 }
 .shop-item-img {
 	outline: 1px solid red;
@@ -149,4 +153,5 @@
 	outline: 1px solid green;
 }.shop-item-desc {
 	outline: 1px solid blue;
-}*/
+}
+*/
