@@ -6,5 +6,5 @@
 			<h1><i class="fa fa-search" aria-hidden="true"></i> Resultados de la búsqueda <?=$txtBusqueda?></h1>
 		</div>
 	</div>
-	<?\Sintax\ApiService\Categorias::listaFichaProductoResponsive($arrOfers);?>
+	<?\Sintax\ApiService\Categorias::listaFichaProductoResponsive($arrOfers,"Resultados de Busqueda (".$txtBusqueda.")");?>
 </div>

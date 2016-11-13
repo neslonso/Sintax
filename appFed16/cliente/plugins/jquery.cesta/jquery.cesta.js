@@ -107,16 +107,17 @@
 			}
 		}
 
-		plugin.addItem = function(src, ttl, unit, prc, id) {
+		plugin.addItem = function(src, ttl, unit, prc, id, ref) {
 			idxOfId=plugin.settings.arrItems.getIndexBy("id", id);
 			if (typeof plugin.settings.arrItems[idxOfId] === 'undefined') {
 				var objItem = new Object();
 				objItem.id = id;
+				objItem.reference = ref;
 				objItem.imagen = src;
 				objItem.descripcion = ttl;
 				objItem.quantity = parseFloat(unit);
 				objItem.precio = prc;
-				objItem.timestamp = $.now();;
+				objItem.timestamp = $.now();
 				plugin.settings.arrItems.push(objItem);
 			} else {
 				var objItem=plugin.settings.arrItems[idxOfId]
@@ -166,7 +167,8 @@
 				var unit=$btn.data('unit');
 				var prc=$btn.data('prc');
 				var id=$btn.data('id');
-				$element.data('jqCesta').addItem(src, ttl, unit, prc, id);
+				var ref=$btn.data('ref');
+				$element.data('jqCesta').addItem(src, ttl, unit, prc, id,ref);
 				event.preventDefault();
 			});
 			//remove handler

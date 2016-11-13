@@ -1,4 +1,5 @@
 <?if(false) {?><script><?}?>
+<?\Sintax\ApiService\Productos::fichaProductoResponsiveJs();?>
 $(document).ready(function() {
 	$('.listaFichaProductoResponsive .shop-item-link').on('click',function(event) {
 		//if ($.viewport.is('xs')) {return;}
