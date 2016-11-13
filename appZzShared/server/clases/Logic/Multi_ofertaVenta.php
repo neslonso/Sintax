@@ -419,5 +419,13 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 		return $arrOfers;
 	}
 /******************************************************************************/
+	public function objMulti_categoriaPrincipal() {
+		$arrCatsPpales=$this->arrMulti_categoria("principal=1","","","arrClassObjs");
+		if (isset($arrCatsPpales[0])) {
+			return $arrCatsPpales[0];
+		} else {
+			return new \Multi_categoria();
+		}
+	}
 }
 ?>

@@ -14,7 +14,9 @@ class Categorias extends ApiService implements IApiService {
 		$obj=new \stdClass();
 		$obj->id=$objOferta->GETid();
 		//$obj->nombre=$objOferta->GETid().'.- '.$objOferta->GETnombre();
+		$obj->referencia=$objOferta->GETreferencia();
 		$obj->nombre=$objOferta->GETnombre();
+		$obj->categoria=$objOferta->objMulti_categoriaPrincipal()->GETnombre();
 
 		$descripcion = $objOferta->GETdescripcion();
 		$descripcion = preg_replace('#^\s*<br />\s*$#m', '', $descripcion);
@@ -319,7 +321,7 @@ class Categorias extends ApiService implements IApiService {
 	}
 /******************************************************************************/
 /* FRAGMENTOS *****************************************************************/
-	public function listaFichaProductoResponsive($arrOfers) {
+	public function listaFichaProductoResponsive($arrOfers,$nombreLista='') {
 		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/listaFichaProductoResponsive/markup.php');
 	}
 	public function listaFichaProductoResponsiveJs() {

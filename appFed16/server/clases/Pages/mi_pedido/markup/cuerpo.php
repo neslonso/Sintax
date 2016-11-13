@@ -1,5 +1,7 @@
 <?="\n<!-- ".get_class()." -->\n"?>
-<div class="container-fluid">
+<div id="containerPedido" class="container-fluid"
+	data-pedido-numero="<?=sprintf('%06u',$arrPedido->pedido->numero)?>"
+>
 	<div class="page-header">
 		<h1>Detalle de pedido</h1>
 	</div>
