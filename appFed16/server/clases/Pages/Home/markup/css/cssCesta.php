@@ -12,7 +12,7 @@
 .contentCart{
 	position: absolute;
 	padding:13px;
-	top: 116px ;
+	top: @height-container-cabecera-barraLogo + @height-ticker;
 	right: -@width-cesta !important;
 	width: @width-cesta !important;
 	height: auto !important;
@@ -142,16 +142,9 @@
 }
 /* SM */
 @media (min-width: 768px) and (max-width: 991px){
-	.contentCart{
-		top: 111px !important;
-	}
 }
 /* XS */
 @media (max-width: 768px){
-	.contentCart{
-		top: 110px  !important;
-	}
-
 }
 
 /* XS */

@@ -11,7 +11,7 @@
 		</div></div>
 	</div>
 	<header id="container-cabecera">
-		<div class="bandaSuperior hidden-xs hidden-sm">
+		<div class="bandaSuperior">
 			<?=$GLOBALS['config']->tienda->BIENVENIDA?>
 		</div>
 		<div class="container-fluid container-cabecera-barraLogo">
