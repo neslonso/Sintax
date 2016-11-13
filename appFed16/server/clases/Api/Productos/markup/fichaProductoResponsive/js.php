@@ -19,6 +19,7 @@ $(document).ready(function() {
 				'position': gaPosition,   // Product position (number).
 				'thisClass': gaThisClass, // Custom dimension (string).
 			});
+			ga('send', 'event', 'catalog', 'impression', {'nonInteraction': true});
 		});
 	} else {
 		console.log('.shop-item-wrapper ec:addImpression typeof ga='+typeof ga);
