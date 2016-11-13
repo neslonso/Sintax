@@ -10,7 +10,21 @@
 	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 	ga('create', '<?=$GLOBALS['config']->tienda->ANALYTICS?>', 'auto');
+	ga('require', 'ec');
 	ga('send', 'pageview');
+	console.log('Home head typeof ga='+typeof ga);
+
+	function createFunctionWithTimeout(callback, opt_timeout) {
+		var called = false;
+		function fn() {
+			if (!called) {
+				called = true;
+				callback();
+			}
+		}
+		setTimeout(fn, opt_timeout || 1000);
+		return fn;
+	}
 </script>
 <?}?>
 <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->

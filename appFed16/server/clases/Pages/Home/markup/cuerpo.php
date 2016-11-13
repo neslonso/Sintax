@@ -62,5 +62,5 @@
 	<div class="categoria-cabecera text-left">
 		<h1><i class="fa fa-star" aria-hidden="true"></i> <?=$GLOBALS['config']->tienda->SITE_NAME?> selección</h1>
 	</div>
-	<?\Sintax\ApiService\Categorias::listaFichaProductoResponsive($arrOfersCuerpo);?>
+	<?\Sintax\ApiService\Categorias::listaFichaProductoResponsive($arrOfersCuerpo,$GLOBALS['config']->tienda->SITE_NAME." selección (Lista Home)");?>
 </div>

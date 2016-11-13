@@ -19,7 +19,12 @@
 			}
 			if (!isset($stdObjOfer->tooltip)) {$stdObjOfer->tooltip=$stdObjOfer->nombre;}
 ?>
-					<div class="shop-item-wrapper" data-id="<?=$stdObjOfer->id?>" data-index="<?=($stdObjOfer->index)?>">
+					<div class="shop-item-wrapper" data-id="<?=$stdObjOfer->id?>"
+						data-referencia="<?=$stdObjOfer->referencia?>"
+						data-nombre="<?=$stdObjOfer->nombre?>"
+						data-categoria="<?=$stdObjOfer->categoria?>"
+						data-this-class="<?=get_class($this)?>"
+						data-index="<?=($stdObjOfer->index)?>">
 						<div class="shop-item" data-toggle="tooltip" title="<?=$stdObjOfer->tooltip?>" data-index="<?=($stdObjOfer->index)?>">
 							<div class="shop-item-data">
 								<div class="shop-item-img">

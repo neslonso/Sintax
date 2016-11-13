@@ -114,6 +114,7 @@ class Productos extends ApiService implements IApiService {
 		$strTemplate='<'.$tag.' '.$vendible.'
 			class="btn btn-default '.$jqCst.' '.$cssClasses.'"
 			data-id="{{id}}"
+			data-ref="{{referencia}}"
 			data-ttl="{{nombre}}"
 			data-unit="1"
 			data-prc="{{precio}}"
@@ -140,6 +141,7 @@ class Productos extends ApiService implements IApiService {
 		$strTemplate='<'.$tag.'
 			class="btn btn-default '.$cssClasses.'"
 			data-id="{{id}}"
+			data-ref="{{referencia}}"
 			data-ttl="{{nombre}}"
 			data-unit="1"
 			data-prc="{{precio}}"
@@ -165,6 +167,9 @@ class Productos extends ApiService implements IApiService {
 	}
 	public function fichaProductoResponsiveCss() {
 		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/fichaProductoResponsive/css.php');
+	}
+	public function fichaProductoResponsiveJs() {
+		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/fichaProductoResponsive/js.php');
 	}
 
 	public function fichaProductoDto($stdObjOfer) {

@@ -102,6 +102,7 @@ class Multi_cesta extends Sintax\Core\Entity implements Sintax\Core\IEntity {
 			$objOferta=new \Multi_ofertaVenta($this->db(),$objLinea->GETidMulti_ofertaVenta());
 			$std=new \stdClass();
 			$std->id = $objLinea->GETidMulti_ofertaVenta();
+			$std->referencia = $objOferta->GETreferencia();
 			$std->imagen = $objOferta->imgSrc();
 			$std->descripcion = $objOferta->GETnombre();
 			$std->quantity = $objLinea->GETcantidad();

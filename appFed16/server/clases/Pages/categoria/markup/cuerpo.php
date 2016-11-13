@@ -83,7 +83,7 @@
 <?
 	}
 ?>
-	<?\Sintax\ApiService\Categorias::listaFichaProductoResponsive($arrOfersCuerpo);?>
+	<?\Sintax\ApiService\Categorias::listaFichaProductoResponsive($arrOfersCuerpo,"Lista categoría (".$objCat->GETnombre()."[ID:".$objCat->GETid()."])");?>
 <?
 	if (!empty($objCat->GETdescripcion())) {
 ?>
