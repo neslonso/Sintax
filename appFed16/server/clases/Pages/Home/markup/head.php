@@ -12,6 +12,7 @@
 	ga('create', '<?=$GLOBALS['config']->tienda->ANALYTICS?>', 'auto');
 	ga('require', 'ec');
 	ga('send', 'pageview');
+	console.log('Home head typeof ga='+typeof ga);
 
 	function createFunctionWithTimeout(callback, opt_timeout) {
 		var called = false;

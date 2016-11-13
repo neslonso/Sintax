@@ -21,6 +21,6 @@ $(document).ready(function() {
 			});
 		});
 	} else {
-		console.log('typeof ga='+typeof ga);
+		console.log('.shop-item-wrapper ec:addImpression typeof ga='+typeof ga);
 	}
 });
