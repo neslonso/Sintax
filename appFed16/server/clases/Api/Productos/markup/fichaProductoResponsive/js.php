@@ -20,5 +20,7 @@ $(document).ready(function() {
 				'thisClass': gaThisClass, // Custom dimension (string).
 			});
 		});
+	} else {
+		console.log('typeof ga='+typeof ga);
 	}
 });
