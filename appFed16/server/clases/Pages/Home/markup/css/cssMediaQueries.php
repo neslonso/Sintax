@@ -66,23 +66,14 @@
 }
 /* XS y SM*/
 @media (max-width: 991px){
-	#container-cabecera {
-		border-top: 5px solid @color-principal;
-	}
 	.container-cabecera-barraLogo{
 		margin-top: 0px !important;
-	}
-	body {
-		margin-top: 115px; /* ajuste de cuerpo debido a navbar fixed */
 	}
 	.col-subMenu{
 		-moz-column-count: 1;
 		-webkit-column-count: 1;
 		column-count: 1;
 	}
-    .nav-user-menu{
-        top: 112px !important;
-    }
 }
 @media (max-width: @shop-item-container-fluid){
 	.shop-item-container {
