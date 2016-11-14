@@ -106,3 +106,38 @@
 	overflow-y: auto;
 	line-height: 150%;
 }
+/* swiper-button */
+.swiper-button-container {
+	position: relative;
+	width:100%;
+	height:100%;
+}
+
+.swiper-button-container .swiper-button {
+	left: auto;
+	right: auto;
+	margin:auto;
+	top:auto;
+	width:100%;
+	height:100%;
+	background-color: #fff;
+	border: solid #c0c0c0 1px;
+}
+.swiper-button-container .swiper-button-prev {
+	box-shadow: -1px -1px 7px 0px rgba(0,0,0,0.75);
+}
+.swiper-button-container .swiper-button-next {
+	box-shadow: 1px -1px 7px 0px rgba(0,0,0,0.75);
+}
+.swiper-button-container .swiper-button:active {
+	box-shadow: none;
+}
+.swiper-button-container .swiper-button:active {
+	box-shadow: none;
+}
+.swiper-button-container .swiper-button:hover {
+	background-color: @color-principal;
+}
+.swiper-button-container .swiper-button:hover {
+	background-color: @color-principal;
+}

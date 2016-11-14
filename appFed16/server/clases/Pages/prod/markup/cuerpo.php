@@ -136,30 +136,40 @@ if (count($arrOfertasGama)>0) {
 }
 foreach ($arrRelBlocks as $key => $objConfig) {
 ?>
-	<div class="row relBlock">
-		<div class="col-lg-12">
-			<div class="card-item-white">
-				<p class="h4 titulo-encabezado"><?=$objConfig->title;?></p>
+	<div class="relBlock">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="card-item-white">
+					<p class="h4 titulo-encabezado"><?=$objConfig->title;?></p>
+				</div>
 			</div>
 		</div>
-		<div class="col-lg-12">
-			<div class="card-item-white">
-				<div class="swiper-button-prev"></div>
-				<div class="swiper-container">
-					<div class="swiper-wrapper">
+		<div class="row vertical-align" style="margin-top:7px;">
+			<div class="col-xs-1">
+				<div class="swiper-button-container swiper-button-container-prev">
+					<div class="swiper-button swiper-button-prev"></div>
+				</div>
+			</div>
+			<div class="col-xs-10">
+					<div class="swiper-container">
+						<div class="swiper-wrapper">
 
 <?
 	foreach ($objConfig->arrStdObjOfer as $stdObjOfer) {
 ?>
-						<div class="swiper-slide">
-							<?\Sintax\ApiService\Productos::fichaProductoResponsive($stdObjOfer)?>
-						</div>
+							<div class="swiper-slide">
+								<?\Sintax\ApiService\Productos::fichaProductoResponsive($stdObjOfer)?>
+							</div>
 <?
 	}
 ?>
+						</div>
 					</div>
+			</div>
+			<div class="col-xs-1">
+				<div class="swiper-button-container swiper-button-container-next">
+					<div class="swiper-button swiper-button-next"></div>
 				</div>
-				<div class="swiper-button-next"></div>
 			</div>
 		</div>
 	</div>
