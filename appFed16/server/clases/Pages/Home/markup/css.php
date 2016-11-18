@@ -125,12 +125,6 @@ body {
 a.blanco{
 	color:#fff !important;
 }
-.bandaSuperior{
-	background-color: @color-principal;
-	color: contrast(@color-principal);
-	font-size: 12px;
-	text-align: center;
-}
 .btn-menu{
 	font-size: 20px !important;
 }
@@ -185,22 +179,6 @@ a.blanco{
 	display: -webkit-flex;
 	display: -ms-flexbox;
 	display:         flex;
-}
-/*
- * Vertical align de las cols hijas de un row.
- * Ademas, las cols ocupan mismo height que hermanas
- * --------------------------------------------------
- */
-.vertical-align {
-	display: flex;
-	flex-direction: row;
-}
-.vertical-align > [class^="col-"],
-.vertical-align > [class*=" col-"] {
-	display: flex;
-	align-items: center;		/* Align the flex-items vertically */
-	justify-content: center;	/* Optional, to align inner flex-items
-					horizontally within the column  */
 }
 /*********** WRAPPER general ************/
 #wrapper {

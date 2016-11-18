@@ -162,6 +162,7 @@ class Imagen {
 		if (!is_null($filter)){
 			switch ($filter) {
 				case 'grayscale': $this->grayscale(); break;
+				case 'opacity': $this->filter_opacity(60); break;
 			}
 		}
 
