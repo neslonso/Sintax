@@ -6,7 +6,7 @@
 			<div class="ribbon-publicidad-portes">
 				<span>¡ENVÍO GRATIS!</span>
 				<br />
-				<span>desde <?=round($storeData->IMPORTE_PEDIDO_PORTES_GRATIS)?>€</span>
+				<span>desde <?=round($storeData->IMPORTE_PEDIDO_PORTES_GRATIS)?>€ (peninsula)</span>
 			</div>
 		</div></div>
 	</div>
@@ -17,18 +17,23 @@
 		<div class="container-fluid container-cabecera-barraLogo">
 			<div class="row vertical-align">
 				<div class="hidden-xs col-sm-3 col-md-3">
-					<a href="<?=BASE_URL?>"><img class="img-responsive logo" src="<?=$GLOBALS['config']->tienda->URL_LOGO?>" alt=""></a>
+					<a href="<?=BASE_URL?>"><img class="logo" src="<?=$GLOBALS['config']->tienda->URL_LOGO?>" alt=""></a>
 				</div>
 				<div class="col-xs-2 col-sm-1">
 					<a href="#menu-toggle" class="btn btn-default btn-menu" id="menu-toggle"><span class="glyphicon glyphicon-align-justify"></span></a>
 					<?=$this->hueco1()->markup;?>
 				</div>
 				<div class="col-xs-6 col-sm-6 col-md-4">
-					<div class="input-group divBuscador">
-						<input id="ssSearch" type="text" class="form-control" placeholder="Busca en <?=$GLOBALS['config']->tienda->SITE_NAME?>..." aria-describedby="térmnos de búsqueda">
-						<span class="input-group-btn">
-							<button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
-						</span>
+					<div class="divTlfMasdivBuscador">
+						<div class="divTlf">
+							<a href="tel:+34<?=$storeData->TLF?>"><i class="fa fa-phone"></i> <?=$storeData->TLF?></a>
+						</div>
+						<div class="input-group divBuscador">
+							<input id="ssSearch" type="text" class="form-control" placeholder="Busca en <?=$GLOBALS['config']->tienda->SITE_NAME?>..." aria-describedby="térmnos de búsqueda">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+							</span>
+						</div>
 					</div>
 				</div>
 				<div class="col-xs-4 col-sm-2 col-md-4">
