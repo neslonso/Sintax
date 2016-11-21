@@ -220,6 +220,7 @@ class Home extends Error implements IPage {
 		$arrResults=array();
 		$idx=0;
 		foreach ($arr as $objOferta) {
+			if (!$objOferta->algunaCategoriaVisible()) {$foundRows--;continue;}
 			$std=\Sintax\ApiService\Categorias::creaStdObjOferta($objOferta);
 			$std->imgSrc=$objOferta->imgSrc(0,100,100);
 			$std->index=$idx;
