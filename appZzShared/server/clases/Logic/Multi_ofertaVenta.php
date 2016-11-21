@@ -427,5 +427,16 @@ class Multi_ofertaVenta extends \Sintax\Core\Entity implements \Sintax\Core\IEnt
 			return new \Multi_categoria();
 		}
 	}
+	public function algunaCategoriaVisible() {
+		$result=false;
+		$arrCats=$this->arrMulti_categoria("","","","arrClassObjs");
+		foreach ($arrCats as $objCategoria) {
+			if ($objCategoria->GETvisible()) {
+				$result=true;
+				break;
+			}
+		}
+		return $result;
+	}
 }
 ?>
