@@ -26,35 +26,11 @@
 	<div class="categoria-cabecera text-left">
 		<h1><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Recomendado para tí<?=$nombreCat?></h1>
 	</div>
-	<div class="row vertical-align">
-		<div class="col-xs-1">
-			<div class="swiper-recomendados-button-prev swiper-button-prev"></div>
-		</div>
-		<div class="col-xs-10">
-			<div class="swiper-container" id="swiperRecomendados">
-				<div class="swiper-wrapper swiper-wrapper-recomendados">
-<?
-		$i=0;
-		foreach ($arrOfersCustom as $stdObjOferRec) {
-			$i++;
-?>
-					<div class="swiper-slide swiper-slide-recomendados">
-						<div>
-							<?\Sintax\ApiService\Productos::fichaProductoResponsive($stdObjOferRec)?>
-						</div>
-					</div>
-<?
-		}
-?>
-				</div>
-			</div>
-		</div>
-		<div class="col-xs-1">
-			<div class="swiper-recomendados-button-next swiper-button-next"></div>
-		</div>
-	</div>
+	<?\Sintax\ApiService\Categorias::swiperFichaProductoResponsive($arrOfersCustom," Auto Recomendados (arrOfersCustom en ".$objCat->GETnombre()."[ID:".$objCat->GETid()."] )");?>
 <?
 	}
+?>
+<?
 	if (!is_null($idCategoria)) {
 ?>
 	<div>

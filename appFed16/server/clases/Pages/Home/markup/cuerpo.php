@@ -11,15 +11,6 @@
 		}
 ?>
 		</div>
-		<!-- If we need pagination -->
-		<!--<div class="swiper-pagination"></div>-->
-
-		<!-- If we need navigation buttons -->
-		<!--<div class="swiper-button-prev"></div>
-		<div class="swiper-button-next"></div>-->
-
-		<!-- If we need scrollbar -->
-		<!--<div class="swiper-scrollbar"></div>-->
 	</div>
 </div>
 <div class="container shop-item-container" id="container-cuerpo">
@@ -29,33 +20,7 @@
 	<div class="categoria-cabecera text-left">
 		<h1><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> Recomendado para tí</h1>
 	</div>
-	<div class="row vertical-align">
-		<div class="col-xs-1">
-			<div class="swiper-recomendados-button-prev swiper-button-prev"></div>
-		</div>
-		<div class="col-xs-10">
-			<div class="swiper-container" id="swiperRecomendados">
-				<div class="swiper-wrapper swiper-wrapper-recomendados">
-<?
-		$i=0;
-		foreach ($arrOfersCustom as $stdObjOferRec) {
-			$i++;
-?>
-					<div class="swiper-slide swiper-slide-recomendados">
-						<div>
-							<?\Sintax\ApiService\Productos::fichaProductoResponsive($stdObjOferRec)?>
-						</div>
-					</div>
-<?
-		}
-?>
-				</div>
-			</div>
-		</div>
-		<div class="col-xs-1">
-			<div class="swiper-recomendados-button-next swiper-button-next"></div>
-		</div>
-	</div>
+	<?\Sintax\ApiService\Categorias::swiperFichaProductoResponsive($arrOfersCustom," Auto Recomendados (arrOfersCustom en Home)");?>
 <?
 	}
 ?>

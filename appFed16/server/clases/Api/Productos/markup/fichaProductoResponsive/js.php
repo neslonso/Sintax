@@ -6,7 +6,7 @@ $(document).ready(function() {
 			var gaId=$this.data('referencia') + ' [ID:' + $this.data('id') +']';
 			var gaName=$this.data('nombre');
 			var gaCategory=$this.data('categoria');
-			var gaList=$this.closest('.listaFichaProductoResponsive').data('nombreLista');
+			var gaList=$this.closest('.gaList').data('nombreLista');
 			var gaPosition=$this.data('index');
 			var gaThisClass=$this.data('this-class');
 			ga('ec:addImpression', {      // Provide product details in an impressionFieldObject.
