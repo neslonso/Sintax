@@ -169,7 +169,7 @@ function ficheroCiao($keyTienda,$file="./encuentraprecios.txt") {
 		$linea.=str_replace("&", "&amp;", PROTOCOL.'//'.$BASE_DOMAIN.BASE_DIR.Cadena::toUrlString($objOfer->GETnombre())."/prod/".$objOfer->GETid()."/" ).$sg;
 		$linea.=$objOfer->pvp().$sg;
 		$linea.=substr($objCat->ruta(">"),0,254).$sg;
-		$linea.=$objOfer->imgSrc().$sg;
+		$linea.=str_replace(BASE_DOMAIN,$BASE_DOMAIN,$objOfer->imgSrc()).$sg;
 
 		$disponibilidad="en Stock";
 		$linea.=$disponibilidad.$sg;
