@@ -29,8 +29,8 @@ define ('ARR_CRON_JOBS', serialize(array(
 	),
 	'shopppyDoo' => array (
 		'activado' => true,
-		'minuto' => '*',
-		'hora' => '*',
+		'minuto' => '0',
+		'hora' => '6',
 		'diaMes' => '*',
 		'mes' => '*',
 		'diaSemana' => '*',
