@@ -1,4 +1,4 @@
-	<div class="row listaFichaProductoResponsive"
+	<div class="row listaFichaProductoResponsive gaList"
 		data-nombre-lista="<?=$nombreLista?>">
 		<div class="col-lg-12">
 			<div class='row'>
