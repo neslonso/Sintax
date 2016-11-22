@@ -77,6 +77,101 @@ alert("dirEntrega:".idDirEntrega);
 			'json');
 		}
 	});
+
+	$('.banner-price-comprar').on('click', function () {
+		$dirRadioChecked=$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl');
+		if (!$dirRadioChecked.data()) {
+			muestraMsgModal('Dirección de entega','Debe seleccionar una dirección de entrega para su pedido.');
+			return;
+		}
+		var destinatario    = $dirRadioChecked.data('destinatario');
+		var direccion       = $dirRadioChecked.data('direccion');
+		var poblacion       = $dirRadioChecked.data('poblacion');
+		var provincia       = $dirRadioChecked.data('provincia');
+		var cp              = $dirRadioChecked.data('cp');
+		var pais            = $dirRadioChecked.data('pais');
+		var telefono        = $dirRadioChecked.data('movil');
+		var nombre          = $('#newPedWizard').data('nombreCliente');
+		var apellidos       = $('#newPedWizard').data('apellidosCliente');
+		var email           = $('#newPedWizard').data('emailCliente');
+		var idMulti_cliente = $('#newPedWizard').data('idMulti_cliente');
+
+		var objCmbCupon=$('#cuponCombo').combobox('selectedItem');
+		var idCupon=objCmbCupon.id;
+		if (typeof idCupon=='undefined') {idCupon=null;}
+		var idMulti_cupon=idCupon;
+
+		var portes=parseFloat($('#spPortes').data('portes'));
+
+		var credito=$('#ulDtos').find('#dtoCredito').data('importe');
+		if (typeof credito=='undefined') {credito=0;}
+
+		var idPedidoModoPago=$('input[name="modoPago"]:checked').val();
+		var lineas=[];
+		$('.trLinea').each(function(index, el) {
+			lineas.push($(this).data('objLinea'));
+		});
+		if (lineas.length==0) {
+			bootbox.dialog({
+				message:'Es necesario seleccionar al menos un producto para poder realizar su pedido',
+				title:'Su pedido no contiene ningún producto',
+				onEscape: false,
+				closeButton: false,
+				buttons: {
+					aceptar: {
+						label: 'Aceptar',
+						classname: 'btn-primary',
+						callback: function () {
+							//window.location.replace("<?=BASE_URL?>");
+							//return false;
+						}
+					}
+				}
+			});
+			return;
+		}
+
+		var dtos=[];
+		$('#ulDtos>li').each (function () {
+			//El crédito no se envía a guardar como un descuento, tiene su propio campo en el pedido
+			if (!$(this).hasClass('dtoCredito')) {
+				dtos.push($(this).data());
+			}
+		});
+		var comentarios=$('#comentarios').val();
+		var pedData={
+			'nombre'           : nombre,
+			'apellidos'        : apellidos,
+			'destinatario'     : destinatario,
+			'telefono'         : telefono,
+			'email'            : email,
+			'direccion'        : direccion,
+			'cp'               : cp,
+			'poblacion'        : poblacion,
+			'provincia'        : provincia,
+			'pais'             : pais,
+			//'horario'        : 'horario',
+			'portes'           : portes,
+			'credito'          : credito,
+			//'notas'          : 'notas',
+			//'idUsuario'      : idUsuario,
+			//'idCupon'        : idCupon,
+			'idPedidoModoPago' : idPedidoModoPago,
+			//'keyTienda'      : 'keyTienda',
+			'idMulti_cliente'  : idMulti_cliente,
+			'idMulti_cupon'    : idMulti_cupon,
+			'lineas'           :  lineas,
+			'dtos'             : dtos,
+			'comentarios'      : comentarios,
+		}
+		console.log(pedData);
+		/*
+		Post ('action','<?=BASE_DIR.FILE_APP?>',
+			'MODULE','actions','acClase','comprar_pedido','acMetodo','acGrabar','acTipo','stdAssoc',
+			'pedData',pedData,'session_name','<?=$GLOBALS['session_name']?>'
+		);
+*/
+	});
 });
 
 /******************************************************************************/
