@@ -27,7 +27,7 @@ define ('ARR_CRON_JOBS', serialize(array(
 		'diaSemana' => '*',
 		'comando' => 'sitemaps();',
 	),
-	'shopppyDoo' => array (
+	'shopppyDooSB' => array (
 		'activado' => true,
 		'minuto' => '0',
 		'hora' => '6',
