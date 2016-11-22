@@ -34,7 +34,7 @@ define ('ARR_CRON_JOBS', serialize(array(
 		'diaMes' => '*',
 		'mes' => '*',
 		'diaSemana' => '*',
-		'comando' => 'ficheroCiao("SB");',
+		'comando' => 'ficheroCiao("SB","./zPublic/shoppydoo/encuentraprecios.SB.txt");',
 	),
 )));
 function log5Minutes () {
@@ -133,7 +133,10 @@ function sitemap($keyTienda, $file="./sitemap.xml") {
 }
 
 function ficheroCiao($keyTienda,$file="./encuentraprecios.txt") {
-	$file='./encuentraprecios.txt';
+	if (!is_dir(dirname($file))) {
+		mkdir(dirname($file),0777,true);
+	}
+
 	$arrDomains=unserialize(ARR_DOMAINS);
 	foreach ($arrDomains as $domain => $domainData) {
 		if ($domainData->keyTienda==$keyTienda) {
@@ -141,7 +144,6 @@ function ficheroCiao($keyTienda,$file="./encuentraprecios.txt") {
 			break;
 		}
 	}
-
 
 	$db=\cDb::confByKey("celorriov3");
 	//define( "ENT_XML1",        16    );//Porque no conoce esto el PHP?????!!!!!
