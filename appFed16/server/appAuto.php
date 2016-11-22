@@ -27,6 +27,15 @@ define ('ARR_CRON_JOBS', serialize(array(
 		'diaSemana' => '*',
 		'comando' => 'sitemaps();',
 	),
+	'shopppyDoo' => array (
+		'activado' => true,
+		'minuto' => '*',
+		'hora' => '*',
+		'diaMes' => '*',
+		'mes' => '*',
+		'diaSemana' => '*',
+		'comando' => 'ficheroCiao("SB");',
+	),
 )));
 function log5Minutes () {
 	error_log('log5Minutes Job');
@@ -121,5 +130,57 @@ function sitemap($keyTienda, $file="./sitemap.xml") {
 	gzclose($fp);
 	chmod ($gzfile,0666);
 	unlink($file);
+}
+
+function ficheroCiao($keyTienda,$file="./encuentraprecios.txt") {
+	$file='./encuentraprecios.txt';
+	$arrDomains=unserialize(ARR_DOMAINS);
+	foreach ($arrDomains as $domain => $domainData) {
+		if ($domainData->keyTienda==$keyTienda) {
+			$BASE_DOMAIN=$domain;
+			break;
+		}
+	}
+
+
+	$db=\cDb::confByKey("celorriov3");
+	//define( "ENT_XML1",        16    );//Porque no conoce esto el PHP?????!!!!!
+	$sl="\n";
+	$sg="\t";
+	$fp=fopen ($file,"w");
+
+	$where="visible=1 AND keyTienda='".$keyTienda."'";$order="id asc";$limit="";$tipo="arrKeys";
+	$arrIdsOfer=\Multi_ofertaVenta::getArray($db,$where,$order,$limit,$tipo);
+
+	$header="Nombre del producto".$sg."Deeplink".$sg."Precio".$sg."Categoría".$sg."URL imagen".$sg."Disponibilidad".$sg."Descripción".$sl;
+	fwrite ($fp,$header);
+	foreach ($arrIdsOfer as $idOfer) {
+		$objOfer=new \Multi_ofertaVenta($db,$idOfer);
+		if ($objOfer->GETid()=="") { //Si no se consigue cargar el producto nos lo saltamos
+			continue;
+		}
+		$objCat=$objOfer->objMulti_categoriaPrincipal();
+		if ($objCat->GETid()=="") { //Si no se consigue cargar una sola categoria principal nos lo saltamos
+			continue;
+		}
+		$linea=$objOfer->GETnombre().$sg;
+		$linea.=str_replace("&", "&amp;", PROTOCOL.'//'.$BASE_DOMAIN.BASE_DIR.Cadena::toUrlString($objOfer->GETnombre())."/prod/".$objOfer->GETid()."/" ).$sg;
+		$linea.=$objOfer->pvp().$sg;
+		$linea.=substr($objCat->ruta(">"),0,254).$sg;
+		$linea.=$objOfer->imgSrc().$sg;
+
+		$disponibilidad="en Stock";
+		$linea.=$disponibilidad.$sg;
+
+		$descripcion=str_replace("\n","",$objOfer->GETdescripcion());
+		$descripcion=str_replace("\r","",$descripcion);
+		$linea.=substr($descripcion,0,3999);
+
+		$linea.=$sl;
+		fwrite ($fp,$linea);
+		unset ($objP);
+		unset ($objC);
+	}
+	fclose ($fp);
 }
 ?>
