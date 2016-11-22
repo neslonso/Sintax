@@ -27,33 +27,4 @@ $(document).ready(function() {
 		autoplayDisableOnInteraction: false,
 		<?=$GLOBALS['config']->tienda->TEMA->EFECTO_BANNER?>
 	});
-	var mySwiperRec = new Swiper ('#swiperRecomendados', {
-		direction: 'horizontal',
-		loop: false,
-		mousewheelControl: false,
-		grabCursor: true,
-		nextButton: '.swiper-recomendados-button-next',
-		prevButton: '.swiper-recomendados-button-prev',
-		slidesPerView: 'auto',
-		/*
-		breakpoints: {
-			1024: {
-				slidesPerView: 4,
-				slidesPerGroup:4,
-			},
-			768: {
-				slidesPerView: 3,
-				slidesPerGroup:3,
-			},
-			640: {
-				slidesPerView: 2,
-				slidesPerGroup:2,
-			},
-			320: {
-				slidesPerView: 1,
-				slidesPerGroup:1,
-			}
-		},
-		*/
-	});
 });

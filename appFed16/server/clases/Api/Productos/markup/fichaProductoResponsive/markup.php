@@ -36,7 +36,7 @@
 									<h4><a class="shop-item-link"><div class="shop-item-name"><?=$stdObjOfer->nombre?></div></a></h4>
 									<span class="shop-item-price"><?=$precio?></span>
 								</div>
-								<div class="shop-item-desc"><?=$stdObjOfer->descripcion?></div>
+								<div class="shop-item-desc"><?=strip_tags($stdObjOfer->descripcion)?></div>
 							</div>
 							<div class="shop-item-cart">
 								<?=\Sintax\ApiService\Productos::btnComprar($stdObjOfer,'','','Comprar');?>
