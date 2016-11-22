@@ -134,7 +134,7 @@ function sitemap($keyTienda, $file="./sitemap.xml") {
 
 function ficheroCiao($keyTienda,$file="./encuentraprecios.txt") {
 	if (!is_dir(dirname($file))) {
-		mkdir(dirname($file),0644,true);
+		mkdir(dirname($file),0755,true);
 	}
 
 	$arrDomains=unserialize(ARR_DOMAINS);
