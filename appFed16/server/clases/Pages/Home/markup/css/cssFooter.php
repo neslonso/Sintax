@@ -51,6 +51,11 @@
 .footer a {
 	color: #78828D
 }
+.footer ul ul {
+	margin:0px;
+	margin-left: 1em;
+	font-size:0.85em;
+}
 .newsletter-box input#appendedInputButton {
 	background: #FFFFFF;
 	display: inline-block;

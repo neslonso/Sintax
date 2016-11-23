@@ -38,8 +38,8 @@ define ('ARR_TIENDAS',serialize(array (
 			),
 			'TW' => (object) array (
 				'URL' => 'https://twitter.com/celorriofarma',
-				'CONSUMER_KEY' => 'IeCWw2hagRgboE6Q5ughcuP4k',
-				'CONSUMER_SECRET' => 'VF9KYlb9gZUlJ8l9Ax5w1LPalN1zr9CP6W5lgy0sbXctDTdE1A',
+				'CONSUMER_KEY' => 'AKKLOEgbx8i3TAUnZODi2Tsk1 ',
+				'CONSUMER_SECRET' => 'EX7zFkah5DN0mH0b4WrEWvRb3QQjG1Xx3O4VhsL7jUApoQ2Ry6',
 			),
 		),
 		'ANALYTICS' => 'UA-36657351-2',
