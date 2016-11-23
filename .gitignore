@@ -1,6 +1,6 @@
 *.TMP
 .DS_Store
 Thumbs.db
-sftp-config.json
+sftp-config*
 aaReferences/
 *prueba*/
