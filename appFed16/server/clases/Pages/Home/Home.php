@@ -97,6 +97,7 @@ class Home extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsBanner.php");
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js/jsFB.php");
 		\Sintax\ApiService\Categorias::listaFichaProductoResponsiveJs();
+		\Sintax\ApiService\Categorias::swiperFichaProductoResponsiveJs();
 	}
 	public function css() {
 		parent::css();
@@ -111,6 +112,7 @@ class Home extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssMediaQueries.php");
 		\Sintax\ApiService\Categorias::listaFichaProductoResponsiveCss();
 		\Sintax\ApiService\Productos::fichaProductoDtoCss();
+		\Sintax\ApiService\Categorias::swiperFichaProductoResponsiveCss();
 	}
 	public function markup() {
 		$db=\cDb::confByKey('celorriov3');
@@ -220,6 +222,7 @@ class Home extends Error implements IPage {
 		$arrResults=array();
 		$idx=0;
 		foreach ($arr as $objOferta) {
+			if (!$objOferta->algunaCategoriaVisible()) {$foundRows--;continue;}
 			$std=\Sintax\ApiService\Categorias::creaStdObjOferta($objOferta);
 			$std->imgSrc=$objOferta->imgSrc(0,100,100);
 			$std->index=$idx;

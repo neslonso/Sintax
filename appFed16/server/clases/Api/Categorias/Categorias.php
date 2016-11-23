@@ -330,6 +330,16 @@ class Categorias extends ApiService implements IApiService {
 	public function listaFichaProductoResponsiveCss() {
 		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/listaFichaProductoResponsive/css.php');
 	}
+	/**/
+	public function swiperFichaProductoResponsive($arrOfers,$nombre='') {
+		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/swiperFichaProductoResponsive/markup.php');
+	}
+	public function swiperFichaProductoResponsiveJs() {
+		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/swiperFichaProductoResponsive/js.php');
+	}
+	public function swiperFichaProductoResponsiveCss() {
+		require_once ( str_replace('//','/',dirname(__FILE__).'/') .'markup/swiperFichaProductoResponsive/css.php');
+	}
 /******************************************************************************/
 }
 ?>
