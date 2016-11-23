@@ -39,6 +39,12 @@ try {
 					eval($arrDatosJob['comando']);
 				}
 			}
+			if (
+				in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV)) &&
+				$nombreJob==$_GET['forceJob']
+			) {
+				eval($arrDatosJob['comando']);
+			}
 		}
 	}
 ?>
