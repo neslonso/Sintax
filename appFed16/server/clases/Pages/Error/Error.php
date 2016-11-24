@@ -58,5 +58,116 @@ class Error extends Page implements IPage {
 		}
 		require( str_replace('//','/',dirname(__FILE__).'/') .'markup/markup.php');
 	}
+
+	protected function ensureCesta($db) {
+		$objCesta=new \Multi_cesta($db);
+		if (isset($_SESSION['cesta'])) {
+			$class=get_class($_SESSION['cesta']);
+			if ($class=="Multi_cesta") {
+				$objCesta=$_SESSION['cesta'];
+				$objCesta->SETdb($db);
+				if (!\Multi_cesta::existe($db,$objCesta->GETid())) {
+					$objCesta->SETid(NULL);
+				}
+			} else {
+				unset ($_SESSION['cesta']);
+			}
+		}
+		if (isset($_SESSION['usuario'])) {
+			$objCli=$_SESSION['usuario']->objEntity;
+			$objCesta->SETidMulti_cliente($objCli->GETid());
+		}
+		$objCesta->grabar();
+		$_SESSION['cesta']=$objCesta;
+		return $objCesta;
+	}
+
+	public function acAddToCesta ($idMulti_ofertaVenta) {
+		try {
+			$db=\cDb::confByKey('celorriov3');
+			$objCesta=$this->ensureCesta($db);
+			$objLinea=$objCesta->getLineaOfertaOrNew($idMulti_ofertaVenta);
+			$objLinea->SETcantidad($objLinea->GETcantidad()+1);
+			$objLinea->SETidMulti_cesta($objCesta->GETid());
+			$objLinea->SETidMulti_ofertaVenta($idMulti_ofertaVenta);
+			$result=$objLinea->grabar();
+			$_SESSION['cesta']=$objCesta;
+			return $result;
+		} catch (Exception $e) {
+			throw new ActionException("Error añadiendo producto", 1,$e);
+		}
+	}
+
+	public function acRemoveFromCesta ($idMulti_ofertaVenta) {
+		try {
+			$db=\cDb::confByKey('celorriov3');
+			$objCesta=$this->ensureCesta($db);
+			$objLinea=$objCesta->arrMulti_cestaLinea("idMulti_ofertaVenta='".$idMulti_ofertaVenta."'","","","arrClassObjs");
+			$result=$objLinea[0]->borrar();
+			$_SESSION['cesta']=$objCesta;
+			return $result;
+		} catch (Exception $e) {
+			throw new ActionException("Error eliminando producto", 1,$e);
+		}
+	}
+	public function acEditCesta($idMulti_ofertaVenta,$cantidad) {
+		try {
+			$db=\cDb::confByKey('celorriov3');
+			$objCesta=$this->ensureCesta($db);
+			$objLinea=$objCesta->getLineaOfertaOrNew($idMulti_ofertaVenta);
+			$objLinea->SETcantidad($cantidad);
+			$objLinea->SETidMulti_cesta($objCesta->GETid());
+			$objLinea->SETidMulti_ofertaVenta($idMulti_ofertaVenta);
+			$result=$objLinea->grabar();
+			$_SESSION['cesta']=$objCesta;
+			return $result;
+		} catch (Exception $e) {
+			throw new ActionException("Error modificando producto", 1,$e);
+		}
+	}
+
+	public function acTwLogin() {
+		error_log("Excep: acTwLogin");
+		$TWCK=$GLOBALS['config']->tienda->SOCIAL->TW->CONSUMER_KEY;
+		$TWCS=$GLOBALS['config']->tienda->SOCIAL->TW->CONSUMER_SECRET;
+
+		$connection = new TwitterOAuth($TWCK,$TWCS);
+		$request_token = $connection->oauth('oauth/request_token',
+			array('oauth_callback' => BASE_URL.FILE_APP.'?MODULE=actions&acClase=Home&acMetodo=acTwLoginCallBack&acTipo=std'));
+			//array('oauth_callback' => 'obb'));
+
+		$_SESSION['tw_oauth']['oauth_token'] = $request_token['oauth_token'];
+		$_SESSION['tw_oauth']['oauth_token_secret'] = $request_token['oauth_token_secret'];
+
+		$url = $connection->url('oauth/authorize', array('oauth_token' => $request_token['oauth_token']));
+		return $url;
+	}
+
+	public function acTwLoginCallBack() {
+		$TWCK=$GLOBALS['config']->tienda->SOCIAL->TW->CONSUMER_KEY;
+		$TWCS=$GLOBALS['config']->tienda->SOCIAL->TW->CONSUMER_SECRET;
+
+		if (!isset($_REQUEST['oauth_token']) || $_REQUEST['oauth_token'] !== $_SESSION['tw_oauth']['oauth_token']) {
+			// Abort! Something is wrong.
+			ReturnInfo::add('Debe conceder permiso a '.$GLOBALS['config']->tienda->SITE_NAME.' bebefarma para acceder a su cuenta de twitter','No fue posible realizar la conexión con twitter');
+			$GLOBALS['acReturnURI']=BASE_URL;
+			//Eliminar el access_token del user
+		} else {
+			$connection = new TwitterOAuth($TWCK,$TWCS,$_SESSION['tw_oauth']['oauth_token'],$_SESSION['tw_oauth']['oauth_token_secret']);
+			$access_token = $connection->oauth("oauth/access_token", ["oauth_verifier" => $_REQUEST['oauth_verifier']]);
+			$_SESSION['tw_oauth']['access_token'] = $access_token;
+			$connection = new TwitterOAuth($TWCK,$TWCS, $access_token['oauth_token'], $access_token['oauth_token_secret']);
+			$verify_credentials = $connection->get("account/verify_credentials");
+			var_dump($verify_credentials);
+			$GLOBALS['firephp']->info($verify_credentials);
+		}
+	}
+//.
+	public function acGrabarCliente($email,$pass=""){
+		if (empty($pass)) {$pass=\Cadena::generatePassword();}
+		$result=\Sintax\ApiService\Clientes::acNuevoCliente($email,$pass,$GLOBALS['config']->tienda->key);
+		$result=json_decode($result);
+		return $result;
+	}
 }
 ?>

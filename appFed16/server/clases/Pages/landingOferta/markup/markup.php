@@ -27,7 +27,7 @@
 	<div class="">
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-9 col-sm-offset-1 text-center">
+				<div class="col-sm-10 col-sm-offset-1 text-center">
 					<h1 class="promoH1"><?=$objOferta->GETnombre()?></h1>
 <?
 	if ($objOferta->descuentoOferta()>0){
@@ -280,7 +280,9 @@
 		</div>
 	</div>
 </section>
-
+<?
+	if ($logueado){
+?>
 <div class="modal fade" id="modalSelDir" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
@@ -358,80 +360,7 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<div class="modal fade" id="modalAddDir" tabindex="-1" role="dialog">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Añadir dirección</h4>
-			</div>
-			<div class="modal-body">
-					<input name="id" id="id" type="hidden" value="0"/>
-					<div class="row">
-						<input class="form-control" type="hidden" name="nombre" id="nombre" value="" placeholder="Nombre para identificar esta dirección..." />
-						<div class="col-sm-12">
-							<div class="form-group">
-								<label for="destinatario" accesskey="">Destinatario*</label>
-								<input class="form-control" type="text" name="destinatario" id="destinatario" value=""  placeholder="Destinatario del envio" />
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-4">
-							<div class="form-group">
-								<label for="direccion" accesskey="">Direccion*</label>
-								<input class="form-control" type="text" name="direccion" id="direccion" value="" placeholder="Dirección completa" />
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="form-group">
-								<label for="poblacion" accesskey="">Poblacion*</label>
-								<input class="form-control" type="text" name="poblacion" id="poblacion" value="" placeholder="Población"/>
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="form-group">
-								<label for="provincia" accesskey="">Provincia*</label>
-								<input class="form-control" type="text" name="provincia" id="provincia" value="" placeholder="Provincia" />
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-4">
-							<div class="form-group">
-								<label for="cp" accesskey="">Código postal*</label>
-								<input class="form-control" type="text" name="cp" id="cp" value="" placeholder="Código postal" />
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="form-group">
-									<label for="pais" accesskey="">País:</label>
-
-									<select name="pais" id="pais" class="form-control">
 <?
-								foreach ($paises as $pais) {
-									$selected=($pais->id==$paisDefecto)?"selected='selected'":"";
+}
 ?>
-									    <option <?=$selected?> data-id="<?=$pais->id?>" data-iso="<?=$pais->alpha2?>" value="<?=$pais->nombre_es?>"><?=$pais->nombre_es?></option>
-<?
-								}
-?>
-									</select>
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="form-group">
-								<label for="movil" accesskey="">Teléfono de contacto*</label>
-								<input class="form-control" type="text" name="movil" id="movil" value="" placeholder"Teléfono de contacto"/>
-							</div>
-						</div>
-					</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-				<button type="button" id="btnAddDir" class="btn btn-primary">Grabar</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 <?="\n<!-- /".get_class()." -->\n"?>

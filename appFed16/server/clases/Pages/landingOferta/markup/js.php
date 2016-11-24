@@ -4,9 +4,11 @@ $(document).ready(function() {
 		e.preventDefault();
 		$(this).tab('show');
 	});
+	if($('#newPedWizard').length != 0) {
 console.log("*************************ini");
 	getLineas();
 console.log("*************************fin");
+	}
 	$('#btnModalSelDir').on('click',function(event) {
 		event.preventDefault();
 		$('#modalSelDir').appendTo('body').modal('show');

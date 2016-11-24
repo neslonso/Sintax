@@ -39,6 +39,9 @@ class landingOferta extends Error implements IPage {
 		$objOferta=new \Multi_ofertaVenta($db,$idOfer);
 		$logueado=false;
 		if (isset($_SESSION['usuario'])){
+			if ($idOfer!=""){
+				$this->acAddToCesta($idOfer);
+			}
 			$logueado=true;
 			$store=$GLOBALS['config']->tienda->key;
 			$objCli=$_SESSION['usuario']->objEntity;
