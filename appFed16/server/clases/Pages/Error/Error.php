@@ -59,6 +59,37 @@ class Error extends Page implements IPage {
 		require( str_replace('//','/',dirname(__FILE__).'/') .'markup/markup.php');
 	}
 
+	public function acLogout() {
+		// Unset all of the session variables.
+		$_SESSION = array();
+		// If it's desired to kill the session, also delete the session cookie.
+		// Note: This will destroy the session, and not just the session data!
+		if (ini_get("session.use_cookies")) {
+			$params = session_get_cookie_params();
+			setcookie(session_name(), '', time() - 42000,
+			$params["path"], $params["domain"],
+			$params["secure"], $params["httponly"]
+			);
+		}
+		// Finally, destroy the session.
+		session_destroy();
+	}
+
+	/**
+	 * [acLogin description]
+	 * @param  [type] $email [description]
+	 * @param  [type] $pass  [description]
+	 * @return [type]        [description]
+	 */
+	public function acLogin($email,$pass,$token) {
+		if ($token!="") {//token de FB
+			$result=\Sintax\ApiService\Clientes::acLoginClienteFB($email,$token,$GLOBALS['config']->tienda->key);
+		} else {
+			$result=\Sintax\ApiService\Clientes::acLoginCliente($email,$pass,$GLOBALS['config']->tienda->key);
+		}
+		return $result;
+	}
+
 	protected function ensureCesta($db) {
 		$objCesta=new \Multi_cesta($db);
 		if (isset($_SESSION['cesta'])) {
