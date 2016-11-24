@@ -193,7 +193,7 @@ class Error extends Page implements IPage {
 			$GLOBALS['firephp']->info($verify_credentials);
 		}
 	}
-//.
+
 	public function acGrabarCliente($email,$pass=""){
 		if (empty($pass)) {$pass=\Cadena::generatePassword();}
 		$result=\Sintax\ApiService\Clientes::acNuevoCliente($email,$pass,$GLOBALS['config']->tienda->key);
