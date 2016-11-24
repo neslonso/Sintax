@@ -2,6 +2,7 @@
 $(document).ready(function() {
 	if (typeof ga !== "undefined") {
 		$('.shop-item-wrapper').each(function(index, el) {
+			//Enviamos event de impresion a GA
 			var $this=$(this);
 			var gaId=$this.data('referencia') + ' [ID:' + $this.data('id') +']';
 			var gaName=$this.data('nombre');
