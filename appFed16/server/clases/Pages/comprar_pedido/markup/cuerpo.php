@@ -194,7 +194,7 @@ if ($datosCli->tipoDescuento<=0 || $storeData->DTO_CLIENTE_COMPATIBLE_CUPON) {
 									<th>Concepto</th>
 									<th>Precio</th>
 									<th>Cantidad</th>
-									<th>Descuento</td>
+									<th>Descuento</th>
 									<th>Total</th>
 								</tr>
 							</thead>
