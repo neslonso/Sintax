@@ -90,7 +90,7 @@ class Error extends Page implements IPage {
 		return $result;
 	}
 
-	protected function ensureCesta($db) {
+	public function ensureCesta($db) {
 		$objCesta=new \Multi_cesta($db);
 		if (isset($_SESSION['cesta'])) {
 			$class=get_class($_SESSION['cesta']);

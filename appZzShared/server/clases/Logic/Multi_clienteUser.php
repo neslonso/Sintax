@@ -15,6 +15,7 @@ class Multi_clienteUser extends AnonymousUser implements IUser {
 			case 'Sintax\Pages\mi_pedido':
 			case 'Sintax\Pages\mis_pedidos':
 			case 'Sintax\Pages\comprar_pedido':
+			case 'Sintax\Pages\comprar_pedido2':
 			case 'Sintax\Pages\mis_datos':
 			case 'Sintax\Pages\landingTPVV':
 				$result=true;

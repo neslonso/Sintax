@@ -131,5 +131,124 @@ class Pedidos extends ApiService implements IApiService {
 		}
 		return $result;
 	}
+
+/* Calculos sobre líneas ******************************************************/
+	public function acGetLineas() {
+		\cDb::confByKey('celorriov3');
+		$objCli=$_SESSION['usuario']->objEntity;
+		$objCli->SETdb(\cDb::gI());
+		$datosCli=\Sintax\ApiService\Pedidos::getDatosCli($objCli);
+		$objCesta=$this->ensureCesta(\cDb::gI());
+		$arrLineas=\Sintax\ApiService\Pedidos::arrLineasComprarPedido($objCesta);
+
+		$arrLineasProcesado=array();
+		$totalRebotes=0;
+		$totalRebotesDesc='<table>';
+		foreach ($arrLineas as $stdObjLinea) {
+			$stdObjLinea->pvp=round($stdObjLinea->pai*(1+$stdObjLinea->tipoIva/100),2);
+			$stdObjLinea->totalLinea=\Sintax\ApiService\Pedidos::totalLinea($stdObjLinea);
+
+			$stdObjLinea->dtoTooltip='';
+			$totalTipoDtoLinea=\Sintax\ApiService\Pedidos::totalDtoTipo($stdObjLinea);
+			$totalImporteDtoLinea=\Sintax\ApiService\Pedidos::totalDtoImporte($stdObjLinea);
+			foreach ($stdObjLinea->dtos as $stdObjDto) {
+				$stdObjLinea->dtoTooltip.='<li>'.$stdObjDto->concepto.'</li>';
+			}
+			$dtoDesc='';
+			if ($totalTipoDtoLinea>0) {$dtoDesc.=$totalTipoDtoLinea.'%';}
+			if ($totalTipoDtoLinea>0 && $totalImporteDtoLinea>0) {$dtoDesc.=' + ';}
+			if ($totalImporteDtoLinea>0) {$dtoDesc.=$totalImporteDtoLinea.'€';}
+			if ($dtoDesc=='') {$dtoDesc='--';}
+			$stdObjLinea->dtoDesc=$dtoDesc;
+
+			if ($stdObjLinea->tipoDevolucionCredito>0) {
+				$totalRebote=round(($stdObjLinea->tipoDevolucionCredito/100)*$this->totalLinea($stdObjLinea),2);
+				$totalRebotes+=$totalRebote;
+				$totalRebotesDesc.='<tr><td>'.$stdObjLinea->concepto.'</td><td>'.$this->totalLinea($stdObjLinea).'€ x'.$stdObjLinea->tipoDevolucionCredito.'%</td><td>=</td><td>'.$totalRebote.'€</td></tr>';
+			}
+			$stdObjLinea->precioLineaTooltip='';
+			if (in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
+				$stdObjLinea->precioLineaTooltip='data-toggle="tooltip" data-placement="left" data-html="true" title="Este tooltip sale porque IP está en IPS_DEV<br />'.$stdObjLinea->pai.'€ + '.$stdObjLinea->tipoIva.'% IVA"';
+			}
+
+			array_push($arrLineasProcesado, $stdObjLinea);
+		}
+		$totalRebotesDesc.='</table>';
+		//$totalRebotesDesc=htmlspecialchars($totalRebotesDesc,ENT_QUOTES,'UTF-8');
+
+		$totalLineas=\Sintax\ApiService\Pedidos::totalLineas($arrLineas);
+		$storeData=\Sintax\ApiService\Pedidos::getStoreData();
+		if (\Sintax\ApiService\Pedidos::totalLineas($arrLineas) >= $storeData->IMPORTE_MINIMO_APLICACION_CREDITO) {
+			$creditoMaximoAplicable=
+				(\Sintax\ApiService\Pedidos::totalLineas($arrLineas)>$datosCli->saldoCredito)
+				?$datosCli->saldoCredito
+				:\Sintax\ApiService\Pedidos::totalLineas($arrLineas);
+		} else {
+			$creditoMaximoAplicable=0;
+		}
+
+		$result=array();
+		$result['arrLineas']=$arrLineasProcesado;
+		$result['totalLineas']=$totalLineas;
+		$result['totalRebotes']=$totalRebotes;
+		$result['totalRebotesDesc']=$totalRebotesDesc;
+		$result['creditoMaximoAplicable']=$creditoMaximoAplicable;
+
+		return $result;
+
+		/*
+		foreach ($arrLineas as $stdObjLinea) {
+		}
+		*/
+
+	}
+	private function pvp ($stdObjLinea) {
+		return round($stdObjLinea->pai*(1+$stdObjLinea->tipoIva/100),2);
+	}
+
+	private function totalDtoTipo ($stdObjLinea) {
+		$totalTipoDtoLinea=0;
+		foreach ($stdObjLinea->dtos as $stdObjDto) {
+			$totalTipoDtoLinea+=$stdObjDto->tipoDescuento;
+		}
+		return $totalTipoDtoLinea;
+	}
+
+	private function totalDtoImporte ($stdObjLinea) {
+		$totalImporteDtoLinea=0;
+		foreach ($stdObjLinea->dtos as $stdObjDto) {
+			$totalImporteDtoLinea+=$stdObjDto->importe;
+		}
+		return $totalImporteDtoLinea;
+	}
+
+	private function totalLinea ($stdObjLinea) {
+		return round(
+			\Sintax\ApiService\Pedidos::pvp($stdObjLinea)*
+				$stdObjLinea->cantidad*
+					(1-\Sintax\ApiService\Pedidos::totalDtoTipo($stdObjLinea)/100)-
+						\Sintax\ApiService\Pedidos::totalDtoImporte($stdObjLinea),2);
+	}
+
+	public function totalLineas ($arrStdObjLinea) {
+		$total=0;
+		foreach ($arrStdObjLinea as $stdObjLinea) {
+			$total+=\Sintax\ApiService\Pedidos::totalLinea($stdObjLinea);
+		}
+		return $total;
+	}
+/******************************************************************************/
+
+
+/******************************************************************************/
+/* FRAGMENTOS *****************************************************************/
+	public function detallePedido() {
+		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/detallePedido/markup.php');
+	}
+	public function detallePedidoJs() {
+		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/detallePedido/js.php');
+	}
+/******************************************************************************/
+
 }
 ?>

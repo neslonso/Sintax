@@ -35,6 +35,7 @@ try {
 	$result="";
 	$acClase=$_REQUEST['acClase'];
 	$acClase="Sintax\\Pages\\".$_REQUEST['acClase'];
+	$acClase=(strstr($_REQUEST['acClase'],"\\"))?$_REQUEST['acClase']:"Sintax\\Pages\\".$_REQUEST['acClase'];
 	$acMetodo=$_REQUEST['acMetodo'];
 	$acTipo=(isset($_REQUEST['acTipo']))?$_REQUEST['acTipo']:"std";
 	$acReturnURI=(isset($_REQUEST['acReturnURI']))?$_REQUEST['acReturnURI']:"./";
