@@ -26,6 +26,7 @@ class landingOferta extends Error implements IPage {
 	}
 	public function js() {
 		parent::js();
+		\Sintax\ApiService\Pedidos::detallePedidoJs("landingOferta","callbackLandingOferta");
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js.php");
 	}
 	public function css() {
@@ -137,5 +138,14 @@ class landingOferta extends Error implements IPage {
 		';
 		return $result;
 	}
+
+/* Calculos sobre líneas y portes******************************************************/
+	public function acGetLineas() {
+		return \Sintax\ApiService\Pedidos::acGetLineas();
+	}
+	public function acGetPortes() {
+		return \Sintax\ApiService\Pedidos::acGetPortes();
+	}
+/******************************************************************************/
 }
 ?>

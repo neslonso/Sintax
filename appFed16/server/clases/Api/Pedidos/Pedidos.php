@@ -132,7 +132,7 @@ class Pedidos extends ApiService implements IApiService {
 		return $result;
 	}
 
-/* Calculos sobre líneas ******************************************************/
+/* Calculos sobre líneas y portes ******************************************************/
 	public function acGetLineas() {
 		\cDb::confByKey('celorriov3');
 		$objCli=$_SESSION['usuario']->objEntity;
@@ -202,6 +202,30 @@ class Pedidos extends ApiService implements IApiService {
 		*/
 
 	}
+
+	public function acGetPortes() {
+		$arrayMulti['subService']='portes';
+		$arrayMulti['keyTienda']=$GLOBALS['config']->tienda->key;
+		$arrayMulti['hash']='';
+		$arrayMulti['importe']=$_REQUEST['importe'];
+		$arrayMulti['idDireccion']=$_REQUEST['idDireccion'];
+		//$arrayMulti['idMulti_cliente']=$_SESSION['usuario']->id;
+		$urlAPI='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE';
+		// use key 'http' even if you send the request to https://...
+		$options = array(
+			'http' => array(
+				'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+				'method'  => 'POST',
+				'content' => http_build_query($arrayMulti),
+			),
+		);
+		$context  = stream_context_create($options);
+		$apiResult = file_get_contents($urlAPI, false, $context);
+		$GLOBALS['firephp']->info($apiResult,"result acGetPortes");
+		$result=json_decode($apiResult);
+		return $result;
+	}
+
 	private function pvp ($stdObjLinea) {
 		return round($stdObjLinea->pai*(1+$stdObjLinea->tipoIva/100),2);
 	}
@@ -245,7 +269,8 @@ class Pedidos extends ApiService implements IApiService {
 	public function detallePedido() {
 		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/detallePedido/markup.php');
 	}
-	public function detallePedidoJs() {
+	public function detallePedidoJs($page,$callbackPage="") {
+		if ($callbackPage!=""){$callbackPage=$callbackPage."();";}
 		require ( str_replace('//','/',dirname(__FILE__).'/') .'markup/detallePedido/js.php');
 	}
 /******************************************************************************/

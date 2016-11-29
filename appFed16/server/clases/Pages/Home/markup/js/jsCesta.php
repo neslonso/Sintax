@@ -64,7 +64,7 @@ function updateCesta(acMetodo,item) {
 					}
 				break;
 			}
-			if (typeof getLineas == 'function') {getLineas();}
+			$('#divJqCesta').trigger("sessionUpdated.jqCesta");
 		},
 		dataType: 'json'
 	});
