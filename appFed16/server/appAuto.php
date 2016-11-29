@@ -47,10 +47,14 @@ function logHour () {
 function sitemaps() {
 	$arrTiendas=unserialize(ARR_TIENDAS);
 	foreach ($arrTiendas as $keyTienda => $config) {
-		sitemap($keyTienda, "./sitemap.".$keyTienda.".xml");
+		sitemap($keyTienda, "./zPublic/sitemaps/sitemap.".$keyTienda.".xml");
 	}
 }
 function sitemap($keyTienda, $file="./sitemap.xml") {
+	if (!is_dir(dirname($file))) {
+		mkdir(dirname($file),0755,true);
+	}
+
 	$arrDomains=unserialize(ARR_DOMAINS);
 	foreach ($arrDomains as $domain => $domainData) {
 		if ($domainData->keyTienda==$keyTienda) {
