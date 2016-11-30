@@ -68,7 +68,6 @@ function sitemap($keyTienda, $file="./sitemap.xml") {
 		}
 	}
 	$db=\cDb::confByKey("celorriov3");
-	//define( "ENT_XML1",        16    );//Porque no conoce esto el PHP?????!!!!!
 	$sl="\n";
 	$sg="\t";
 	$fp=fopen ($file,"w");
@@ -155,7 +154,6 @@ function ficheroCiao($keyTienda,$file="./encuentraprecios.txt") {
 	}
 
 	$db=\cDb::confByKey("celorriov3");
-	//define( "ENT_XML1",        16    );//Porque no conoce esto el PHP?????!!!!!
 	$sl="\n";
 	$sg="\t";
 	$fp=fopen ($file,"w");
@@ -216,7 +214,6 @@ function gmFeed($keyTienda, $file="./gmFeed.xml") {
 		}
 	}
 	$db=\cDb::confByKey("celorriov3");
-	//define( "ENT_XML1",        16    );//Porque no conoce esto el PHP?????!!!!!
 	$sl="\n";
 	$sg="\t";
 	$fp=fopen ($file,"w");
@@ -234,8 +231,11 @@ function gmFeed($keyTienda, $file="./gmFeed.xml") {
 	foreach ($arrIdsOfer as $idOfer) {
 		$objOfer=new \Multi_ofertaVenta($db,$idOfer);
 
-		if (count($objOfer->arrMulti_producto())>1) {continue;}//nos saltamos los packs
-		if (strlen($objOfer->codigoEAN())!=13) {continue;}//nos saltamos los EANs no válidos
+		//nos saltamos los packs
+		if (count($objOfer->arrMulti_producto())>1) {continue;}
+		//nos saltamos los EANs no válidos
+		if (strlen($objOfer->codigoEAN())!=13) {continue;}
+		if (!isValidGtin($objOfer->codigoEAN())) {error_log('gtin no valido');continue;}
 
 		$contents.=$sg.'<entry>'.$sl;
 
@@ -275,5 +275,24 @@ function gmFeed($keyTienda, $file="./gmFeed.xml") {
 	gzclose($fp);
 	chmod ($gzfile,0666);
 	unlink($file);
+}
+
+function isValidGtin ($code) {
+//http://www.gs1.org/how-calculate-check-digit-manually
+	$i=0;
+	$sum=0;
+	$checkDigit=substr($code,-1);
+	$code=substr($code,0,-1);
+	foreach (str_split($code) as $char) {
+		$i++;
+		if ($i % 2 == 0) {
+			$sum+=$char*3;
+		} else {
+			$sum+=$char*1;
+		}
+	}
+	$nextTen = (ceil($sum / 10)) * 10;
+	$calculatedCheckDigit = $nextTen - $sum;
+	return ($checkDigit==$calculatedCheckDigit)?true:false;
 }
 ?>
