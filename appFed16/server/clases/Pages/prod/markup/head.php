@@ -24,7 +24,7 @@
 		"price": "<?=$objOferta->pvp()?>",
 		"priceValidUntil": "<?=date('Y-m-d',time()+60*60*24*7)?>",
 		"itemCondition": "http://schema.org/NewCondition",
-		"availability": "http://schema.org/InStock",
+		"availability": "<?=(($objOferta->GETagotado())?'http://schema.org/OutOfStock':'http://schema.org/InStock')?>",
 		"seller": {
 			"@type": "Organization",
 			"name": "<?=$GLOBALS['config']->tienda->SITE_NAME?>"
