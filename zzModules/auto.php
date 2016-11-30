@@ -9,21 +9,24 @@ $uniqueId=uniqid("auto.");
 ?>
 <?
 try {
-	$shellCmd='crontab -l | grep '.BASE_URL.FILE_APP.'?MODULE=auto';
-	//echo $shellCmd;
-	$jobSearch = shell_exec($shellCmd);
-	if ($jobSearch=='') {
-		$job='* * * * * curl '.BASE_URL.FILE_APP.'?MODULE=auto &>/dev/null'.PHP_EOL;
-		$output = shell_exec('crontab -l');
-		$tmpFile=TMP_UPLOAD_DIR.'crontab.txt';
-		file_put_contents($tmpFile, $output.PHP_EOL.$job.PHP_EOL);
-		echo exec('crontab '.$tmpFile);
-		//unlink ($tmpFile);
-		echo "No cronjob found for APP ".FILE_APP;
-		echo "\n<br />\n";
-		echo "Added job: ".$job;
+	if (
+		!isset($_GET['forceJob'])
+	) {
+		$shellCmd='crontab -l | grep '.BASE_URL.FILE_APP.'?MODULE=auto';
+		//echo $shellCmd;
+		$jobSearch = shell_exec($shellCmd);
+		if ($jobSearch=='') {
+			$job='* * * * * curl '.BASE_URL.FILE_APP.'?MODULE=auto &>/dev/null'.PHP_EOL;
+			$output = shell_exec('crontab -l');
+			$tmpFile=TMP_UPLOAD_DIR.'crontab.txt';
+			file_put_contents($tmpFile, $output.PHP_EOL.$job.PHP_EOL);
+			echo exec('crontab '.$tmpFile);
+			//unlink ($tmpFile);
+			echo "No cronjob found for APP ".FILE_APP;
+			echo "\n<br />\n";
+			echo "Added job: ".$job;
+		}
 	}
-
 	//TODO: Mejora: Quiza habría que comprobar de algun modop si la llamada procede del cron (quiza mediante useragent curl),
 	//para evitar que se repitan tareas si se llama a auto manualmente.
 	if (defined('ARR_CRON_JOBS')) {
