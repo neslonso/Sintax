@@ -33,8 +33,19 @@ body{
 .logoLanding img{
 	width: 100%;
 }
-.cuerpoOferta{
-
+#cestaOferta{
+    background-color:rgba(245, 245, 245, 0.5);
+    height: 390px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.divDireccion{
+    background-color:rgba(245, 245, 245, 0.5);
+    margin-bottom: 5px;
+    padding: 5px;
+}
+.restoInfoResumen{
+    padding: 10px;
 }
 .overlayBG{
 	background: rgba(255, 255, 255, 0.55) none repeat scroll 0 0;
@@ -69,7 +80,7 @@ body{
     text-decoration: line-through;
 }
 .tabOferta{
-    height: 350px;
+    height: 390px;
     overflow-x: hidden;
     overflow-y: auto;
     padding:10px;
@@ -139,4 +150,18 @@ body{
 .footerLanding h3{
     font-size: 1.2em !important;
     text-align: center;
+}
+/* XS y SM */
+@media (max-width: 991px){
+    #cestaOferta{
+        height: auto !important;
+        overflow-x: auto !important;
+        overflow-y: auto !important;
+    }
+}
+/* XS */
+@media (max-width: 767px){
+    .banner-price-comprar{
+        margin-bottom:10px !important;
+    }
 }

@@ -58,8 +58,18 @@
 	}
 ?>
 					</div>
-					<div>mas movidillas del producto</div>
-					<div>btn comprar..portes gratis etc</div>
+<?
+	if ($logueado){
+?>
+					<div class="divDireccion">
+						<h4>Dirección de entrega:
+							<button id="btnModalSelDir" type="button" class="btn btn-xs btn-default">Cambiar</button>
+						</h4> <span id="dirSeleccionada"></span>
+
+					</div>
+<?
+	}
+?>
 					<div class="text-center">
 						<?=\Sintax\ApiService\Productos::btnComprar($objOferta,'banner-price-comprar');?>
 					</div>
@@ -95,91 +105,32 @@
 									data-arr-dtos-volumen="<?=$jsonArrDtosVolumen?>"
 									data-dto-cliente-compatible-dto-volumen="<?=($storeData->DTO_CLIENTE_COMPATIBLE_DTO_VOLUMEN)?'1':'0';?>">
 									<?=\Sintax\ApiService\Pedidos::detallePedido();?>
+									<div class="restoInfoResumen">
+										<h4 style="display: none;">
+											Crédito de cliente a aplicar: <span id="creditoMaximoAplicable" class="h3"></span>
+										</h4>
 <?
 		if ($storeData->TIPO_DEVOLUCION_IMPORTE_PEDIDO_EN_CREDITO>0) {
 ?>
-									<h4>
-										Te queremos de vuelta<br />
-										<small>
-											Al pagar este pedido recibirá un <?=$storeData->TIPO_DEVOLUCION_IMPORTE_PEDIDO_EN_CREDITO?>% de su importe
-											(<span id="spFidelizacionCredit" class="spCalculado" data-tipo-devolucion-importe-pedido-en-credito="<?=$storeData->TIPO_DEVOLUCION_IMPORTE_PEDIDO_EN_CREDITO?>"></span>)
-											como crédito para sus próximos pedidos!
-										</small>
-									</h4>
-									<hr />
+										<h4>
+											Te queremos de vuelta:
+											<small>
+												Al pagar este pedido recibirá un <?=$storeData->TIPO_DEVOLUCION_IMPORTE_PEDIDO_EN_CREDITO?>% de su importe
+												(<span id="spFidelizacionCredit" class="spCalculado" data-tipo-devolucion-importe-pedido-en-credito="<?=$storeData->TIPO_DEVOLUCION_IMPORTE_PEDIDO_EN_CREDITO?>"></span>)
+												como crédito para sus próximos pedidos!
+											</small>
+										</h4>
 <?
 		}
 ?>
-									<ul id="ulDtos"></ul>
-									<div id="panelCredito" class="panel panel-default"
-										data-importe_minimo_aplicacion_credito="<?=$storeData->IMPORTE_MINIMO_APLICACION_CREDITO?>"
-										data-credito-maximo-aplicable="">
-										<div class="panel-heading">
-											<h3 class="panel-title">Crédito de cliente</h3>
-										</div>
-										<div class="panel-body">
-											<div id="creditoPermitido">
-												<div class="row">
-													<div class="col-md-2">
-														<span class="h3">0.00€</span>
-													</div>
-													<div class="col-md-7">
-														<input type="range" name="credito" id="credito" value="" min="0.0" max="" step="0.01" />
-													</div>
-													<div class="col-md-3 text-right">
-														<span id="creditoMaximoAplicable" class="h3"></span>
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-md-2"></div>
-													<div class="col-md-7 text-center">
-														<span class="h2"><small>Crédito a aplicar:</small></span>
-														<span id="creditoAplicar" class="h3" data-credito-aplicar=""
-															data-saldo-inicial="<?=$datosCli->saldoCredito?>">€</span>
-														<div class="small">
-															Dispone de <b><?=$datosCli->saldoCredito?>€</b> de crédito.<br>
-														</div>
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-md-12 text-right">
-														<button type="button" id="addCredito" name="addCredito" class="btn btn-primary" aria-label="Aplicar credito"
-															data-loading-text="Validando...">Aplicar</button>
-													</div>
-												</div>
-											</div>
-											<div id="creditoNoPermitido">
-												No es posible aplicar credito a su pedido. El importe de su pedido no alcanza el valor mínimo para
-												que su credito de cliente sea aplicable.<br />
-												<ul>
-													<li>Importe necesario: <?=$storeData->IMPORTE_MINIMO_APLICACION_CREDITO?> €</li>
-													<li>Importe actual: <span class="spTotalLineas spCalculado" data-total-lineas=""></span> €</li>
-													<li>Faltan: <span id="spRestoToCredito"></span> €. <!--<a href="#" title="Ver ofertas de valor aproximado"><i class="fa fa-search-plus" aria-hidden="true"></i></a>-->
-													<li>Crédito disponible: <?=$datosCli->saldoCredito?> €</li>
-												</ul>
-												<span id="creditoAplicar" data-credito-aplicar="0.00" data-saldo-inicial="<?=$datosCli->saldoCredito?>"></span>
-											</div>
-										</div>
-									</div>
-									<h4 style="display: none;">
-										Productos rebote<br />
-										<small class="tooltip-wide">
-											Su pedido incluye productos rebote por un total de
-											<span id="spTotalRebotes"></span>
-											que recibirá como crédito para sus próximos pedidos!
-										</small>
-									</h4>
-
-
-									<div>
-										<div class="row">
-											<div class="col-xs-12">
-												Dirección de entrega: <span id="dirSeleccinada"></span>
-												<button id="btnModalSelDir" type="button" class="btn btn-xs btn-default">
-													Cambiar
-												</button>
-											</div>
-										</div>
+										<h4 style="display: none;">
+											Productos rebote<br />
+											<small class="tooltip-wide">
+												Su pedido incluye productos rebote por un total de
+												<span id="spTotalRebotes"></span>
+												que recibirá como crédito para sus próximos pedidos!
+											</small>
+										</h4>
 									</div>
 								</div>
 							</div>

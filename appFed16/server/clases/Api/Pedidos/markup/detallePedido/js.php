@@ -42,25 +42,25 @@ function getLineas () {
 	});
 }
 
-function calculaTotales(dtoImporte, dtoTipo, ulDtosTotalTipo, ulDtosDescTipo, ulDtosDescImporte, idDirEntrega) {
+function calculaTotales(dtoImporte, dtoTipo, dtosTotalTipo, dtosDescTipo, dtosDescImporte, idDirEntrega) {
 	var totalLineas=$('#spTotalLineas').data('totalLineas');
 	var baseDtosPorcentuales=(totalLineas-dtoImporte).toFixed(2);
 	$('#spDtoTipo').html(dtoTipo).data('dtoTipo',dtoTipo);
 	var dtoMonto=(Math.round(
-			baseDtosPorcentuales*(ulDtosTotalTipo/100)
+			baseDtosPorcentuales*(dtosTotalTipo/100)
 		*100)/100).toFixed(2);
 	$('#spDtoMonto').html(dtoMonto).data('dtoMonto',dtoMonto);
 	$('#tipDtosTipo').tooltip({
 		placement: 'left',
 		html: true,
-		title: ulDtosDescTipo
+		title: dtosDescTipo
 	});
 
 	$('#spDescuentoImporte').html(dtoImporte).data('dtoImporte',dtoImporte);
 	$('#tipDtosImporte').tooltip({
 		placement: 'left',
 		html: true,
-		title: ulDtosDescImporte
+		title: dtosDescImporte
 	});
 
 	if (idDirEntrega) {

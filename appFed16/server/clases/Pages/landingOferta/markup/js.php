@@ -13,9 +13,10 @@ $(document).ready(function() {
  		$('.panel','#direccionEntregaSelectionControl').removeClass('panel-success').addClass('panel-default');
 		$(this).closest('.panel').removeClass('panel-default').addClass('panel-success');
 		$('#modalSelDir').appendTo('body').modal('hide');
-		$('#dirSeleccionada').html();
 		var idDirEntrega=$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl').val();
-alert("dirEntrega:".idDirEntrega);
+		var dir=$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl');
+		var txtDireccion=dir.data('destinatario')+" - "+dir.data('direccion')+' '+dir.data('cp')+', '+dir.data('poblacion')+' '+dir.data('provincia');
+		$('#dirSeleccionada').html(txtDireccion);
 	});
 	$('#btnAddDir').on('click', function () {
 		var destinatario = $('#destinatario','#modalAddDir').val();
@@ -65,7 +66,8 @@ alert("dirEntrega:".idDirEntrega);
 							$('#direccionEntregaSelectionControl').replaceWith(response.data);
 							$('[name="idDirEntrega"]').change();
 							var idDirEntrega=$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl').val();
-alert("dirEntrega:".idDirEntrega);
+							var txtDireccion=$('#destinatario','#modalAddDir').val()+" - "+$('#direccion','#modalAddDir').val()+' '+$('#cp','#modalAddDir').val()+', '+$('#poblacion','#modalAddDir').val()+' '+$('#provincia','#modalAddDir').val();
+							$('#dirSeleccionada').html(txtDireccion);
 						}
 					},
 					'json');
@@ -77,7 +79,6 @@ alert("dirEntrega:".idDirEntrega);
 
 });
 function callbackLandingOferta(){
-	/*
 	var totalRebotes=$('#tableLineas').data('totalRebotes');
 	var totalRebotesDesc=$('#tableLineas').data('totalRebotesDesc');
 	$('#spTotalRebotes').html(totalRebotes+'€').attr({
@@ -89,18 +90,26 @@ function callbackLandingOferta(){
 	});
 	if (totalRebotes>0) {$('#spTotalRebotes').closest('h4').show();} else {$('#spTotalRebotes').closest('h4').hide();}
 	var creditoMaximoAplicable=$('#tableLineas').data('creditoMaximoAplicable');
+	$('#creditoMaximoAplicable').html(creditoMaximoAplicable+'€');
+	if (creditoMaximoAplicable>0) {$('#creditoMaximoAplicable').closest('h4').show();} else {$('#creditoMaximoAplicable').closest('h4').hide();}
+	//aplicar el credito
+
+	/*
 	$('#credito').attr({max:creditoMaximoAplicable}).val(creditoMaximoAplicable);
 	$('#credito').trigger('input');
-	$('#creditoMaximoAplicable').html(creditoMaximoAplicable+'€');
+
 	aplicaDtoVolumen();
 	var dtoImporte=ulDtosTotalImporte().toFixed(2);
 	var dtoTipo=ulDtosTotalTipo().toFixed(2);
 	var totalLineas=$('#spTotalLineas').data('totalLineas');
 	var restoToCredito=($('#panelCredito').data('importe_minimo_aplicacion_credito')-totalLineas).toFixed(2);
 	$('#spRestoToCredito').html(restoToCredito).data('restoToCredito',restoToCredito);
-	var idDirEntrega=$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl').val();
 	calculaTotales(dtoImporte, dtoTipo, ulDtosTotalTipo(), ulDtosDescTipo(), ulDtosDescImporte(), idDirEntrega);
 	*/
-	calculaTotales(0, 0, 0, 0, 0, 1);
+	var idDirEntrega=$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl').val();
+	var dir=$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl');
+	var txtDireccion=dir.data('destinatario')+" - "+dir.data('direccion')+' '+dir.data('cp')+', '+dir.data('poblacion')+' '+dir.data('provincia');
+	$('#dirSeleccionada').html(txtDireccion);
+	calculaTotales(0, 0, 0, 0, 0, idDirEntrega);
 }
 <?="\n/*".get_class()."*/\n"?>
