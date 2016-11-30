@@ -3,9 +3,9 @@
 {
 	"@context": "http://schema.org/",
 	"@type": "Product",
-	"name": "<?=$objOferta->GETnombre()?>",
+	"name": "<?=htmlentities(strip_tags($objOferta->GETnombre()),ENT_QUOTES,"UTF-8")?>",
 	"image": "<?=$objOferta->imgSrc(0, 350, 350)?>",
-	"description": "<?=strip_tags($objOferta->GETdescripcion())?>",
+	"description": "<?=htmlentities(strip_tags($objOferta->GETdescripcion()),ENT_QUOTES,"UTF-8")?>",
 	/*
 	"mpn": "925872",
 	"brand": {
