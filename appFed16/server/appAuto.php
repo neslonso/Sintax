@@ -206,6 +206,7 @@ function gmFeeds() {
 	}
 }
 function gmFeed($keyTienda, $file="./gmFeed.xml") {
+	$storeData=\Sintax\ApiService\Pedidos::getStoreData($keyTienda);
 	if (!is_dir(dirname($file))) {
 		mkdir(dirname($file),0755,true);
 	}
@@ -244,13 +245,30 @@ function gmFeed($keyTienda, $file="./gmFeed.xml") {
 		$contents.=$sg.'<entry>'.$sl;
 
 		$contents.=$sg.$sg.'<g:id>'.$objOfer->GETid().'</g:id>'.$sl;
-		$contents.=$sg.$sg.'<g:title>'.str_replace("&", "&amp;",html_entity_decode(strip_tags($objOfer->GETnombre()))).'</g:title>'.$sl;
-		$contents.=$sg.$sg.'<g:description>'.str_replace("&", "&amp;",html_entity_decode(strip_tags($objOfer->GETdescripcion()))).'</g:description>'.$sl;
+
+		//Sin CDATA
+		//$contents.=$sg.$sg.'<g:title>'.str_replace("&", "&amp;",html_entity_decode(strip_tags($objOfer->GETnombre()))).'</g:title>'.$sl;
+		//$contents.=$sg.$sg.'<g:description>'.str_replace("&", "&amp;",html_entity_decode(strip_tags($objOfer->GETdescripcion()))).'</g:description>'.$sl;
+
+		$contents.=$sg.$sg.'<g:title><![CDATA['.strip_tags($objOfer->GETnombre()).']]></g:title>'.$sl;
+		$contents.=$sg.$sg.'<g:description><![CDATA['.strip_tags($objOfer->GETdescripcion()).']]></g:description>'.$sl;
+
 		$contents.=$sg.$sg.'<g:link>'.str_replace("&", "&amp;", str_replace(BASE_DOMAIN,$BASE_DOMAIN,$objOfer->url())).'</g:link>'.$sl;
 		$contents.=$sg.$sg.'<g:image_link>'.str_replace("&", "&amp;",str_replace(BASE_DOMAIN,$BASE_DOMAIN,$objOfer->imgSrc())).'</g:image_link>'.$sl;
 		$contents.=$sg.$sg.'<g:condition>new</g:condition>'.$sl;
 		$contents.=$sg.$sg.'<g:availability>'.(($objOfer->GETagotado())?'out of stock':'in stock').'</g:availability>'.$sl;
 		$contents.=$sg.$sg.'<g:price>'.$objOfer->pvp().' EUR</g:price>'.$sl;
+
+		$contents.=$sg.$sg.'<g:shipping>'.$sl;
+		$contents.=$sg.$sg.$sg.'<g:country>ES</g:country>'.$sl;
+		$contents.=$sg.$sg.$sg.'<g:service>España peninsular</g:service>'.$sl;
+		$contents.=$sg.$sg.$sg.'<g:price>'.(($objOfer->pvp()>$storeData->IMPORTE_PEDIDO_PORTES_GRATIS)?0:round($storeData->TARIFA_PORTES_PENINSULA,2)).' EUR</g:price>'.$sl;
+		$contents.=$sg.$sg.'</g:shipping>'.$sl;
+		$contents.=$sg.$sg.'<g:shipping>'.$sl;
+		$contents.=$sg.$sg.$sg.'<g:country>ES</g:country>'.$sl;
+		$contents.=$sg.$sg.$sg.'<g:service>España Islas Baleares</g:service>'.$sl;
+		$contents.=$sg.$sg.$sg.'<g:price>'.round($storeData->TARIFA_PORTES_BALEARES,2).' EUR</g:price>'.$sl;
+		$contents.=$sg.$sg.'</g:shipping>'.$sl;
 
 		//$contents.=$sg.$sg.'<g:sale_price>25.49 EUR</g:sale_price>'.$sl;
 		//$contents.=$sg.$sg.'<g:sale_price_effective_date>2011-09-01T16:00-08:00/2011-09-03T16:00-08:00</g:sale_price_effective_date>'.$sl;

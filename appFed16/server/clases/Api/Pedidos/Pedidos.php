@@ -31,14 +31,14 @@ class Pedidos extends ApiService implements IApiService {
 		$stdObjDatosCli->arrCupones=$objMCli->arrMulti_cupon("caducidad>".date("YmdHis"));
 		return $stdObjDatosCli;
 	}
-	public static function getStoreData() {
+	public static function getStoreData($keyTienda=NULL) {
 		//$sharedSecret="fed16newPedBridge";
 		//$salt=hash('sha256', uniqid(mt_rand(), true));
 		//$hash=$salt.hash('sha256',$salt.$pass);
 		$hash='';
 
 		$subService='storeData';
-		$store=$GLOBALS['config']->tienda->key;
+		$store=(!is_null($keyTienda))?$keyTienda:$GLOBALS['config']->tienda->key;
 		$urlAPI='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&subService='.$subService.'&store='.$store.'&hash='.$hash;
 		$result=file_get_contents($urlAPI);
 		$storeData=json_decode($result);
