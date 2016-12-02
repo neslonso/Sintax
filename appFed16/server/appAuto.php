@@ -235,7 +235,19 @@ function gmFeed($keyTienda, $file="./gmFeed.xml") {
 	$contents.='<id>'.'</id>'.$sl;
 	foreach ($arrIdsOfer as $idOfer) {
 		$objOfer=new \Multi_ofertaVenta($db,$idOfer);
-
+		$arrGamas=$objOfer->arrMulti_productoGama();
+		$arrProds=$objOfer->arrMulti_producto("","","","arrClassObjs");
+		$arrIdsGamasParaAdultos=array(
+			'93',//Control
+			'349',//preservativos
+			'133',//Durex
+		);
+		$adult='no';
+		foreach ($arrGamas as $objGama) {
+			if (in_array($objGama->GETid(),$arrIdsGamasParaAdultos)) {
+				$adult='yes';
+			}
+		}
 		//nos saltamos los packs
 		if (count($objOfer->arrMulti_producto())>1) {continue;}
 		//nos saltamos los EANs no válidos
@@ -258,6 +270,7 @@ function gmFeed($keyTienda, $file="./gmFeed.xml") {
 		$contents.=$sg.$sg.'<g:condition>new</g:condition>'.$sl;
 		$contents.=$sg.$sg.'<g:availability>'.(($objOfer->GETagotado())?'out of stock':'in stock').'</g:availability>'.$sl;
 		$contents.=$sg.$sg.'<g:price>'.$objOfer->pvp().' EUR</g:price>'.$sl;
+		$contents.=$sg.$sg.'<g:adult>'.$adult.'</g:adult>'.$sl;
 
 		$contents.=$sg.$sg.'<g:shipping>'.$sl;
 		$contents.=$sg.$sg.$sg.'<g:country>ES</g:country>'.$sl;
