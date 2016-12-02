@@ -26,7 +26,9 @@ class landingOferta extends Error implements IPage {
 	}
 	public function js() {
 		parent::js();
-		\Sintax\ApiService\Pedidos::detallePedidoJs("landingOferta","callbackLandingOferta");
+		if (isset($_SESSION['usuario'])){
+			\Sintax\ApiService\Pedidos::detallePedidoJs("landingOferta","callbackLandingOferta");
+		}
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/js.php");
 	}
 	public function css() {
