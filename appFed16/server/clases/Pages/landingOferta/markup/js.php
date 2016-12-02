@@ -90,9 +90,17 @@ function callbackLandingOferta(){
 	});
 	if (totalRebotes>0) {$('#spTotalRebotes').closest('h4').show();} else {$('#spTotalRebotes').closest('h4').hide();}
 	var creditoMaximoAplicable=$('#tableLineas').data('creditoMaximoAplicable');
-	$('#creditoMaximoAplicable').html(creditoMaximoAplicable+'€');
-	if (creditoMaximoAplicable>0) {$('#creditoMaximoAplicable').closest('h4').show();} else {$('#creditoMaximoAplicable').closest('h4').hide();}
+	//$('#creditoMaximoAplicable').html(creditoMaximoAplicable+'€');
+	//if (creditoMaximoAplicable>0) {$('#creditoMaximoAplicable').closest('h4').show();} else {$('#creditoMaximoAplicable').closest('h4').hide();}
 	//aplicar el credito
+
+	//dtoXtipo=descCliente+modoPago+cupon+volumen
+	//storedata->if descuento cliente y cupon compatibles? -> dtoClienteCompatibleCupon
+	//dtoClientecompatibleDtoVolumen (dtosvolumenpedido)
+	//modopago ->tarjeta (arraysmodospago) 	//xtipo=descCliente+modoPago+cupon FUnc new de modos pago('tarjeta') y me devuelve la id y con eso ya saco el descuento.
+	//cupon de mayor desc q tiene el pavo. Ordenar por descuento y a igualdad por fecha, el q caduque antes y enchufarselo.
+	//descliente
+
 
 	/*
 	$('#credito').attr({max:creditoMaximoAplicable}).val(creditoMaximoAplicable);
@@ -110,6 +118,6 @@ function callbackLandingOferta(){
 	var dir=$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl');
 	var txtDireccion=dir.data('destinatario')+" - "+dir.data('direccion')+' '+dir.data('cp')+', '+dir.data('poblacion')+' '+dir.data('provincia');
 	$('#dirSeleccionada').html(txtDireccion);
-	calculaTotales(0, 0, 0, 0, 0, idDirEntrega);
+	calculaTotales(creditoMaximoAplicable, 0, 0, 0, 0, idDirEntrega);
 }
 <?="\n/*".get_class()."*/\n"?>
