@@ -42,37 +42,28 @@ class landingOferta extends Error implements IPage {
 		$objOferta=new \Multi_ofertaVenta($db,$idOfer);
 		$logueado=false;
 		if (isset($_SESSION['usuario'])){
-			if ($idOfer!=""){
+			if ($idOfer!="" && !$this->existeEnCesta($idOfer)){
 				$this->acAddToCesta($idOfer);
 			}
 			$logueado=true;
 			$store=$GLOBALS['config']->tienda->key;
 			$objCli=$_SESSION['usuario']->objEntity;
 			$objCli->SETdb(\cDb::gI());
-
 			$arrModosPago=\Sintax\ApiService\Pedidos::getArrModosPago();
 			$datosCli=\Sintax\ApiService\Pedidos::getDatosCli($objCli);
 			$storeData=\Sintax\ApiService\Pedidos::getStoreData();
-
-			//$objCesta=$this->ensureCesta(\cDb::gI());
-			//$newPedBridgeData=new \stdClass();
-			//$newPedBridgeData->lineas=\Sintax\ApiService\Pedidos::arrLineasComprarPedido($objCesta);
-
 			$idDirPredeterminada=(isset($datosCli->arrDirecciones[0]))?$datosCli->arrDirecciones[0]->id:NULL;
-
 			$paises=\Sintax\ApiService\Pedidos::arrPaises();
 			$paisDefecto=\Sintax\ApiService\Pedidos::idPaisDefecto();
-
 			$jsonArrDtosVolumen=htmlspecialchars(json_encode($storeData->DTOS_VOLUMEN_PEDIDO),ENT_QUOTES,'UTF-8');
+			$jsonArrModosPago=htmlspecialchars(json_encode(\Sintax\ApiService\Pedidos::getArrModosPago()),ENT_QUOTES,'UTF-8');
+			$idTipoModoPago=\Multi_pedidoModoPago::idModoPagoTipo('tarjeta');
+			$jsonArrCupones=htmlspecialchars(json_encode($objCli->arrMulti_cupon("caducidad>".date("YmdHis"),"tipoDescuento DESC, caducidad ASC","1")),ENT_QUOTES,'UTF-8');
 		}
 		$activarTW=($GLOBALS['config']->tienda->SOCIAL->TW->CONSUMER_KEY!="")?true:false;
 		$activarFB=($GLOBALS['config']->tienda->SOCIAL->FB->APP_ID!="")?true:false;
 		$linkTiendaTW=($GLOBALS['config']->tienda->SOCIAL->TW->URL!="")?true:false;
 		$linkTiendaFB=($GLOBALS['config']->tienda->SOCIAL->FB->URL!="")?true:false;
-
-		//$objCesta=$this->ensureCesta($db);
-		//$arrCestaItems=$objCesta->arrItemsJqCesta();
-		//$jsonArrCestaItems=htmlspecialchars(json_encode($arrCestaItems),ENT_QUOTES,'UTF-8');
 		$storeData=\Sintax\ApiService\Pedidos::getStoreData();
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
 	}
@@ -140,14 +131,54 @@ class landingOferta extends Error implements IPage {
 		';
 		return $result;
 	}
-
-/* Calculos sobre líneas y portes******************************************************/
+	/* Calculos sobre líneas y portes**********************************************/
 	public function acGetLineas() {
 		return \Sintax\ApiService\Pedidos::acGetLineas();
 	}
 	public function acGetPortes() {
 		return \Sintax\ApiService\Pedidos::acGetPortes();
 	}
-/******************************************************************************/
+	/******************************************************************************/
+
+	public function acGrabar () {
+		\cDb::confByKey('celorriov3');
+		$objCli=$_SESSION['usuario']->objEntity;
+		$objCli->SETdb(\cDb::gI());
+
+		$arrayMulti=$_REQUEST;
+		$arrayMulti['keyTienda']=$GLOBALS['config']->tienda->key;
+		$arrayMulti['pedData']['idMulti_cliente']=$objCli->GETid();
+		$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&&subService=newPed';
+		// use key 'http' even if you send the request to https://...
+		$options = array(
+		    'http' => array(
+		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+		        'method'  => 'POST',
+		        'content' => http_build_query($arrayMulti),
+		    ),
+		);
+		$context  = stream_context_create($options);
+		$envioMulti = file_get_contents($url, false, $context);
+		//echo "envioMulti: <pre>";
+		//var_dump($envioMulti);
+		//echo "</pre>";
+		$result=json_decode($envioMulti);
+		if (isset($result->exception)) {
+			/*
+			$errorUri=BASE_URL."/Error";
+			$GLOBALS['acReturnURI']=$errorUri;
+			ReturnInfo::add($result->infoExc,'Error durante la realización del pedido.');
+			echo '<a href="'.$errorUri.'">'.$errorUri.'</a>';
+			die();
+			*/
+			throw new \ActionException($result->infoExc, 1);
+		} else {
+			//echo "result: <pre>".print_r($result,true)."</pre>";
+			//eval('$objPed='."\\".$result->objPed.';');
+			$idMulti_pedido=$result->stdObjPed->id;
+			unset($_SESSION['cesta']);
+			return $idMulti_pedido;
+		}
+	}
 }
 ?>

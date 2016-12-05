@@ -111,5 +111,13 @@ class Multi_cesta extends Sintax\Core\Entity implements Sintax\Core\IEntity {
 		}
 		return $arr;
 	}
+	public function existeEnCesta($idMulti_ofertaVenta){
+		$arrLineas=$this->arrMulti_cestaLinea("idMulti_ofertaVenta='".$idMulti_ofertaVenta."'","","","arrClassObjs");
+		if (count($arrLineas)==0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 }
 ?>

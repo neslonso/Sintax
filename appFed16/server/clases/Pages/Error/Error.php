@@ -113,6 +113,12 @@ class Error extends Page implements IPage {
 		return $objCesta;
 	}
 
+	public function existeEnCesta($idMulti_ofertaVenta){
+		$db=\cDb::confByKey('celorriov3');
+		$objCesta=$this->ensureCesta($db);
+		return $objCesta->existeEnCesta($idMulti_ofertaVenta);
+	}
+
 	public function acAddToCesta ($idMulti_ofertaVenta) {
 		try {
 			$db=\cDb::confByKey('celorriov3');

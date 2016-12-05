@@ -117,5 +117,21 @@ class Multi_pedidoModoPago extends Sintax\Core\Entity implements Sintax\Core\IEn
 		}
 		return $arr;
 	}
+
+	public static function idModoPagoTipo($tipo){
+		$id="";
+		switch ($tipo) {
+			case 'transferencia':
+				$id=1;
+				break;
+			case 'tarjeta':
+				$id=2;
+				break;
+			case 'contrareembolso':
+				$id=3;
+				break;
+		}
+		return $id;
+	}
 }
 ?>

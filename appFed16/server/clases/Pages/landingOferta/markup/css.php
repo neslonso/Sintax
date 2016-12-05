@@ -44,6 +44,53 @@ body{
     margin-bottom: 5px;
     padding: 5px;
 }
+.btn-direccion{
+    background:@color-secundario;
+    color:contrast(@color-secundario);
+    border:1px solid lighten(@color-secundario,10%);
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.btn-direccion:hover{
+    background:lighten(@color-secundario, 10%);
+    color:contrast(lighten(@color-secundario, 10%));
+    border:1px solid @color-secundario;
+}
+.btn-pagar{
+    background:@color-principal;
+    color:contrast(@color-principal);
+    border:1px solid lighten(@color-principal,10%);
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    animation: 2s ease 0s normal none infinite running glowingTextShadow;
+    font-size: 1.2em;
+}
+.btn-pagar:hover{
+    background:lighten(@color-principal, 10%);
+    color:contrast(lighten(@color-principal, 10%));
+    border:1px solid @color-principal;
+}
+@keyframes glowingTextShadow {
+    0%{text-shadow: none;}
+    50%{
+        text-shadow:
+            0 0 0.2em contrast(@color-principal),
+            0 0 0.5em contrast(@color-principal),
+            0 0 0.7em contrast(@color-principal),
+            0 0 1.0em @color-principal,
+            0 0 1.5em @color-principal,
+            0 0 2.0em @color-principal,
+            0 0 2.7em @color-principal,
+            0 0 3.7em @color-principal;
+/*#fff
+#49ff18*/
+    }
+    100%{text-shadow: none;}
+}
 .restoInfoResumen{
     padding: 10px;
 }

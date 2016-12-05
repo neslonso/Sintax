@@ -62,16 +62,18 @@
 	if ($logueado){
 ?>
 					<div class="divDireccion">
-						<h4>Dirección de entrega:
-							<button id="btnModalSelDir" type="button" class="btn btn-xs btn-default">Cambiar</button>
-						</h4> <span id="dirSeleccionada"></span>
-
+						<p>Dirección de entrega:</p>
+						<div id="btnModalSelDir" class="btn-direccion">
+							<span id="dirSeleccionada"></span>
+						</div>
 					</div>
 <?
 	}
 ?>
 					<div class="text-center">
-						<?=\Sintax\ApiService\Productos::btnComprar($objOferta,'banner-price-comprar');?>
+						<div id="btnPagar" class="btn-pagar">
+							<i class="glyphicon glyphicon-shopping-cart"></i> COMPRAR AHORA
+						</div>
 					</div>
 				</div>
 				<div class="col-sm-9">
@@ -103,7 +105,12 @@
 									data-email-cliente="<?=$datosCli->email?>"
 									data-tipo-dto-cliente="<?=$datosCli->tipoDescuento?>"
 									data-arr-dtos-volumen="<?=$jsonArrDtosVolumen?>"
-									data-dto-cliente-compatible-dto-volumen="<?=($storeData->DTO_CLIENTE_COMPATIBLE_DTO_VOLUMEN)?'1':'0';?>">
+									data-dto-cliente-compatible-dto-volumen="<?=($storeData->DTO_CLIENTE_COMPATIBLE_DTO_VOLUMEN)?'1':'0';?>"
+									data-dto-cliente-compatible-cupon="<?=($storeData->DTO_CLIENTE_COMPATIBLE_DTO_VOLUMEN)?'1':'0';?>"
+									data-arr-modos-pago="<?=$jsonArrModosPago?>"
+									data-id-tipo-modo-pago="<?=$idTipoModoPago?>"
+									data-arr-cupones="<?=$jsonArrCupones?>"
+									data-id-cupon="">
 									<?=\Sintax\ApiService\Pedidos::detallePedido();?>
 									<div class="restoInfoResumen">
 										<h4 style="display: none;">
@@ -131,6 +138,7 @@
 												que recibirá como crédito para sus próximos pedidos!
 											</small>
 										</h4>
+										<ul id="ulDtos" style="display:none;"></ul>
 									</div>
 								</div>
 							</div>
@@ -204,65 +212,78 @@
 				<h4 class="modal-title">Dirección de entrega</h4>
 			</div>
 			<div class="modal-body">
-				<?=$this->direccionEntregaSelectionControl($datosCli,$idDirPredeterminada)?>
-				<input name="id" id="id" type="hidden" value="0"/>
-				<div class="row">
-					<input class="form-control" type="hidden" name="nombre" id="nombre" value="" placeholder="Nombre para identificar esta dirección..." />
-					<div class="col-sm-12">
-						<div class="form-group">
-							<label for="destinatario" accesskey="">Destinatario*</label>
-							<input class="form-control" type="text" name="destinatario" id="destinatario" value=""  placeholder="Destinatario del envio" />
-						</div>
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" id="tabsDir" role="tablist">
+					<li role="presentation" class="active"><a href="#selectDirTab" aria-controls="selectDirTab" role="tab" data-toggle="tab">Direcciones actuales</a></li>
+					<li role="presentation"><a href="#newDirTab" aria-controls="newDirTab" role="tab" data-toggle="tab">Nueva dirección</a></li>
+				</ul>
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane active" id="selectDirTab">
+						<?=$this->direccionEntregaSelectionControl($datosCli,$idDirPredeterminada)?>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-4">
-						<div class="form-group">
-							<label for="direccion" accesskey="">Direccion*</label>
-							<input class="form-control" type="text" name="direccion" id="direccion" value="" placeholder="Dirección completa" />
-						</div>
-					</div>
-					<div class="col-sm-4">
-						<div class="form-group">
-							<label for="poblacion" accesskey="">Poblacion*</label>
-							<input class="form-control" type="text" name="poblacion" id="poblacion" value="" placeholder="Población"/>
-						</div>
-					</div>
-					<div class="col-sm-4">
-						<div class="form-group">
-							<label for="provincia" accesskey="">Provincia*</label>
-							<input class="form-control" type="text" name="provincia" id="provincia" value="" placeholder="Provincia" />
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-4">
-						<div class="form-group">
-							<label for="cp" accesskey="">Código postal*</label>
-							<input class="form-control" type="text" name="cp" id="cp" value="" placeholder="Código postal" />
-						</div>
-					</div>
-					<div class="col-sm-4">
-						<div class="form-group">
-								<label for="pais" accesskey="">País:</label>
+					<div role="tabpanel" class="tab-pane" id="newDirTab">
+						<form id="modalAddDir">
+							<input name="id" id="id" type="hidden" value="0"/>
+							<div class="row">
+								<input class="form-control" type="hidden" name="nombre" id="nombre" value="" placeholder="Nombre para identificar esta dirección..." />
+								<div class="col-sm-12">
+									<div class="form-group">
+										<label for="destinatario" accesskey="">Destinatario*</label>
+										<input class="form-control" type="text" name="destinatario" id="destinatario" value=""  placeholder="Destinatario del envio" />
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-4">
+									<div class="form-group">
+										<label for="direccion" accesskey="">Direccion*</label>
+										<input class="form-control" type="text" name="direccion" id="direccion" value="" placeholder="Dirección completa" />
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="form-group">
+										<label for="poblacion" accesskey="">Poblacion*</label>
+										<input class="form-control" type="text" name="poblacion" id="poblacion" value="" placeholder="Población"/>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="form-group">
+										<label for="provincia" accesskey="">Provincia*</label>
+										<input class="form-control" type="text" name="provincia" id="provincia" value="" placeholder="Provincia" />
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-4">
+									<div class="form-group">
+										<label for="cp" accesskey="">Código postal*</label>
+										<input class="form-control" type="text" name="cp" id="cp" value="" placeholder="Código postal" />
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="form-group">
+											<label for="pais" accesskey="">País:</label>
 
-								<select name="pais" id="pais" class="form-control">
-<?
-							foreach ($paises as $pais) {
-								$selected=($pais->id==$paisDefecto)?"selected='selected'":"";
-?>
-								    <option <?=$selected?> data-id="<?=$pais->id?>" data-iso="<?=$pais->alpha2?>" value="<?=$pais->nombre_es?>"><?=$pais->nombre_es?></option>
-<?
-							}
-?>
-								</select>
-						</div>
-					</div>
-					<div class="col-sm-4">
-						<div class="form-group">
-							<label for="movil" accesskey="">Teléfono de contacto*</label>
-							<input class="form-control" type="text" name="movil" id="movil" value="" placeholder"Teléfono de contacto"/>
-						</div>
+											<select name="pais" id="pais" class="form-control">
+	<?
+										foreach ($paises as $pais) {
+											$selected=($pais->id==$paisDefecto)?"selected='selected'":"";
+	?>
+											    <option <?=$selected?> data-id="<?=$pais->id?>" data-iso="<?=$pais->alpha2?>" value="<?=$pais->nombre_es?>"><?=$pais->nombre_es?></option>
+	<?
+										}
+	?>
+											</select>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="form-group">
+										<label for="movil" accesskey="">Teléfono de contacto*</label>
+										<input class="form-control" type="text" name="movil" id="movil" value="" placeholder"Teléfono de contacto"/>
+									</div>
+								</div>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
