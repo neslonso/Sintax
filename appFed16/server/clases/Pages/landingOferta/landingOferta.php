@@ -180,5 +180,44 @@ class landingOferta extends Error implements IPage {
 			return $idMulti_pedido;
 		}
 	}
+
+	public function acGetFormTpvv () {
+		\cDb::confByKey('celorriov3');
+		$objCli=$_SESSION['usuario']->objEntity;
+		$objCli->SETdb(\cDb::gI());
+
+		$arrayMulti=$_REQUEST;
+		$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&&subService=formTpvv';
+		// use key 'http' even if you send the request to https://...
+		$options = array(
+		    'http' => array(
+		        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+		        'method'  => 'POST',
+		        'content' => http_build_query($arrayMulti),
+		    ),
+		);
+		$context  = stream_context_create($options);
+		$envioMulti = file_get_contents($url, false, $context);
+		//echo "envioMulti: <pre>";
+		//var_dump($envioMulti);
+		//echo "</pre>";
+		$result=json_decode($envioMulti);
+		if (isset($result->exception)) {
+			/*
+			$errorUri=BASE_URL."/Error";
+			$GLOBALS['acReturnURI']=$errorUri;
+			ReturnInfo::add($result->infoExc,'Error durante la realización del pedido.');
+			echo '<a href="'.$errorUri.'">'.$errorUri.'</a>';
+			die();
+			*/
+			throw new \ActionException($result->infoExc, 1);
+		} else {
+			//echo "result: <pre>".print_r($result,true)."</pre>";
+			//eval('$objPed='."\\".$result->objPed.';');
+			//$idMulti_pedido=$result->stdObjPed->id;
+			//unset($_SESSION['cesta']);
+			return $result;
+		}
+	}
 }
 ?>

@@ -171,7 +171,20 @@ $(document).ready(function() {
 			'session_name': '<?=$GLOBALS['session_name']?>'
 		},
 		function (response) {
-			console.log(response);
+			console.log("idPedido:".response);
+			$.post('<?=BASE_DIR.FILE_APP?>',{
+				'MODULE'      : 'actions',
+				'acClase'     : 'landingOferta',
+				'acMetodo'    : 'acGetFormTpvv',
+				'acTipo'      : 'stdAssoc',
+				'idPedido'     :  response,
+				'session_name': '<?=$GLOBALS['session_name']?>'
+			},
+			function (response) {
+				$('#divFormTPVV').html(response);
+				$('#formTpvv').submit();
+			},
+			'json');
 		},
 		'json');
 	});
