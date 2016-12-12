@@ -181,6 +181,7 @@ $(document).ready(function() {
 				'session_name': '<?=$GLOBALS['session_name']?>'
 			},
 			function (response) {
+				console.log(response);
 				$('#divFormTPVV').html(response);
 				$('#formTpvv').submit();
 			},

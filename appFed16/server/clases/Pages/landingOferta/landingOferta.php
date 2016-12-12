@@ -185,7 +185,7 @@ class landingOferta extends Error implements IPage {
 		\cDb::confByKey('celorriov3');
 		$objCli=$_SESSION['usuario']->objEntity;
 		$objCli->SETdb(\cDb::gI());
-
+ReturnInfo::add($_REQUEST,'datos llamada FORMTPVV.');
 		$arrayMulti=$_REQUEST;
 		$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&&subService=formTpvv';
 		// use key 'http' even if you send the request to https://...
