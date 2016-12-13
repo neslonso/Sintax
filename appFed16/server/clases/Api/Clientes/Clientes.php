@@ -31,16 +31,17 @@ class Clientes extends ApiService implements IApiService {
 	}
 	/**
 	 * [acLoginCliente description]
-	 * @param  [type] $email     [description]
-	 * @param  [type] $pass      [description]
-	 * @param  [type] $keyTienda [description]
-	 * @return [type]            [description]
+	 * @param  [type] $email      [description]
+	 * @param  [type] $pass       [description]
+	 * @param  [type] $keyTienda  [description]
+	 * @param  [type] $tokenEmail [Para autologin desde newsletter]
+	 * @return [type]             [description]
 	 */
-	public static function acLoginCliente($email,$pass,$keyTienda) {
+	public static function acLoginCliente($email,$pass,$keyTienda,$tokenEmail) {
 		$db=\cDb::confByKey("celorriov3");
 		//$arrReturn=array();
 		$result=false;
-		$objCliUser=\Multi_clienteUser::login($db,$email,$pass,$keyTienda);
+		$objCliUser=\Multi_clienteUser::login($db,$email,$pass,$keyTienda,$tokenEmail);
 		if ($objCliUser!==false) {
 			$_SESSION['usuario']=$objCliUser;
 			$result=true;

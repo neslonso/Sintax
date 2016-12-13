@@ -166,23 +166,22 @@ $(document).ready(function() {
 			'MODULE'      : 'actions',
 			'acClase'     : 'landingOferta',
 			'acMetodo'    : 'acGrabar',
-			'acTipo'      : 'stdAssoc',
+			'acTipo'      : 'ajaxAssoc',
 			'pedData'     :  pedData,
 			'session_name': '<?=$GLOBALS['session_name']?>'
 		},
 		function (response) {
-			console.log("idPedido:".response);
 			$.post('<?=BASE_DIR.FILE_APP?>',{
 				'MODULE'      : 'actions',
 				'acClase'     : 'landingOferta',
 				'acMetodo'    : 'acGetFormTpvv',
-				'acTipo'      : 'stdAssoc',
-				'idPedido'     :  response,
+				'acTipo'      : 'ajaxAssoc',
+				'idPedido'    :  response.data,
+				'keyTienda'	  :  '<?=$GLOBALS['config']->tienda->key?>',
 				'session_name': '<?=$GLOBALS['session_name']?>'
 			},
 			function (response) {
-				console.log(response);
-				$('#divFormTPVV').html(response);
+				$('#divFormTPVV').html(response.data.html);
 				$('#formTpvv').submit();
 			},
 			'json');

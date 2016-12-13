@@ -81,11 +81,11 @@ class Error extends Page implements IPage {
 	 * @param  [type] $pass  [description]
 	 * @return [type]        [description]
 	 */
-	public function acLogin($email,$pass,$token) {
+	public function acLogin($email,$pass,$token,$tokenEmail="") {
 		if ($token!="") {//token de FB
 			$result=\Sintax\ApiService\Clientes::acLoginClienteFB($email,$token,$GLOBALS['config']->tienda->key);
 		} else {
-			$result=\Sintax\ApiService\Clientes::acLoginCliente($email,$pass,$GLOBALS['config']->tienda->key);
+			$result=\Sintax\ApiService\Clientes::acLoginCliente($email,$pass,$GLOBALS['config']->tienda->key,$tokenEmail);
 		}
 		return $result;
 	}

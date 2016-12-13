@@ -60,10 +60,20 @@ class Multi_clienteUser extends AnonymousUser implements IUser {
 	 * @param  string    $keyTienda
 	 * @return Multi_clienteUser
 	 */
-	public static function login(\MysqliDB $db,$email,$pass,$keyTienda) {
+	public static function login(\MysqliDB $db,$email,$pass,$keyTienda,$tokenEmail='') {
 		$result=false;
 		$objCliUser=new static($db);
-		$objCliUser->objEntity=\Multi_cliente::login($db,$email,$pass,$keyTienda);
+		if ($tokenEmail!=""){
+			$params=explode("PWPWPW",base64_decode($tokenEmail));
+			$idCli=$params[0];
+			if ($params[1]==md5($idCli."PWPWPW".$idCli."PWPWPW")){
+				$objCliUser->objEntity=new \Multi_cliente($db,$idCli);
+			} else {
+				throw new \ActionException("Intento de acceso incorrecto.", 1);
+			}
+		} else {
+			$objCliUser->objEntity=\Multi_cliente::login($db,$email,$pass,$keyTienda);
+		}
 		if ($objCliUser->objEntity) {
 			$result=$objCliUser;
 		}

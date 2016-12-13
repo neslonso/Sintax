@@ -22,6 +22,12 @@ class landingOferta extends Error implements IPage {
 	}
 	public function head() {
 		parent::head();
+		$db=\cDb::confByKey('celorriov3');
+		$idOfer = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
+		$objOferta=new \Multi_ofertaVenta($db,$idOfer);
+		if (isset($_REQUEST['c'])){
+			$this->acLogin("","","",$_REQUEST['c']);
+		}
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/head.php");
 	}
 	public function js() {
@@ -164,13 +170,6 @@ class landingOferta extends Error implements IPage {
 		//echo "</pre>";
 		$result=json_decode($envioMulti);
 		if (isset($result->exception)) {
-			/*
-			$errorUri=BASE_URL."/Error";
-			$GLOBALS['acReturnURI']=$errorUri;
-			ReturnInfo::add($result->infoExc,'Error durante la realización del pedido.');
-			echo '<a href="'.$errorUri.'">'.$errorUri.'</a>';
-			die();
-			*/
 			throw new \ActionException($result->infoExc, 1);
 		} else {
 			//echo "result: <pre>".print_r($result,true)."</pre>";
@@ -185,7 +184,6 @@ class landingOferta extends Error implements IPage {
 		\cDb::confByKey('celorriov3');
 		$objCli=$_SESSION['usuario']->objEntity;
 		$objCli->SETdb(\cDb::gI());
-ReturnInfo::add($_REQUEST,'datos llamada FORMTPVV.');
 		$arrayMulti=$_REQUEST;
 		$url='http://multi.farmaciacelorrio.com/api.php?APP=appMulti&service=NEW_PED_BRIDGE&&subService=formTpvv';
 		// use key 'http' even if you send the request to https://...
