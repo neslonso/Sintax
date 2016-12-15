@@ -76,6 +76,20 @@ $(document).ready(function() {
 			'json');
 		}
 	});
+	$('#btnAddCesta').on('click', function () {
+		$.post('<?=BASE_DIR.FILE_APP?>',{
+			'MODULE'      : 'actions',
+			'acClase'     : 'landingOferta',
+			'acMetodo'    : 'acAddToCestaOferta',
+			'acTipo'      : 'ajaxAssoc',
+			'idOfer'      : $('#idOfer').val(),
+			'session_name': '<?=$GLOBALS['session_name']?>'
+		},
+		function (response) {
+			location.href="<?=BASE_URL?>/comprar_pedido";
+		},
+		'json');
+	});
 	$('#btnPagar').on('click', function (evt) {
 		$dirRadioChecked=$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl');
 		if (!$dirRadioChecked.data()) {
@@ -275,5 +289,12 @@ function callbackLandingOferta(){
 	$('#dirSeleccionada').html(txtDireccion);
 	//TOTALES
 	calculaTotales(dtoImporteTotal, dtoTipoTotal, dtoTipoTotal, dtoTipoTotalDesc, dtoImporteTotalDesc, idDirEntrega);
+	//portes gratis
+	var portes=parseFloat($('#spPortes').data('portes'));
+	if (portes>0){
+		$('.imgPortesGratis').hide();
+	} else {
+		$('.imgPortesGratis').show();
+	}
 }
 <?="\n/*".get_class()."*/\n"?>

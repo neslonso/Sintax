@@ -15,10 +15,26 @@ class landingOferta extends Error implements IPage {
 		return $this->objUsr->accionPermitida($this,$metodo);
 	}
 	public function title() {
-		return parent::title();
+		$title="";
+		$idOfer = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
+		if(\Multi_ofertaVenta::existe (\cDb::confByKey('celorriov3'),$idOfer)){
+			$objOferta=new \Multi_ofertaVenta(\cDb::confByKey('celorriov3'),$idOfer);
+			$title=str_replace("%NOMBRE%", $objOferta->GETnombre(), $objOferta->GETtitle());
+			$title=str_replace("%PRECIO%", $objOferta->pvp(), $title);
+		}
+		$title.=' &bull; '.$GLOBALS['config']->tienda->SITE_NAME;
+		return $title;
 	}
 	public function metaTags() {
-		return parent::metaTags();
+		$metaTags="";
+		$idOfer = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
+		if(\Multi_ofertaVenta::existe (\cDb::confByKey('celorriov3'),$idOfer)){
+			$objOferta=new \Multi_ofertaVenta(\cDb::confByKey('celorriov3'),$idOfer);
+			$metaTags .= '<meta name="description" content="'.$objOferta->GETmetaDescription().'">';
+			$metaTags .= '<meta name="title" content="'.$objOferta->GETtitle().'">';
+			$metaTags .= '<meta name="keywords" content="'.$objOferta->GETmetaKeywords().'">';
+		}
+		return $metaTags;
 	}
 	public function head() {
 		parent::head();
@@ -178,6 +194,15 @@ class landingOferta extends Error implements IPage {
 			unset($_SESSION['cesta']);
 			return $idMulti_pedido;
 		}
+	}
+
+	public function acAddToCestaOferta () {
+		$arrayMulti=$_REQUEST;
+		$idOfer=$arrayMulti['idOfer'];
+		if ($idOfer!="" && !$this->existeEnCesta($idOfer)){
+			$this->acAddToCesta($idOfer);
+		}
+		return true;
 	}
 
 	public function acGetFormTpvv () {

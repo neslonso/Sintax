@@ -4,7 +4,7 @@
 		<?=$GLOBALS['config']->tienda->BIENVENIDA?>
 	</div>
 	<div class="container">
-		<div class="row vertical-align">
+		<div class="row hidden-xs vertical-align">
 			<div class="col-xs-12 col-sm-3">
 				<div class="logoLanding" class="">
 					<a href="<?=BASE_URL?>">
@@ -20,6 +20,22 @@
 				</div>
 			</div>
 		</div>
+		<div class="row visible-xs">
+			<div class="col-xs-12">
+				<div class="logoLanding text-center">
+					<a href="<?=BASE_URL?>">
+						<img src="<?=$GLOBALS['config']->tienda->URL_LOGO?>" style="width:200px">
+					</a>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-9">
+				<div class="textwidget text-center">
+					<strong>Infórmate:</strong>
+					<a href="mailto:<?=$GLOBALS['config']->tienda->CONTACTO->EMAIL?>"><?=$GLOBALS['config']->tienda->CONTACTO->EMAIL?></a> o
+					<a href="tel:+34 <?=$GLOBALS['config']->tienda->CONTACTO->TLF?>"><?=$GLOBALS['config']->tienda->CONTACTO->TLF?></a>
+				</div>
+			</div>
+		</div>
 	</div>
 </header>
 
@@ -29,6 +45,7 @@
 			<div class="row">
 				<div class="col-sm-10 col-sm-offset-1 text-center">
 					<h1 class="promoH1"><?=$objOferta->GETnombre()?></h1>
+					<input type="hidden" id="idOfer" value="<?=$objOferta->GETid()?>">
 <?
 	if ($objOferta->descuentoOferta()>0){
 ?>
@@ -57,6 +74,9 @@
 		echo '<div class="shop-item-dto-triangle"></div><div class="shop-item-dto">-'.$objOferta->descuentoOferta().'%</div>';
 	}
 ?>
+						<div class="imgPortesGratis">
+							<img src="<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&fichero=envioGratis.png">
+						</div>
 					</div>
 <?
 	if ($logueado){
@@ -67,14 +87,27 @@
 							<span id="dirSeleccionada"></span>
 						</div>
 					</div>
-<?
-	}
-?>
 					<div class="text-center">
 						<div id="btnPagar" class="btn-pagar">
 							<i class="glyphicon glyphicon-shopping-cart"></i> COMPRAR AHORA
 						</div>
 					</div>
+<?
+	} else {
+?>
+					<div class="text-center">
+						<div id="btnAddCesta" class="btn-pagar">
+							<i class="glyphicon glyphicon-shopping-cart"></i> AÑADIR A CESTA
+						</div>
+					</div>
+					<div class="text-center">
+						<div id="btnTienda" onclick="location.href='<?=BASE_URL?>'" class="btn-tienda">
+							IR A TIENDA <i class="glyphicon glyphicon-chevron-right"></i>
+						</div>
+					</div>
+<?
+	}
+?>
 				</div>
 				<div class="col-sm-9">
 					<div>

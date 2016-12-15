@@ -56,7 +56,7 @@ function calculaTotales(dtoImporte, dtoTipo, dtosTotalTipo, dtosDescTipo, dtosDe
 		title: dtosDescTipo
 	});
 
-	$('#spDescuentoImporte').html(dtoImporte).data('dtoImporte',dtoImporte);
+	$('#spDescuentoImporte').html(dtoImporte.toFixed(2)).data('dtoImporte',dtoImporte.toFixed(2));
 	$('#tipDtosImporte').tooltip({
 		placement: 'left',
 		html: true,

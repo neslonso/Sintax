@@ -91,6 +91,22 @@ body{
     }
     100%{text-shadow: none;}
 }
+.btn-tienda{
+    margin-top: 10px;
+    background:@color-terciario;
+    color:contrast(@color-terciario);
+    border:1px solid lighten(@color-terciario,10%);
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 1.2em;
+}
+.btn-tienda:hover{
+    background:lighten(@color-terciario, 10%);
+    color:contrast(lighten(@color-terciario, 10%));
+    border:1px solid @color-terciario;
+}
 .restoInfoResumen{
     padding: 10px;
 }
@@ -184,6 +200,15 @@ body{
 .img-item img{
     width: 100%;
 }
+.imgPortesGratis{
+    right: 22px;
+    top: 7px;
+    width: 75px;
+    position: absolute;
+}
+.imgPortesGratis img{
+     width: 75px;
+}
 .panel{
     background-color:rgba(255, 255, 255, 0.5) !important;
     margin-bottom: 0px !important;
@@ -196,7 +221,8 @@ body{
 }
 .footerLanding h3{
     font-size: 1.2em !important;
-    text-align: center;
+    text-align: left;
+    padding-left: 40px;
 }
 /* XS y SM */
 @media (max-width: 991px){
