@@ -73,20 +73,21 @@ class Home extends Error implements IPage {
 		$TileColor='#2d89ef';//#00a300//SC:#ffceb4 o mejor #ffffff//FD:008B44
 		$themeColor='#ffffff';//SC:#ffceb4//FD:#008B44
 		//http://realfavicongenerator.net/
-		echo '
-			<link rel="apple-touch-icon" sizes="180x180" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/apple-touch-icon.png?v=lkgMkggyvj">
-			<link rel="icon" type="image/png" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/favicon-32x32.png?v=lkgMkggyvj" sizes="32x32">
-			<link rel="icon" type="image/png" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/favicon-16x16.png?v=lkgMkggyvj" sizes="16x16">
-			<link rel="manifest" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/manifest.json?v=lkgMkggyvj">
-			<link rel="mask-icon" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/safari-pinned-tab.svg?v=lkgMkggyvj" color="#5bbad5">
-			<link rel="shortcut icon" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/favicon.ico?v=lkgMkggyvj">
-			<meta name="apple-mobile-web-app-title" content="'.$sitename.'">
-			<meta name="application-name" content="'.$sitename.'">
-			<meta name="msapplication-TileColor" content="'.$TileColor.'">
-			<meta name="msapplication-TileImage" content="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/mstile-144x144.png?v=lkgMkggyvj">
-			<meta name="msapplication-config" content="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/browserconfig.xml?v=lkgMkggyvj">
-			<meta name="theme-color" content="'.$themeColor.'">
-		';
+		$sl="\n";
+		echo
+			'<link rel="apple-touch-icon" sizes="180x180" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/apple-touch-icon.png?v=lkgMkggyvj">'.$sl.
+			'<link rel="icon" type="image/png" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/favicon-32x32.png?v=lkgMkggyvj" sizes="32x32">'.$sl.
+			'<link rel="icon" type="image/png" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/favicon-16x16.png?v=lkgMkggyvj" sizes="16x16">'.$sl.
+			'<link rel="manifest" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/manifest.json?v=lkgMkggyvj">'.$sl.
+			'<link rel="mask-icon" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/safari-pinned-tab.svg?v=lkgMkggyvj" color="#5bbad5">'.$sl.
+			'<link rel="shortcut icon" href="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/favicon.ico?v=lkgMkggyvj">'.$sl.
+			'<meta name="apple-mobile-web-app-title" content="'.$sitename.'">'.$sl.
+			'<meta name="application-name" content="'.$sitename.'">'.$sl.
+			'<meta name="msapplication-TileColor" content="'.$TileColor.'">'.$sl.
+			'<meta name="msapplication-TileImage" content="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/mstile-144x144.png?v=lkgMkggyvj">'.$sl.
+			'<meta name="msapplication-config" content="'.BASE_URL.'appFed16/binaries/imgs/favIcon/'.$keyTienda.'/browserconfig.xml?v=lkgMkggyvj">'.$sl.
+			'<meta name="theme-color" content="'.$themeColor.'">'.$sl.
+		'';
 	}
 	public function js() {
 		parent::js();

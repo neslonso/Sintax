@@ -24,7 +24,10 @@
 						data-nombre="<?=$stdObjOfer->nombre?>"
 						data-categoria="<?=$stdObjOfer->categoria?>"
 						data-this-class="<?=get_class($this)?>"
-						data-index="<?=($stdObjOfer->index)?>">
+						data-index="<?=($stdObjOfer->index)?>"
+						data-img-src="<?=$stdObjOfer->urlFotoPpal?>"
+						data-descripcion="<?=htmlentities(strip_tags($stdObjOfer->descripcion),ENT_QUOTES,"UTF-8")?>"
+						data-precio="<?=$stdObjOfer->precio?>">
 						<div class="shop-item" data-toggle="tooltip" title="<?=$stdObjOfer->tooltip?>" data-index="<?=($stdObjOfer->index)?>">
 							<div class="shop-item-data">
 								<div class="shop-item-img">

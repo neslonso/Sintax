@@ -47,6 +47,8 @@ class prod extends Home implements IPage {
 	}
 	public function head() {
 		parent::head();
+		$idOfer = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
+		$objOferta=new \Multi_ofertaVenta(\cDb::gI(),$idOfer);
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/head.php");
 	}
 	public function js() {

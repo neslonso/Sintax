@@ -325,7 +325,13 @@
 									<ul>
 										<li>Entrega: 24/48h </li>
 										<li>Envío gratis desde <?=round($storeData->IMPORTE_PEDIDO_PORTES_GRATIS)?>€</li>
-										<li>Tarifa plana portes</li>
+										<li>
+											Tarifa plana portes
+											<ul>
+												<li>Peninsula: <?=round($storeData->TARIFA_PORTES_PENINSULA,2)?>€</li>
+												<li>Baleares: <?=round($storeData->TARIFA_PORTES_BALEARES,2)?>€</li>
+											</ul>
+										</li>
 										<li>Seguimiento online del pedido</li>
 									</ul>
 								</div>
