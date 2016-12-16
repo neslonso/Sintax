@@ -164,7 +164,7 @@
 		}
 ?>
 										<h4 style="display: none;">
-											Productos rebote<br />
+											Productos rebote:
 											<small class="tooltip-wide">
 												Su pedido incluye productos rebote por un total de
 												<span id="spTotalRebotes"></span>

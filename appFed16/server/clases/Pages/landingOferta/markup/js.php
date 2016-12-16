@@ -289,6 +289,8 @@ function callbackLandingOferta(){
 	$('#dirSeleccionada').html(txtDireccion);
 	//TOTALES
 	calculaTotales(dtoImporteTotal, dtoTipoTotal, dtoTipoTotal, dtoTipoTotalDesc, dtoImporteTotalDesc, idDirEntrega);
+}
+$(window).load(function() {
 	//portes gratis
 	var portes=parseFloat($('#spPortes').data('portes'));
 	if (portes>0){
@@ -296,5 +298,5 @@ function callbackLandingOferta(){
 	} else {
 		$('.imgPortesGratis').show();
 	}
-}
+});
 <?="\n/*".get_class()."*/\n"?>

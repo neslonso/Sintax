@@ -162,9 +162,10 @@ class Pedidos extends ApiService implements IApiService {
 			$stdObjLinea->dtoDesc=$dtoDesc;
 
 			if ($stdObjLinea->tipoDevolucionCredito>0) {
-				$totalRebote=round(($stdObjLinea->tipoDevolucionCredito/100)*$this->totalLinea($stdObjLinea),2);
+				$totalLinea=\Sintax\ApiService\Pedidos::totalLinea($stdObjLinea);
+				$totalRebote=round(($stdObjLinea->tipoDevolucionCredito/100)*$totalLinea,2);
 				$totalRebotes+=$totalRebote;
-				$totalRebotesDesc.='<tr><td>'.$stdObjLinea->concepto.'</td><td>'.$this->totalLinea($stdObjLinea).'€ x'.$stdObjLinea->tipoDevolucionCredito.'%</td><td>=</td><td>'.$totalRebote.'€</td></tr>';
+				$totalRebotesDesc.='<tr><td>'.$stdObjLinea->concepto.'</td><td>'.$totalLinea.'€ x'.$stdObjLinea->tipoDevolucionCredito.'%</td><td>=</td><td>'.$totalRebote.'€</td></tr>';
 			}
 			$stdObjLinea->precioLineaTooltip='';
 			if (in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
