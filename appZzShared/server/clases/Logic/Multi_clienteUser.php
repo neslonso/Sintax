@@ -60,24 +60,29 @@ class Multi_clienteUser extends AnonymousUser implements IUser {
 	 * @param  string    $keyTienda
 	 * @return Multi_clienteUser
 	 */
-	public static function login(\MysqliDB $db,$email,$pass,$keyTienda,$tokenEmail='') {
-		$result=false;
-		$objCliUser=new static($db);
-		if ($tokenEmail!=""){
-			$params=explode("PWPWPW",base64_decode($tokenEmail));
-			$idCli=$params[0];
-			if ($params[1]==md5($idCli."PWPWPW".$idCli."PWPWPW")){
-				$objCliUser->objEntity=new \Multi_cliente($db,$idCli);
+	public static function login(\MysqliDB $db,$email,$pass,$keyTienda,$tokenEmail=NULL) {
+		try {
+			$result=false;
+			$objCliUser=new static($db);
+			if (!is_null($tokenEmail)){
+				$params=explode("PWPWPW",base64_decode($tokenEmail));
+				$idCli=$params[0];
+				if ($params[1]==md5($idCli."PWPWPW".$idCli."PWPWPW")){
+					$objCliUser->objEntity=new \Multi_cliente($db,$idCli);
+				} else {
+					throw new \ActionException("Intento de acceso incorrecto.", 1);
+				}
 			} else {
-				throw new \ActionException("Intento de acceso incorrecto.", 1);
+				$objCliUser->objEntity=\Multi_cliente::login($db,$email,$pass,$keyTienda);
 			}
-		} else {
-			$objCliUser->objEntity=\Multi_cliente::login($db,$email,$pass,$keyTienda);
+			if ($objCliUser->objEntity) {
+				$result=$objCliUser;
+			}
+			return $result;
+		} catch (Exception $e) {
+			throw new \ActionException("Acceso de login token=".$tokenEmail.print_r(debug_backtrace()), 1);
 		}
-		if ($objCliUser->objEntity) {
-			$result=$objCliUser;
-		}
-		return $result;
+
 	}
 }
 ?>
