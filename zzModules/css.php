@@ -182,7 +182,7 @@ try {
 		require RUTA_APP."cliente/appCss.php";
 
 		if (!class_exists($page)) {
-			mail (DEBUG_EMAIL,"FED16. CSS.PHP no existe la clase [".$page."]: ".$_SERVER['REMOTE_ADDR'],
+			mail (DEBUG_EMAIL,$_SERVER['HTTP_HOST'].". CSS.PHP no existe la clase [".$page."]: ".$_SERVER['REMOTE_ADDR'],
 				"\n\n--------------------------------------------------------\n\n".
 				var_export($_POST,true)
 				."\n\n--------------------------------------------------------\n\n".
