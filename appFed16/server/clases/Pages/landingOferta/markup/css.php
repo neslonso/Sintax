@@ -3,9 +3,10 @@
 body{
     background-image: url("<?=BASE_DIR?>index.php?MODULE=images&almacen=IMGS_DIR&fichero=landingOferta.<?=$GLOBALS['config']->tienda->key?>.jpg");
     /*añadir filtro al fondoo &filtro=opacity*/
-    /*background-position:center center;*/
+    background-attachment: fixed;
     background-size: cover !important;
     background-repeat:no-repeat;
+    /*background-position: center;*/
 }
 /*** SCALING TEXT ****/
 @selector:~'body';
