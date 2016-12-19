@@ -43,6 +43,7 @@ try {
 	unset ($_REQUEST['acMetodo']);
 	unset ($_REQUEST['acTipo']);
 	unset ($_REQUEST['acReturnURI']);
+	unset ($_REQUEST['session_name']);
 
 	$objUsr=new Sintax\Core\AnonymousUser();
 	if (isset($_SESSION['usuario'])) {
