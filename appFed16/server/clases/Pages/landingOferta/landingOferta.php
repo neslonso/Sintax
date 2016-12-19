@@ -65,7 +65,7 @@ class landingOferta extends Error implements IPage {
 		$logueado=false;
 		if (isset($_SESSION['usuario'])){
 			if ($idOfer!="" && !$this->existeEnCesta($idOfer)){
-				if ($objOfer->vendible()){
+				if ($objOferta->vendible()){
 					$this->acAddToCesta($idOfer);
 				}
 			}

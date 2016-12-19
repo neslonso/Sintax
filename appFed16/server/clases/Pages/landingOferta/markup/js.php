@@ -288,6 +288,16 @@ function callbackLandingOferta(){
 	$('#dirSeleccionada').html(txtDireccion);
 	//TOTALES
 	calculaTotales(dtoImporteTotal, dtoTipoTotal, dtoTipoTotal, dtoTipoTotalDesc, dtoImporteTotalDesc, idDirEntrega);
+	//mostramos/ocultamos pagos si no hay nada en cesta.
+	var arrLineas=$('#tableLineas').data('arrLineas');
+	if (arrLineas.length==0) {
+		//deshabilitamos controles
+		$(".divDireccion, #btnPagar").hide();
+		$("#btnTienda").show();
+		//quitamos tab de cesta y activamos el de descripcion
+		$('.nav-tabs a[href="#txtDescripcion"]').tab('show');
+		$("#tabCesta, #cestaOferta").hide();
+	}
 }
 $(window).load(function() {
 	//portes gratis

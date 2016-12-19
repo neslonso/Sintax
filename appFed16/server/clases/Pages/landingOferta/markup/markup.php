@@ -38,13 +38,18 @@
 		</div>
 	</div>
 </header>
-
+<?
+	$agotado="";
+	if (!$objOferta->vendible()){
+		$agotado='<span class="label label-danger">Agotado</span>';
+	}
+?>
 <section class="cuerpoOferta" style="">
 	<div class="">
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-10 col-sm-offset-1 text-center">
-					<h1 class="promoH1"><?=$objOferta->GETnombre()?></h1>
+					<h1 class="promoH1"><?=$objOferta->GETnombre()?> <?=$agotado?></h1>
 					<input type="hidden" id="idOfer" value="<?=$objOferta->GETid()?>">
 <?
 	if ($objOferta->descuentoOferta()>0){
@@ -92,6 +97,11 @@
 							<i class="glyphicon glyphicon-shopping-cart"></i> COMPRAR AHORA
 						</div>
 					</div>
+					<div class="text-center">
+						<div id="btnTienda" style="display:none" onclick="location.href='<?=BASE_URL?>'" class="btn-tienda">
+							IR A TIENDA <i class="glyphicon glyphicon-chevron-right"></i>
+						</div>
+					</div>
 <?
 	} else {
 		if ($objOferta->vendible()){
@@ -121,7 +131,7 @@
 	$activoDescripcion="";
 	if ($logueado){
 ?>
-							<li role="presentation" class="active"><a href="#cestaOferta" aria-controls="cestaOferta" role="tab" data-toggle="tab">Detalles del pedido</a></li>
+							<li role="presentation" id="tabCesta" class="active"><a href="#cestaOferta" aria-controls="cestaOferta" role="tab" data-toggle="tab">Detalles del pedido</a></li>
 <?
 	} else {
 		$activoDescripcion='active';
@@ -185,7 +195,7 @@
 ?>
 							<div role="tabpanel" class="tab-pane <?=$activoDescripcion?>" id="txtDescripcion">
 								<div class="tabOferta">
-									<h3 class="promoH3"><?=$objOferta->GETnombre()?></h3>
+									<h3 class="promoH3"><?=$objOferta->GETnombre()?> <?=$agotado?></h3>
 <?
 	$descripcion = nl2br($objOferta->GETdescripcion());
 ?>
