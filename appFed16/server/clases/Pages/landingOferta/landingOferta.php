@@ -80,7 +80,30 @@ class landingOferta extends Error implements IPage {
 			$jsonArrDtosVolumen=htmlspecialchars(json_encode($storeData->DTOS_VOLUMEN_PEDIDO),ENT_QUOTES,'UTF-8');
 			$jsonArrModosPago=htmlspecialchars(json_encode(\Sintax\ApiService\Pedidos::getArrModosPago()),ENT_QUOTES,'UTF-8');
 			$idTipoModoPago=\Multi_pedidoModoPago::idModoPagoTipo('tarjeta');
-			$jsonArrCupones=htmlspecialchars(json_encode($objCli->arrMulti_cupon("caducidad>".date("YmdHis"),"tipoDescuento DESC, caducidad ASC","1")),ENT_QUOTES,'UTF-8');
+
+			$jsonArrCupones="";
+error_log('landing 1');
+			$cupones=$objCli->arrMulti_cupon("caducidad>".date("YmdHis"),"tipoDescuento DESC, caducidad ASC","1");
+error_log('landing 2');
+			foreach ($cupones as $stdObjCupon) {
+error_log('landing 3');
+error_log(print_r($cupones,true));
+				$validaCupon=\Sintax\ApiService\Pedidos::validaCupon($stdObjCupon->codigo,$objCli->GETid());
+error_log('landing 4');
+				if ($validaCupon==false){
+					$jsonArrCupones="";
+error_log('landing 5');
+				} else {
+error_log('landing 6'.$stdObjCupon->codigo);
+					$jsonArrCupones=htmlspecialchars(json_encode($stdObjCupon),ENT_QUOTES,'UTF-8');
+					break;
+				}
+			}
+
+
+//			$jsonArrCupones=htmlspecialchars(json_encode($objCli->arrMulti_cupon("caducidad>".date("YmdHis"),"tipoDescuento DESC, caducidad ASC","1")),ENT_QUOTES,'UTF-8');
+			//recorro array  cupones y quito los que haya q validar.
+
 		}
 		$activarTW=($GLOBALS['config']->tienda->SOCIAL->TW->CONSUMER_KEY!="")?true:false;
 		$activarFB=($GLOBALS['config']->tienda->SOCIAL->FB->APP_ID!="")?true:false;
@@ -241,6 +264,14 @@ class landingOferta extends Error implements IPage {
 			//unset($_SESSION['cesta']);
 			return $result;
 		}
+	}
+	public function acValidaCupon() {
+		\cDb::confByKey('celorriov3');
+		$objCli=$_SESSION['usuario']->objEntity;
+		$objCli->SETdb(\cDb::gI());
+		$datosCli=\Sintax\ApiService\Pedidos::getDatosCli($objCli);
+		$result=\Sintax\ApiService\Pedidos::validaCupon($_REQUEST['codigo'],$objCli->GETid());
+		return $result;
 	}
 }
 ?>

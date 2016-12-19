@@ -71,13 +71,13 @@ function calculaTotales(dtoImporte, dtoTipo, dtosTotalTipo, dtosDescTipo, dtosDe
 			function() {
 				var portes=parseFloat($('#spPortes').data('portes'));
 				$('#spPortes').html(portes.toFixed(2));
-
+/*
 console.log('totalLineas: ' + totalLineas);
 console.log('dtoImporte: ' + dtoImporte);
 console.log('baseDtosPorcentuales: ' + baseDtosPorcentuales);
 console.log('dtoMonto: ' + dtoMonto);
 console.log('portes: ' + portes);
-
+*/
 				var total=totalLineas-dtoMonto-dtoImporte+portes;
 				total=(Math.round(total*100)/100).toFixed(2);
 				$('#spTotal').html(total).data('total',total);

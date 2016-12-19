@@ -238,9 +238,8 @@ function callbackLandingOferta(){
 	//desc cupon
 	if ($('#newPedWizard').data('tipoDtoCliente')<=0 || $('#newPedWizard').data('dtoClienteCompatibleCupon')) {
 		//cupon de mayor descuento. Ordenar por descuento y a igualdad por fecha, el q caduque antes.
-		var arrCupones=$('#newPedWizard').data('arrCupones');
-		if (arrCupones.length>0){
-			objCupon=arrCupones[0];
+		var objCupon=$('#newPedWizard').data('arrCupones');
+		if (objCupon!=""){
 			dtoTipoTotal+=parseFloat(objCupon.tipoDescuento);
 			dtoTipoTotalDesc+="<li>Descuento cupón "+objCupon.codigo+":"+objCupon.tipoDescuento+"%</li>";
 			$('#newPedWizard').data('idCupon',objCupon.id);

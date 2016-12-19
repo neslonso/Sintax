@@ -60,7 +60,7 @@ class Multi_clienteUser extends AnonymousUser implements IUser {
 	 * @param  string    $keyTienda
 	 * @return Multi_clienteUser
 	 */
-	public static function login(\MysqliDB $db,$email,$pass,$keyTienda,$tokenEmail=NULL) {
+	public static function login(\MysqliDB $db,$email,$pass,$keyTienda,$tokenEmail) {
 		try {
 			$result=false;
 			$objCliUser=new static($db);

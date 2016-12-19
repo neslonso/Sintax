@@ -37,7 +37,7 @@ class Clientes extends ApiService implements IApiService {
 	 * @param  [type] $tokenEmail [Para autologin desde newsletter]
 	 * @return [type]             [description]
 	 */
-	public static function acLoginCliente($email,$pass,$keyTienda,$tokenEmail="") {
+	public static function acLoginCliente($email,$pass,$keyTienda,$tokenEmail) {
 		$db=\cDb::confByKey("celorriov3");
 		//$arrReturn=array();
 		$result=false;
