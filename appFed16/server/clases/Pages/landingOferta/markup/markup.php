@@ -266,8 +266,8 @@
 					<li role="presentation"><a href="#newDirTab" aria-controls="newDirTab" role="tab" data-toggle="tab">Nueva dirección</a></li>
 				</ul>
 				<div class="tab-content">
-					<div role="tabpanel" class="tab-pane active" id="selectDirTab">
-						<?=$this->direccionEntregaSelectionControl($datosCli,$idDirPredeterminada)?>
+					<div role="tabpanel" class="tab-pane active fuelux" id="selectDirTab">
+						<?=\Sintax\Pages\comprar_pedido::direccionEntregaSelectionControl($datosCli,$idDirPredeterminada)?>
 					</div>
 					<div role="tabpanel" class="tab-pane" id="newDirTab">
 						<form id="modalAddDir">

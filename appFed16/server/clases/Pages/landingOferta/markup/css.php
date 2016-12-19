@@ -156,6 +156,9 @@ body{
     overflow-y: auto;
     padding:0px !important;
 }
+#modalSelDir .tab-pane{
+    padding-top:15px;
+}
 .textoOferta {
     background-color: rgba(255, 255, 255, 0.49) !important;
     border-color: #fff !important;
@@ -210,12 +213,12 @@ body{
 .imgPortesGratis img{
      width: 75px;
 }
-.panel{
-    background-color:rgba(255, 255, 255, 0.5) !important;
-    margin-bottom: 0px !important;
+#cestaOferta .panel{
+    background-color:rgba(255, 255, 255, 0.5);
+    margin-bottom: 0px;
 }
-.panel-footer{
-    background-color:rgba(245, 245, 245, 0.5) !important;
+#cestaOferta .panel-footer{
+    background-color:rgba(245, 245, 245, 0.5);
 }
 .footerLanding {
     font-size: 0.8em;

@@ -68,6 +68,8 @@ $(document).ready(function() {
 							var idDirEntrega=$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl').val();
 							var txtDireccion=$('#destinatario','#modalAddDir').val()+" - "+$('#direccion','#modalAddDir').val()+' '+$('#cp','#modalAddDir').val()+', '+$('#poblacion','#modalAddDir').val()+' '+$('#provincia','#modalAddDir').val();
 							$('#dirSeleccionada').html(txtDireccion);
+							$('input', '#modalAddDir').val("");
+							$('.nav-tabs a[href="#selectDirTab"]').tab('show');
 						}
 					},
 					'json');

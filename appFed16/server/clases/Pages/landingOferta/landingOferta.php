@@ -104,69 +104,6 @@ class landingOferta extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/markup.php");
 	}
 
-	public function direccionEntregaSelectionControl($datosCli,$checkedId=NULL) {
-		$arrDirsCli=$datosCli->arrDirecciones;
-		$result='
-		<div id="direccionEntregaSelectionControl">
-			<div class="row">
-		';
-		$i=1;
-		foreach ($arrDirsCli as $stdObjDirCli) {
-			$checked=($checkedId==$stdObjDirCli->id)?'checked="checked"':'';
-			$labelClass=($checked)?'checked':'';
-			$panelClass=($checked)?'panel-success':'panel-default';
-			$result.='
-				<div class="col-md-4">
-					<div class="panel '.$panelClass.'">
-						<div class="panel-heading">
-							<div class="form-group" style="margin:0px;">
-								<label for="radios" class="control-label sr-only">'.$stdObjDirCli->nombre.'</label>
-								<div class="radio" style="margin:0px;">
-									<label class="radio-custom '.$labelClass.'" data-initialize="radio" id="dirEntrega-'.$stdObjDirCli->id.'">
-										<input class="sr-only" name="idDirEntrega" type="radio" value="'.$stdObjDirCli->id.'" '.$checked.'
-											data-id="'.$stdObjDirCli->id.'"
-											data-destinatario="'.$stdObjDirCli->destinatario.'"
-											data-direccion="'.$stdObjDirCli->direccion.'"
-											data-poblacion="'.$stdObjDirCli->poblacion.'"
-											data-provincia="'.$stdObjDirCli->provincia.'"
-											data-cp="'.$stdObjDirCli->cp.'"
-											data-pais="'.$stdObjDirCli->pais.'"
-											data-movil="'.$stdObjDirCli->movil.'">
-										<span class="radio-label">'.$stdObjDirCli->nombre.'</span>
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="panel-body">
-							<div>'.$stdObjDirCli->destinatario.' ('.$stdObjDirCli->movil.')</div>
-							<div>'.$stdObjDirCli->direccion.'</div>
-							<div>'.$stdObjDirCli->cp.' '.$stdObjDirCli->poblacion.'</div>
-							<div class="text-right">'.$stdObjDirCli->provincia.'</div>
-							<div class="text-right">'.$stdObjDirCli->pais.'</div>
-						</div>
-					</div>
-				</div>
-			';
-			if($i%3==0){$result.='<div class="clearfix"></div>';}
-			$i++;
-		}
-		$result.='
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-		';
-		if (count($arrDirsCli)==0) {
-			$result.='<hr><p class="help-block">No figura ninguna dirección de entrega en sus datos de cliente, debe añadir una para poder realizar su pedido:</p>';
-		} else {
-			$result.='<hr><p class="help-block">Añada una nueva dirección a su pedido:</p>';
-		}
-		$result.='
-				</div>
-			</div>
-		</div>
-		';
-		return $result;
-	}
 	/* Calculos sobre líneas y portes**********************************************/
 	public function acGetLineas() {
 		return \Sintax\ApiService\Pedidos::acGetLineas();
