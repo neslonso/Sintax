@@ -94,12 +94,16 @@
 					</div>
 <?
 	} else {
+		if ($objOferta->vendible()){
 ?>
 					<div class="text-center">
 						<div id="btnAddCesta" class="btn-pagar">
 							<i class="glyphicon glyphicon-shopping-cart"></i> AÑADIR A CESTA
 						</div>
 					</div>
+<?
+		}
+?>
 					<div class="text-center">
 						<div id="btnTienda" onclick="location.href='<?=BASE_URL?>'" class="btn-tienda">
 							IR A TIENDA <i class="glyphicon glyphicon-chevron-right"></i>

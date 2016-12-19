@@ -65,7 +65,9 @@ class landingOferta extends Error implements IPage {
 		$logueado=false;
 		if (isset($_SESSION['usuario'])){
 			if ($idOfer!="" && !$this->existeEnCesta($idOfer)){
-				$this->acAddToCesta($idOfer);
+				if ($objOfer->vendible()){
+					$this->acAddToCesta($idOfer);
+				}
 			}
 			$logueado=true;
 			$store=$GLOBALS['config']->tienda->key;
@@ -82,27 +84,16 @@ class landingOferta extends Error implements IPage {
 			$idTipoModoPago=\Multi_pedidoModoPago::idModoPagoTipo('tarjeta');
 
 			$jsonArrCupones="";
-error_log('landing 1');
 			$cupones=$objCli->arrMulti_cupon("caducidad>".date("YmdHis"),"tipoDescuento DESC, caducidad ASC","1");
-error_log('landing 2');
 			foreach ($cupones as $stdObjCupon) {
-error_log('landing 3');
-error_log(print_r($cupones,true));
 				$validaCupon=\Sintax\ApiService\Pedidos::validaCupon($stdObjCupon->codigo,$objCli->GETid());
-error_log('landing 4');
 				if ($validaCupon==false){
 					$jsonArrCupones="";
-error_log('landing 5');
 				} else {
-error_log('landing 6'.$stdObjCupon->codigo);
 					$jsonArrCupones=htmlspecialchars(json_encode($stdObjCupon),ENT_QUOTES,'UTF-8');
 					break;
 				}
 			}
-
-
-//			$jsonArrCupones=htmlspecialchars(json_encode($objCli->arrMulti_cupon("caducidad>".date("YmdHis"),"tipoDescuento DESC, caducidad ASC","1")),ENT_QUOTES,'UTF-8');
-			//recorro array  cupones y quito los que haya q validar.
 
 		}
 		$activarTW=($GLOBALS['config']->tienda->SOCIAL->TW->CONSUMER_KEY!="")?true:false;
