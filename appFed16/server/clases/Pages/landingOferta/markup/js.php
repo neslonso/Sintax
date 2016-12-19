@@ -17,6 +17,7 @@ $(document).ready(function() {
 		var dir=$('input[name="idDirEntrega"]:checked', '#direccionEntregaSelectionControl');
 		var txtDireccion=dir.data('destinatario')+" - "+dir.data('direccion')+' '+dir.data('cp')+', '+dir.data('poblacion')+' '+dir.data('provincia');
 		$('#dirSeleccionada').html(txtDireccion);
+		callbackLandingOferta();
 	});
 	$('#btnAddDir').on('click', function () {
 		var destinatario = $('#destinatario','#modalAddDir').val();
@@ -70,6 +71,7 @@ $(document).ready(function() {
 							$('#dirSeleccionada').html(txtDireccion);
 							$('input', '#modalAddDir').val("");
 							$('.nav-tabs a[href="#selectDirTab"]').tab('show');
+							callbackLandingOferta();
 						}
 					},
 					'json');
