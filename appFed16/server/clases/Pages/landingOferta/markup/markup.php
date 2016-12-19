@@ -331,13 +331,17 @@
 									</div>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-sm-12 text-right">
+									<button type="button" id="btnAddDir" class="btn btn-primary">Grabar</button>
+								</div>
+							</div>
 						</form>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-				<button type="button" id="btnAddDir" class="btn btn-primary">Grabar</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

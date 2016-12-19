@@ -233,6 +233,7 @@ function callbackLandingOferta(){
 	var dtoImporteTotalDesc="";
 	var dtoTipoTotal=0; //dtoXtipo=descCliente+modoPago+cupon+volumen
 	var dtoTipoTotalDesc="";
+	$('#ulDtos').empty();
 	//**** DESCUENTOS POR IMPORTE ****
 	//desc importe credito
 	dtoImporteTotal+=parseFloat($('#tableLineas').data('creditoMaximoAplicable'));
