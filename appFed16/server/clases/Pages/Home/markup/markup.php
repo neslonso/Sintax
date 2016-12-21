@@ -324,7 +324,7 @@
 									<h3><i class="fa fa-truck" aria-hidden="true"></i>  Entrega </h3>
 									<ul>
 										<li>Entrega: 24/48h </li>
-										<li>Envío gratis desde <?=round($storeData->IMPORTE_PEDIDO_PORTES_GRATIS)?>€</li>
+										<li>Envío gratis desde <?=round($storeData->IMPORTE_PEDIDO_PORTES_GRATIS)?>€ (Península)</li>
 										<li>
 											Tarifa plana portes
 											<ul>
