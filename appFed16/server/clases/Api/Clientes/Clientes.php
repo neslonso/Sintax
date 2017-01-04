@@ -87,7 +87,7 @@ class Clientes extends ApiService implements IApiService {
 					"valor" => true,
 					"msg" => "Alta de usuario correcta"
 				);
-				self::acLoginCliente($email,$pass,$keyTienda);
+				self::acLoginCliente($email,$pass,$keyTienda,NULL);
 			}
 		}
 		$arrReturn['resultado']=$arrAccion;
