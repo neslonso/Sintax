@@ -264,11 +264,10 @@ define ('ARR_TIENDAS',serialize(array (
 		'ANALYTICS' => '',
 		'TEMA' => (object) array (
 			'ARMONIA' => 'analogous+complementary', //3 colores: analogous, triadic, split. 4 Colores: tetradic, analogous+complementary. 5 colores: analogous+split
-			'COLOR_PRIMARIO' => '#EEF66C',
-			'COLOR_SECUNDARIO' => '#E4F6F8',
+			'COLOR_PRIMARIO' => '#ffd203',
 			'COLOR_HEADER' => '#FFF',
 			'COLOR_FOOTER' => '#FFF',
-			'EFECTO_BANNER' => "loop:true,spaceBetween: 100,effect: 'coverflow',coverflow: {rotate: 0,stretch: 0,depth: 300,modifier: 1,slideShadows : false},slideToClickedSlide:true,",
+			'EFECTO_BANNER' => "loop:true,spaceBetween: 100,slideToClickedSlide:true,",
 		),
 	),
 )));
