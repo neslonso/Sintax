@@ -1,0 +1,13 @@
+{
+	"name": "Solo Protecci\u00f3n Solar",
+	"icons": [
+		{
+			"src": "\/appFed16\/binaries\/imgs\/favIcon\/SPS\/android-chrome-192x192.png?v=JymN7OPE0e",
+			"sizes": "192x192",
+			"type": "image\/png"
+		},
+	],
+	"theme_color": "#ffd203",
+	"start_url": "http:\/\/soloproteccionsolar.com",
+	"display": "standalone"
+}

@@ -15,7 +15,9 @@ try {
 	//$defaultDomain='farmaciacelorrio.com';
 	//$defaultDomain='parafarmaciasolobebes.com';
 	//$defaultDomain='parafarmaciasolocosmetica.com';
-	$defaultDomain='farmadiscount.com';
+	//$defaultDomain='farmadiscount.com';
+	$defaultDomain='soloproteccionsolar.com';
+
 	$activeDomain=($X_FORWARDED_HOST!='')?$X_FORWARDED_HOST:$defaultDomain;
 	if ($X_FORWARDED_HOST!='') {define('BASE_DOMAIN',$activeDomain);}
 
