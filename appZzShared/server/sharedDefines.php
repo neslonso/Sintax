@@ -14,6 +14,7 @@ define ('ARR_DOMAINS',serialize(array (
 	'parafarmaciabebefarma.com' => (object) array('keyTienda' => 'BF','session_name' => 'bfPHPSESSID',),
 	'farmaciacelorrio.com' => (object) array('keyTienda' => 'FC','session_name' => 'fcPHPSESSID',),
 	'comprasenfarmacia.com' => (object) array('keyTienda' => 'FC','session_name' => 'fcPHPSESSID',),
+	'soloproteccionsolar.com' => (object) array('keyTienda' => 'SPS','session_name' => 'spsPHPSESSID',),
 )));
 
 define ('ARR_TIENDAS',serialize(array (
@@ -233,6 +234,40 @@ define ('ARR_TIENDAS',serialize(array (
 			'COLOR_HEADER' => '#FFF',
 			'COLOR_FOOTER' => '#FFF',
 			'EFECTO_BANNER' => "loop:true,spaceBetween: 100,effect: 'coverflow',coverflow: {rotate: 50,stretch: 0,depth: 100,modifier: 1,slideShadows : false},slideToClickedSlide:true,freeMode:false,speed:4000,autoplay: 1000,",
+		),
+	),
+	'SPS' => array (
+		'SITE_NAME' => 'Soloproteccionsolar',
+		'BIENVENIDA' => 'Soloproteccionsolar, el sol más seguro al mejor precio.',
+		'CONTACTO' => (object) array(
+			'EMAIL' => 'atcioncliente@'.BASE_DOMAIN,
+			'TLF' => '982 20 30 08',
+		),
+		'URL_LOGO' => BASE_URL.'appFed16/binaries/imgs/logo.SPS.png',
+		'EMPRESA' => (object) array (
+			'NOMBRE' => 'Celorriofarma S.L.',
+			'DIRECCION' => 'Avada. A Coruña 195, 27003 Lugo',
+			'CIF' => 'B27232859',
+			'REGISTRO' => 'tomo 257 libro 0 folio 192 hoja LU5912 inscripción 3',
+		),
+		'SOCIAL' => (object) array (
+			'FB' => (object) array (
+				'URL' => '',
+				'APP_ID' => '',
+			),
+			'TW' => (object) array (
+				'URL' => '',
+				'CONSUMER_KEY' => '',
+				'CONSUMER_SECRET' => '',
+			),
+		),
+		'ANALYTICS' => '',
+		'TEMA' => (object) array (
+			'ARMONIA' => 'analogous+complementary', //3 colores: analogous, triadic, split. 4 Colores: tetradic, analogous+complementary. 5 colores: analogous+split
+			'COLOR_PRIMARIO' => '#ffd203',
+			'COLOR_HEADER' => '#FFF',
+			'COLOR_FOOTER' => '#FFF',
+			'EFECTO_BANNER' => "loop:true,spaceBetween: 100,slideToClickedSlide:true,",
 		),
 	),
 )));
