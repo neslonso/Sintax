@@ -1,4 +1,5 @@
 <?="\n<!-- ".get_class()." -->\n"?>
+<form>
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			Identificación de usuario
@@ -25,5 +26,6 @@
 			</button>
 		</div>
 	</div>
+<form>
 <?="\n<!-- /".get_class()." -->\n"?>
 
