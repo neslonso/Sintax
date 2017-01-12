@@ -261,7 +261,7 @@ define ('ARR_TIENDAS',serialize(array (
 				'CONSUMER_SECRET' => '',
 			),
 		),
-		'ANALYTICS' => '',
+		'ANALYTICS' => 'UA-36657351-7',
 		'TEMA' => (object) array (
 			'ARMONIA' => 'analogous+complementary', //3 colores: analogous, triadic, split. 4 Colores: tetradic, analogous+complementary. 5 colores: analogous+split
 			'COLOR_PRIMARIO' => '#ffd203',
