@@ -1,6 +1,7 @@
 <?if (false) {?><script><?}?>
 <?="\n/*".get_class()."*/\n"?>
 $(document).ready(function() {
+	$('img').on('dragstart', function(event) { event.preventDefault(); });
 	$("#cabecera-ticker").css({display:'inline'});
 	$("#cabecera-ticker").blockTicker();
 	//$("#cabecera-ticker").blockTicker('stop');

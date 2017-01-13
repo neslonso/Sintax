@@ -73,6 +73,7 @@ class Error extends Page implements IPage {
 		}
 		// Finally, destroy the session.
 		session_destroy();
+		ReturnInfo::add('Ha sido desconectado correctamente. ¡Gracias por su visita!.','Desconexión de cliente');
 	}
 
 	/**

@@ -8,7 +8,12 @@ class landingTPVV extends Home implements IPage {
 		parent::__construct($objUsr);
 	}
 	public function pageValida () {
-		return $this->objUsr->pagePermitida($this);
+		if (!$this->objUsr->pagePermitida($this)) {
+			$result='Sintax\Pages\Home';
+		} else {
+			$result=true;
+		}
+		return $result;
 	}
 	public function accionValida($metodo) {
 		return $this->objUsr->accionPermitida($this,$metodo);
