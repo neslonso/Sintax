@@ -276,7 +276,8 @@ class Clientes extends ApiService implements IApiService {
 		$objCli->grabar();
 		$objResult=new \stdClass();
 		$objResult->resultado=true;
-		$objResult->msg="Se han actualizado correctamente los datos";
+		$objResult->msg="Se han actualizado correctamente sus datos";
+		$_SESSION['usuario']->objEntity=$objCli;
 		return $objResult;
 	}
 	/**

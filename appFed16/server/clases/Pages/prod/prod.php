@@ -15,8 +15,10 @@ class prod extends Home implements IPage {
 				return $this->objUsr->pagePermitida($this);
 			} else {
 				ReturnInfo::add('El producto solicitado no se encuentra disponible en estos momentos. Disculpe las molestias','Producto no disponible');
-				return "Sintax\Pages\Home";
+				return 'Sintax\Pages\no_encontrado';
 			}
+		} else {
+			return 'Sintax\Pages\no_encontrado';
 		}
 	}
 	public function accionValida($metodo) {

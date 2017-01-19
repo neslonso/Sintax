@@ -33,6 +33,7 @@ class no_encontrado extends Home implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css.php");
 	}
 	public function cuerpo() {
+		header("HTTP/1.0 404 Not Found");
 		$storeData=\Sintax\ApiService\Pedidos::getStoreData();
 		$arrOfersCuerpo=\Sintax\ApiService\Categorias::arrOfersTag($GLOBALS['config']->tienda->key,$storeData->HOME_TAG,36);
 		if (count($arrOfersCuerpo)==0) {
