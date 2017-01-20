@@ -8,8 +8,12 @@ class categoria extends Home implements IPage {
 		parent::__construct($objUsr);
 	}
 	public function pageValida () {
-		//return $this->objUsr->pagePermitida($this);
-		return true;
+		$idCategoria=(isset($_REQUEST['id']))?$_REQUEST['id']:NULL;
+		if(\Multi_categoria::existe (\cDb::confByKey('celorriov3'),$idCategoria)){
+			return true;
+		} else {
+			return 'Sintax\Pages\no_encontrado';
+		}
 	}
 	public function accionValida($metodo) {
 		return $this->objUsr->accionPermitida($this,$metodo);

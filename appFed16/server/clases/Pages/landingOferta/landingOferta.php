@@ -8,8 +8,12 @@ class landingOferta extends Error implements IPage {
 		parent::__construct($objUsr);
 	}
 	public function pageValida () {
-		//return $this->objUsr->pagePermitida($this);
-		return true;
+		$idOfer = isset($_REQUEST['id']) ? $_REQUEST['id'] : '' ;
+		if(\Multi_ofertaVenta::existe (\cDb::confByKey('celorriov3'),$idOfer)){
+			return true;
+		} else {
+			return 'Sintax\Pages\no_encontrado';
+		}
 	}
 	public function accionValida($metodo) {
 		return $this->objUsr->accionPermitida($this,$metodo);
