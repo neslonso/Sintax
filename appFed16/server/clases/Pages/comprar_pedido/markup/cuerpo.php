@@ -97,6 +97,7 @@
 												data-saldo-inicial="<?=$datosCli->saldoCredito?>">€</span>
 											<div class="small">
 												Dispone de <b><?=$datosCli->saldoCredito?>€</b> de crédito.<br>
+												<i><small><?=$datosCli->caducidadSaldoCredito?></small></i>
 											</div>
 										</div>
 									</div>
@@ -114,7 +115,7 @@
 										<li>Importe necesario: <?=$storeData->IMPORTE_MINIMO_APLICACION_CREDITO?> €</li>
 										<li>Importe actual: <span class="spTotalLineas spCalculado" data-total-lineas=""></span> €</li>
 										<li>Faltan: <span id="spRestoToCredito"></span> €. <!--<a href="#" title="Ver ofertas de valor aproximado"><i class="fa fa-search-plus" aria-hidden="true"></i></a>-->
-										<li>Crédito disponible: <?=$datosCli->saldoCredito?> €</li>
+										<li>Crédito disponible: <?=$datosCli->saldoCredito?> €. &nbsp;&nbsp;&nbsp;<i><small><b><?=$datosCli->caducidadSaldoCredito?></b></small></i></li>
 									</ul>
 									<span id="creditoAplicar" data-credito-aplicar="0.00" data-saldo-inicial="<?=$datosCli->saldoCredito?>"></span>
 								</div>

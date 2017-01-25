@@ -331,6 +331,22 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		}
 		return $saldo;
 	}
+
+	/**
+	 * [caducidadSaldoCredito description]
+	 * @return [type] [description]
+	 */
+	public function caducidadSaldoCredito() {
+		$txt="";
+		$sql="SELECT * FROM multi_apunteCredito WHERE idMulti_cliente='".$this->GETid()."' AND caducidad > now() AND monto>0 and ((gasto is not null and monto>gasto) or (gasto is null)) order by caducidad ASC limit 1";
+		$data=$this->db()->get_row($sql);
+		if ($data) {
+			$objApunte=new Multi_apunteCredito($this->db(),$data->id);
+			setlocale(LC_ALL, 'es_ES');
+			$txt=$objApunte->GETmonto()."€ caducan el ".date("d F",strtotime($data->caducidad));
+		}
+		return $txt;
+	}
 /******************************************************************************/
 	public static function existeEmail ($db, $email, $keyTienda) {
 		$sql="SELECT * FROM multi_cliente WHERE email='".$db->real_escape_string($email)."' AND keyTienda='".$keyTienda."'";
