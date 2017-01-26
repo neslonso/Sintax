@@ -73,7 +73,7 @@
 								<hr>
 								<div class="row">
 									<div class="col-sm-7">
-										<div class="text-right nav-user-txt-info">
+										<div class="text-right nav-user-txt-info" style="padding-top:3px;">
 											<b>Crédito de usuario:</b>
 											<i><small><?=$cliente->caducidadSaldo?></small></i>
 										</div>

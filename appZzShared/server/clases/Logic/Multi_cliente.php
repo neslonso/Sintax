@@ -342,8 +342,8 @@ class Multi_cliente extends \Sintax\Core\Entity implements \Sintax\Core\IEntity 
 		$data=$this->db()->get_row($sql);
 		if ($data) {
 			$objApunte=new Multi_apunteCredito($this->db(),$data->id);
-			setlocale(LC_ALL, 'es_ES');
-			$txt=$objApunte->GETmonto()."€ caducan el ".date("d F",strtotime($data->caducidad));
+			setlocale(LC_TIME, 'es_ES');
+			$txt="Caducan ".$objApunte->GETmonto()."€ el ".strftime("%e de %B",strtotime($data->caducidad));
 		}
 		return $txt;
 	}
