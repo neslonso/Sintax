@@ -110,6 +110,7 @@ class Home extends Error implements IPage {
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssOferDetalle.php");
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssFooter.php");
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssCesta.php");
+		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssVoice.php");
 		require_once( str_replace("//","/",dirname(__FILE__)."/")."markup/css/cssMediaQueries.php");
 		\Sintax\ApiService\Categorias::listaFichaProductoResponsiveCss();
 		\Sintax\ApiService\Productos::fichaProductoDtoCss();
@@ -124,6 +125,7 @@ class Home extends Error implements IPage {
 			$objCli->SETdb($db);
 			$cliente=$objCli->toStdObj();
 			$cliente->saldo=$objCli->saldoCredito();
+			$cliente->caducidadSaldo=$objCli->caducidadSaldoCredito();
 		}
 		$activarTW=($GLOBALS['config']->tienda->SOCIAL->TW->CONSUMER_KEY!="")?true:false;
 		$activarFB=($GLOBALS['config']->tienda->SOCIAL->FB->APP_ID!="")?true:false;

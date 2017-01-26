@@ -24,6 +24,8 @@ class Pedidos extends ApiService implements IApiService {
 
 		$stdObjDatosCli->tipoDescuento=$objMCli->GETtipoDescuento();
 		$stdObjDatosCli->saldoCredito=$objMCli->saldoCredito();
+		$stdObjDatosCli->caducidadSaldoCredito=$objMCli->caducidadSaldoCredito();
+
 		$stdObjDatosCli->keyTienda=$objMCli->GETkeyTienda();
 		$stdObjDatosCli->idEnOrigen=$objMCli->GETidEnOrigen();
 
