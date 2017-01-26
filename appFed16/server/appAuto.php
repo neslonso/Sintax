@@ -253,6 +253,8 @@ function gmFeed($keyTienda, $file="./gmFeed.xml") {
 		//nos saltamos los EANs no válidos
 		if (strlen($objOfer->codigoEAN())!=13) {continue;}
 		if (!isValidGtin($objOfer->codigoEAN())) {error_log('gtin no valido');continue;}
+		//nos saltamos la melatonina melatonina en SPS
+		if ( ($keyTienda=="SPS") && (stripos($objOfer->GETnombre(), "melatonina")!==false) ) {continue;}
 
 		$contents.=$sg.'<entry>'.$sl;
 
