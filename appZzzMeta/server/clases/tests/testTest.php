@@ -1,9 +1,8 @@
 <?
 namespace Sintax\Tests;
-use Sintax\Core\ReturnInfo;
 
 /**
- * @coversDefaultClass Sintax\Core\ReturnInfo
+ * @coversDefaultClass Sintax\Pages\crudPrueba //Sirve para no tener que poner toda la ruta de la clase en los covers de los test
  */
 class testTest extends \PHPUnit_Framework_TestCase {
 	protected $backupGlobals = FALSE;//PHPUnit hace copia de seguridad de las variables globales y las restaura al acabar cada test, esto es para que no lo haga
@@ -12,35 +11,13 @@ class testTest extends \PHPUnit_Framework_TestCase {
 	public function tearDown() {parent::tearDown();}
 
 	/**
-	 * @covers ::clear
+	 * @covers Nothing
 	 */
-	public function testClearReturnInfo () {
-		ReturnInfo::clear();
-		$this->assertTrue(!isset($_SESSION['returnInfo']));
+	public function testEmpty () {
+		$this->assertTrue(true);
 	}
-
 	/**
-	 * @covers ::add
-	 */
-	public function testAddReturnInfo () {
-		ReturnInfo::add('mensaje de prueba','Titulo de prueba');
-		$this->assertArrayHasKey('returnInfo',$_SESSION);
-		$this->assertArrayHasKey('title',$_SESSION['returnInfo'][0]);
-		$this->assertArrayHasKey('msg',$_SESSION['returnInfo'][0]);
-		return $_SESSION['returnInfo'];
-	}
-
-	/**
-	 * @covers ::msgsToLis
-	 * @depends testAddReturnInfo
-	 */
-	public function testLiMsgsReturnInfo ($returnInfo) {
-		$result=ReturnInfo::msgsToLis();
-		$this->assertRegExp('/.*mensaje de prueba.*/',$result,'No se encontró la cadena añadida en "testAddReturnInfo"');
-	}
-
-	/**
-	 * @covers Sintax\Pages\crudPrueba::acGrabar
+	 * @covers ::acGrabar
 	 * @dataProvider crudPruebaAcGrabarDataProvider
 	 */
 	public function NOtestAcGrabar ($id) {

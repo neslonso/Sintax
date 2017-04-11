@@ -2,6 +2,7 @@
 ob_start();
 ?>
 <?
+$tInicial=microtime(true);
 $uniqueId=uniqid("api.");
 error_log ('');
 error_log ('----------------------');
@@ -10,39 +11,80 @@ error_log ('LLAMADA A API.PHP: '.$uniqueId);
 ?>
 <?
 try {
-	try {
-		//Tratamos de identificar el servicio en base a lo que venga en $_REQUEST
-		//Como esta es una URL que se dará a servicios exteriores, podemos contar con un parametro GET
-		$service=$_REQUEST['service'];
-		$key=(isset($_REQUEST['key']))?$_REQUEST['key']:'';
-		if (defined('ARR_API_SERVICES')) {
-			$arrServices=unserialize(ARR_API_SERVICES);
-			if (isset($arrServices[$service])) {
-				$arrServiceData=$arrServices[$service];
-				if ($arrServiceData['active']) {
-					$granted=false;
-					if (isset ($arrServiceData['keys']) && count($arrServiceData['keys'])>0) {
-						if (in_array($key, $arrServiceData['keys'])) {
-							$granted=true;
-						}
-					} else {
-						$granted=true;
-					}
-					if ($granted) {
-						eval ($arrServiceData['comando']);
-					} else {
-						throw new ApiException("Service key not valid");
-					}
-				} else {
-					throw new ApiException("Service '".$service."' inactive.");
-				}
+	/*$firephp->info($_SESSION,'$_SESSION');
+	$firephp->info($_REQUEST,'$_REQUEST');
+	$firephp->info($_POST,'$_POST');
+	$firephp->info($_FILES,'$_FILES');*/
+
+	$result="";
+	//$_REQUEST['service']; <- Compatibilidad!!!!!!!!!!!!!!!!!!!!
+	$apiClase=$_REQUEST['apiClase'];
+	$apiClase="Sintax\\ApiService\\".$_REQUEST['apiClase'];
+	$apiMetodo=$_REQUEST['apiMetodo'];
+	$apiTipo=(isset($_REQUEST['apiTipo']))?$_REQUEST['apiTipo']:"noAssoc";
+	unset ($_REQUEST['apiClase']);
+	unset ($_REQUEST['apiMetodo']);
+
+	$objUsr=new Sintax\Core\AnonymousUser();
+	if (isset($_REQUEST['apiToken'])) {
+		session_id($_REQUEST['apiToken']);
+		session_start();
+		if (isset($_SESSION['usuario'])) {
+			$usrClass=get_class($_SESSION['usuario']);
+			if ($usrClass!="__PHP_Incomplete_Class") {
+				$objUsr=$_SESSION['usuario'];
 			} else {
-				throw new ApiException("Service '".$service."' desconocido.");
+				unset ($_SESSION['usuario']);
 			}
 		}
-	} catch (ApiException $e) {
-		//throw new Exception("ApiException: [".$e->getMessage()."]",1,$e);
-		throw $e;
+	}
+
+	if (class_exists($apiClase)) {
+		$obj=new $apiClase($objUsr);
+		$serviceValido=$obj->apiServiceValido();
+		if ($serviceValido===true) {
+			if (method_exists($obj,$apiMetodo)) {
+				$metodoValido=$obj->metodoValido($apiMetodo);
+				if ($metodoValido===true) {
+					$phpSentence="";
+					switch ($apiTipo) {
+						case "noAssoc"://Los parametros vienen por POST, se pasan al metodo uno por uno
+							$args="";
+							foreach ($_POST as $value) {
+								$args.='"'.$value.'", ';
+							}
+							$args=substr($args,0,-2);
+							$phpSentence='$resultSentence=$obj->'.$apiMetodo.'('.$args.');';
+							break;
+						case "assoc"://Los parametros vienen POST y se pasan al metodo como un array y despues se redirige el navegador
+							$args=$_POST;
+							$phpSentence='$resultSentence=$obj->'.$apiMetodo.'($args);';
+							break;
+					}
+					$phpSentence.='return true;';
+					$tAccion=microtime(true);
+						$resultEval=eval ($phpSentence);
+					$tAccion=microtime(true)-$tAccion;
+
+					if ($resultEval===false) {
+						$result="ERROR_EN_SENTENCIA";
+						throw new ApiException($result);
+					} else {
+						$result=$resultSentence;
+						error_log(print_r($resultSentence,true));
+						echo json_encode($resultSentence);
+					}
+				} else {
+					throw new ApiException($apiMetodo." not valid");
+				}
+			} else {
+				throw new ApiException($apiMetodo." not exists");
+			}
+		} else {
+			throw new ApiException($apiClase." not valid");
+		}
+	} else {
+		throw new ApiException($apiClase." not exists");
 	}
 } catch (Exception $e) {
 	echo $e->getMessage();

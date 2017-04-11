@@ -31,22 +31,26 @@ try {
 			$arrSustitucion=(isset($_SESSION['arrSustitucion']))?$_SESSION['arrSustitucion']:array();
 			$Page=new $page($objUsr);
 			$page=$Page->pageValida();
-			if (class_exists($page)) {//pageValida devuelve una clase existente, hacemos la sustitucion
-				$url=(count($arrSustitucion))?BASE_DIR.FILE_APP.'?page='.get_class($Page):$_SERVER['REQUEST_URI'];
-				array_push($arrSustitucion,array('page' => get_class($Page), 'url' => $url));
-				$_SESSION['arrSustitucion']=$arrSustitucion;
-				$firephp->info('Page "'.get_class($Page).'" no valida, sustuticion: '.get_class($Page).' por '.$page.'. url sustituida: '.$url);
-				unset($Page);
-			} else {//no hay sustitucion
-				$Page->arrSustitucion=$arrSustitucion;
-				if (isset($_SESSION['arrSustitucion'])) {unset($_SESSION['arrSustitucion']);}
+			if ($page!==false) {
+				if (class_exists($page)) {//pageValida devuelve una clase existente, hacemos la sustitucion
+					$url=(count($arrSustitucion))?BASE_DIR.FILE_APP.'?page='.get_class($Page):$_SERVER['REQUEST_URI'];
+					array_push($arrSustitucion,array('page' => get_class($Page), 'url' => $url));
+					$_SESSION['arrSustitucion']=$arrSustitucion;
+					$firephp->info('Page "'.get_class($Page).'" no valida, sustuticion: '.get_class($Page).' por '.$page.'. url sustituida: '.$url);
+					unset($Page);
+				} else {//no hay sustitucion
+					$Page->arrSustitucion=$arrSustitucion;
+					if (isset($_SESSION['arrSustitucion'])) {unset($_SESSION['arrSustitucion']);}
+				}
+			} else {
+				throw new Exception('No dispone de autorización para la clase de página solicitada.');
 			}
 		}
 		while (class_exists($page));
 		$page=get_class($Page);
 		$firephp->info($arrSustitucion,'arrSustitucion');
 	} else {
-		throw new Exception('La clase de página solicitada "'.$page.'" no existe.');
+		throw new Exception('La clase de página solicitada ["'.$page.'"] no existe.');
 	}
 
 	markup ($Page);
@@ -59,7 +63,6 @@ try {
 	//error_log ("TRACE: ".$e->getTraceAsString());
 	$firephp->info($infoExc);
 	$firephp->info($e->getTraceAsString(),"traceAsString");
-	$firephp->info($e->getTrace(),"trace");
 
 	try {
 		$Page=new \Sintax\Pages\Error($objUsr);
@@ -125,8 +128,9 @@ xmlns:fb="http://www.facebook.com/2008/fbml"
 <!--Favicon -->
 <?=$Page->favIcon()?>
 <!-- /Favicon -->
-<link rel="stylesheet" href="<?=BASE_URL?><?=FILE_APP?>?MODULE=CSS&amp;APP=<?=FILE_APP?>&amp;page=<?=get_class($Page)?>" />
-<script type="text/javascript" src="<?=BASE_URL?><?=FILE_APP?>?MODULE=JS&amp;APP=<?=FILE_APP?>&amp;page=<?=get_class($Page)?>"></script>
+<?$session_name=(isset($_REQUEST['session_name']))?$_REQUEST['session_name']:'';?>
+<link rel="stylesheet" href="<?=BASE_URL?><?=FILE_APP?>?MODULE=CSS&amp;APP=<?=FILE_APP?>&amp;page=<?=get_class($Page)?>&amp;session_name=<?=$session_name?>" />
+<script type="text/javascript" src="<?=BASE_URL?><?=FILE_APP?>?MODULE=JS&amp;APP=<?=FILE_APP?>&amp;page=<?=get_class($Page)?>&amp;session_name=<?=$session_name?>"></script>
 <!-- Page Head (Class <?=get_class($Page);?>)-->
 <?=$Page->head()."\n";?>
 <!-- /Page Head (Class <?=get_class($Page);?>)-->

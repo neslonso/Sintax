@@ -173,7 +173,7 @@ class composer extends Error implements IPage {
 			$componentsFilePath=$arrAppData['RUTA_APP'].'cliente/'.$localIncludeFilename;
 		}
 
-		if (!file_exists($componentsFilePath)) {throw new \ActionException('Fichero components no existe ('.$componentsFilePath.')', 1);return;}
+		if (!file_exists($componentsFilePath)) {if (!touch($componentsFilePath)) {throw new \ActionException('Fichero components no pudo ser creado ('.$componentsFilePath.')', 1);return;}}
 
 		//file_put_contents($componentsFilePath,'');
 		$arrComponents=$arrInstalledLibs;

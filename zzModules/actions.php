@@ -179,13 +179,15 @@ try {
 					}
 					$firephp->groupEnd();
 					$firephp->groupEnd();
-					unset($_SESSION['lastAction'][$acClase][$acMetodo]);
-					if (count($_SESSION['lastAction'][$acClase])==0) {
-						unset($_SESSION['lastAction'][$acClase]);
-					}
-					if (count($_SESSION['lastAction'])==0) {
-						unset($_SESSION['lastAction']);
-					}
+					try {
+						unset($_SESSION['lastAction'][$acClase][$acMetodo]);
+						if (count($_SESSION['lastAction'][$acClase])==0) {
+							unset($_SESSION['lastAction'][$acClase]);
+						}
+						if (count($_SESSION['lastAction'])==0) {
+							unset($_SESSION['lastAction']);
+						}
+					} catch (Exception $e) {}
 				}
 			} else {
 				$result="operación no permitida. (ERROR_NO_VALIDA)";
@@ -245,7 +247,6 @@ try {
 } catch (Exception $e) {
 	$infoExc="Excepcion de tipo: ".get_class($e).". Mensaje: ".$e->getMessage()." en fichero ".$e->getFile()." en linea ".$e->getLine();
 	$firephp->info($infoExc);
-	$firephp->info($e->getTrace(),"trace");
 	$firephp->info($e->getTraceAsString(),"traceAsString");
 	error_log ($infoExc);
 	error_log ("TRACE: ".$e->getTraceAsString());
@@ -264,7 +265,7 @@ try {
 				$msg=$infoExc;
 				$title="Situación de excepción no controlada";
 				ReturnInfo::add($msg,$title);
-				$location=BASE_DIR.FILE_APP."?page=error";
+				$location=BASE_DIR.FILE_APP."?page=Error";
 			}
 			error_log('redireccionando a ('.$location.')');
 			$firephp->info($location,'redireccionando a ($location)');
