@@ -81,7 +81,7 @@ if (version_compare(PHP_VERSION, PHP_MIN_VERSION, '<')) {
 				1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
 				2 => array("pipe", "w"),  // stderr is a pipe that the child will write to
 			);
-			$cmd='php '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar install --optimize-autoloader --no-interaction -d "'.SKEL_ROOT_DIR.'" --profile';
+			$cmd='php -c '.php_ini_loaded_file().' '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar install --optimize-autoloader --no-interaction -d "'.SKEL_ROOT_DIR.'" --profile';
 			echo "<h2>Ejecutando: ".$cmd."</h2>";
 			ob_flush();
 
