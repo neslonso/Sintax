@@ -4,7 +4,7 @@
 		"cache-dir": "zCache/composer",
 		"home": ".",
 		"github-oauth": {
-			"github.com": "7568a21be48617b1658afe18a5005e811440ebf2"
+			"github.com": "d377a9ad28fe7f6339734c701a10c5f16a1a997e"
 		},
 		"fxp-asset": {
 			"installer-paths": {
@@ -24,6 +24,6 @@
 		"phpunit/phpunit": "~4.3",
 		"oyejorge/less.php": "v1.7.0.5",
 		"andrewsville/php-token-reflection": "^1.4",
-		"fxp/composer-asset-plugin": "1.0.0@dev"
+		"fxp/composer-asset-plugin": "1.3",
 	}
 }
