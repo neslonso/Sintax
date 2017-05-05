@@ -69,13 +69,14 @@ class composer extends Error implements IPage {
 
 	public static function getInstalledLibs($libDirectoryPath) {
 		$arrInstalledLibs=array();
-		$arrBowerJsonFiles=\Filesystem::folderSearch($libDirectoryPath, '/.*bower.json/');
+		$arrBowerJsonFiles=\Filesystem::folderSearch($libDirectoryPath, '/.*bower.json|.*composer.json|.*component.json/');
+		//echo "<pre>".print_r ($arrBowerJsonFiles,true)."</pre>";
 		foreach ($arrBowerJsonFiles as $bowerJsonFilePath) {
 			if (!isset($arrInstalledLibs[basename(dirname($bowerJsonFilePath))])) {
-				$dotBowerJsonFilePath=dirname($bowerJsonFilePath).'/.bower.json';
+				$dotBowerJsonFilePath=dirname($bowerJsonFilePath).'/.'.$bowerJsonFilePath;
 				if (file_exists($dotBowerJsonFilePath)) {
 					$objBowerInfo=json_decode(file_get_contents($dotBowerJsonFilePath));
-				} else {
+				} elseif (file_exists($bowerJsonFilePath)) {
 					$objBowerInfo=json_decode(file_get_contents($bowerJsonFilePath));
 				}
 
@@ -125,6 +126,7 @@ class composer extends Error implements IPage {
 				}
 
 				$arrInstalledLibs[basename(dirname($bowerJsonFilePath))]=$objLibData;
+				unset($objLibData);
 			}
 		}
 		return $arrInstalledLibs;
@@ -310,7 +312,8 @@ class composer extends Error implements IPage {
 					throw new \ActionException('Debe introducir el paquete.', 1);
 				}
 				break;
-			case "show":break;
+			case "show":
+				$opts.='--all ';break;
 			default:
 				throw new \ActionException('Comando "'.htmlspecialchars($cCmd).'" no válido o no implementado', 1);
 			break;
@@ -321,8 +324,8 @@ class composer extends Error implements IPage {
 			1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
 			2 => array("pipe", "w"),  // stderr is a pipe that the child will write to
 		);
-		$cmd='php '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar '.$cCmd.' '.$pkgs.' '.$opts;
-		echo "<h2>Ejecutando: ".$cmd."</h2>";
+		$cmd='php -c '.php_ini_loaded_file().' '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar '.$cCmd.' '.$pkgs.' '.$opts;
+		echo "<h2>Ejecutando: [".$cmd."] en getcwd: [".getcwd()."]</h2>";
 		$process = proc_open($cmd, $descriptorspec, $pipes);
 		$stdout = stream_get_contents($pipes[1]);
 		fclose($pipes[1]);

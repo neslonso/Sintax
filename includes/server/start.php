@@ -82,7 +82,8 @@ if (version_compare(PHP_VERSION, PHP_MIN_VERSION, '<')) {
 				2 => array("pipe", "w"),  // stderr is a pipe that the child will write to
 			);
 			$cmd='php -c '.php_ini_loaded_file().' '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar install --optimize-autoloader --no-interaction -d "'.SKEL_ROOT_DIR.'" --profile';
-			echo "<h2>Ejecutando: ".$cmd."</h2>";
+			echo "<h2>Ejecutando: [".$cmd."] en getcwd: [".getcwd()."]</h2>";
+			//die("Parada mediante die, suele compensar ejecutar el comando desde consola en lugar de hacerlo a traves de apache");
 			ob_flush();
 
 			$process = proc_open($cmd, $descriptorspec, $pipes);

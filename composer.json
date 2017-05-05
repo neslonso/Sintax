@@ -5,8 +5,13 @@
 		"home": ".",
 		"github-oauth": {
 			"github.com": "7568a21be48617b1658afe18a5005e811440ebf2"
+		},
+		"fxp-asset": {
+			"installer-paths": {
+				"npm-asset-library": "includes/cliente/vendor/composer-asset-plugin",
+				"bower-asset-library": "includes/cliente/vendor/composer-asset-plugin"
+			}
 		}
-
 	},
 	"minimum-stability": "dev",
 	"prefer-stable": true,
@@ -20,11 +25,5 @@
 		"oyejorge/less.php": "v1.7.0.5",
 		"andrewsville/php-token-reflection": "^1.4",
 		"fxp/composer-asset-plugin": "1.0.0@dev"
-	},
-	"extra": {
-		"asset-installer-paths": {
-			"npm-asset-library": "includes/cliente/vendor/composer-asset-plugin",
-			"bower-asset-library": "includes/cliente/vendor/composer-asset-plugin"
-		}
 	}
 }

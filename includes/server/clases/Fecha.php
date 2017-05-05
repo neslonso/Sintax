@@ -70,7 +70,7 @@ class Fecha {
 	public static function fromMysql ($date) {
 		if (empty($date)) {$date=NULL;}
 		if (!is_null($date)) {
-			$contieneSeparadores=(ereg("[^0-9]",$date))?true:false;
+			$contieneSeparadores=(preg_match("/[^0-9]/",$date)===1)?true:false;
 			if ($contieneSeparadores) {
 				//Recibimos un timestamp de mysql (AAAA-MM-DD HH-MM-SS)
 				$anio=substr ($date,0,4);
