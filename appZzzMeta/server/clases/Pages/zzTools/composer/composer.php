@@ -69,7 +69,7 @@ class composer extends Error implements IPage {
 
 	public static function getInstalledLibs($libDirectoryPath) {
 		$arrInstalledLibs=array();
-		$arrBowerJsonFiles=\Filesystem::folderSearch($libDirectoryPath, '/.*bower.json|.*composer.json|.*component.json/');
+		$arrBowerJsonFiles=\Filesystem::folderSearch($libDirectoryPath, '/.*bower.json|.*composer.json|.*component.json|.*package.json/');
 		//echo "<pre>".print_r ($arrBowerJsonFiles,true)."</pre>";
 		foreach ($arrBowerJsonFiles as $bowerJsonFilePath) {
 			if (!isset($arrInstalledLibs[basename(dirname($bowerJsonFilePath))])) {
@@ -81,12 +81,15 @@ class composer extends Error implements IPage {
 				}
 
 				$objLibData=new \stdClass();
+				$objLibData->file='('.basename($dotBowerJsonFilePath).')';
 				$objLibData->name='('.basename(dirname($dotBowerJsonFilePath)).') '.$objBowerInfo->name;
 				$objLibData->version=(isset($objBowerInfo->version))?$objBowerInfo->version:'[NO DEFINIDA]';
 				$objLibData->dependencies=(isset($objBowerInfo->dependencies))?(array)$objBowerInfo->dependencies:array();
 				$objLibData->main=array();
 				if (isset($objBowerInfo->main)) {
 					$objLibData->main=(is_array($objBowerInfo->main))?$objBowerInfo->main:array(0 => $objBowerInfo->main);
+				} else {
+					continue;
 				}
 
 				$arrJsFiles=array();

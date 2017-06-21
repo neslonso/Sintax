@@ -50,14 +50,14 @@ try {
 					switch ($apiTipo) {
 						case "noAssoc"://Los parametros vienen por POST, se pasan al metodo uno por uno
 							$args="";
-							foreach ($_POST as $value) {
+							foreach ($_REQUEST as $value) {
 								$args.='"'.$value.'", ';
 							}
 							$args=substr($args,0,-2);
 							$phpSentence='$resultSentence=$obj->'.$apiMetodo.'('.$args.');';
 							break;
 						case "assoc"://Los parametros vienen POST y se pasan al metodo como un array y despues se redirige el navegador
-							$args=$_POST;
+							$args=$_REQUEST;
 							$phpSentence='$resultSentence=$obj->'.$apiMetodo.'($args);';
 							break;
 					}

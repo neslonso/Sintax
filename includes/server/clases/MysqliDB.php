@@ -343,7 +343,7 @@ class MysqliDB extends \mysqli {
 			$sqlShowColumns='SHOW COLUMNS FROM `'.$nombreTabla.'` LIKE "'.$name.'"';
 			$fieldExists=($this->get_num_rows($sqlShowColumns))?TRUE:FALSE;
 			if ($fieldExists) {
-				$sqlInsertInto.='"'.$value.'",';
+				$sqlInsertInto.='"'.$this->real_escape_string($value).'",';
 			} else {
 				$extraData.='"'.$name.'":"'.$value.'",';
 			}
