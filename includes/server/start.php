@@ -61,20 +61,27 @@ if (version_compare(PHP_VERSION, PHP_MIN_VERSION, '<')) {
 				$sapiOk=false;
 				break;
 		}
-		$gitOk=(`which git`)?true:false;
+		$gitOk=(`git --version`)?true:false;
 
 		header('Content-Type: text/html; charset=utf-8');
 		echo '<style type="text/css">pre {border:inset black 3px; background-color:#c0c0c0; font-family:monospace; max-height:300px; overflow:auto;}</style>';
 		echo '<h1>Detectada primera ejecución</h1>';
+		echo '<h2>';
+		echo "Fichero ejecutado: ".$_SERVER["SCRIPT_FILENAME"];;
+		echo '<br />';
+		echo "Propietario del fichero (get_current_user): ".get_current_user();
+		echo '<br />';
+		echo "Usuario bajo el que corre el script (whoami): ".exec('whoami');
+		echo '</h2>';
 		echo '
 		<h3>Prerequisitos:
 			<ul>
-				<li>PHP como FastCGI...'.( ($sapiOk)?'OK':'NOOK' ).'</li>
-				<li>Instalar Git (yum install git)...'.( ($gitOk)?'OK':'NOOK' ).'</li>
+				<li>PHP SAPI ('.PHP_SAPI.')...'.( ($sapiOk)?'OK':'NOOK' ).'</li>
+				<li>Git disponible (version: ['.`git --version`.'])...'.( ($gitOk)?'OK':'NOOK' ).'</li>
 			</ul>
 		</h3>';
 
-		if ($gitOk) {
+		if ($sapiOk && $gitOk) {
 			putenv('COMPOSER_HOME=' . SKEL_ROOT_DIR);
 			$descriptorspec = array(
 				//0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
@@ -83,7 +90,7 @@ if (version_compare(PHP_VERSION, PHP_MIN_VERSION, '<')) {
 			);
 			$cmd='php -c '.php_ini_loaded_file().' '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar install --optimize-autoloader --no-interaction -d "'.SKEL_ROOT_DIR.'" --profile';
 			echo "<h2>Ejecutando: [".$cmd."] en getcwd: [".getcwd()."]</h2>";
-			//die("Parada mediante die, suele compensar ejecutar el comando desde consola en lugar de hacerlo a traves de apache");
+			die("Parada mediante die, suele compensar ejecutar el comando desde consola en lugar de hacerlo a traves de apache");
 			ob_flush();
 
 			$process = proc_open($cmd, $descriptorspec, $pipes);
@@ -131,7 +138,7 @@ if (version_compare(PHP_VERSION, PHP_MIN_VERSION, '<')) {
 			';
 		} else {
 			echo '
-				<h4>GIT no encontrado...proceso abortado</h4>
+				<h4>Requisitos no satifechos...proceso abortado</h4>
 			';
 		}
 		die();
