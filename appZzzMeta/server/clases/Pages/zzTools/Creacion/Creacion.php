@@ -31,9 +31,9 @@ class Creacion extends Error implements IPage {
 
 	public function favIcon() {
 		$favIcon='';
-		$favIcon.='<link rel="shortcut icon" type="image/x-icon" href="./binaries/imgs/tools.favicon.ico" />';
+		$favIcon.='<link rel="shortcut icon" type="image/x-icon" href="'.SKEL_ROOT_URL.'binaries/imgs/tools.favicon.ico" />';
 		$favIcon.=PHP_EOL;
-		$favIcon.='<link rel="icon" type="image/x-icon" href="./binaries/imgs/tools.favicon.ico" />';
+		$favIcon.='<link rel="icon" type="image/x-icon" href="'.SKEL_ROOT_URL.'binaries/imgs/tools.favicon.ico" />';
 		return $favIcon."\n";
 	}
 

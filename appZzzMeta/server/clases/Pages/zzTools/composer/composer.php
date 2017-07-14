@@ -71,65 +71,78 @@ class composer extends Error implements IPage {
 		$arrInstalledLibs=array();
 		$arrBowerJsonFiles=\Filesystem::folderSearch($libDirectoryPath, '/.*bower.json|.*composer.json|.*component.json|.*package.json/');
 		//echo "<pre>".print_r ($arrBowerJsonFiles,true)."</pre>";
-		foreach ($arrBowerJsonFiles as $bowerJsonFilePath) {
-			if (!isset($arrInstalledLibs[basename(dirname($bowerJsonFilePath))])) {
-				$dotBowerJsonFilePath=dirname($bowerJsonFilePath).'/.'.$bowerJsonFilePath;
-				if (file_exists($dotBowerJsonFilePath)) {
-					$objBowerInfo=json_decode(file_get_contents($dotBowerJsonFilePath));
-				} elseif (file_exists($bowerJsonFilePath)) {
-					$objBowerInfo=json_decode(file_get_contents($bowerJsonFilePath));
-				}
-
+		foreach ($arrBowerJsonFiles as $packageMetadataFilePath) {
+			if (!isset($arrInstalledLibs[basename(dirname($packageMetadataFilePath))])) {
 				$objLibData=new \stdClass();
-				$objLibData->file='('.basename($dotBowerJsonFilePath).')';
-				$objLibData->name='('.basename(dirname($dotBowerJsonFilePath)).') '.$objBowerInfo->name;
-				$objLibData->version=(isset($objBowerInfo->version))?$objBowerInfo->version:'[NO DEFINIDA]';
-				$objLibData->dependencies=(isset($objBowerInfo->dependencies))?(array)$objBowerInfo->dependencies:array();
-				$objLibData->main=array();
-				if (isset($objBowerInfo->main)) {
-					$objLibData->main=(is_array($objBowerInfo->main))?$objBowerInfo->main:array(0 => $objBowerInfo->main);
-				} else {
-					continue;
-				}
-
-				$arrJsFiles=array();
-				$arrCssFiles=array();
-				$arrOtherFiles=array();
+				$objLibData->packageDescriptionFiles=array();
+				$objLibData->includeFiles=array();
 				$objLibData->js=array();
 				$objLibData->css=array();
 				$objLibData->less=array();
 				$objLibData->otherFiles=array();
+			} else {
+				$objLibData=$arrInstalledLibs[basename(dirname($packageMetadataFilePath))];
+			}
 
-				foreach ($objLibData->main as $fileRelPath) {
+			$objPackageInfo=json_decode(file_get_contents($packageMetadataFilePath));
+			$objLibData->packageDescriptionFiles[basename($packageMetadataFilePath)]=$packageMetadataFilePath;
+			$arrInstalledLibs[basename(dirname($packageMetadataFilePath))]=$objLibData;
+			unset($objLibData);
+		}
+
+		//echo "<pre>".print_r ($arrInstalledLibs,true)."</pre>";
+		foreach ($arrInstalledLibs as $libName => $objLibData) {
+			//echo $libName."<br />";
+			foreach ($objLibData->packageDescriptionFiles as $packageMetadataFileName => $packageMetadataFilePath) {
+				switch ($packageMetadataFileName) {
+					case 'bower.json':
+						$objPackageInfo=json_decode(file_get_contents($packageMetadataFilePath));
+						//echo $libName."::".$packageMetadataFileName."<br />";
+						$objLibData->packageName=$objPackageInfo->name;
+						$objLibData->packageVersion=(isset($objPackageInfo->version))?$objPackageInfo->version:'[NO DEFINIDA]';
+						$objLibData->dependencies=(isset($objPackageInfo->dependencies))?(array)$objPackageInfo->dependencies:array();
+						if (isset($objPackageInfo->main)) {
+							if (!is_array($objPackageInfo->main)) {
+								$objPackageInfo->main=array(0 => $objPackageInfo->main);
+							}
+							foreach ($objPackageInfo->main as $mainInfo) {
+								array_push($objLibData->includeFiles, $mainInfo);
+							}
+						}
+						break;
+					default:
+						# code...
+						break;
+				}
+
+				foreach ($objLibData->includeFiles as $fileRelPath) {
 					$baseURI="./".\Filesystem::find_relative_path(SKEL_ROOT_DIR,$libDirectoryPath)."/";
-					$includeFilePath=$baseURI.basename(dirname($bowerJsonFilePath)).DIRECTORY_SEPARATOR.$fileRelPath;
+					$includeFilePath=$baseURI.basename(dirname($packageMetadataFilePath)).DIRECTORY_SEPARATOR.$fileRelPath;
 					$fileExt=pathinfo($includeFilePath, PATHINFO_EXTENSION);
+
 					switch ($fileExt) {
 						case 'js':
-							if (!in_array($includeFilePath,$arrJsFiles)) {
+							if (!in_array($includeFilePath,$objLibData->js)) {
 								$objLibData->js[]=$includeFilePath;
 							}
 							break;
 						case 'css':
-							if (!in_array($includeFilePath,$arrCssFiles)) {
+							if (!in_array($includeFilePath,$objLibData->css)) {
 								$objLibData->css[]=$includeFilePath;
 							}
 							break;
 						case 'less':
-							if (!in_array($includeFilePath,$arrCssFiles)) {
+							if (!in_array($includeFilePath,$objLibData->less)) {
 								$objLibData->less[]=$includeFilePath;
 							}
 							break;
 						default:
-							if (!in_array($includeFilePath,$arrOtherFiles)) {
+							if (!in_array($includeFilePath,$objLibData->otherFiles)) {
 								$objLibData->otherFiles[]=$includeFilePath;
 							}
 							break;
 					}
 				}
-
-				$arrInstalledLibs[basename(dirname($bowerJsonFilePath))]=$objLibData;
-				unset($objLibData);
 			}
 		}
 		return $arrInstalledLibs;

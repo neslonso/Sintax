@@ -48,6 +48,12 @@ echo $hash."<br />";
 
 ?>
 <hr />
+get_loaded_extensions() + get_loaded_extensions(true):
+<?
+echo "<pre>".print_r(array_merge(get_loaded_extensions(),get_loaded_extensions(true)),true)."</pre>";
+?>
+<hr />
+phpinfo:
 <?
 ob_start();
 phpinfo();

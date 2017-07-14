@@ -8,6 +8,24 @@ date_default_timezone_set('Europe/Madrid');
 //convertirlos a cadena, lo que da problemas al construir sentencias SQL o mandar JSON a JS
 //setlocale(LC_ALL,'es_ES');
 
+
+require_once SKEL_ROOT_DIR."includes/server/IPS_DEV.php";
+require_once SKEL_ROOT_DIR."includes/server/APPS.php";
+require_once SKEL_ROOT_DIR."includes/server/DBS.php";
+//requerimos las bibliotecas de servidor "estaticas" y el autoloader de composer
+require_once SKEL_ROOT_DIR."includes/server/serverLibs.php";
+
+/**/
+//Inicializamos objeto de manejo de errores
+$GLOBALS['ErrorHandler'] = $GLOBALS['firephp'] = \Sintax\Core\ErrorHandler::getInstance(true);
+
+if (!in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
+	$GLOBALS['ErrorHandler']->setEnabled(false);
+}
+$GLOBALS['ErrorHandler']->registerErrorHandler($throwErrorExceptions=true);
+$GLOBALS['ErrorHandler']->registerExceptionHandler();
+/**/
+
 /**/
 define('PHP_MIN_VERSION','5.3.0');
 define('SKEL_VERSION','1.0.0');
@@ -20,6 +38,12 @@ define('BASE_DIR',
 		dirname($_SERVER['SCRIPT_NAME']).'/'
 );//Directorio del punto de entrada. Tiene que terminar en / obligatoriamente
 define('BASE_URL',PROTOCOL.'://'.BASE_DOMAIN.BASE_DIR);//URL hasta el directorio del punto de entrada
+define('SKEL_ROOT_URL',
+	PROTOCOL.'://'.(
+		(dirname(SKEL_ROOT_DIR)!=dirname($_SERVER['DOCUMENT_ROOT']))?
+			BASE_DOMAIN.\Filesystem::find_relative_path(SKEL_ROOT_DIR,$_SERVER['DOCUMENT_ROOT'])."/":BASE_DOMAIN
+	).'/'
+);//URL Correspondoiente a SKEL_ROOT_DIR. Tiene que terminar en / obligatoriamente
 
 define('CACHE_DIR',SKEL_ROOT_DIR.'zCache/');
 define('TMP_UPLOAD_DIR',SKEL_ROOT_DIR.'zCache/tmpUpload/');
@@ -38,20 +62,13 @@ define ('MODULES', serialize(array(
 	'phpunit' => SKEL_ROOT_DIR.'zzModules/phpunit.php',
 )));
 
-require_once SKEL_ROOT_DIR."includes/server/IPS_DEV.php";
-
-require_once SKEL_ROOT_DIR."includes/server/APPS.php";
-
-require_once SKEL_ROOT_DIR."includes/server/DBS.php";
-
-//requerimos las bibliotecas de servidor "estaticas" y el autoloader de composer
-require_once SKEL_ROOT_DIR."includes/server/serverLibs.php";
 /* Comprobamos versión suficiente de PHP **************************************/
 if (version_compare(PHP_VERSION, PHP_MIN_VERSION, '<')) {
 	die ('Sintax '.SKEL_VERSION.' requiere al menos PHP '.PHP_MIN_VERSION.'. Detectado PHP ' . PHP_VERSION . ". Proceso abortado.");
 }
+
 /* Instalamos componentes de composer *****************************************/
-	if (!class_exists('\\FirePHP')) {
+	if (!class_exists('\\Less_Parser')) {
 		switch (PHP_SAPI) {
 			case 'cgi-fcgi':
 			case 'fpm-fcgi':
@@ -144,9 +161,6 @@ if (version_compare(PHP_VERSION, PHP_MIN_VERSION, '<')) {
 		die();
 	}
 /******************************************************************************/
-
-//Configuramos el FirePHP
-require_once SKEL_ROOT_DIR."includes/server/FirePHP.php";
 
 //Definimos todas las constantes de la aplicacion correspondiente al punto de entrada
 $arrApps=unserialize(APPS);

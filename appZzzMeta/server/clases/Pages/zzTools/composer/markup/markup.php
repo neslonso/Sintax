@@ -76,8 +76,13 @@ foreach ($arrApps as $entryPoint => $arrAppConstants) {
 <?
 if (count($arrInstalledLibs)>0) {
 	foreach ($arrInstalledLibs as $libName => $objLibData) {
+		$pmfLnks='';
+		foreach ($objLibData->packageDescriptionFiles as $packageMetadataFilePath) {
+			$pmfURI=\Filesystem::find_relative_path(SKEL_ROOT_DIR,$packageMetadataFilePath);
+			$pmfLnks.='<a href="../../../'.$pmfURI.'" target="_blank">'.basename($packageMetadataFilePath).'</a> ';
+		}
 		echo "<tr>";
-		echo '<td title="'.print_r($objLibData,true).'">'.$objLibData->name.' ('.$objLibData->version.')</td>';
+		echo '<td><span title="'.print_r($objLibData,true).'">'.$libName.'</span> ('.$pmfLnks.')</td>';
 		foreach ($arrApps as $entryPoint => $arrAppConstants) {
 			$checked=($arrLibsApps[$libName][$entryPoint]==1)?'checked="checked"':'';
 			$name=$entryPoint.' ('.$arrAppConstants['NOMBRE_APP'].')';

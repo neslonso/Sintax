@@ -4,7 +4,7 @@
 		"cache-dir": "zCache/composer",
 		"home": ".",
 		"github-oauth": {
-			"github.com": "d377a9ad28fe7f6339734c701a10c5f16a1a997e"
+			"github.com": ""
 		},
 		"fxp-asset": {
 			"installer-paths": {
@@ -20,7 +20,6 @@
 	"require": {
 		"mtdowling/cron-expression": "1.0.*",
 		"phpmailer/phpmailer": "5.2.9",
-		"firephp/firephp-core": "~0.4",
 		"phpunit/phpunit": "~4.3",
 		"oyejorge/less.php": "v1.7.0.5",
 		"andrewsville/php-token-reflection": "^1.4",
