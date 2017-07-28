@@ -14,6 +14,9 @@ try {
 
 
 	$module=(isset($_REQUEST['MODULE']))?strtolower($_REQUEST['MODULE']):"render";
+
+	$GLOBALS['logger']->group('Ejecución de Módulo: '.$module, array('Collapsed' => true, 'Color' => '#FF9933'));
+
 	if (isset($_REQUEST['MODULE'])) {unset ($_REQUEST['MODULE']);}
 	if (isset($_POST['MODULE'])) {unset ($_POST['MODULE']);}
 	if (isset($_GET['MODULE'])) {unset ($_GET['MODULE']);}
@@ -29,6 +32,10 @@ try {
 	header('HTTP/1.1 500 Internal Server Error',true,500);
 	echo ("CATCH RAIZ: ".$e->getMessage());
 }
+$GLOBALS['logger']->groupend();
+
 $tTotal=microtime(true)-$tInicial;
-error_log (basename(__FILE__)."?".$module." ejecutado en: ".round($tTotal,3)." segundos.");
+$tStr=basename(__FILE__)."?".$module." ejecutado en: ".round($tTotal,3)." segundos.";
+$GLOBALS['logger']->info($tStr);
+error_log ($tStr);
 ?>

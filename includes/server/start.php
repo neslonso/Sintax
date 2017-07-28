@@ -17,13 +17,13 @@ require_once SKEL_ROOT_DIR."includes/server/serverLibs.php";
 
 /**/
 //Inicializamos objeto de manejo de errores
-$GLOBALS['ErrorHandler'] = $GLOBALS['firephp'] = \Sintax\Core\ErrorHandler::getInstance(true);
+$GLOBALS['logger'] = $GLOBALS['firephp'] = \Sintax\Core\ErrorHandler::getInstance(true);
 
 if (!in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
-	$GLOBALS['ErrorHandler']->setEnabled(false);
+	$GLOBALS['logger']->setEnabled(false);
 }
-$GLOBALS['ErrorHandler']->registerErrorHandler($throwErrorExceptions=true);
-$GLOBALS['ErrorHandler']->registerExceptionHandler();
+$GLOBALS['logger']->registerErrorHandler($throwErrorExceptions=true);
+$GLOBALS['logger']->registerExceptionHandler();
 /**/
 
 /**/

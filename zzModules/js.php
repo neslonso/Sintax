@@ -153,7 +153,8 @@ header("Pragma: no-cache");
 	/* js local *******************************************************************/
 ?>
 <?
-//Volcamos todo (Libs + Local)
+ob_start();
+//Volcamos todo (Libs + Local) al buffer
 echo $jsMinFileContents;
 echo $jsLocalMin;
 ?>

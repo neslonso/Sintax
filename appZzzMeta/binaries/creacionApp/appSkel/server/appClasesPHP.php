@@ -1,10 +1,13 @@
 <?
 spl_autoload_register(function ($clase) {
-	$clase = @end(explode('\\',$clase));//namespaces, genera: PHP Strict Standards:  Only variables should be passed by reference, pq end recibe el resultado de explode por referencia
+	//$claseSinNameSpace=explode('\\',$clase);
+	//$clase = end($claseSinNameSpace);
+	$clase = basename(str_replace('\\', '/', $clase));
 	$fileList=Filesystem::folderSearch(dirname(__FILE__).DIRECTORY_SEPARATOR.'clases'.DIRECTORY_SEPARATOR,'/.*\/'.$clase.'.php$/');
 	foreach ($fileList as $filePath) {
 		if (file_exists($filePath)) {
 			require_once($filePath);
+			return;
 		}
 	}
 	$fileList=Filesystem::folderSearch(dirname(__FILE__).DIRECTORY_SEPARATOR.
@@ -13,6 +16,7 @@ spl_autoload_register(function ($clase) {
 	foreach ($fileList as $filePath) {
 		if (file_exists($filePath)) {
 			require_once($filePath);
+			return;
 		}
 	}
 });

@@ -2,7 +2,7 @@
 class MysqliDB_Exception extends \Exception {}
 class DBException extends \MysqliDB_Exception {}//Obsdoleta, eliminar todos sus lanzamientos en Sintax y dejarla de usar en las apps
 
-class MysqliDB extends \mysqli {
+class MysqliDB extends \mysqli implements Serializable {
 	/**
 	 * host de MySQL
 	 * @var string
@@ -36,26 +36,10 @@ class MysqliDB extends \mysqli {
 		$this->user=$user;
 		$this->pass=$pass;
 		$this->db=$db;
-		parent::init();
-		/*
-		if (!parent::options(MYSQLI_INIT_COMMAND, 'SET AUTOCOMMIT = 0')) {
-			throw new exception('Setting MYSQLI_INIT_COMMAND failed');
-		}
 
-		if (!parent::options(MYSQLI_OPT_CONNECT_TIMEOUT, 5)) {
-			throw new exception('Setting MYSQLI_OPT_CONNECT_TIMEOUT failed');
-		}
-		*/
-		if (!parent::real_connect($host, $user, $pass, $db)) {
-			//throw new exception($this->connect_error, $this->connect_errno);
-			//$connect_error falla hasta PHP 5.3.0, asi que usamos la siguiente
-			throw new MysqliDB_Exception(mysqli_connect_error(), mysqli_connect_errno());
-		}
-		/* change character set to utf8 */
-		if (!parent::set_charset("utf8")) {
-			throw new MysqliDB_Exception(mysqli_connect_error(), mysqli_connect_errno());
-		}
+		$this->reconnect();
 	}
+
 	/**
 	 * Destructor: cierra la conexión a MySQL si está abierta
 	 * @throws MysqliDB_Exception si no se puede cerrar la conexion
@@ -73,10 +57,57 @@ class MysqliDB extends \mysqli {
 		}
 	}
 
+	public function serialize() {
+		return serialize([
+			$this->host,
+			$this->user,
+			$this->pass,
+			$this->db,
+		]);
+	}
+	public function unserialize($serialized) {
+		list(
+			$this->host,
+			$this->user,
+			$this->pass,
+			$this->db,
+		) = unserialize($serialized);
+		$this->reconnect();
+	}
+
 	public function GEThost() {return $this->host;}
 	public function GETuser() {return $this->user;}
 	public function GETpass() {return $this->pass;}
 	public function GETdb() {return $this->db;}
+
+	private function reconnect() {
+		parent::init();
+
+
+		/* Avisos y excepciones del controlar
+		$controlador = new mysqli_driver();
+		$controlador->report_mode = MYSQLI_REPORT_ALL;
+		*/
+
+		/*
+		if (!parent::options(MYSQLI_INIT_COMMAND, 'SET AUTOCOMMIT = 0')) {
+			throw new exception('Setting MYSQLI_INIT_COMMAND failed');
+		}
+
+		if (!parent::options(MYSQLI_OPT_CONNECT_TIMEOUT, 5)) {
+			throw new exception('Setting MYSQLI_OPT_CONNECT_TIMEOUT failed');
+		}
+		*/
+		if (!parent::real_connect($this->host, $this->user, $this->pass, $this->db)) {
+			//throw new exception($this->connect_error, $this->connect_errno);
+			//$connect_error falla hasta PHP 5.3.0, asi que usamos la siguiente
+			throw new MysqliDB_Exception(mysqli_connect_error(), mysqli_connect_errno());
+		}
+		/* change character set to utf8 */
+		if (!parent::set_charset("utf8")) {
+			throw new MysqliDB_Exception(mysqli_connect_error(), mysqli_connect_errno());
+		}
+	}
 
 	/**
 	 * Ejecuta una consulta
@@ -130,12 +161,12 @@ class MysqliDB extends \mysqli {
 		return $this->get_data($query,"arrVars");
 	}
 	/**
-	 * Recupera un array
+	 * Recupera un array de registros
 	 * @param  string $query Consulta SQL a ejecutar
 	 * @return array Contiene un array por cada registro del resultado la consulta ejecutada
 	 */
 	public function get_arrArrs($query) {
-		return $this->get_data($query,"arrRows");
+		return $this->get_data($query,"arrArrs");
 	}
 	/**
 	 * alias de get_arrArrs (obsoleto)

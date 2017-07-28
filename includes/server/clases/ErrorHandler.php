@@ -32,6 +32,10 @@ class ErrorHandler {
 		$this->enabled = $enabled;
 	}
 
+	public function getEnabled() {
+		return $this->enabled;
+	}
+
 	public function registerErrorHandler($throwErrorExceptions = false)	{
 		//NOTE: The following errors will not be caught by this error handler:
 		//      E_ERROR, E_PARSE, E_CORE_ERROR,
@@ -44,6 +48,9 @@ class ErrorHandler {
 	}
 
 	public function errorHandler($errno, $errstr, $errfile, $errline, $errcontext) {
+		//echo "errorhandler llamado:<br />";
+		//echo "backtrace<pre>".var_export(\debug_backtrace(),true)."</pre>";
+		//echo "func_get_args<pre>".var_export(func_get_args(),true)."</pre>";
 		// Don't throw exception if error reporting is switched off
 		if (error_reporting() == 0) {
 			return;
@@ -54,7 +61,7 @@ class ErrorHandler {
 			if ($this->throwErrorExceptions) {
 				throw $exception;
 			} else {
-				error_log(var_dump($exception,true));
+				self::error($exception);
 			}
 		}
 	}
@@ -69,21 +76,64 @@ class ErrorHandler {
 		header('HTTP/1.1 500 Internal Server Error');
 
 		try {
-			error_log(var_dump($exception,true));
+			self::error($exception);
 		} catch (Exception $e) {
-			echo 'We had an exception: ' . $e;
+			error_log('Ocurrio una excepcion: ' . print_r($e,true));
 		}
 
 		$this->inExceptionHandler = false;
 	}
 
-	public static function info() {}
+	protected static function prepareLoggerParams($type,$data,$titulo) {
+		if (is_array($data) || is_object($data)) {
+			if ($titulo!='') {self::group($titulo);} else {self::group('ARRAY/OBJECT');}
+			self::_toLogger($type,$data);
+			self::groupend();
+		} else {
+			if ($titulo!="") {
+				self::_toLogger($type,$titulo.": ".$data);
+			} else {
+				self::_toLogger($type,$data);
+			}
+		}
+	}
 
-	public static function warning() {}
+	public static function info($data,$titulo='') {
+		self::prepareLoggerParams('info',$data,$titulo);
+	}
+	public static function warning($data,$titulo='') {
+		self::prepareLoggerParams('warn',$data,$titulo);
+	}
+	public static function error($data,$titulo='') {
+		self::prepareLoggerParams('error',$data,$titulo);
+	}
 
-	public static function error() {}
+	public static function group($titulo='',$xtra='') {
+		//$args = func_get_args();
+		$groupType='group';
+		if (is_array($xtra) || is_object($xtra)) {
+			foreach ($xtra as $key => $value) {
+				if (stristr($key, 'collapsed') || stristr($value, 'collapsed')) {
+					$groupType='groupCollapsed';
+					break;
+				}
+			}
+		} elseif (stristr($xtra, 'collapsed')) {
+			$groupType='groupCollapsed';
+		}
+		self::_toLogger($groupType,$titulo);
+	}
+	public static function groupend() {$args = func_get_args();self::_toLogger('groupEnd');}
 
-	public static function group() {}
-	public static function groupend() {}
+	protected static function _toLogger($function,$args='') {
+		if (!self::getInstance()->getEnabled()) {
+			return false;
+		}
+		if (class_exists('ChromePhp')) {
+			\ChromePhp::$function($args);
+		} else {
+			error_log(var_dump($args,true));
+		}
+	}
 }
 ?>

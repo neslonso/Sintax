@@ -31,6 +31,14 @@ class Error extends Page implements IPage {
 		require( str_replace('//','/',dirname(__FILE__).'/') .'markup/head.php');
 	}
 
+	public function favIcon() {
+		$favIcon='';
+		$favIcon.='<link rel="shortcut icon" type="image/x-icon" href="'.SKEL_ROOT_URL.'binaries/imgs/tools.favicon.ico" />';
+		$favIcon.=PHP_EOL;
+		$favIcon.='<link rel="icon" type="image/x-icon" href="'.SKEL_ROOT_URL.'binaries/imgs/tools.favicon.ico" />';
+		return $favIcon."\n";
+	}
+
 	public function js() {
 		require( str_replace('//','/',dirname(__FILE__).'/') .'markup/js.php');
 	}

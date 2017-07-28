@@ -206,23 +206,23 @@ class composer extends Error implements IPage {
 			}
 			foreach ($arrComponents as $componentName => $objComponentInfo) {
 				$dependenciesSatisfied=true;
-				foreach ($objComponentInfo->dependencies as $dependencyName => $dependencyVersion) {
-					if (!in_array($dependencyName, $arrComponentsProcessed)) {
-						$dependenciesSatisfied=false;
-					}
-				}
-				if ($dependenciesSatisfied) {
-					if (!in_array($componentName, $arrComponentsProcessed)) {
-						if (isset($arrLibsApps[$componentName])) {
-							if (isset($arrLibsApps[$componentName][$scopeName])) {
-								if ($arrLibsApps[$componentName][$scopeName]!=1) {
-									echo "Excluido: ".$componentName."<br />".PHP_EOL;
-									//echo 'C: '.$componentName.' :: S: '.$scopeName.' :: a[c][s]:'.$arrLibsApps[$componentName][$scopeName]."<br />".PHP_EOL;
-									$arrComponentsProcessed[]=$componentName;
-									continue;
-								}
+				if (!in_array($componentName, $arrComponentsProcessed)) {
+					if (isset($arrLibsApps[$componentName])) {
+						if (isset($arrLibsApps[$componentName][$scopeName])) {
+							if ($arrLibsApps[$componentName][$scopeName]!=1) {
+								echo "Excluido: ".$componentName."<br />".PHP_EOL;
+								//echo 'C: '.$componentName.' :: S: '.$scopeName.' :: a[c][s]:'.$arrLibsApps[$componentName][$scopeName]."<br />".PHP_EOL;
+								$arrComponentsProcessed[]=$componentName;
+								continue;
 							}
 						}
+					}
+					foreach ($objComponentInfo->dependencies as $dependencyName => $dependencyVersion) {
+						if (!in_array($dependencyName, $arrComponentsProcessed)) {
+							$dependenciesSatisfied=false;
+						}
+					}
+					if ($dependenciesSatisfied) {
 						echo "Incluido: ".$componentName."<br />\n";
 						$arrComponentsProcessed[]=$componentName;
 						$ningunFile=true;
@@ -341,7 +341,10 @@ class composer extends Error implements IPage {
 			2 => array("pipe", "w"),  // stderr is a pipe that the child will write to
 		);
 		$cmd='php -c '.php_ini_loaded_file().' '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar '.$cCmd.' '.$pkgs.' '.$opts;
-		echo "<h2>Ejecutando: [".$cmd."] en getcwd: [".getcwd()."]</h2>";
+		$cmdMsg="<h2>Ejecutando: [".$cmd."] en getcwd: [".getcwd()."]</h2>";
+		echo $cmdMsg;
+		error_log($cmdMsg);
+
 		$process = proc_open($cmd, $descriptorspec, $pipes);
 		$stdout = stream_get_contents($pipes[1]);
 		fclose($pipes[1]);
