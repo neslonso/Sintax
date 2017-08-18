@@ -13,5 +13,13 @@ define ('APPS', serialize(array(
 		'RUTA_APP' => SKEL_ROOT_DIR.'appZzzMeta/',
 		'NOMBRE_APP' => 'Sintax tools',
 	),
+/*
+	'test.php' => array(//Ruta relativa del punto de entrada y SKEL_ROOT_DIR
+		'KEY_APP' => 'test.php',//siempre igual que la key correspondiente del array APPS
+		'FILE_APP' => 'test.php',
+		'RUTA_APP' => SKEL_ROOT_DIR.'appAsociados/',
+		'NOMBRE_APP' => 'appAsopciados TEST',
+	),
+*/
 )));
 ?>

@@ -62,7 +62,8 @@ function muestraMsgModalBootstrap3(title, msg) {
 			].join('')).appendTo($divCell);;
 
 			$divTable.appendTo($overlay);
-			$overlay.appendTo($db);
+			//$overlay.appendTo($db);
+			$overlay.prependTo($db);
 			$db.data('overlay', {
 				settings:self.opt,
 				$overlay:$overlay,
@@ -73,9 +74,11 @@ function muestraMsgModalBootstrap3(title, msg) {
 			var self=this;//Al estar en $.overlay, this es una funcion
 			var $db=$(self.opt.selectorAppendTo);
 			if ($db.data('overlay')) {
-				$db.data('overlay').$overlay.remove();
-				$db.data('overlay').$divTable.remove();
-				$db.removeData('overlay');
+				$db.data('overlay').$overlay.fadeOut(1000, function() {
+					$db.data('overlay').$divTable.remove();
+					$db.data('overlay').$overlay.remove();
+					$db.removeData('overlay');
+				});
 			}
 		}
 	};

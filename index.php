@@ -26,16 +26,16 @@ try {
 	} else {
 		throw new Exception("El módulo '".$module."' no se encuentra.", 1);
 	}
+	$GLOBALS['logger']->groupend();
+
+	$tTotal=microtime(true)-$tInicial;
+	$tStr=basename(__FILE__)."?".$module." ejecutado en: ".round($tTotal,3)." segundos.";
+	$GLOBALS['logger']->info($tStr);
+	error_log ($tStr);
 } catch (Exception $e) {
 	$infoExc="CATCH RAIZ: Excepcion de tipo: ".get_class($e).". Mensaje: ".$e->getMessage()." en fichero ".$e->getFile()." en linea ".$e->getLine();
 	error_log ($infoExc);
 	header('HTTP/1.1 500 Internal Server Error',true,500);
 	echo ("CATCH RAIZ: ".$e->getMessage());
 }
-$GLOBALS['logger']->groupend();
-
-$tTotal=microtime(true)-$tInicial;
-$tStr=basename(__FILE__)."?".$module." ejecutado en: ".round($tTotal,3)." segundos.";
-$GLOBALS['logger']->info($tStr);
-error_log ($tStr);
 ?>

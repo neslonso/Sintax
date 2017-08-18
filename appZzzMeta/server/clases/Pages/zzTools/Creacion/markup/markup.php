@@ -200,7 +200,7 @@ foreach ($this->arrDbsInfo as $nombreConn => $arrStdObjTableInfo) {
 		<legend>Creación de Clase Logic</legend>
 		<label for="rutaLogic">Ruta Logic:</label> <strong><?=SKEL_ROOT_DIR?></strong><input type="text" name="rutaLogic" id="rutaLogic" value="<?=str_replace(SKEL_ROOT_DIR, '', RUTA_APP)?>server/clases/Logic/" /> (Ruta donde crear la clase de lógica)<br />
 		<label for="class">Tabla (Class):</label>
-		<?=self::selectTables('class')?>
+		<?=self::selectTables('class[]','','multiple')?>
 		<br />
 		<input type="checkbox" name="chkTestClass" id="chkTestClass" value="1" checked="checked" />
 		<label for="chkTestClass">Crear clase de test</label>

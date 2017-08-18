@@ -61,7 +61,8 @@ class ErrorHandler {
 			if ($this->throwErrorExceptions) {
 				throw $exception;
 			} else {
-				self::error($exception);
+				error_log(print_r($exception));
+				//$this->logger->error($exception);
 			}
 		}
 	}
@@ -76,64 +77,13 @@ class ErrorHandler {
 		header('HTTP/1.1 500 Internal Server Error');
 
 		try {
-			self::error($exception);
+			//$this->logger->error($exception);
+			error_log(print_r($exception));
 		} catch (Exception $e) {
 			error_log('Ocurrio una excepcion: ' . print_r($e,true));
 		}
 
 		$this->inExceptionHandler = false;
-	}
-
-	protected static function prepareLoggerParams($type,$data,$titulo) {
-		if (is_array($data) || is_object($data)) {
-			if ($titulo!='') {self::group($titulo);} else {self::group('ARRAY/OBJECT');}
-			self::_toLogger($type,$data);
-			self::groupend();
-		} else {
-			if ($titulo!="") {
-				self::_toLogger($type,$titulo.": ".$data);
-			} else {
-				self::_toLogger($type,$data);
-			}
-		}
-	}
-
-	public static function info($data,$titulo='') {
-		self::prepareLoggerParams('info',$data,$titulo);
-	}
-	public static function warning($data,$titulo='') {
-		self::prepareLoggerParams('warn',$data,$titulo);
-	}
-	public static function error($data,$titulo='') {
-		self::prepareLoggerParams('error',$data,$titulo);
-	}
-
-	public static function group($titulo='',$xtra='') {
-		//$args = func_get_args();
-		$groupType='group';
-		if (is_array($xtra) || is_object($xtra)) {
-			foreach ($xtra as $key => $value) {
-				if (stristr($key, 'collapsed') || stristr($value, 'collapsed')) {
-					$groupType='groupCollapsed';
-					break;
-				}
-			}
-		} elseif (stristr($xtra, 'collapsed')) {
-			$groupType='groupCollapsed';
-		}
-		self::_toLogger($groupType,$titulo);
-	}
-	public static function groupend() {$args = func_get_args();self::_toLogger('groupEnd');}
-
-	protected static function _toLogger($function,$args='') {
-		if (!self::getInstance()->getEnabled()) {
-			return false;
-		}
-		if (class_exists('ChromePhp')) {
-			\ChromePhp::$function($args);
-		} else {
-			error_log(var_dump($args,true));
-		}
 	}
 }
 ?>

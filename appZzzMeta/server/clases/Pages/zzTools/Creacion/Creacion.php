@@ -384,13 +384,16 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 	}
 
 	public function acCrearClase() {
-		list($db,$class)=explode(self::DB_NAME_TABLE_NAME_SEPARATOR,$_REQUEST['class']);
-		$chkTestClass=$_REQUEST['chkTestClass'];
-		\cDb::confByKey($db);
-		$rutaLogic=SKEL_ROOT_DIR.$_POST['rutaLogic'];
-		$this->CrearClase($db,$class,$rutaLogic);
-		if ($chkTestClass) {
-			$this->CrearTest($class,$rutaLogic);
+		$_REQUEST['class']=(is_array($_REQUEST['class']))?$_REQUEST['class']:array($_REQUEST['class']);
+		foreach ($_REQUEST['class'] as $dbAndClass) {
+			list($db,$class)=explode(self::DB_NAME_TABLE_NAME_SEPARATOR,$dbAndClass);
+			$chkTestClass=(isset($_REQUEST['chkTestClass']))?$_REQUEST['chkTestClass']:false;
+			\cDb::confByKey($db);
+			$rutaLogic=SKEL_ROOT_DIR.$_POST['rutaLogic'];
+			$this->CrearClase($db,$class,$rutaLogic);
+			if ($chkTestClass) {
+				$this->CrearTest($class,$rutaLogic);
+			}
 		}
 	}
 
@@ -966,7 +969,7 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 	private function CrearClase($db,$class,$ruta) {
 		//$ruta=RUTA_APP."server/clases/Logic/";
 		$stdObjTableInfo=$this->getTableInfo($db,$class);
-		if (!file_exists($ruta.ucfirst($stdObjTableInfo->tableName).".php")) {
+		if (!file_exists($ruta.'/'.ucfirst($stdObjTableInfo->tableName).".php")) {
 			$objClassEntitySubclaser=new \ClassEntitySubclaser (
 				$ruta,
 				ucfirst($stdObjTableInfo->tableName),
@@ -995,8 +998,13 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 			$msg.="<hr /><hr /><hr />";
 			ReturnInfo::add($msg,$title);
 		} else {
-			$title='Clase '.$class.' NO re-creada';
-			$msg='La clase ya existe.';
+			$title='Clase '.$class.' NO re-creada. La clase ya existe.';
+			$msg='<div style="opacity:0.5;">';
+			$msg.='<h2 title="'.print_r ($stdObjTableInfo->arrAttrs,true).'">Creando clase '.ucfirst($stdObjTableInfo->tableName).' (tooltip)</h2>';
+			$msg.="<h3>Atributos</h3><pre>".print_r ($stdObjTableInfo->arrAttrs,true)."</pre>";
+			$msg.="<h3>FKs</h3><pre>".print_r ($stdObjTableInfo->arrFksTo,true)."</pre>";
+			$msg.="<hr /><hr /><hr />";
+			$msg.="</div>";
 			ReturnInfo::add($msg,$title);
 		}
 	}

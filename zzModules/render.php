@@ -132,7 +132,6 @@ xmlns:fb="http://www.facebook.com/2008/fbml"
 <!-- /Favicon -->
 <?$session_name=(isset($_REQUEST['session_name']))?$_REQUEST['session_name']:'';?>
 <link rel="stylesheet" href="<?=BASE_URL?><?=FILE_APP?>?MODULE=CSS&amp;APP=<?=FILE_APP?>&amp;page=<?=get_class($Page)?>&amp;session_name=<?=$session_name?>" />
-<script type="text/javascript" src="<?=BASE_URL?><?=FILE_APP?>?MODULE=JS&amp;APP=<?=FILE_APP?>&amp;page=<?=get_class($Page)?>&amp;session_name=<?=$session_name?>"></script>
 <!-- Page Head (Class <?=get_class($Page);?>)-->
 <?=$Page->head()."\n";?>
 <!-- /Page Head (Class <?=get_class($Page);?>)-->
@@ -146,6 +145,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml"
 		JavaScript habilitado. Aquí están las <a href="http://www.enable-javascript.com/es/"
 		target="_blank"> instrucciones para habilitar JavaScript en tu navegador web</a>.
 	</noscript>
+	<script type="text/javascript" src="<?=BASE_URL?><?=FILE_APP?>?MODULE=JS&amp;APP=<?=FILE_APP?>&amp;page=<?=get_class($Page)?>&amp;session_name=<?=$session_name?>"></script>
 </body>
 </html>
 <?

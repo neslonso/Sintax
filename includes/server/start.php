@@ -16,17 +16,6 @@ require_once SKEL_ROOT_DIR."includes/server/DBS.php";
 require_once SKEL_ROOT_DIR."includes/server/serverLibs.php";
 
 /**/
-//Inicializamos objeto de manejo de errores
-$GLOBALS['logger'] = $GLOBALS['firephp'] = \Sintax\Core\ErrorHandler::getInstance(true);
-
-if (!in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
-	$GLOBALS['logger']->setEnabled(false);
-}
-$GLOBALS['logger']->registerErrorHandler($throwErrorExceptions=true);
-$GLOBALS['logger']->registerExceptionHandler();
-/**/
-
-/**/
 define('PHP_MIN_VERSION','5.3.0');
 define('SKEL_VERSION','1.0.0');
 
@@ -66,6 +55,55 @@ define ('MODULES', serialize(array(
 if (version_compare(PHP_VERSION, PHP_MIN_VERSION, '<')) {
 	die ('Sintax '.SKEL_VERSION.' requiere al menos PHP '.PHP_MIN_VERSION.'. Detectado PHP ' . PHP_VERSION . ". Proceso abortado.");
 }
+
+/**/
+/* Inicializamos objeto de manejo de errores y logger **************************/
+$GLOBALS['errorHandler'] = \Sintax\Core\ErrorHandler::getInstance(true);
+$GLOBALS['errorHandler']->registerErrorHandler($throwErrorExceptions=true);
+$GLOBALS['errorHandler']->registerExceptionHandler();
+
+$GLOBALS['logger'] = $GLOBALS['firephp'] = new \Sintax\Core\monologLogger(
+	'plagesvime',
+	array (
+		/*
+		'gelf' => array(
+			'host' => '127.0.0.1',
+			'port' => 5555,
+		),
+		'stream' => null
+		*/
+	)
+);
+if (!in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
+	$GLOBALS['logger']->setEnabled(false);
+}
+
+class DebugExample {
+    private $privateProperty = 1;
+    protected $protectedProperty = 2;
+    public $publicProperty = 3;
+    public $selfProperty;
+
+    public function __construct() {
+        $this->selfProperty = $this;
+    }
+
+    public function someMethod() {
+    }
+}
+$arr=array(
+    'null' => null,
+    'boolean' => true,
+    'longString' => '11111111112222222222333333333344444444445',
+    'someObject' => new DebugExample(),
+    'someCallback' => array(new DebugExample(), 'someMethod'),
+    'someClosure' => function () {},
+    'someResource' => fopen(__FILE__, 'r'),
+    'manyItemsArray' => array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
+    'deepLevelArray' => array(1 => array(2 => array(3))),
+);
+$GLOBALS['logger']->info($arr,"Array de prueba");
+/**/
 
 /* Instalamos componentes de composer *****************************************/
 	if (!class_exists('\\Less_Parser')) {
