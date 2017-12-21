@@ -134,11 +134,11 @@ function dataTablesGenericServerSide($objCliente=NULL) {
 				else {throw new Exception('Metodo '.$_REQUEST['metodo'].' no existe');}
 		} else {throw new Exception('Parametro metodo requerido');}
 
-		$arrStdObjs=$clase::$metodo();
+		$arrStdObjs=$clase::$metodo($db);
 		$total=count($arrStdObjs);
-		$arrStdObjs=$clase::$metodo($sWhere);
+		$arrStdObjs=$clase::$metodo($db,$sWhere);
 		$totalDisplay=count($arrStdObjs);
-		$arrStdObjs=$clase::$metodo($sWhere,$sOrder,$sLimit);
+		$arrStdObjs=$clase::$metodo($db,$sWhere,$sOrder,$sLimit);
 		$arrDataTables=$arrStdObjs;
 	} else {
 		//$clase=new Cliente($idCliente);
@@ -147,11 +147,11 @@ function dataTablesGenericServerSide($objCliente=NULL) {
 			if (method_exists($clase,$_REQUEST['metodo'])) {$metodo=$_REQUEST['metodo'];}
 				else {throw new Exception('Metodo '.$_REQUEST['metodo'].' no existe');}
 		} else {throw new Exception('Parametro metodo requerido');}
-		$arrStdObjs=$clase->$metodo();
+		$arrStdObjs=$clase->$metodo($db);
 		$total=count($arrStdObjs);
-		$arrStdObjs=$clase->$metodo($sWhere);
+		$arrStdObjs=$clase->$metodo($db,$sWhere);
 		$totalDisplay=count($arrStdObjs);
-		$arrStdObjs=$clase->$metodo($sWhere,$sOrder,$sLimit);
+		$arrStdObjs=$clase->$metodo($db,$sWhere,$sOrder,$sLimit);
 		$arrDataTables=$arrStdObjs;
 	}
 

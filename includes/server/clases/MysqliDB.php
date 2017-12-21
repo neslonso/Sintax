@@ -46,6 +46,7 @@ class MysqliDB extends \mysqli implements Serializable {
 	 */
 	public function __destruct() {
 		try {
+			$pingResult=false;
 			$pingResult=parent::ping();
 		} catch (\Exception $e) {
 			$pingResult=false;
@@ -127,7 +128,7 @@ class MysqliDB extends \mysqli implements Serializable {
 		}
 		*/
 		if($this->errno!=0) {
-			$sql=(strlen($query)<512)?$query:substr($query,0,512)."[RESTO DE LA CONSULTA ELIMINADA]";
+			$sql=(strlen($query)<1023)?$query:substr($query,0,1023)."[RESTO DE LA CONSULTA ELIMINADA]";
 			throw new MysqliDB_Exception("SQL: ".$sql.". ".$this->error, $this->errno);
 		}
 		return $result;

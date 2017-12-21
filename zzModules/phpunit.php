@@ -7,7 +7,7 @@ ob_start();
 //error_reporting(E_ALL|E_STRICT);
 
 header('Content-Type: text/html; charset=utf-8');
-session_start();
+$sSession=\Sintax\Core\Session::gI(KEY_APP);
 
 $arrTests=array();
 $test=(isset($_GET['test']))?$_GET['test']:'';
@@ -30,13 +30,12 @@ if ($test=='') {
 if (count($arrTests)==0) {throw new Exception("Ninguna clase de test encontrada.", 1);}
 
 $objUsr=new Sintax\Core\AnonymousUser();
-if (isset($_SESSION['usuario'])) {
-	//$objUsr=$_SESSION['usuario'];
-	$usrClass=get_class($_SESSION['usuario']);
+if (isset($sSession['usuario'])) {
+	$usrClass=get_class($sSession['usuario']);
 	if ($usrClass!="__PHP_Incomplete_Class") {
-		$objUsr=$_SESSION['usuario'];
+		$objUsr=$sSession['usuario'];
 	} else {
-		unset ($_SESSION['usuario']);
+		unset ($sSession['usuario']);
 	}
 }
 

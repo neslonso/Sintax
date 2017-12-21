@@ -13,7 +13,7 @@ $uniqueId=uniqid("actions.");
 ?>
 <?
 try {
-	session_start();
+	$sSession=\Sintax\Core\Session::gI(KEY_APP);
 ?>
 <?
 	if (!isset($_POST['acReturnURI'])) {
@@ -44,13 +44,12 @@ try {
 	unset ($_POST['acReturnURI']);
 
 	$objUsr=new Sintax\Core\AnonymousUser();
-	if (isset($_SESSION['usuario'])) {
-		//$objUsr=$_SESSION['usuario'];
-		$usrClass=get_class($_SESSION['usuario']);
+	if (isset($sSession['usuario'])) {
+		$usrClass=get_class($sSession['usuario']);
 		if ($usrClass!="__PHP_Incomplete_Class") {
-			$objUsr=$_SESSION['usuario'];
+			$objUsr=$sSession['usuario'];
 		} else {
-			unset ($_SESSION['usuario']);
+			unset ($sSession['usuario']);
 		}
 	}
 ?>
@@ -60,9 +59,6 @@ try {
 <?
 	//Almacenamos lastAction
 	$firephp->group('Almacenado lastAction', array('Collapsed' => true, 'Color' => '#3399FF'));
-	$_SESSION['lastAction'][$acClase][$acMetodo]['TIMESTAMP']=time();
-	$_SESSION['lastAction'][$acClase][$acMetodo]['URI']=(isset($_SERVER['HTTP_REFERER']))?$_SERVER['HTTP_REFERER']:"";
-	$_SESSION['lastAction'][$acClase][$acMetodo]['_POST']=$_POST;
 	$firephp->group('Copiando _FILES', array('Collapsed' => true, 'Color' => '#3399FF'));
 	foreach ($_FILES as $inputName => $arrFileData) {
 		if (!is_array($arrFileData['error'])) {
@@ -89,8 +85,18 @@ try {
 		}
 	}
 	$firephp->groupEnd();
-	$_SESSION['lastAction'][$acClase][$acMetodo]['_FILES']=$_FILES;
-	$firephp->info($_SESSION['lastAction'],'_SESSION[\'lastAction\']:');
+	$lastActionData=array(
+		$acClase => array(
+			$acMetodo => array(
+				'TIMESTAMP' => time(),
+				'URI' => (isset($_SERVER['HTTP_REFERER']))?$_SERVER['HTTP_REFERER']:"",
+				'_POST' => $_POST,
+				'_FILES' => $_FILES
+			)
+		)
+	);
+	$sSession['lastAction']=$lastActionData;
+	$firephp->info($sSession['lastAction'],'_SESSION[\'lastAction\']:');
 	$firephp->groupEnd();
 ?>
 <?
@@ -110,8 +116,12 @@ try {
 					case "ajax"://Los parametros vienen por POST y se pasan al metodo uno por uno
 					case "plain"://No hace nada, se llama a la acción y nada mas
 						$args="";
-						foreach ($_POST as $value) {
-							$args.='"'.$value.'", ';
+						foreach ($_POST as $key => $value) {
+							if (is_scalar($value)) {
+								$args.='"'.$value.'", ';
+							} else {
+								$args.='$_REQUEST["'.$key.'"], ';
+							}
 						}
 						$args=substr($args,0,-2);
 						$phpSentence='$resultSentence=$obj->'.$acMetodo.'('.$args.');';
@@ -180,12 +190,15 @@ try {
 					$firephp->groupEnd();
 					$firephp->groupEnd();
 					try {
-						unset($_SESSION['lastAction'][$acClase][$acMetodo]);
-						if (count($_SESSION['lastAction'][$acClase])==0) {
-							unset($_SESSION['lastAction'][$acClase]);
+						$lastActionData=$sSession['lastAction'];
+						unset($lastActionData[$acClase][$acMetodo]);
+						if (count($lastActionData[$acClase])==0) {
+							unset($lastActionData[$acClase]);
 						}
-						if (count($_SESSION['lastAction'])==0) {
-							unset($_SESSION['lastAction']);
+						if (count($lastActionData)==0) {
+							unset($sSession['lastAction']);
+						} else {
+							$sSession['lastAction']=$lastActionData;
 						}
 					} catch (Exception $e) {}
 				}

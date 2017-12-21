@@ -163,7 +163,7 @@ class ClassEntitySubclaser {
 		$sl=$this->sl;
 		$sg=$this->sg;
 
-		$resultCode=$sg.'public function GETkeyField () {';
+		$resultCode=$sg.'public static function GETkeyField () {';
 		$resultCode.='return static::$keyField;';
 		$resultCode.='}'.$sl;
 
@@ -261,28 +261,28 @@ class ClassEntitySubclaser {
 				$functionName.='By'.ucfirst($fField);
 			}
 			$resultCode.=$sg.'public function arr'.ucfirst($functionName).'($where="",$order="",$limit="",$tipo="arrStdObjs") {'.$sl;
-			$resultCode.=$sg.$sg.'$sqlWhere=($where!="")?" WHERE '.$fField.'=\'".$this->db()->real_escape_String($this->arrDbData[static::$keyField])."\' AND ".$where:" WHERE '.$fField.'=\'".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."\'";'.$sl;
+			$resultCode.=$sg.$sg.'$sqlWhere=($where!="")?" WHERE '.$fField.'=\'".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."\' AND ".$where:" WHERE '.$fField.'=\'".$this->db()->real_escape_string($this->arrDbData[static::$keyField])."\'";'.$sl;
 			$resultCode.=$sg.$sg.'$sqlOrder=($order!="")?" ORDER BY ".$order:"";'.$sl;
 			$resultCode.=$sg.$sg.'$sqlLimit=($limit!="")?" LIMIT ".$limit:"";'.$sl;
 			if (!$objFkInfo->manyToMany) {
 				$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$fTable.'".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
 			} else {
-				$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$fTable.' f INNER JOIN '.$ffTable.' ff ON f.'.$ffField.'=ff.".'."\\".ucfirst($fTable).'::$keyField." ".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
+				$resultCode.=$sg.$sg.'$sql="SELECT * FROM '.$fTable.' f INNER JOIN '.$ffTable.' ff ON f.'.$ffField.'=ff.".'."\\".ucfirst($ffTable).'::GETkeyField()." ".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
 			}
 			$resultCode.=$sg.$sg.'$arr=array();'.$sl;
 			$resultCode.=$sg.$sg.'$rsl=$this->db()->query($sql);'.$sl;
 			$resultCode.=$sg.$sg.'while ($data=$rsl->fetch_object()) {'.$sl;
 			$resultCode.=$sg.$sg.$sg.'switch ($tipo) {'.$sl;
 			if (!$objFkInfo->manyToMany) {
-				$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{'."\\".ucfirst($fTable).'::$keyField});break;'.$sl;
+				$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{'."\\".ucfirst($fTable).'::GETkeyField()});break;'.$sl;
 			} else {
-				$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{'."\\".ucfirst($ffTable).'::$keyField});break;'.$sl;
+				$resultCode.=$sg.$sg.$sg.$sg.'case "arrKeys": array_push($arr,$data->{'."\\".ucfirst($ffTable).'::GETkeyField()});break;'.$sl;
 			}
 			$resultCode.=$sg.$sg.$sg.$sg.'case "arrClassObjs":'.$sl;
 			if (!$objFkInfo->manyToMany) {
-				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($fTable).'($this->db(),$data->{'."\\".ucfirst($fTable).'::$keyField});'.$sl;
+				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($fTable).'($this->db(),$data->{'."\\".ucfirst($fTable).'::GETkeyField()});'.$sl;
 			} else {
-				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($ffTable).'($this->db(),$data->{'."\\".ucfirst($ffTable).'::$keyField});'.$sl;
+				$resultCode.=$sg.$sg.$sg.$sg.$sg.'$obj=new '."\\".ucfirst($ffTable).'($this->db(),$data->{'."\\".ucfirst($ffTable).'::GETkeyField()});'.$sl;
 			}
 			$resultCode.=$sg.$sg.$sg.$sg.$sg.'array_push($arr,$obj);'.$sl;
 			$resultCode.=$sg.$sg.$sg.$sg.$sg.'unset($obj);'.$sl;

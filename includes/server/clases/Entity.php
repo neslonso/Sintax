@@ -41,7 +41,7 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 	public function cargarId ($id) {return $this->cargar($id);}
 	public function cargar ($keyValue) {
 		$result=false;
-		if (!is_object($this->db())) {throw new \UnexpectedValueException(''.get_class($this).'->carga. is_object($this->db()) return false.', 1);}
+		if (!is_object($this->db())) {throw new \UnexpectedValueException(''.get_class($this).'->cargar. is_object($this->db()) return false.', 1);}
 		$sql="SELECT * FROM ".static::$table." WHERE ".static::$keyField."='".$this->db()->real_escape_string($keyValue)."'";
 		$data=$this->db()->get_obj($sql);
 		if ($data) {
@@ -54,8 +54,10 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 	}
 	public function grabar () {
 		$result=false;
-		if (!is_object($this->db())) {throw new \UnexpectedValueException(''.get_class($this).'->carga. is_object($this->db()) return false.', 1);}
-		$update=( !empty($this->arrDbData[static::$keyField]) )?true:false;
+		if (!is_object($this->db())) {throw new \UnexpectedValueException(''.get_class($this).'->grabar. is_object($this->db()) return false.', 1);}
+
+		$sqlCheckUpdate="SELECT ".static::$keyField." FROM ".static::$table." WHERE ".static::$keyField."='".$this->arrDbData[static::$keyField]."'";
+		$update=($this->db()->get_num_rows($sqlCheckUpdate)>0)?true:false;
 		if ($update) {
 			$sql="UPDATE ".static::$table." SET ";
 			foreach ($this->arrDbData as $key => $value) {
@@ -117,6 +119,9 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 		}
 		return $result;
 	}
+	public function __toString() {
+		return implode('', $this->arrDbData);
+	}
 	public function toArray() {
  		$arrVars = get_object_vars($this);
 		array_walk_recursive($arrVars, function (&$property) {
@@ -133,14 +138,29 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 		return json_encode($this->toArray());
 	}
 /* Funciones estaticas ********************************************************/
-	public static function existeId($id) {return static::existe(cDb::gI(),$id);}
+	public static function fromStdObj(\MysqliDB $db,\stdClass $stdObj) {
+		$keyField=static::GETkeyField();
+		if (isset($stdObj->$keyField)) {
+			$obj=new static($db,$stdObj->$keyField);
+		} else {
+			$obj=new static($db);
+		}
+		foreach ($stdObj as $key => $value) {
+			$method="SET".$key;
+			if (method_exists($obj, $method)) {
+				$obj->$method($value);
+			}
+		}
+		return $obj;
+	}
+	public static function existeId($id) {return static::existe(\cDb::gI(),$id);}
 	public static function existe(\MysqliDB $db, $keyValue) {
 		$sql="SELECT * FROM ".static::$table." WHERE id='".$db->real_escape_string($keyValue)."'";
 		$data=$db->get_obj($sql);
 		if ($data) {$result=true;} else {$result=false;}
 		return $result;
 	}
-	public static function allToArray($where="",$order="",$limit="",$tipo="arrStdObjs") {return static::getArray(cDb::gI(),$where,$order,$limit,$tipo);}
+	public static function allToArray($where="",$order="",$limit="",$tipo="arrStdObjs") {return static::getArray(\cDb::gI(),$where,$order,$limit,$tipo);}
 	public static function getArray(\MysqliDB $db,$where="",$order="",$limit="",$tipo="arrStdObjs") {
 		$sqlWhere=($where!="")?" WHERE ".$where:"";
 		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
@@ -168,7 +188,7 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 		}
 		return $arr;
 	}
-	public static function allToSelect($nameIdAttrs="id",$selectedValue="",$classAttr="",$where="",$order="",$limit="") {return static::getSelectMarkup(cDb::gI(),$nameIdAttrs,$selectedValue,$classAttr,$where,$order,$limit);}
+	public static function allToSelect($nameIdAttrs="id",$selectedValue="",$classAttr="",$where="",$order="",$limit="") {return static::getSelectMarkup(\cDb::gI(),$nameIdAttrs,$selectedValue,$classAttr,$where,$order,$limit);}
 	public static function getSelectMarkup(\MysqliDB $db, $nameIdAttrs="id",$selectedValue="",$classAttr="",$where="",$order="",$limit="") {
 		$arr=static::getArray($db,$where,$order,$limit,"arrClassObjs");
 		$htmlSelect='<select name="'.$nameIdAttrs.'" id="'.$nameIdAttrs.'"  class="'.$classAttr.'">';
@@ -182,7 +202,27 @@ abstract class Entity implements IEntity, \IteratorAggregate {
 		$htmlSelect.='</select>';
 		return $htmlSelect;
 	}
-
+	public static function ls(\MysqliDB $db,$where="",$order="",$limit="") {
+		$sqlView="CREATE OR REPLACE VIEW `ls".ucfirst(static::$table)."` AS
+			SELECT * FROM ".static::$table;
+		$db->query($sqlView);
+		$sqlWhere=($where!="")?" WHERE ".$where:"";
+		$sqlOrder=($order!="")?" ORDER BY ".$order:"";
+		$sqlLimit=($limit!="")?" LIMIT ".$limit:"";
+		$sql="SELECT * FROM ls".ucfirst(static::$table).$sqlWhere.$sqlOrder.$sqlLimit;
+		$arr=array();
+		$rsl=$db->query($sql);
+		while ($data=$rsl->fetch_object()) {
+			$objSeg=new static($db,$data->id);
+			$obj=new \stdClass();
+			foreach ($data as $field => $value) {
+				$obj->$field=$value;
+			}
+			array_push($arr,$obj);
+			unset ($obj);
+		}
+		return $arr;
+	}
 
 /* Funciones dinamicas ********************************************************/
 	public function noReferenciado() {

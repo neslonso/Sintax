@@ -3,34 +3,37 @@ namespace Sintax\Core;
 
 class ReturnInfo {
 	public static function ensureArray() {
-		if (!isset($_SESSION['returnInfo'])) {
-			$_SESSION['returnInfo']=$sri=array();
+		$sSession=\Sintax\Core\Session::gI();
+		if (!isset($sSession['returnInfo'])) {
+			$sSession['returnInfo']=$sri=array();
 		} else {
-			if (!is_array($_SESSION['returnInfo'])) {
+			if (!is_array($sSession['returnInfo'])) {
 				$sri=array();
-				$sri[0]=$_SESSION['returnInfo'];
-				$_SESSION['returnInfo']=$sri;
+				$sri[0]=$sSession['returnInfo'];
+				$sSession['returnInfo']=$sri;
 			} else {
-				$sri=$_SESSION['returnInfo'];
+				$sri=$sSession['returnInfo'];
 			}
 		}
 		return $sri;
 	}
 
 	public static function add($msg, $title='') {
+		$sSession=\Sintax\Core\Session::gI();
 		$sri=self::ensureArray();
 		array_push ($sri,array(
 				'msg' => $msg,
 				'title' => $title,
 		));
-		$_SESSION['returnInfo']=$sri;
+		$sSession['returnInfo']=$sri;
 	}
 	public static function existe () {
 		$sri=self::ensureArray();
 		return (count($sri)>0) ;
 	}
 	public static function clear () {
-		unset($_SESSION['returnInfo']);
+		$sSession=\Sintax\Core\Session::gI();
+		unset($sSession['returnInfo']);
 	}
 	public static function msgsToLis ($class='sriMsg') {
 		$result='';

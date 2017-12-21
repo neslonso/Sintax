@@ -81,7 +81,7 @@ class monologLogger extends Logger implements ILogger {
 			if ($wrongOptions) {
 				throw new Exception('Opciones desconocidas: ' . implode(', ', $wrongOptions));
 			}
-			$this->options=array_replace($this->options, $this->options);
+			$this->options=array_replace($this->options, $options);
 
 			$this->enabled=true;
 			$this->logger = new \Monolog\Logger($name);

@@ -344,13 +344,13 @@ class Creadora {
 		$resultCode.=$sg.'	$sqlView="CREATE OR REPLACE VIEW `'.$nombreVista.'` AS'.$sl;
 		$resultCode.=$sg.'		SELECT * FROM '.$nombreTabla.';'.$sl;
 		$resultCode.=$sg.'	";'.$sl;
-		$resultCode.=$sg.'	\$this->db()->query($sqlView);'.$sl;
+		$resultCode.=$sg.'	$this->db()->query($sqlView);'.$sl;
 		$resultCode.=$sg.'	$sqlWhere=($where!="")?" WHERE ".$where:"";'.$sl;
 		$resultCode.=$sg.'	$sqlOrder=($order!="")?" ORDER BY ".$order:"";'.$sl;
 		$resultCode.=$sg.'	$sqlLimit=($limit!="")?" LIMIT ".$limit:"";'.$sl;
 		$resultCode.=$sg.'	$sql="SELECT * FROM '.$nombreVista.'".$sqlWhere.$sqlOrder.$sqlLimit;'.$sl;
 		$resultCode.=$sg.'	$arr=array();'.$sl;
-		$resultCode.=$sg.'	$rsl=\$this->db()->query($sql);'.$sl;
+		$resultCode.=$sg.'	$rsl=$this->db()->query($sql);'.$sl;
 		$resultCode.=$sg.'	while ($data=$rsl->fetch_object()) {'.$sl;
 		$resultCode.=$sg.'		$objSeg=new self($data->id);'.$sl;
 		$resultCode.=$sg.'		$obj=new \stdClass();'.$sl;
@@ -460,7 +460,7 @@ class Creadora {
 				$functionName.='By'.ucfirst($fField);
 			}
 			$resultCode.=$sg.'public function arr'.ucfirst($functionName).'($where="",$order="",$limit="",$tipo="arrStdObjs") {'.$sl;
-			$resultCode.=$sg.$sg.'$sqlWhere=($where!="")?" WHERE '.$fField.'=\'".\$this->db()->real_escape_String($this->id)."\' AND ".$where:" WHERE '.$fField.'=\'".\$this->db()->real_escape_string($this->id)."\'";'.$sl;
+			$resultCode.=$sg.$sg.'$sqlWhere=($where!="")?" WHERE '.$fField.'=\'".\$this->db()->real_escape_string($this->id)."\' AND ".$where:" WHERE '.$fField.'=\'".\$this->db()->real_escape_string($this->id)."\'";'.$sl;
 			$resultCode.=$sg.$sg.'$sqlOrder=($order!="")?" ORDER BY ".$order:"";'.$sl;
 			$resultCode.=$sg.$sg.'$sqlLimit=($limit!="")?" LIMIT ".$limit:"";'.$sl;
 			if (!$objFkInfo->manyToMany) {

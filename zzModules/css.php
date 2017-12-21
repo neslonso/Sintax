@@ -7,19 +7,18 @@ ob_start();
 try {
 	header('Content-type: text/css; charset=utf-8');
 	session_cache_limiter('public');
-	session_start();
+	$sSession=\Sintax\Core\Session::gI(KEY_APP);
 	header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 60*60*24*364));
 
 	$page=(isset($_GET['page']))?$_GET['page']:'Home';
 
 	$objUsr=new Sintax\Core\AnonymousUser();
-	if (isset($_SESSION['usuario'])) {
-		//$objUsr=$_SESSION['usuario'];
-		$usrClass=get_class($_SESSION['usuario']);
+	if (isset($sSession['usuario'])) {
+		$usrClass=get_class($sSession['usuario']);
 		if ($usrClass!="__PHP_Incomplete_Class") {
-			$objUsr=$_SESSION['usuario'];
+			$objUsr=$sSession['usuario'];
 		} else {
-			unset ($_SESSION['usuario']);
+			unset ($sSession['usuario']);
 		}
 	}
 
@@ -76,7 +75,9 @@ try {
 			$firephp->info($infoExc);
 		}
 
-		$cssFile=CACHE_DIR.str_replace('/', '-',dirname($_SERVER['SCRIPT_NAME']))."-css.".md5(serialize($arrFilesModTime)).".css";
+		$cssFile=CACHE_DIR.
+			str_replace(DIRECTORY_SEPARATOR, '', (dirname($_SERVER['SCRIPT_NAME'])==DIRECTORY_SEPARATOR)?'raiz':dirname($_SERVER['SCRIPT_NAME']) ).
+				".".md5(serialize($arrFilesModTime)).".css";
 		$firephp->info($cssFile,'cssFile:');
 		$firephp->group('Fechas de ficheros', array('Collapsed' => true, 'Color' => '#FF9933'));
 		foreach ($arrFilesModTime as $filePath => $modTimeStamp) {

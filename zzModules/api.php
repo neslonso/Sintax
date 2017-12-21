@@ -27,14 +27,13 @@ try {
 
 	$objUsr=new Sintax\Core\AnonymousUser();
 	if (isset($_REQUEST['apiToken'])) {
-		session_id($_REQUEST['apiToken']);
-		session_start();
-		if (isset($_SESSION['usuario'])) {
-			$usrClass=get_class($_SESSION['usuario']);
+		$sSession=\Sintax\Core\Session::gI(KEY_APP,$_REQUEST['apiToken']);
+		if (isset($sSession['usuario'])) {
+			$usrClass=get_class($sSession['usuario']);
 			if ($usrClass!="__PHP_Incomplete_Class") {
-				$objUsr=$_SESSION['usuario'];
+				$objUsr=$sSession['usuario'];
 			} else {
-				unset ($_SESSION['usuario']);
+				unset ($sSession['usuario']);
 			}
 		}
 	}

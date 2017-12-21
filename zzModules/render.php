@@ -4,7 +4,7 @@ ob_start();
 <?
 try {
 	header('Content-Type: text/html; charset=utf-8');
-	session_start();
+	$sSession=\Sintax\Core\Session::gI(KEY_APP);
 
 	/*mail (DEBUG_EMAIL,SITE_NAME.". RENDER.PHP ".FILE_APP.": ".$_SERVER['REMOTE_ADDR'],
 		print_r($GLOBALS,true)."\n\n\n--\n\n\n".print_r($_SESSION,true));
@@ -15,32 +15,31 @@ try {
 	$page='Sintax\\Pages\\'.$page;
 
 	$objUsr=new Sintax\Core\AnonymousUser();
-	if (isset($_SESSION['usuario'])) {
-		//$objUsr=$_SESSION['usuario'];
-		$usrClass=get_class($_SESSION['usuario']);
+	if (isset($sSession['usuario'])) {
+		$usrClass=get_class($sSession['usuario']);
 		if ($usrClass!="__PHP_Incomplete_Class") {
-			$objUsr=$_SESSION['usuario'];
+			$objUsr=$sSession['usuario'];
 		} else {
-			unset ($_SESSION['usuario']);
+			unset ($sSession['usuario']);
 		}
 	}
 
 	logPageData('Creación de página');
 	if (class_exists($page)) {
 		do {
-			$arrSustitucion=(isset($_SESSION['arrSustitucion']))?$_SESSION['arrSustitucion']:array();
+			$arrSustitucion=(isset($sSession['arrSustitucion']))?$sSession['arrSustitucion']:array();
 			$Page=new $page($objUsr);
 			$page=$Page->pageValida();
 			if ($page!==false) {
 				if (class_exists($page)) {//pageValida devuelve una clase existente, hacemos la sustitucion
 					$url=(count($arrSustitucion))?BASE_DIR.FILE_APP.'?page='.get_class($Page):$_SERVER['REQUEST_URI'];
 					array_push($arrSustitucion,array('page' => get_class($Page), 'url' => $url));
-					$_SESSION['arrSustitucion']=$arrSustitucion;
+					$sSession['arrSustitucion']=$arrSustitucion;
 					$firephp->info('Page "'.get_class($Page).'" no valida, sustuticion: '.get_class($Page).' por '.$page.'. url sustituida: '.$url);
 					unset($Page);
 				} else {//no hay sustitucion
 					$Page->arrSustitucion=$arrSustitucion;
-					if (isset($_SESSION['arrSustitucion'])) {unset($_SESSION['arrSustitucion']);}
+					if (isset($sSession['arrSustitucion'])) {unset($sSession['arrSustitucion']);}
 				}
 			} else {
 				throw new Exception('No dispone de autorización para la clase de página solicitada.');
@@ -66,6 +65,7 @@ try {
 
 	try {
 		$Page=new \Sintax\Pages\Error($objUsr);
+		$Page->setException($e);
 		$Page->setMsg($e->getMessage());
 		ob_clean();//limpiamos el buffer para eliminar lo que se haya podido meter antes de saltar la excepción
 		markup($Page);

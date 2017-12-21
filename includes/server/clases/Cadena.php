@@ -338,6 +338,7 @@ class Cadena {
 		$str = str_replace("\r\n","",$str);
 		$str = str_replace("\r","",$str);
 		$str = str_replace("\n","",$str);
+		//$str=trim(preg_replace('/\s+/', ' ',$str);
 		return $str;
 	}
 	public static function toOneLine ($str) {
@@ -460,11 +461,9 @@ class Cadena {
 		return $numberFormatter->format($number);
 	}
 
-	public static function generatePassword ($length=8) {
+	public static function generatePassword ($length=8,$possible="0123456789abcdefghijklmnopqrstuvwxyz") {
 		// start with a blank password
 		$password = "";
-		// define possible characters
-		$possible = "0123456789bcdfghjkmnpqrstvwxyz";
 		$i = 0;
 		// add random characters to $password until $length is reached
 		while ($i < $length) {

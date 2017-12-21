@@ -165,7 +165,7 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 		$extends=$_POST['extends'];
 		$markupFunc=$_POST['markupFunc'];
 		$markupFile=$_POST['markupFile'];
-		$chkTestClass=$_REQUEST['chkTestClass'];
+		$chkTestClass=(isset($_REQUEST['chkTestClass']))?$_REQUEST['chkTestClass']:false;
 		if (strstr($_POST['class'], self::DB_NAME_TABLE_NAME_SEPARATOR)) {
 			list($db,$class)=explode(self::DB_NAME_TABLE_NAME_SEPARATOR,$_POST['class']);
 			\cDb::confByKey($db);
@@ -553,7 +553,7 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 	private function markupCrud($fp,$page,$class,$stdObjTableInfo,$arrValidators) {
 			$sl="\n";
 			$sg="\t";
-			fwrite ($fp,'<form action="<?=BASE_URL.FILE_APP?>" method="post" enctype="multipart/form-data" id="frm'.ucfirst($class).'" style="width:50%; margin:auto;">'.$sl);
+			fwrite ($fp,'<form action="<?=BASE_URL.FILE_APP?>" method="post" enctype="multipart/form-data" id="frm'.ucfirst($class).'">'.$sl);
 			fwrite ($fp,$sg.'<input name="MODULE" id="MODULE" type="hidden" value="actions"/>'.$sl);
 			fwrite ($fp,$sg.'<input name="acClase" id="acClase" type="hidden" value="'.$page.'"/>'.$sl);
 			fwrite ($fp,$sg.'<input name="acMetodo" id="acMetodo" type="hidden" value="'.'acGrabar'.'"/>'.$sl);
@@ -712,9 +712,15 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 		$sg="\t";
 		fwrite ($fp,$sg.$sg.'$id=(isset($_GET["id"]) && \\'.ucfirst($class).'::existeId($_GET["id"]))?$_GET["id"]:0;'.$sl);
 		fwrite ($fp,$sg.$sg.'$obj'.ucfirst($class).'=new \\'.ucfirst($class).'($id);'.$sl);
-		fwrite ($fp,$sg.$sg.'foreach ($obj'.ucfirst($class).'->toArray() as $key => $value) {'.$sl);
+		fwrite ($fp,$sg.$sg.'foreach ($obj'.ucfirst($class).' as $key => $value) {'.$sl);
+
 		fwrite ($fp,$sg.$sg.$sg.'$func="GET".$key;'.$sl);
-		fwrite ($fp,$sg.$sg.$sg.'$$key=$obj'.ucfirst($class).'->$func();'.$sl);
+
+		fwrite ($fp,$sg.$sg.$sg.'if (method_exists($obj'.ucfirst($class).',$func)) {'.$sl);
+		fwrite ($fp,$sg.$sg.$sg.$sg.'$$key=$obj'.ucfirst($class).'->$func();'.$sl);
+		fwrite ($fp,$sg.$sg.$sg.'}'.$sl);
+
+
 		fwrite ($fp,$sg.$sg.'}'.$sl);
 		foreach ($stdObjTableInfo->arrStdObjColumnInfo as $field => $stdObjFieldInfo) {
 			switch ($stdObjFieldInfo->tag) {
@@ -917,7 +923,7 @@ RewriteRule ^([^/]*)/(.*)/$ $2 [L] -> RewriteRule ^([^/]*)/(.*)/$ <em style='col
 		$code=substr($code,0,-1);
 		fwrite ($fp,$code.$sl);
 		fwrite ($fp,$sg.$sg.'],'.$sl);
-		fwrite ($fp,$sg.$sg.'"aaSorting":[[4,"desc"]],'.$sl);
+		fwrite ($fp,$sg.$sg.'"aaSorting":[[0,"desc"]],'.$sl);
 		fwrite ($fp,$sg.$sg.'"sAjaxSource": "<?=BASE_DIR.FILE_APP?>",'.$sl);
 		fwrite ($fp,$sg.$sg.'"fnServerParams": function ( aoData ) {'.$sl);
 		fwrite ($fp,$sg.$sg.$sg.'aoData.push({"name":"MODULE", "value":"actions"});'.$sl);

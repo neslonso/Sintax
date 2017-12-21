@@ -61,7 +61,7 @@ class ApiIdentification extends ApiService implements IApiService {
 	public function getToken($login=NULL,$pass=NULL) {
 		if (!is_null($login) && !is_null($pass)) {
 			//$objUsr=AnonymousUser::login($login,$pass);
-			//$_SESSION['usuario']=$objUsr;
+			//sesion['usuario']=$objUsr;
 		}
 		return array('token' => session_id());
 	}

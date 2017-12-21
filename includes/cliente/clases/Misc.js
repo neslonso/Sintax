@@ -63,3 +63,26 @@ function shadeBlendConvert(p, from, to) {
 	else return "#"+(0x100000000+(f[3]>-1&&t[3]>-1?r(((t[3]-f[3])*p+f[3])*255):t[3]>-1?r(t[3]*255):f[3]>-1?r(f[3]*255):255)*0x1000000+r((t[0]-f[0])*p+f[0])*0x10000+r((t[1]-f[1])*p+f[1])*0x100+r((t[2]-f[2])*p+f[2])).toString(16).slice(f[3]>-1||t[3]>-1?1:3);
 }
 /*****************************************************************************/
+
+/*****************************************************************************/
+/* allElementsFromPoint ******************************************************/
+/* https://stackoverflow.com/questions/8813051/determine-which-element-the-mouse-pointer-is-on-top-of-in-javascript
+/*****************************************************************************/
+function allElementsFromPoint(x, y) {
+    var element, elements = [];
+    var old_visibility = [];
+    while (true) {
+        element = document.elementFromPoint(x, y);
+        if (!element || element === document.documentElement) {
+            break;
+        }
+        elements.push(element);
+        old_visibility.push(element.style.visibility);
+        element.style.visibility = 'hidden'; // Temporarily hide the element (without changing the layout)
+    }
+    for (var k = 0; k < elements.length; k++) {
+        elements[k].style.visibility = old_visibility[k];
+    }
+    elements.reverse();
+    return elements;
+}

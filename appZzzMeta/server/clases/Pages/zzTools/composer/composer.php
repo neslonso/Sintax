@@ -53,7 +53,7 @@ class composer extends Error implements IPage {
 			1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
 			2 => array("pipe", "w"),  // stderr is a pipe that the child will write to
 		);
-		$cmd='php '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar --version';
+		$cmd='php -c '.php_ini_loaded_file().' '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar --version';
 		$process = proc_open($cmd, $descriptorspec, $pipes);
 		$stdout = stream_get_contents($pipes[1]);
 		fclose($pipes[1]);
@@ -227,19 +227,31 @@ class composer extends Error implements IPage {
 						$arrComponentsProcessed[]=$componentName;
 						$ningunFile=true;
 						foreach ($objComponentInfo->js as $jsFilePath) {
-							$componentsContent.='<!-- '.$componentName.' --><script src="'.$jsFilePath.'"></script>'.PHP_EOL;
-							echo '<li>Incluido: '.$jsFilePath.'</li>';
-							$ningunFile=false;
+							if (file_exists(SKEL_ROOT_DIR.$jsFilePath)) {
+								$componentsContent.='<!-- '.$componentName.' --><script src="'.$jsFilePath.'"></script>'.PHP_EOL;
+								echo '<li>Incluido: '.$jsFilePath.'</li>';
+								$ningunFile=false;
+							} else {
+								echo '<li style="color:red">ERROR INCLUYENDO: '.$jsFilePath.'. Fichero no existe.</li>';
+							}
 						}
 						foreach ($objComponentInfo->css as $cssFilePath) {
-							$componentsContent.='<!-- '.$componentName.' --><link href="'.$cssFilePath.'" rel="stylesheet">'.PHP_EOL;
-							echo '<li>Incluido: '.$cssFilePath.'</li>';
-							$ningunFile=false;
+							if (file_exists(SKEL_ROOT_DIR.$cssFilePath)) {
+								$componentsContent.='<!-- '.$componentName.' --><link href="'.$cssFilePath.'" rel="stylesheet">'.PHP_EOL;
+								echo '<li>Incluido: '.$cssFilePath.'</li>';
+								$ningunFile=false;
+							} else {
+								echo '<li style="color:red">ERROR INCLUYENDO: '.$cssFilePath.'. Fichero no existe.</li>';
+							}
 						}
 						foreach ($objComponentInfo->less as $lessFilePath) {
-							$componentsContent.='<!-- '.$componentName.' --><link href="'.$lessFilePath.'" rel="stylesheet">'.PHP_EOL;
-							echo '<li>Incluido: '.$lessFilePath.'</li>';
-							$ningunFile=false;
+							if (file_exists(SKEL_ROOT_DIR.$lessFilePath)) {
+								$componentsContent.='<!-- '.$componentName.' --><link href="'.$lessFilePath.'" rel="stylesheet">'.PHP_EOL;
+								echo '<li>Incluido: '.$lessFilePath.'</li>';
+								$ningunFile=false;
+							} else {
+								echo '<li style="color:red">ERROR INCLUYENDO: '.$lessFilePath.'. Fichero no existe.</li>';
+							}
 						}
 						foreach ($objComponentInfo->otherFiles as $otherFilesFilePath) {
 							//$componentsContent.='<!-- '.$componentName.' --><link href="'.$cssFilePath.'" rel="stylesheet">'.PHP_EOL;
@@ -296,7 +308,7 @@ class composer extends Error implements IPage {
 			1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
 			2 => array("pipe", "w"),  // stderr is a pipe that the child will write to
 		);
-		$cmd='php '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar self-update';
+		$cmd='php -c '.php_ini_loaded_file().' '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar self-update';
 		echo "<h2>Ejecutando: ".$cmd."</h2>";
 		$process = proc_open($cmd, $descriptorspec, $pipes);
 		$stdout = stream_get_contents($pipes[1]);
@@ -322,7 +334,10 @@ class composer extends Error implements IPage {
 			break;
 			case "require":
 			case "remove":
-				$opts.='--update-with-dependencies ';break;
+				$opts.='--no-progress ';
+				$opts.='--optimize-autoloader ';
+				$opts.='--update-with-dependencies ';
+				break;
 			case "search":
 				if ($pkgs=='') {
 					throw new \ActionException('Debe introducir el paquete.', 1);

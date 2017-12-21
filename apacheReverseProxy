@@ -1,38 +1,32 @@
 ProxyRequests Off
-ProxyPass "/" "http://fed16.farmaciacelorrio.com/"
-ProxyPassReverse "/" "http://fed16.farmaciacelorrio.com/"
-ProxyPassReverseCookieDomain  "fed16.farmaciacelorrio.com"  "bebefarma.com"
+
+ProxyPass "/error_docs" "!"
+ProxyPass "/plesk-stat" "!"
+ProxyPass "/webstat" "!"
+ProxyPass "/webstat-ssl" "!"
+ProxyPass "/ftpstat" "!"
+ProxyPass "/anon_ftpstat" "!"
+ProxyPass "/awstats-icon" "!"
+
+ProxyPass "/" "http://scv.farmaciacelorrio.com/"
+ProxyPassReverse "/" "http://scv.farmaciacelorrio.com/"
+ProxyPassReverseCookieDomain  "scv.farmaciacelorrio.com"  "parafarmaciasolocosmetica.com"
 ProxyPassReverseCookiePath  "/"  "/"
 ProxyVia On
 
-ProxyHTMLURLMap "http://fed16.farmaciacelorrio.com" "http://bebefarma.com"
-ProxyHTMLEnable On
-ProxyHTMLBufSize  102400
-ProxyHTMLExtended On
-ProxyHTMLStripComments Off
-ProxyHTMLDocType "<!DOCTYPE html>"
-ProxyHTMLMeta On
+SSLProxyEngine on
+ProxyRequests Off
 
-ProxyHTMLLinks 		a					href
-ProxyHTMLLinks 		area				href
-ProxyHTMLLinks 		link				href
-ProxyHTMLLinks 		img					src longdesc usemap
-ProxyHTMLLinks 		object				classid codebase data usemap
-ProxyHTMLLinks 		q					cite
-ProxyHTMLLinks 		blockquote			cite
-ProxyHTMLLinks 		ins					cite
-ProxyHTMLLinks 		del					cite
-ProxyHTMLLinks 		form				action
-ProxyHTMLLinks 		input				src usemap
-ProxyHTMLLinks 		head				profile
-ProxyHTMLLinks 		base				href
-ProxyHTMLLinks 		script				src for
-ProxyHTMLLinks 		iframe				src longdesc
-#ProxyHTMLLinks 		frame				src longdesc
-#ProxyHTMLLinks 		body				background
-#ProxyHTMLLinks 		applet				codebase
+ProxyPass "/error_docs" "!"
+ProxyPass "/plesk-stat" "!"
+ProxyPass "/webstat" "!"
+ProxyPass "/webstat-ssl" "!"
+ProxyPass "/ftpstat" "!"
+ProxyPass "/anon_ftpstat" "!"
+ProxyPass "/awstats-icon" "!"
 
-ProxyHTMLEvents onclick ondblclick onmousedown onmouseup \
-				onmouseover onmousemove onmouseout onkeypress \
-				onkeydown onkeyup onfocus onblur onload \
-				onunload onsubmit onreset onselect onchange
+ProxyPass "/" "https://scv.farmaciacelorrio.com/"
+ProxyPassReverse "/" "https://scv.farmaciacelorrio.com/"
+ProxyPassReverseCookieDomain  "scv.farmaciacelorrio.com"  "parafarmaciasolocosmetica.com"
+ProxyPassReverseCookiePath  "/"  "/"
+ProxyVia On

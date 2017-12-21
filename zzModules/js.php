@@ -6,25 +6,24 @@ ob_start();
 try {
 	header('Content-type: text/javascript; charset=utf-8');
 	session_cache_limiter('public');
-	session_start();
-	//header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 60*60*24*364));
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+	$sSession=\Sintax\Core\Session::gI(KEY_APP);
+	header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 60*60*24*364));
+/*header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
 
 header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
+header("Pragma: no-cache");*/
 
 	$page=(isset($_GET['page']))?$_GET['page']:'Home';
 
 	$objUsr=new Sintax\Core\AnonymousUser();
-	if (isset($_SESSION['usuario'])) {
-		//$objUsr=$_SESSION['usuario'];
-		$usrClass=get_class($_SESSION['usuario']);
+	if (isset($sSession['usuario'])) {
+		$usrClass=get_class($sSession['usuario']);
 		if ($usrClass!="__PHP_Incomplete_Class") {
-			$objUsr=$_SESSION['usuario'];
+			$objUsr=$sSession['usuario'];
 		} else {
-			unset ($_SESSION['usuario']);
+			unset ($sSession['usuario']);
 		}
 	}
 
@@ -48,7 +47,7 @@ header("Pragma: no-cache");
 		}
 		$firephp->groupEnd();
 	$jsScriptTags=ob_get_clean();
-	$jsMinFile=CACHE_DIR."jsMin.".md5(serialize($arrFilesModTime)).".js";
+	//$jsMinFile=CACHE_DIR."jsMin.".md5(serialize($arrFilesModTime)).".js";
 
 	if ($jsScriptTags!="") {
 		$srcs = array();
@@ -60,6 +59,7 @@ header("Pragma: no-cache");
 			for($i = 0; $i < $scriptElements->length; $i++) {
 				$srcs[]=$scriptElements->item($i)->getAttribute('src');
 				$src=$scriptElements->item($i)->getAttribute('src');
+				if (substr($src,0,1)=='.') {$src=SKEL_ROOT_DIR.$src;}
 				try {
 					$arrFilesModTime[$src]=filemtime($src);
 				} catch (Exception $e) {}
@@ -71,7 +71,9 @@ header("Pragma: no-cache");
 			$firephp->info($infoExc);
 		}
 
-		$jsMinFile=CACHE_DIR.str_replace('/', '-',dirname($_SERVER['SCRIPT_NAME']))."-jsMin.".md5(serialize($arrFilesModTime)).".js";
+		$jsMinFile=CACHE_DIR.
+			str_replace(DIRECTORY_SEPARATOR, '', (dirname($_SERVER['SCRIPT_NAME'])==DIRECTORY_SEPARATOR)?'raiz':dirname($_SERVER['SCRIPT_NAME']) ).
+				".".md5(serialize($arrFilesModTime)).".js";
 		$firephp->info($jsMinFile,'jsFile:');
 		$firephp->group('Fechas de ficheros', array('Collapsed' => true, 'Color' => '#FF9933'));
 		foreach ($arrFilesModTime as $filePath => $modTimeStamp) {
