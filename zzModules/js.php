@@ -118,7 +118,13 @@ header("Pragma: no-cache");*/
 			}
 			$firephp->groupend();
 			$jsLibs.="\n// Js Libs Fin";
-			echo $jsLibs;
+			if ($minify) {
+				$jsMin=JSMin::minify($jsLibs);
+			} else {
+				$jsMin=$jsLibs;
+			}
+			file_put_contents($jsMinFile, $jsMin);
+			echo $jsMin;
 		}
 	}
 	/******************************************************************************/
@@ -127,14 +133,6 @@ header("Pragma: no-cache");*/
 	//Leemos todo lo que hemos ido volcando al buffer raiz y lo guardamos en el fichero
 	$jsLibs=ob_get_clean();
 	//$jsLibs="";
-
-	if ($minify) {
-		$jsMin=JSMin::minify($jsLibs);
-	} else {
-		$jsMin=$jsLibs;
-	}
-	file_put_contents($jsMinFile, $jsMin);
-	$jsMinFileContents=file_get_contents($jsMinFile)."\n\n\n\n";
 ?>
 <?
 	/* js local *******************************************************************/
@@ -156,7 +154,7 @@ header("Pragma: no-cache");*/
 <?
 ob_start();
 //Volcamos todo (Libs + Local) al buffer
-echo $jsMinFileContents;
+echo $jsLibs;
 echo $jsLocalMin;
 ?>
 <?

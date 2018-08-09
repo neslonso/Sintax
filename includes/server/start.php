@@ -56,29 +56,6 @@ if (version_compare(PHP_VERSION, PHP_MIN_VERSION, '<')) {
 	die ('Sintax '.SKEL_VERSION.' requiere al menos PHP '.PHP_MIN_VERSION.'. Detectado PHP ' . PHP_VERSION . ". Proceso abortado.");
 }
 
-/**/
-/* Inicializamos objeto de manejo de errores y logger **************************/
-$GLOBALS['errorHandler'] = \Sintax\Core\ErrorHandler::getInstance(true);
-$GLOBALS['errorHandler']->registerErrorHandler($throwErrorExceptions=true);
-$GLOBALS['errorHandler']->registerExceptionHandler();
-
-$GLOBALS['logger'] = $GLOBALS['firephp'] = new \Sintax\Core\monologLogger(
-	$_SERVER['PHP_SELF'],
-	array (
-		/*
-		'gelf' => array(
-			'host' => '127.0.0.1',
-			'port' => 5555,
-		),
-		'stream' => null
-		*/
-	)
-);
-if (!in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
-	$GLOBALS['logger']->setEnabled(false);
-}
-/**/
-
 /* Instalamos componentes de composer *****************************************/
 	if (!class_exists('\\Less_Parser')) {
 		switch (PHP_SAPI) {
@@ -119,7 +96,7 @@ if (!in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
 			);
 			$cmd='php -c '.php_ini_loaded_file().' '.SKEL_ROOT_DIR.'includes/server/vendor/composer.phar install --optimize-autoloader --no-interaction -d "'.SKEL_ROOT_DIR.'" --profile';
 			echo "<h2>Ejecutando: [".$cmd."] en getcwd: [".getcwd()."]</h2>";
-			die("Parada mediante die, suele compensar ejecutar el comando desde consola en lugar de hacerlo a traves de apache");
+			//die("Parada mediante die, suele compensar ejecutar el comando desde consola en lugar de hacerlo a traves de apache");
 			ob_flush();
 
 			$process = proc_open($cmd, $descriptorspec, $pipes);
@@ -173,6 +150,29 @@ if (!in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
 		die();
 	}
 /******************************************************************************/
+
+/**/
+/* Inicializamos objeto de manejo de errores y logger **************************/
+$GLOBALS['errorHandler'] = \Sintax\Core\ErrorHandler::getInstance(true);
+$GLOBALS['errorHandler']->registerErrorHandler($throwErrorExceptions=true);
+$GLOBALS['errorHandler']->registerExceptionHandler();
+
+$GLOBALS['logger'] = $GLOBALS['firephp'] = new \Sintax\Core\monologLogger(
+	$_SERVER['PHP_SELF'],
+	array (
+		/*
+		'gelf' => array(
+			'host' => '127.0.0.1',
+			'port' => 5555,
+		),
+		'stream' => null
+		*/
+	)
+);
+if (!in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
+	$GLOBALS['logger']->setEnabled(false);
+}
+/**/
 
 //Definimos todas las constantes de la aplicacion correspondiente al punto de entrada
 $arrApps=unserialize(APPS);

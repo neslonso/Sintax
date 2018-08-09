@@ -149,6 +149,12 @@ class monologLogger extends Logger implements ILogger {
 	public function info($data,$etq='',$style='') {
 		$this->__toLogger(\Monolog\Logger::INFO,$data,$etq,$style);
 	}
+	//Funcion añadida para efacturalabs porque:
+	//Call to undefined method Sintax\\Core\\monologLogger::warn() in /var/www/vhosts/digiwood.es/efacturalab.digiwood.es/zzModules/js.php on line 44
+	//no se pq en plagesvime no da ese error
+	public function warn($data,$etq='',$style='') {
+		$this->warning($data,$etq,$style);
+	}
 	public function warning($data,$etq='',$style='') {
 		$this->__toLogger(\Monolog\Logger::WARNING,$data,$etq,$style);
 	}

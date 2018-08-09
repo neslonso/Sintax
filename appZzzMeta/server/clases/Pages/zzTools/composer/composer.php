@@ -167,8 +167,7 @@ class composer extends Error implements IPage {
 				try {
 					$componentsContent=file_get_contents($componentsFilePath);
 				} catch (\Exception $e) {
-					$fp=\FirePHP::getInstance(true);
-					$fp->error('Excepcion en getArrLibsApps. Msg: '.$e->getMessage());
+					$GLOBALS['logger']->error('Excepcion en getArrLibsApps. Msg: '.$e->getMessage());
 				}
 				if (
 					strstr($componentsContent, "<!-- ".$libName." -->") ||
