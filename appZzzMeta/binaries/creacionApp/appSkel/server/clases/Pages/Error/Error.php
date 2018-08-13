@@ -8,22 +8,40 @@ use Sintax\Core\ReturnInfo;
 class Error extends Page implements IPage {
 
 	private $msg;
+	private $exception=NULL;
 
 	public function __construct (User $objUsr=NULL) {
+		$sSession=\Sintax\Core\Session::gI(KEY_APP);
 		parent::__construct($objUsr);
 		$this->msg="Descripcion no especificada.";
+		$objUsr=new \RestrictedByIpUser();
+		if (!isset($sSession['usuario']) || get_class($sSession['usuario'])!='RestrictedByIpUser') {
+			$GLOBALS['firephp']->info('Regenerando usuario: '.__FILE__.'::'.__LINE__);
+			$this->objUsr=$sSession['usuario']=$objUsr;
+		}
 	}
 
 	public function setMsg($msg) {
 		$this->msg=$msg;
 	}
+	public function setException($e) {
+		$this->exception=$e;
+	}
 
 	//En head y markup no usamos require_once, pq si salta un error durante la ejecución de una Page
-	//no se volverá a requerir el fichero, ya que todas las Pagesdeben descender de Error.
+	//no se volverá a requerir el fichero, ya que todas las Pages deben descender de Error  (via extends Home).
 	//Esto tambien significa que ninguna de las funciones pueden contener nada que no pueda ser
 	//redeclarado (funciones, clases...)
 	public function head() {
 		require( str_replace('//','/',dirname(__FILE__).'/') .'markup/head.php');
+	}
+
+	public function favIcon() {
+		$favIcon='';
+		$favIcon.='<link rel="shortcut icon" type="image/x-icon" href="'.SKEL_ROOT_URL.'binaries/imgs/tools.favicon.ico" />';
+		$favIcon.=PHP_EOL;
+		$favIcon.='<link rel="icon" type="image/x-icon" href="'.SKEL_ROOT_URL.'binaries/imgs/tools.favicon.ico" />';
+		return $favIcon."\n";
 	}
 
 	public function js() {
@@ -45,6 +63,11 @@ class Error extends Page implements IPage {
 					} else {
 						$this->setMsg('<pre>'.print_r(debug_backtrace(),true).'</pre>');
 					}
+				}
+			}
+			if (in_array($_SERVER['REMOTE_ADDR'],unserialize(IPS_DEV))) {
+				if (!is_null($this->exception)) {
+					$this->setMsg($this->msg.'<pre>'.$this->exception.'<pre>');
 				}
 			}
 		} catch (Exception $e) {

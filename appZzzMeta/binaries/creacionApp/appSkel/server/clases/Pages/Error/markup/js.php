@@ -3,4 +3,3 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 
 });
-<?="\n/*/".get_class()."*/\n"?>
