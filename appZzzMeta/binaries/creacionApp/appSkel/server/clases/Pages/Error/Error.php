@@ -14,11 +14,6 @@ class Error extends Page implements IPage {
 		$sSession=\Sintax\Core\Session::gI(KEY_APP);
 		parent::__construct($objUsr);
 		$this->msg="Descripcion no especificada.";
-		$objUsr=new \RestrictedByIpUser();
-		if (!isset($sSession['usuario']) || get_class($sSession['usuario'])!='RestrictedByIpUser') {
-			$GLOBALS['firephp']->info('Regenerando usuario: '.__FILE__.'::'.__LINE__);
-			$this->objUsr=$sSession['usuario']=$objUsr;
-		}
 	}
 
 	public function setMsg($msg) {
