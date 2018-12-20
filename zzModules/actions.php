@@ -16,32 +16,32 @@ try {
 	$sSession=\Sintax\Core\Session::gI(KEY_APP);
 ?>
 <?
-	if (!isset($_POST['acReturnURI'])) {
-		$_POST['acReturnURI']=(isset($_SERVER['HTTP_REFERER']))?$_SERVER['HTTP_REFERER']:"";
+	if (!isset($_REQUEST['acReturnURI'])) {
+		$_REQUEST['acReturnURI']=(isset($_SERVER['HTTP_REFERER']))?$_SERVER['HTTP_REFERER']:"";
 	}
 
 	//error_log ('$_SESSION='.print_r($_SESSION,true));
-	//error_log ('$_POST='.print_r($_POST,true));
-	$firephp->group('Llamada a actions.php 	clase: '.$_POST['acClase'].'. Metodo: '.$_POST['acMetodo'].'. Tipo: '.$_POST['acTipo'].'. ReturnURI: '.$_POST['acReturnURI'],
+	//error_log ('$_REQUEST='.print_r($_REQUEST,true));
+	$firephp->group('Llamada a actions.php 	clase: '.$_REQUEST['acClase'].'. Metodo: '.$_REQUEST['acMetodo'].'. Tipo: '.$_REQUEST['acTipo'].'. ReturnURI: '.$_REQUEST['acReturnURI'],
 					array('Collapsed' => true,
 						  'Color' => '#FF9933'));
-	$firephp->group('_SESSION, _REQUEST, _POST y _FILES', array('Collapsed' => true, 'Color' => '#9933FF'));
+	$firephp->group('_SESSION, _REQUEST, _REQUEST y _FILES', array('Collapsed' => true, 'Color' => '#9933FF'));
 	$firephp->info($_SESSION,'$_SESSION');
-	$firephp->info($_POST,'$_REQUEST');
-	$firephp->info($_POST,'$_POST');
+	$firephp->info($_REQUEST,'$_REQUEST');
+	$firephp->info($_REQUEST,'$_REQUEST');
 	$firephp->info($_FILES,'$_FILES');
 	$firephp->groupend();
 
 	$result="";
-	$acClase=$_POST['acClase'];
-	$acClase="Sintax\\Pages\\".$_POST['acClase'];
-	$acMetodo=$_POST['acMetodo'];
-	$acTipo=(isset($_POST['acTipo']))?$_POST['acTipo']:"std";
-	$acReturnURI=(isset($_POST['acReturnURI']))?$_POST['acReturnURI']:"./";
-	unset ($_POST['acClase']);
-	unset ($_POST['acMetodo']);
-	unset ($_POST['acTipo']);
-	unset ($_POST['acReturnURI']);
+	$acClase=$_REQUEST['acClase'];
+	$acClase="Sintax\\Pages\\".$_REQUEST['acClase'];
+	$acMetodo=$_REQUEST['acMetodo'];
+	$acTipo=(isset($_REQUEST['acTipo']))?$_REQUEST['acTipo']:"std";
+	$acReturnURI=(isset($_REQUEST['acReturnURI']))?$_REQUEST['acReturnURI']:"./";
+	unset ($_REQUEST['acClase']);
+	unset ($_REQUEST['acMetodo']);
+	unset ($_REQUEST['acTipo']);
+	unset ($_REQUEST['acReturnURI']);
 
 	$objUsr=new Sintax\Core\AnonymousUser();
 	if (isset($sSession['usuario'])) {
@@ -90,7 +90,7 @@ try {
 			$acMetodo => array(
 				'TIMESTAMP' => time(),
 				'URI' => (isset($_SERVER['HTTP_REFERER']))?$_SERVER['HTTP_REFERER']:"",
-				'_POST' => $_POST,
+				'_REQUEST' => $_REQUEST,
 				'_FILES' => $_FILES
 			)
 		)
@@ -116,9 +116,9 @@ try {
 					case "ajax"://Los parametros vienen por POST y se pasan al metodo uno por uno
 					case "plain"://No hace nada, se llama a la acción y nada mas
 						$args="";
-						foreach ($_POST as $key => $value) {
+						foreach ($_REQUEST as $key => $value) {
 							if (is_scalar($value)) {
-								$args.='"'.$value.'", ';
+								$args.='"'.addcslashes($value, '"').'", ';
 							} else {
 								$args.='$_REQUEST["'.$key.'"], ';
 							}
@@ -129,7 +129,7 @@ try {
 					case "stdAssoc"://Los parametros vienen POST y se pasan al metodo como un array y despues se redirige el navegador
 					case "ajaxAssoc"://Los parametros vienen POST y se pasan al metodo como un array
 					case "plainAssoc"://No hace nada, se llama a la acción y nada mas
-						$args=$_POST;
+						$args=$_REQUEST;
 						$phpSentence='$resultSentence=$obj->'.$acMetodo.'($args);';
 						break;
 				}

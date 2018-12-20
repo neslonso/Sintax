@@ -65,7 +65,7 @@ function logPageData($titulo="Grupo logPageData") {
 	$GLOBALS['firephp']->groupend();
 }
 
-function dataTablesGenericServerSide($objCliente=NULL) {
+function dataTablesGenericServerSide($objCliente=NULL, $where=NULL) {
 	$db=cDb::gI();
 	$sOrder = "";
 	if ( isset( $_REQUEST['iSortCol_0'] ) ) {
@@ -113,6 +113,7 @@ function dataTablesGenericServerSide($objCliente=NULL) {
 		}
 	}
 	*/
+	$sWhere=($sWhere=="")?$sWhere.$where:$sWhere." AND ".$where;
 	$GLOBALS['firephp']->info ($sWhere);
 
 	$sLimit="";
@@ -241,8 +242,8 @@ function sitemap($file="./sitemap.xml") {
 	unlink($file);
 }
 
-/* getRemoteIPAddress *****************************************
-**************************************************************/
+/* getRemoteIPAddress **********************************************************
+*******************************************************************************/
 function getRemoteIPAddress() {
 	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 		return $_SERVER['HTTP_CLIENT_IP'];
@@ -250,5 +251,38 @@ function getRemoteIPAddress() {
 		return $_SERVER['HTTP_X_FORWARDED_FOR'];
 	}
 	return $_SERVER['REMOTE_ADDR'];
+}
+
+/* r_var_dump ******************************************************************
+*******************************************************************************/
+function ob_var_dump() {
+	return call_user_func_array("r_var_dump", func_get_args());
+}
+function r_var_dump() {
+	$argc = func_num_args();
+	$argv = func_get_args();
+
+	$result='';
+	if ($argc > 0) {
+		ob_start();
+		call_user_func_array('var_dump', $argv);
+		$result = ob_get_contents();
+		ob_end_clean();
+	}
+	return $result;
+}
+/**
+ * Generate a build number based on Git commit count and current branch.
+ * @return string Format: "{$branch}.{$commitCount}"
+ */
+function buildNumber() {
+	$gitCmd="git --git-dir='".SKEL_ROOT_DIR."/../git/".$_SERVER['SERVER_NAME']."'";
+	$branch = exec($gitCmd." rev-parse --abbrev-ref HEAD");
+	$commitCount = exec($gitCmd." rev-list HEAD --count");
+
+	//$result=$gitCmd.".{$branch}.{$commitCount}";
+	$result="{$branch}.{$commitCount}";
+
+	return $result;
 }
 ?>
