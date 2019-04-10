@@ -24,18 +24,25 @@ class MysqliDB extends \mysqli implements Serializable {
 	 */
 	protected $db='';
 	/**
+	 * Puerto de conexion a MySQL
+	 * @var string
+	 */
+	protected $port=3306;
+	/**
 	 * Constructor: Conecta a MySQL y establece el charset a utf8
 	 * @param string $host host de MySQL
 	 * @param string $user usuario de acceso a MySQL
 	 * @param string $pass contraseña del usuario de acceso a MySQL
 	 * @param string $db nombbre de esquema de MySQL
+	 * @param string $port puerto de MySQL
 	 * @throws MysqliDB_Exception si no puede conectar o establecer el charset a utf8
 	 */
-	public function __construct($host, $user, $pass, $db) {
+	public function __construct($host, $user, $pass, $db, $port=3306) {
 		$this->host=$host;
 		$this->user=$user;
 		$this->pass=$pass;
 		$this->db=$db;
+		$this->port=$port;
 
 		$this->reconnect();
 	}
@@ -64,6 +71,7 @@ class MysqliDB extends \mysqli implements Serializable {
 			$this->user,
 			$this->pass,
 			$this->db,
+			$this->port,
 		]);
 	}
 	public function unserialize($serialized) {
@@ -72,6 +80,7 @@ class MysqliDB extends \mysqli implements Serializable {
 			$this->user,
 			$this->pass,
 			$this->db,
+			$this->port,
 		) = unserialize($serialized);
 		$this->reconnect();
 	}
@@ -80,6 +89,7 @@ class MysqliDB extends \mysqli implements Serializable {
 	public function GETuser() {return $this->user;}
 	public function GETpass() {return $this->pass;}
 	public function GETdb() {return $this->db;}
+	public function GETport() {return $this->port;}
 
 	private function reconnect() {
 		parent::init();
@@ -99,7 +109,7 @@ class MysqliDB extends \mysqli implements Serializable {
 			throw new exception('Setting MYSQLI_OPT_CONNECT_TIMEOUT failed');
 		}
 		*/
-		if (!parent::real_connect($this->host, $this->user, $this->pass, $this->db)) {
+		if (!parent::real_connect($this->host, $this->user, $this->pass, $this->db, $this->port)) {
 			//throw new exception($this->connect_error, $this->connect_errno);
 			//$connect_error falla hasta PHP 5.3.0, asi que usamos la siguiente
 			throw new MysqliDB_Exception(mysqli_connect_error(), mysqli_connect_errno());
@@ -115,7 +125,7 @@ class MysqliDB extends \mysqli implements Serializable {
 	 * @param  string $query Consulta SQL a ejecutar
 	 * @return mysqli_result instancia de mysqli_result
 	 */
-	public function query($query) {
+	public function query($query, int $resultmode = MYSQLI_STORE_RESULT) {
 		$localeActual=setlocale(LC_ALL, 0);
 	 	setlocale(LC_ALL,'en_US.utf8');
 
@@ -403,10 +413,10 @@ final class cDb extends MysqliDB {
 	 * @param string $db nombbre de esquema de MySQL
 	 * @return object: instancia de self
 	 */
-	public static function conf($host, $user, $pass, $db) {
+	public static function conf($host, $user, $pass, $db, $port) {
 		if(self::$singleton instanceof self) {self::$singleton->close();}
 		self::$singleton=NULL;
-		return self::getInstance($host, $user, $pass, $db);
+		return self::getInstance($host, $user, $pass, $db, $port);
 	}
 
 	/**
@@ -421,7 +431,12 @@ final class cDb extends MysqliDB {
 		if (!is_array($arrDbs)) {throw new MysqliDB_Exception("DBS no contiene un array", 1);}
 		if (!isset($arrDbs[$arrKey])) {throw new MysqliDB_Exception("key [".$arrKey."] no isset", 1);}
 		if (!is_array($arrDbs[$arrKey])) {throw new MysqliDB_Exception("DBS[".$arrKey."] no contiene un array", 1);}
-		self::conf($arrDbs[$arrKey]['_DB_HOST_'],$arrDbs[$arrKey]['_DB_USER_'],$arrDbs[$arrKey]['_DB_PASSWD_'],$arrDbs[$arrKey]['_DB_NAME_']);
+		$host=$arrDbs[$arrKey]['_DB_HOST_'];
+		$user=$arrDbs[$arrKey]['_DB_USER_'];
+		$passwd=$arrDbs[$arrKey]['_DB_PASSWD_'];
+		$name=$arrDbs[$arrKey]['_DB_NAME_'];
+		$port=(isset($arrDbs[$arrKey]['_DB_PORT_']))?$arrDbs[$arrKey]['_DB_PORT_']:'3306';
+		self::conf($host,$user,$passwd,$name,$port);
 		return self::getInstance();
 	}
 
@@ -429,9 +444,9 @@ final class cDb extends MysqliDB {
 	 * devuelve una referencia a la instancia conectada
 	 * @return object: instancia de self
 	 */
-	public static function getInstance($host="localhost", $user="root", $pass="", $db="") {
+	public static function getInstance($host="localhost", $user="root", $pass="", $db="", $port="") {
 		if(!self::$singleton instanceof self) {
-			self::$singleton = new self($host, $user, $pass, $db);
+			self::$singleton = new self($host, $user, $pass, $db, $port);
 		}
 		return self::$singleton;
 	}

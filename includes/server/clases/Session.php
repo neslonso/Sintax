@@ -32,6 +32,12 @@ class Session implements \ArrayAccess {
 	}
 
 	public function init($KEY_APP,$session_id=NULL,$session_name=NULL) {
+		/*
+		$session_duration=PHP_INT_MAX;
+		$secondsToEndTime = strtotime('2038-01-19 04:14:07') - time();
+		ini_set('session.cookie_lifetime', $secondsToEndTime);//2038-01-19 04:14:07 maximo valor para evitar problemas con nav antiguos
+		ini_set("session.gc_maxlifetime",$session_duration); //maximo valor permitido 1 mes
+		*/
 		$this->KEY_APP=$KEY_APP;
 		if (!is_null($session_id)) {
 			session_id($session_id);
@@ -44,6 +50,10 @@ class Session implements \ArrayAccess {
 		}
 		$this->session=$_SESSION;
 		if(!isset($_SESSION[$KEY_APP])) {$_SESSION[$KEY_APP]=array();}
+
+		/*
+		$cache_expire = session_cache_expire();
+		*/
 	}
 
 	public function offsetExists ($offset) {

@@ -113,7 +113,7 @@ function dataTablesGenericServerSide($objCliente=NULL, $where=NULL) {
 		}
 	}
 	*/
-	$sWhere=($sWhere=="")?$sWhere.$where:$sWhere." AND ".$where;
+	$sWhere=(!is_null($where))?($sWhere=="")?$sWhere.$where:$sWhere." AND ".$where:$sWhere;
 	$GLOBALS['firephp']->info ($sWhere);
 
 	$sLimit="";
